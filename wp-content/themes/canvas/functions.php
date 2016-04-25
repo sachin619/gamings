@@ -514,11 +514,11 @@ function updateMatchPremium($postId) {
             }
         }
 
-        if (count($countElimntd) == 1) {
+        if (count($countElimntd) == 1 && $getTeams[0]['points_distributed']!=='Yes') {
             $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "'   ");
             $totBets = (array) $getTotalBets[0];
 
-            $betsCalc = round($totBets['pts'] / $totalWinBets['pts']); //total no of bet divide by total no winner
+            $betsCalc = floor($totBets['pts'] / $totalWinBets['pts']); //total no of bet divide by total no winner
             foreach ($resultDis as $distribution) {
                 $disFilter = (array) $distribution;
                 $disCalc = ((int) $disFilter['pts'] * (int) $betsCalc);
@@ -527,7 +527,9 @@ function updateMatchPremium($postId) {
                 $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
                 $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
                 update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
+                
             }
+            update_post_meta($postId,'points_distributed','Yes');
         }
     endif;
 }
@@ -590,11 +592,11 @@ function getPremium($type, $Tradetype, $postId) {
         }
     }
 
-    if (count($countElimntd) == 1) {
+    if (count($countElimntd) == 1 && $getTeams[0]['points_distributed']!=='Yes') {
         $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "'   ");
         $totBets = (array) $getTotalBets[0];
 
-        $betsCalc = round($totBets['pts'] / $totalWinBets['pts']); //total no of bet divide by total no winner
+        $betsCalc = floor($totBets['pts'] / $totalWinBets['pts']); //total no of bet divide by total no winner
         foreach ($resultDis as $distribution) {
             $disFilter = (array) $distribution;
             $disCalc = ((int) $disFilter['pts'] * (int) $betsCalc);
@@ -604,5 +606,7 @@ function getPremium($type, $Tradetype, $postId) {
             $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
             update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
         }
+                    update_post_meta($postId,'points_distributed','Yes');
+
     }
 }

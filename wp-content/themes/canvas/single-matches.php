@@ -74,7 +74,7 @@ get_header();
                         <td width="30%"> {{teamInfo.team_name['post_title']}}</td>
                         <td > {{getDetails['pts'][$index][0].total}}</td>
                         <td class="blockTrade" ng-if="teamInfo.winner==='No'"><input type="text" name="pts" ng-model="$parent.points"  placeholder="Trade"></td>
-                        <td class="blockAction" ng-if="teamInfo.winner==='No'"><button ng-click="trade(getDetails['details'][0].id,teamInfo.team_name['ID'],points)" >Add</button></td>
+                        <td class="blockAction" ng-if="teamInfo.winner==='No'"><button ng-click="trade(getDetails['details'][0]['postLink'],getDetails['details'][0].id,teamInfo.team_name['ID'],points)" >Add</button></td>
                         <td colspan="2" ng-if="teamInfo.winner !== 'No'">Looser</td>  
                         </tr>
 

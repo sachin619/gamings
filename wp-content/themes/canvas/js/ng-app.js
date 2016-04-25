@@ -3,8 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var domain = "http://localhost:1234/gamings/api?action=";
-var base_url = "http://localhost:1234/gamings/";
+var domain = "http://localhost/gamings/api?action=";
+var base_url = "http://localhost/gamings/";
 
 
 
@@ -43,23 +43,19 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
     var formData = {
         'postId': slug
     };
-    $scope.tradeMatch=function(link,tid,points,id){
-         var slug = link.split("/");
-    slug = slug[slug.length - 2];
+    $scope.tradeMatch = function (link, tid, points) {
+        var slug = link.split("/");
+        slug = slug[slug.length - 2];
         console.log(tid);
         console.log(points);
-         console.log(id);
-         console.log(slug);
-             var formDataNew = {
+        console.log(slug);
+        var formDataNew = {
             'mid': tid,
-            'team_id': id[0],
-            'pts': points[0],
+            'pts': points,
             'slug': slug
 
-        }; 
-          tourDetails('trade', formDataNew, $scope, $http, $templateCache, 'blockName');
-
-
+        };
+        tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
     };
     ngPost('tournaments-detail', formData, $scope, $http, $templateCache, 'getDetails');
     $scope.trade = function (tid, teamId, pts) {
@@ -89,14 +85,21 @@ app.controller('matchesDetails', function ($scope, $http, $templateCache) {
         'postId': slug
     };
     ngPost('matches-detail', formData, $scope, $http, $templateCache, 'getDetails');
-    $scope.trade = function (tid, teamId, pts) {
+    $scope.trade = function (link, tid, teamId, pts) {
+        var slug = link.split("/");
+        slug = slug[slug.length - 2];
+        console.log(tid);
+        console.log(pts);
+        console.log(slug);
+        pointsTeamId = {};
+        pointsTeamId[teamId] = pts;
         var formData = {
             'mid': tid,
-            'team_id': teamId,
-            'pts': pts
+            'pts': pointsTeamId,
+            'slug': slug
 
         };
-        tourDetails('trade', formData, $scope, $http, $templateCache, 'blockName');
+        tourDetails('multi-trade-match', formData, $scope, $http, $templateCache, 'blockName');
 
     };
 
@@ -112,10 +115,10 @@ app.controller('listingTour', function ($http, $scope, $templateCache) {
     ngPost('listing-tournaments', formData, $scope, $http, $templateCache, 'getDetails');
     $scope.filter = function (catName) {
         $('.pf-media').show();
-            if (catName === 'All')
-                $('.pf-media').show();
-            else
-                $('.pf-media').not('.pf-' + catName).hide();
+        if (catName === 'All')
+            $('.pf-media').show();
+        else
+            $('.pf-media').not('.pf-' + catName).hide();
     };
 });
 
@@ -124,10 +127,10 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
     ngPost('listing-matches', formData, $scope, $http, $templateCache, 'getDetails');
     $scope.filter = function (catName) {
         $('.pf-media').show();
-            if (catName === 'All')
-                $('.pf-media').show();
-            else
-                $('.pf-media').not('.pf-' + catName).hide();
+        if (catName === 'All')
+            $('.pf-media').show();
+        else
+            $('.pf-media').not('.pf-' + catName).hide();
     };
 });
 

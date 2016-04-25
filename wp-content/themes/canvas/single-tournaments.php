@@ -113,7 +113,7 @@ get_header();
                                 </div>
                                 <div class="entry-c">
                                     <div class="entry-title">
-                                        <h2><a href="#">{{matches['title']}}</a></h2>
+                                        <h2><a href={{matches['postLink']}}>{{matches['title']}}</a></h2>
                                     </div>
                                     <ul class="entry-meta clearfix">
 
@@ -123,13 +123,13 @@ get_header();
                                     <div class="clearfix"></div>
                                     <div class="row mb15" ng-repeat="teams in matches['select_teams']">
                                         <div class="col-md-4">{{teams['team_name']['post_title']}}: </div>
-                                        <div class="col-md-8" ng-init="$parent.team_id[$index]=teams['team_name']['ID']"> <input type="text" ng-model='$parent.points[$index]' ></div>
+                                        <div class="col-md-8" > <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ></div>
                                     </div>
                                    
 
                                     <div class="row mb15">
                                         <div class="col-md-4"> </div>
-                                        <div class="col-md-8"><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'],matches['id'],points,team_id)" class="btn btn-danger">Trade</a></div>
+                                        <div class="col-md-8"><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'],matches['id'],points)" class="btn btn-danger">Trade</a></div>
                                     </div>
 
 

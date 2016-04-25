@@ -43,7 +43,7 @@ switch ($action) {
     case 'listing-tournaments':
         $output = $api->listingTournaments();
         break;
-     case 'listing-matches':
+    case 'listing-matches':
         $output = $api->listingMatches();
         break;
     case 'premium-trade':
@@ -51,7 +51,7 @@ switch ($action) {
         $tradeInfo['team_id'] = '';
         $output = $api->premiumTrade('tid', $tradeInfo);
         break;
-     case 'multi-trade-match':
+    case 'multi-trade-match':
         $output = $api->multiTradeMatch($_REQUEST);
         break;
     default:
@@ -149,9 +149,6 @@ class API {
     function tournamentsDetail($postId) {
         $args = ['post_type' => 'tournaments', 'name' => $postId['data']['postId']];
         $userId = $this->userId;
-        //$args = ['post_type' => 'tournaments', 'name' => $postId['postId']];
-        $getMatchesArgs=['post_type'=>'matches'];
-        $getMatches = $this->getResult($getMatchesArgs);
         $result = $this->getResult($args);
         $allResult = $this->getResult($args);
         $tId = $result[0]['id'];
@@ -164,26 +161,30 @@ class API {
         $tradeInfo = ['tid' => $tId, 'user_id' => $userId];
         $getTotalBets = $this->getTotalTrade($tradeInfo, 'tid');
         $userTotalTrade = $this->getUserTotalTrade($tradeInfo, 'tid');
-        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade,'matches'=>$getMatches];
+        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'matches' => $this->upcomingMatches()];
         return $detailsData;
     }
 
     function upcomingTournaments() {
         $dateFormat = date('Ymd');
+        $dateTimeFormat = time();
         $args = [ 'post_type' => 'tournaments', 'meta_key' => 'start_date', 'orderby' => 'meta_value_num', 'order' => 'ASC',
-            'meta_query' => [
-                'key' => 'end_date',
-                'value' => $dateFormat,
-                'compare' => '>='
-            ],
+            'meta_query' => ['relation' => 'OR', [
+                    'key' => 'end_date',
+                    'value' => $dateFormat,
+                    'compare' => '>='
+                ], [
+                    'key' => 'betting_allowed_till',
+                    'value' => $dateTimeFormat,
+                    'compare' => '<='
+                ]],
         ];
         return $this->getResult($args);
     }
 
     function listingTournaments() {
         $getCat = $this->getCategories();
-        $args = ['post_type' => 'tournaments'];
-        $result = $this->getResult($args);
+        $result = $this->upcomingTournaments();
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
             $cat[] = ['catName' => $catName['name']];
@@ -197,10 +198,22 @@ class API {
         $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $converTrade];
         return $output;
     }
-    
-        function listingMatches() {
+
+    function listingMatches() {
+        $dateFormat = time();
         $getCat = $this->getCategories();
-        $args = ['post_type' => 'matches'];
+        $args = [
+            'post_type' => 'matches',
+            'meta_key' => 'start_date',
+            'order_by' => 'meta_value_num',
+            'order' => 'ASC',
+            'meta_query' =>
+            [
+                'key' => 'end_date',
+                'value' => $dateFormat,
+                'compare' => '>=',
+            ],
+        ];
         $result = $this->getResult($args);
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
@@ -214,57 +227,54 @@ class API {
         $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $converTrade];
         return $output;
     }
-    
-    function multiTradeMatch($tradeInfo){
-      return $this->matchTrade($tradeInfo);
+
+    function multiTradeMatch($tradeInfo) {
+
+        foreach ($tradeInfo['data']['pts'] as $teamId => $points) {
+            $tradeInfo['data']['team_id'] = $teamId;
+            $tradeInfo['data']['pts'] = $points;
+            $get_result[] = $this->tradeMatch($tradeInfo);
+        }
+        return $get_result;
     }
-    
-    function matchTrade($tradeInfo) {
+
+    function tradeMatch($tradeInfo) {
         global $wpdb;
         $userId = $this->userId;
         $tId = isset($tradeInfo['data']['tid']) ? $tradeInfo['data']['tid'] : 0;
         $mId = isset($tradeInfo['data']['mid']) ? $tradeInfo['data']['mid'] : 0;
         $teamId = $tradeInfo['data']['team_id'];
         $points = $tradeInfo['data']['pts'];
-        $uPointsR=get_user_meta($userId, 'points');
-        $uPoints =round($uPointsR[0]) ;
-   
-        $getUsedPoints=get_user_meta($userId, 'points_used');
-        $usedPoints =round($getUsedPoints[0]) ;
+        $uPointsR = get_user_meta($userId, 'points');
+        $uPoints = round($uPointsR[0]);
+        $getUsedPoints = get_user_meta($userId, 'points_used');
+        $usedPoints = round($getUsedPoints[0]);
         $usedCalc = $usedPoints + $points;                 //adding bet points and current remaining points
         $slug = isset($tradeInfo['data']['slug']) ? $tradeInfo['data']['slug'] : 0;/** get count of eliminated team** */
-        $args = ['post_type' => 'tournaments', 'name' => $slug];
+        $args = ['post_type' => 'matches', 'name' => $slug];
         $getTeams = $this->getResult($args);
-        foreach ($getTeams[0]['participating_team'] as $team) {
-            if ($team['eliminated'] == 'Yes') {
-                $count[] = $team['eliminated'];
-            }
+        foreach ($getTeams[0]['select_teams'] as $team) {
+            $teamFilter[]=(array)$team['team_name'];
+            if ($team['winner'] == 'Yes') :
+                $count[] =$teamFilter[0]['ID'];
+            endif;
         }
-        /*         * **premium calculation**** */
-        $getPrem = $getTeams[0]['premium'];
-        $premCalc = round($points / $getPrem);
-        /*         * ***premium calculation*** */
-        $getCount = count($count);/** get count of eliminated team** */
-        if (isset($mId) && !empty(trim($mId))):
-            $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => '', 'team_id' => $teamId, 'pts' => $points, 'stage' => $getCount, 'premium' => $getPrem];
-        else:
-            $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $premCalc, 'stage' => $getCount, 'premium' => $getPrem];
-        endif;
-
+        $getEndTime=  strtotime($getTeams[0]['end_date']);
+        $getCurrentTime=time();
+        $getWinnerCount = count($count);/** get count of eliminated team** */
+        $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => '', 'team_id' => $teamId, 'pts' => $points];
+        if($getEndTime>=$getCurrentTime && $getWinnerCount!=1):
         if ($points <= $uPoints):
             $remaining = $uPoints - $points;
             update_user_meta($userId, 'points', $remaining);
             update_user_meta($userId, 'points_used', $usedCalc);
             $wpdb->insert('wp_bets', $wpBets);
-            if (!empty(trim($getPrem))):
-                update_post_meta($getTeams[0]['id'], 'premium', $getPrem);
-                return "You had bet " . $points . "  " . $getPrem . " Points";
-            elseif (empty(trim($getPrem))):
-                return "You had bet " . $points . " No premiium Points";
-
-            endif;
+            return "You had bet " . $points . " No premiium Points";
         else:
             return "Not have enough points";
+        endif;
+        else:
+            return "Tournament had been over";
         endif;
     }
 
@@ -275,45 +285,50 @@ class API {
         $mId = isset($tradeInfo['data']['mid']) ? $tradeInfo['data']['mid'] : 0;
         $teamId = $tradeInfo['data']['team_id'];
         $points = $tradeInfo['data']['pts'];
-        $uPointsR=get_user_meta($userId, 'points');
-        $uPoints =round($uPointsR[0]) ;
-   
-        $getUsedPoints=get_user_meta($userId, 'points_used');
-        $usedPoints =round($getUsedPoints[0]) ;
+        $uPointsR = get_user_meta($userId, 'points');
+        $uPoints = round($uPointsR[0]);
+        $getUsedPoints = get_user_meta($userId, 'points_used');
+        $usedPoints = round($getUsedPoints[0]);
         $usedCalc = $usedPoints + $points;                 //adding bet points and current remaining points
         $slug = isset($tradeInfo['data']['slug']) ? $tradeInfo['data']['slug'] : 0;/** get count of eliminated team** */
         $args = ['post_type' => 'tournaments', 'name' => $slug];
         $getTeams = $this->getResult($args);
         foreach ($getTeams[0]['participating_team'] as $team) {
-            if ($team['eliminated'] == 'Yes') {
+            $teamFilter = (array) $team['team'];
+            if ($team['eliminated'] == 'Yes') :
                 $count[] = $team['eliminated'];
-            }
+                $elimiatedTeamId[] = $teamFilter['ID'];
+            else:
+                $countNo[] = $team['eliminated'];//get count of non eliminated team
+            endif;
         }
-        /*         * **premium calculation**** */
-        $getPrem = $getTeams[0]['premium'];
-        $premCalc = round($points / $getPrem);
-        /*         * ***premium calculation*** */
-        $getCount = count($count);/** get count of eliminated team** */
-        if (isset($mId) && !empty(trim($mId))):
-            $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => '', 'team_id' => $teamId, 'pts' => $points, 'stage' => $getCount, 'premium' => $getPrem];
-        else:
-            $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $premCalc, 'stage' => $getCount, 'premium' => $getPrem];
-        endif;
-
-        if ($points <= $uPoints):
-            $remaining = $uPoints - $points;
-            update_user_meta($userId, 'points', $remaining);
-            update_user_meta($userId, 'points_used', $usedCalc);
-            $wpdb->insert('wp_bets', $wpBets);
-            if (!empty(trim($getPrem))):
-                update_post_meta($getTeams[0]['id'], 'premium', $getPrem);
-                return "You had bet " . $points . "  " . $getPrem . " Points";
-            elseif (empty(trim($getPrem))):
-                return "You had bet " . $points . " No premiium Points";
-
+        $getEndTime=  strtotime($getTeams[0]['betting_allowed_till']);
+        $getCurrentTime=time();
+        $getPrem = $getTeams[0]['premium']; //premium calculation
+        $premCalc = round($points / $getPrem); //premium calculation
+        $getCount = count($count);//get count of eliminated team
+        $getNoCount = count($countNo);//get count of non eliminated team
+        $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $premCalc, 'stage' => $getCount, 'premium' => $getPrem];
+        if ($getEndTime>=$getCurrentTime && $getNoCount != 1  ):
+            if (!in_array($teamId, $elimiatedTeamId)):
+                if ($points <= $uPoints):
+                    $remaining = $uPoints - $points;
+                    update_user_meta($userId, 'points', $remaining);
+                    update_user_meta($userId, 'points_used', $usedCalc);
+                    $wpdb->insert('wp_bets', $wpBets);
+                    if (!empty(trim($getPrem))):
+                        return "You had bet " . $points . "  " . $getPrem . " Points";
+                    elseif (empty(trim($getPrem))):
+                        return "You had bet " . $points . " No premiium Points";
+                    endif;
+                else:
+                    return "Not have enough points";
+                endif;
+            else:
+                return "This team had been Eliminated";
             endif;
         else:
-            return "Not have enough points";
+            return "Tournament had been over";
         endif;
     }
 
@@ -335,7 +350,7 @@ class API {
         $getResult = (array) $result[0];
         return $getResult['total'];
     }
-    
+
     function getFeaturedImg($id) {
         $image = wp_get_attachment_image_src(get_post_thumbnail_id($id), 'full');
         return $image['0'];
@@ -392,7 +407,7 @@ class API {
 
             $post = [
                 'id' => $id,
-                'uid'=>$userId,
+                'uid' => $userId,
                 'title' => get_the_title(),
                 'img' => $this->getFeaturedImg($id),
                 'content' => get_the_content(),
