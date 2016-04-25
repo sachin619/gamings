@@ -43,7 +43,24 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
     var formData = {
         'postId': slug
     };
+    $scope.tradeMatch=function(link,tid,points,id){
+         var slug = link.split("/");
+    slug = slug[slug.length - 2];
+        console.log(tid);
+        console.log(points);
+         console.log(id);
+         console.log(slug);
+             var formDataNew = {
+            'mid': tid,
+            'team_id': id[0],
+            'pts': points[0],
+            'slug': slug
 
+        }; 
+          tourDetails('trade', formDataNew, $scope, $http, $templateCache, 'blockName');
+
+
+    };
     ngPost('tournaments-detail', formData, $scope, $http, $templateCache, 'getDetails');
     $scope.trade = function (tid, teamId, pts) {
         var formData = {
@@ -129,7 +146,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                     $scope[errorBlock] = response;
                     angular.element(document).ready(function () {
 
-                        console.log($('.stage').length);
+                        console.log(response);
                         if ($('.blockTrade').length === 1) {
                             $('.blockTrade').replaceWith("<td colspan='2'>Winner </td>");
                             $('.blockAction').replaceWith("");

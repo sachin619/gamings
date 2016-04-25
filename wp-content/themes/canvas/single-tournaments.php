@@ -108,7 +108,7 @@ get_header();
                                 <div class="entry-image hidden-sm">
                                     <a href={{matches['postLink']}}>
                                         <img src={{matches['img']}} alt="">
-                                        <div class="entry-date">{{matches['start_date'] || date:'mm/dd/yyyy' }}<span>Apr</span></div>
+                                        <div class="entry-date">{{matches['start_date']}}<span>Apr</span></div>
                                     </a>
                                 </div>
                                 <div class="entry-c">
@@ -121,18 +121,15 @@ get_header();
                                         <li><a href="#"><i class="icon-map-marker2"></i> {{matches['venue']}}</a></li>
                                     </ul>
                                     <div class="clearfix"></div>
-                                    <div class="row mb15">
-                                        <div class="col-md-4">India :</div>
-                                        <div class="col-md-8"> <input type="text" placeholder=""></div>
+                                    <div class="row mb15" ng-repeat="teams in matches['select_teams']">
+                                        <div class="col-md-4">{{teams['team_name']['post_title']}}: </div>
+                                        <div class="col-md-8" ng-init="$parent.team_id[$index]=teams['team_name']['ID']"> <input type="text" ng-model='$parent.points[$index]' ></div>
                                     </div>
-                                    <div class="row mb15">
-                                        <div class="col-md-4">Pakistan :</div>
-                                        <div class="col-md-8"> <input type="text" placeholder=""></div>
-                                    </div>
+                                   
 
                                     <div class="row mb15">
                                         <div class="col-md-4"> </div>
-                                        <div class="col-md-8"><a href="#" class="btn btn-danger">Trade</a></div>
+                                        <div class="col-md-8"><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'],matches['id'],points,team_id)" class="btn btn-danger">Trade</a></div>
                                     </div>
 
 

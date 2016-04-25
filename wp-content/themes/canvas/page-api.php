@@ -51,6 +51,9 @@ switch ($action) {
         $tradeInfo['team_id'] = '';
         $output = $api->premiumTrade('tid', $tradeInfo);
         break;
+     case 'multi-trade-match':
+        $output = $api->multiTradeMatch($_REQUEST);
+        break;
     default:
         $output = ['error' => 'invalid action'];
         break;
@@ -211,6 +214,59 @@ class API {
         $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $converTrade];
         return $output;
     }
+    
+    function multiTradeMatch($tradeInfo){
+      return $this->matchTrade($tradeInfo);
+    }
+    
+    function matchTrade($tradeInfo) {
+        global $wpdb;
+        $userId = $this->userId;
+        $tId = isset($tradeInfo['data']['tid']) ? $tradeInfo['data']['tid'] : 0;
+        $mId = isset($tradeInfo['data']['mid']) ? $tradeInfo['data']['mid'] : 0;
+        $teamId = $tradeInfo['data']['team_id'];
+        $points = $tradeInfo['data']['pts'];
+        $uPointsR=get_user_meta($userId, 'points');
+        $uPoints =round($uPointsR[0]) ;
+   
+        $getUsedPoints=get_user_meta($userId, 'points_used');
+        $usedPoints =round($getUsedPoints[0]) ;
+        $usedCalc = $usedPoints + $points;                 //adding bet points and current remaining points
+        $slug = isset($tradeInfo['data']['slug']) ? $tradeInfo['data']['slug'] : 0;/** get count of eliminated team** */
+        $args = ['post_type' => 'tournaments', 'name' => $slug];
+        $getTeams = $this->getResult($args);
+        foreach ($getTeams[0]['participating_team'] as $team) {
+            if ($team['eliminated'] == 'Yes') {
+                $count[] = $team['eliminated'];
+            }
+        }
+        /*         * **premium calculation**** */
+        $getPrem = $getTeams[0]['premium'];
+        $premCalc = round($points / $getPrem);
+        /*         * ***premium calculation*** */
+        $getCount = count($count);/** get count of eliminated team** */
+        if (isset($mId) && !empty(trim($mId))):
+            $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => '', 'team_id' => $teamId, 'pts' => $points, 'stage' => $getCount, 'premium' => $getPrem];
+        else:
+            $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $premCalc, 'stage' => $getCount, 'premium' => $getPrem];
+        endif;
+
+        if ($points <= $uPoints):
+            $remaining = $uPoints - $points;
+            update_user_meta($userId, 'points', $remaining);
+            update_user_meta($userId, 'points_used', $usedCalc);
+            $wpdb->insert('wp_bets', $wpBets);
+            if (!empty(trim($getPrem))):
+                update_post_meta($getTeams[0]['id'], 'premium', $getPrem);
+                return "You had bet " . $points . "  " . $getPrem . " Points";
+            elseif (empty(trim($getPrem))):
+                return "You had bet " . $points . " No premiium Points";
+
+            endif;
+        else:
+            return "Not have enough points";
+        endif;
+    }
 
     function trade($tradeInfo) {
         global $wpdb;
@@ -279,35 +335,7 @@ class API {
         $getResult = (array) $result[0];
         return $getResult['total'];
     }
-
-    function premiumTrade($Tradetype, $tradeInfo) {
-        global $wpdb;
-        $args = ['post_type' => 'tournaments', 'name' => $tradeInfo['slug']];
-        $getTeams = $this->getResult($args);
-        $i = 0;
-        $j = 0;
-        foreach ($getTeams[0]['participating_team'] as $team) {      //foreach for finding total loss
-            if ($team['eliminated'] == 'Yes') {
-                $teams = (array) $team['team'];
-                $result[] = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' AND team_id= '" . $teams['ID'] . "'   ");
-                $getVal[] = (array) $result[$i++][0];
-                $getLoss+=$getVal[$j++]['pts'];
-                $getCount[] = $team['eliminated'];
-            }
-        }
-        $getTotal = (array) $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' GROUP BY stage   "); //find the total ammount of each stage
-        if (count($getCount) == count($getTotal) && count($getCount) != 1) {       //array_pop only when one more than one value exist in wp_bets table  
-            array_pop($getTotal);
-        }
-
-        foreach ($getTotal as $getPts) {
-            $points = (array) $getPts;
-            $addPts+=$points['pts'];
-        }
-        $calcTotal = round($getLoss / ($addPts - $getLoss), 2) + 1;
-        return $calcTotal;
-    }
-
+    
     function getFeaturedImg($id) {
         $image = wp_get_attachment_image_src(get_post_thumbnail_id($id), 'full');
         return $image['0'];

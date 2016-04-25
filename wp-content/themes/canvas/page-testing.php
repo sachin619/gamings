@@ -9,6 +9,8 @@ wp_head();
  */
 
 //echo  $_SERVER['REQUEST_URI'];exit;
+
+echo get_the_excerpt(98);exit;
 echo round('0.844060198',2);exit;
  $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE tid=89 AND uid=1 GROUP BY uid ");
    $getResult= (array)$result[0];
