@@ -1,24 +1,7 @@
 <?php
 wp_head();
 ?>
-<script>
-var myApp = angular.module('myApp', ['infinite-scroll']);
-myApp.controller('DemoController', function($scope) {
-  $scope.images = [1, 2, 3, 4, 5, 6, 7, 8];
 
-  $scope.loadMore = function() {
-    var last = $scope.images[$scope.images.length - 1];
-    for(var i = 1; i <= 8; i++) {
-      $scope.images.push(last + i);
-    }
-  };
-});
-</script>
-<div ng-app='myApp' ng-controller='DemoController'>
-  <div infinite-scroll='loadMoreScroll()' infinite-scroll-distance='2'>
-    <img ng-repeat='image in images' ng-src='http://placehold.it/225x250&text={{image}}'>
-  </div>
-</div>
 <?php
 error_reporting(1);
 /* 
@@ -30,6 +13,8 @@ error_reporting(1);
 //echo  $_SERVER['REQUEST_URI'];exit;
 
 //get category image
+$user=  get_userdata(12);
+print_r($user->data->user_login);exit;
 
 $img= get_template_directory_uri()."/images/default.jpg";
 echo "<img src=$img >";

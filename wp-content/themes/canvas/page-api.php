@@ -284,7 +284,7 @@ class API {
         $getEndTime = strtotime($getTeams[0]['end_date']);
         $getCurrentTime = time();
         $getWinnerCount = count($count);/** get count of eliminated team** */
-        $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => '', 'team_id' => $teamId, 'pts' => $points];
+        $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTeams[0]['tournament_name']->ID, 'team_id' => $teamId, 'pts' => $points];
         if ($getEndTime >= $getCurrentTime && $getWinnerCount != 1):
             if ($points <= $uPoints):
                 $remaining = $uPoints - $points;
