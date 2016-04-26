@@ -54,6 +54,9 @@ switch ($action) {
     case 'multi-trade-match':
         $output = $api->multiTradeMatch($_REQUEST);
         break;
+    case 'popularMatches':
+        $output = $api->popularMatches();
+        break;
     default:
         $output = ['error' => 'invalid action'];
         break;
@@ -101,7 +104,8 @@ class API {
     }
 
     function popularMatches() {
-        return [];
+        $args=['post_type'=>'matches','meta_key'=>'total_bets','orderby'=>'meta_value','order'=>'DESC'];
+        return $this->getResult($args);
     }
 
     function matchesDetail($postId) {
@@ -143,7 +147,13 @@ class API {
     }
 
     function popularTournaments() {
-        return [];
+        $args = [
+            'post_type' => 'tournaments',
+            'meta_key' => 'total_tour_bets',
+            'orderby' => 'meta_value',
+            'order' => 'DESC'
+        ];
+        return $this->getResult($args);
     }
 
     function tournamentsDetail($postId) {
@@ -254,25 +264,25 @@ class API {
         $args = ['post_type' => 'matches', 'name' => $slug];
         $getTeams = $this->getResult($args);
         foreach ($getTeams[0]['select_teams'] as $team) {
-            $teamFilter[]=(array)$team['team_name'];
+            $teamFilter[] = (array) $team['team_name'];
             if ($team['winner'] == 'Yes') :
-                $count[] =$teamFilter[0]['ID'];
+                $count[] = $teamFilter[0]['ID'];
             endif;
         }
-        $getEndTime=  strtotime($getTeams[0]['end_date']);
-        $getCurrentTime=time();
+        $getEndTime = strtotime($getTeams[0]['end_date']);
+        $getCurrentTime = time();
         $getWinnerCount = count($count);/** get count of eliminated team** */
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => '', 'team_id' => $teamId, 'pts' => $points];
-        if($getEndTime>=$getCurrentTime && $getWinnerCount!=1):
-        if ($points <= $uPoints):
-            $remaining = $uPoints - $points;
-            update_user_meta($userId, 'points', $remaining);
-            update_user_meta($userId, 'points_used', $usedCalc);
-            $wpdb->insert('wp_bets', $wpBets);
-            return "You had bet " . $points . " No premiium Points";
-        else:
-            return "Not have enough points";
-        endif;
+        if ($getEndTime >= $getCurrentTime && $getWinnerCount != 1):
+            if ($points <= $uPoints):
+                $remaining = $uPoints - $points;
+                update_user_meta($userId, 'points', $remaining);
+                update_user_meta($userId, 'points_used', $usedCalc);
+                $wpdb->insert('wp_bets', $wpBets);
+                return "You had bet " . $points . " No premiium Points";
+            else:
+                return "Not have enough points";
+            endif;
         else:
             return "Tournament had been over";
         endif;
@@ -299,17 +309,17 @@ class API {
                 $count[] = $team['eliminated'];
                 $elimiatedTeamId[] = $teamFilter['ID'];
             else:
-                $countNo[] = $team['eliminated'];//get count of non eliminated team
+                $countNo[] = $team['eliminated']; //get count of non eliminated team
             endif;
         }
-        $getEndTime=  strtotime($getTeams[0]['betting_allowed_till']);
-        $getCurrentTime=time();
+        $getEndTime = strtotime($getTeams[0]['betting_allowed_till']);
+        $getCurrentTime = time();
         $getPrem = $getTeams[0]['premium']; //premium calculation
         $premCalc = round($points / $getPrem); //premium calculation
-        $getCount = count($count);//get count of eliminated team
-        $getNoCount = count($countNo);//get count of non eliminated team
+        $getCount = count($count); //get count of eliminated team
+        $getNoCount = count($countNo); //get count of non eliminated team
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $premCalc, 'stage' => $getCount, 'premium' => $getPrem];
-        if ($getEndTime>=$getCurrentTime && $getNoCount != 1  ):
+        if ($getEndTime >= $getCurrentTime && $getNoCount != 1):
             if (!in_array($teamId, $elimiatedTeamId)):
                 if ($points <= $uPoints):
                     $remaining = $uPoints - $points;

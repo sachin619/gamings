@@ -45,156 +45,19 @@ get_header();
 
                 <div id="oc-images" class="owl-carousel image-carousel carousel-widget" data-margin="30" data-nav="false" data-items-xxs="1" data-items-xs="2" data-items-sm="3" data-items-lg="4">
 
-                    <div class="oc-item">
+                    <div class="oc-item" ng-repeat="popular in home.popularTournaments">
                         <div class="ipost clearfix">
                             <div class="feature-box center media-box fbox-bg">
                                 <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
+                                    <a href={{popular.postLink}}><img class="image_fade" src={{popular.img}} alt={{popular.title}}></a>
                                 </div>
                                 <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
+                                    <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.end_date}} &nbsp;To &nbsp;{{popular.start_date}}</span><span>{{popular.venue}}</span></h3>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>	
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>	
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>	
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>	
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>	
-                        </div>
-                    </div>
+        
 
                 </div>
                 <div class="clear"></div><!-- <div class="line"></div> -->
@@ -220,152 +83,19 @@ get_header();
 
                 <div id="oc-images" class="owl-carousel image-carousel carousel-widget" data-margin="30" data-nav="false" data-items-xxs="1" data-items-xs="2" data-items-sm="3" data-items-lg="4">
 
-                    <div class="oc-item">
+                    <div class="oc-item" ng-repeat="popular in home.popularMatches">
                         <div class="ipost clearfix">
                             <div class="feature-box center media-box fbox-bg">
                                 <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
+                                    <a href={{popular.postLink}}><img class="image_fade" src={{popular.img}} alt={{popular.title}}></a>
                                 </div>
                                 <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
+                                    <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.end_date}} &nbsp;To &nbsp;{{popular.start_date}}</span><span>{{popular.venue}}</span></h3>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>	
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>	
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href="#"><img class="image_fade" src="images/portfolio/3/1.jpg" alt="Featured Box Image"></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">TOURNAMENT NAME<span class="subtitle">24/08/2016 &nbsp;To &nbsp;09/09/2016</span><span>Delhi, India</span></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            
 
                 </div>
                 <div class="clear"></div><!-- <div class="line"></div> -->
