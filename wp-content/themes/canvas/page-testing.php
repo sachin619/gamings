@@ -2,6 +2,7 @@
 wp_head();
 ?>
 <?php
+error_reporting(1);
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -9,6 +10,17 @@ wp_head();
  */
 
 //echo  $_SERVER['REQUEST_URI'];exit;
+
+//get category image
+
+$img= get_template_directory_uri()."/images/default.jpg";
+echo "<img src=$img >";
+$getCategoryImage=get_the_category(89);
+$getCategoryFilter=(array)$getCategoryImage[0];
+$getCatTerm=  get_option('category_'.$getCategoryFilter['term_id'].'_image');
+$getCateFeatImg=wp_get_attachment_url($getCatTerm);
+echo $getCateFeatImg;exit;
+//ge category image
 echo floor(1.80);exit;
 echo time();echo "<br>";
 echo strtotime(date('Y-m-d h:m a')) ;exit;

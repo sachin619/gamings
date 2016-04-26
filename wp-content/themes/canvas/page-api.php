@@ -54,9 +54,6 @@ switch ($action) {
     case 'multi-trade-match':
         $output = $api->multiTradeMatch($_REQUEST);
         break;
-    case 'popularMatches':
-        $output = $api->popularMatches();
-        break;
     default:
         $output = ['error' => 'invalid action'];
         break;
@@ -104,7 +101,7 @@ class API {
     }
 
     function popularMatches() {
-        $args=['post_type'=>'matches','meta_key'=>'total_bets','orderby'=>'meta_value','order'=>'DESC'];
+        $args = ['post_type' => 'matches', 'meta_key' => 'total_bets', 'orderby' => 'meta_value', 'order' => 'DESC'];
         return $this->getResult($args);
     }
 
@@ -361,11 +358,6 @@ class API {
         return $getResult['total'];
     }
 
-    function getFeaturedImg($id) {
-        $image = wp_get_attachment_image_src(get_post_thumbnail_id($id), 'full');
-        return $image['0'];
-    }
-
     function login($userInfo) {
         $username = $userInfo['data']['userName'];
         $password = $userInfo['data']['password'];
@@ -431,6 +423,22 @@ class API {
             array_push($output, $post);
         endwhile;
         return $output;
+    }
+
+    function getFeaturedImg($id) {
+        $image = wp_get_attachment_image_src(get_post_thumbnail_id($id), 'full');//post image
+        $getCategoryByID = get_the_category($id);//category image starts
+        $getCatByIdFilter = (array) $getCategoryByID[0];
+        $getTaxanomy = get_option('category_' . $getCatByIdFilter['term_id'] . '_image');
+        $getFeatImg = wp_get_attachment_url($getTaxanomy); //category image ends
+        $fallBackImg= get_template_directory_uri()."/images/default.jpg";
+        if (!empty($image)):
+            return $image['0'];
+        elseif(!empty($getFeatImg)):
+            return $getFeatImg;
+        else:
+            return $fallBackImg;
+        endif;
     }
 
     function getCategories($args) {

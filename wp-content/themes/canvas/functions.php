@@ -621,3 +621,4 @@ function getTotalTrade($tradeInfo, $Tradetype) {
     $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE $Tradetype='" . $tradeInfo["tid"] . "' ");
     return $result;
 }
+
