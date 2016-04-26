@@ -41,10 +41,10 @@ switch ($action) {
         $output = $api->getUserTrade($_REQUEST);
         break;
     case 'listing-tournaments':
-        $output = $api->listingTournaments();
+        $output = $api->listingTournaments($_REQUEST);
         break;
     case 'listing-matches':
-        $output = $api->listingMatches();
+        $output = $api->listingMatches($_REQUEST);
         break;
     case 'premium-trade':
         $tradeInfo['tid'] = 89;
@@ -172,10 +172,11 @@ class API {
         return $detailsData;
     }
 
-    function upcomingTournaments() {
+    function upcomingTournaments($categorySlug, $getPageCount) {
+        $postPerPage = $getPageCount;
         $dateFormat = date('Ymd');
         $dateTimeFormat = time();
-        $args = [ 'post_type' => 'tournaments', 'meta_key' => 'start_date', 'orderby' => 'meta_value_num', 'order' => 'ASC',
+        $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => $postPerPage, 'meta_key' => 'start_date', 'orderby' => 'meta_value_num', 'order' => 'ASC',
             'meta_query' => ['relation' => 'OR', [
                     'key' => 'end_date',
                     'value' => $dateFormat,
@@ -189,9 +190,15 @@ class API {
         return $this->getResult($args);
     }
 
-    function listingTournaments() {
+    function listingTournaments($getCatSlug) {
+        $categorySlug = $getCatSlug['data']['categoryName'];
+        if (!empty($getCatSlug['data']['getCount'])):
+            $getPageCount = $getCatSlug['data']['getCount'];
+        else:
+            $getPageCount = 4;
+        endif;
         $getCat = $this->getCategories();
-        $result = $this->upcomingTournaments();
+        $result = $this->upcomingTournaments($categorySlug, $getPageCount);
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
             $cat[] = ['catName' => $catName['name']];
@@ -206,13 +213,21 @@ class API {
         return $output;
     }
 
-    function listingMatches() {
+    function listingMatches($getCatSlug) {
+        $categorySlug = $getCatSlug['data']['categoryName'];
+        if (!empty($getCatSlug['data']['getCount'])):
+            $getPageCount = $getCatSlug['data']['getCount'];
+        else:
+            $getPageCount = 4;
+        endif;
         $dateFormat = time();
         $getCat = $this->getCategories();
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'start_date',
             'order_by' => 'meta_value_num',
+            'category_name' => $categorySlug,
+            'posts_per_page' => $getPageCount,
             'order' => 'ASC',
             'meta_query' =>
             [
@@ -426,15 +441,15 @@ class API {
     }
 
     function getFeaturedImg($id) {
-        $image = wp_get_attachment_image_src(get_post_thumbnail_id($id), 'full');//post image
-        $getCategoryByID = get_the_category($id);//category image starts
+        $image = wp_get_attachment_image_src(get_post_thumbnail_id($id), 'full'); //post image
+        $getCategoryByID = get_the_category($id); //category image starts
         $getCatByIdFilter = (array) $getCategoryByID[0];
         $getTaxanomy = get_option('category_' . $getCatByIdFilter['term_id'] . '_image');
         $getFeatImg = wp_get_attachment_url($getTaxanomy); //category image ends
-        $fallBackImg= get_template_directory_uri()."/images/default.jpg";
+        $fallBackImg = get_template_directory_uri() . "/images/default.jpg";
         if (!empty($image)):
             return $image['0'];
-        elseif(!empty($getFeatImg)):
+        elseif (!empty($getFeatImg)):
             return $getFeatImg;
         else:
             return $fallBackImg;

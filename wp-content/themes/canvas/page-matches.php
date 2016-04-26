@@ -39,9 +39,8 @@ get_header();
                 ============================================= -->
                 <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
 
-                    <li class="activeFilter"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('All')">Show All</a></li>
+                    <li class="activeFilter"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('')">Show All</a></li>
                     <li ng-repeat="categories in getDetails.catName"><a href="#" onclick="return false;" ng-click="filter(categories['catName'])" data-filter=".pf-{{categories['catName']}}">{{categories['catName']}}</a></li>
-                    
                 </ul><!-- #portfolio-filter end -->
 
                 <div id="portfolio-shuffle" class="portfolio-shuffle" data-container="#portfolio">
@@ -52,10 +51,10 @@ get_header();
 
                 <!-- Portfolio Items
                 ============================================= -->
-                <div  id="portfolio" class="portfolio grid-container portfolio-2 clearfix main-container">
+                <div infinite-scroll='loadMore()' infinite-scroll-distance='2'  id="portfolio" class="portfolio grid-container portfolio-2 clearfix main-container">
 
                     <article ng-repeat="getPost in getDetails.catPost" class="portfolio-item pf-hide pf-media pf-{{getPost['category'][0]['name']}}">
-                        <div class="portfolio-image">
+                        <div class="portfolio-image" >
                             <a href="{{getPost['postLink']}}">
                                 <img src="{{getPost['img']}}" alt="Open Imagination">
                             </a>
@@ -71,21 +70,12 @@ get_header();
                             </span>
                         </div>
                     </article>
-
-
-
-
-
-
-
-
-
                 </div><!-- #portfolio end -->
-
+                <div class="col-lg-12" style="text-align: center">
+                    <button type="button" class="btn btn-primary" ng-click="loadMore(getCat, getDetails.catPost.length + 4)">Load More </button>
+                </div>
 
             </div>
-
-        </div>
 
     </section><!-- #content end -->
 </section>
