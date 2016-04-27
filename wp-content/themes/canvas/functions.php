@@ -113,6 +113,7 @@ if (!function_exists('twentysixteen_setup')) :
          * specifically font, colors, icons, and column width.
          */
         add_editor_style(array('css/editor-style.css', twentysixteen_fonts_url()));
+
     }
 
 endif; // twentysixteen_setup
@@ -240,7 +241,6 @@ function twentysixteen_scripts() {
     wp_enqueue_style('twentysixteen-fonts', twentysixteen_fonts_url(), array(), null);
     wp_enqueue_script('angular-min', get_template_directory_uri() . '/js/angular.min.js');
     wp_enqueue_script('jquery-min', get_template_directory_uri() . '/js/jquery.min.js');
-
     wp_enqueue_script('ng-app', get_template_directory_uri() . '/js/ng-app.js');
 
     // Add Genericons, used in the main stylesheet.

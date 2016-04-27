@@ -122,7 +122,7 @@ class Distribution_Table extends WP_List_Table {
                 break;
             case 'uid':
                 $getUserData = get_userdata($item[$column_name]);
-                return $getUserData->data->user_login;
+                return $getUserData->data->display_name;
                 break;
             case 'mid':
                 return get_the_title($item[$column_name]);

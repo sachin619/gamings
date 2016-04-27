@@ -54,6 +54,12 @@ switch ($action) {
     case 'multi-trade-match':
         $output = $api->multiTradeMatch($_REQUEST);
         break;
+    case 'admin-tour-filter':
+        $output = $api->adminTourFilter($_REQUEST);
+        break;
+    case 'admin-match-filter':
+        $output = $api->adminMatchFilter($_REQUEST);
+        break;
     default:
         $output = ['error' => 'invalid action'];
         break;
@@ -439,8 +445,10 @@ class API {
             ];
             foreach (get_fields($id) as $k => $v) {
                 $post[$k] = $v;
-                if($k=='start_date'):$post['matchStartDate']=date('M',strtotime($v));$post['matchStartTime']=date('H:i',strtotime($v));
-                elseif($k=='end_date'):$post['matchEndDate']=date('M',strtotime($v)) ;$post['matchEndTime']=date('H:i',strtotime($v));
+                if ($k == 'start_date'):$post['matchStartDate'] = date('M', strtotime($v));
+                    $post['matchStartTime'] = date('H:i', strtotime($v));
+                elseif ($k == 'end_date'):$post['matchEndDate'] = date('M', strtotime($v));
+                    $post['matchEndTime'] = date('H:i', strtotime($v));
                 endif;
             }
 
@@ -467,6 +475,27 @@ class API {
 
     function getCategories($args) {
         return get_categories($args);
+    }
+
+    function adminTourFilter($filterInfo) {
+        $args = ['post_type' => 'tournaments', 's' => $filterInfo['term']];
+        $allResult = $this->getResult($args);
+        foreach ($allResult as $getTitle):
+            $getTitleName[] = $getTitle['title'];
+        endforeach;
+        return $getTitleName;
+    }
+
+    function adminMatchFilter($filterInfo) {
+        $args = ['post_type' => 'matches', 's' => $filterInfo['term']];
+        $allResult = $this->getResult($args);
+        foreach ($allResult as $getTitle):
+            if ($getTitle['tournament_name']->post_title == $filterInfo['tname']):
+                $getTitleName[] = $getTitle['title'];
+            endif;
+        endforeach;
+        return $getTitleName;
+        //$getTitleName[] = $getTitle['tournament_name']->post_title;
     }
 
 }

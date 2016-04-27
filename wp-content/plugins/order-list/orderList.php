@@ -23,6 +23,9 @@ class Paulund_Wp_List_Table {
      */
     public function __construct() {
         add_action('admin_menu', array($this, 'add_menu_example_list_table_page'));
+        wp_enqueue_script('jquery10', get_template_directory_uri() . '/js/jquery10.js');
+        wp_enqueue_script('jquery-ui', get_template_directory_uri() . '/js/jquery-ui.js');
+        wp_enqueue_script('custom', get_template_directory_uri() . '/js/custom.js');
     }
 
     /**
@@ -40,11 +43,21 @@ class Paulund_Wp_List_Table {
     public function list_table_page() {
         $exampleListTable = new Example_List_Table();
         $exampleListTable->prepare_items();
+        // echo "<pre>"; print_r($exampleListTable);
         ?>
+
+        <input type="hidden" id="basePluginUrl" value="<?= get_site_url(); ?>" />
         <div class="wrap">
             <div id="icon-users" class="icon32"></div>
             <h2>Total Bets</h2>
-        <?php $exampleListTable->display(); ?>
+            <div>
+                <form method="post" action="<?= get_site_url(); ?>/wp-admin/admin.php?page=example-list-table.php">
+                    <input type="text" value="<?= $_POST['tName'] ?>" name="tName" class="tourAuto" placeholder="Select Tournament"  />
+                    <input type="text" value="<?= $_POST['matchTitle'] ?>" placeholder="Select Match"  name="matchTitle" class="matcAuto">
+                    <input type="submit" value="Search" />
+                </form>
+            </div>
+            <?php $exampleListTable->display(); ?>
         </div>
         <?php
     }
@@ -117,9 +130,22 @@ class Example_List_Table extends WP_List_Table {
     private function table_data() {
         $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
         $order = isset($_GET['order']) ? $_GET['order'] : 'asc';
+        $getTName = $_POST['tName'];
+        $getMName=$_REQUEST['matchTitle'];
+        $getTitleId = get_page_by_title($getTName, OBJECT, 'tournaments');
+        $getId = $getTitleId->ID;
+        $where = isset($getId) ? " AND tid=" . $getId : "";
+        
+      
+       
+       if (isset($_POST['matchTitle'])){
+  $getMTitleId = get_page_by_title($getMName, OBJECT, 'matches');
+        $getMId = $getMTitleId->ID;
+        $whereM = " AND mid=" . $getMId ;
+       }
+       
         global $wpdb;
-
-        $data = $wpdb->get_results("SELECT * FROM wp_bets order by $orderby $order ", ARRAY_A);
+        $data = $wpdb->get_results("SELECT * FROM wp_bets WHERE id IS NOT NULL  $where $whereM order by $orderby $order ", ARRAY_A);
         return $data;
     }
 
@@ -130,7 +156,7 @@ class Example_List_Table extends WP_List_Table {
                 break;
             case 'uid':
                 $getUsername = get_userdata($item[$column_name]);
-                return $getUsername->data->user_login;
+                return $getUsername->data->display_name;
                 break;
             case 'mid':
                 return get_the_title($item[$column_name]);

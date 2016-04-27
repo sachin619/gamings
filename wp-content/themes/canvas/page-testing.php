@@ -4,6 +4,9 @@ wp_head();
 
 <?php
 error_reporting(1);
+$get=get_page_by_title( 'T20 Worldcup', OBJECT, 'tournaments' );
+
+print_r($get->ID);exit;
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,6 +16,8 @@ error_reporting(1);
 //echo  $_SERVER['REQUEST_URI'];exit;
 
 //get category image
+
+echo date('d M Y ',strtotime('2016-04-12 12:00 am'));exit;
 $user=  get_userdata(12);
 print_r($user->data->user_login);exit;
 
