@@ -78,7 +78,6 @@ class Distribution_Table extends WP_List_Table {
         $columns = $this->get_columns();
         $hidden = $this->get_hidden_columns();
         $sortable = $this->get_sortable_columns();
-
         $data = $this->table_data();
         $this->_column_headers = array($columns, $hidden, $sortable);
         $this->items = $data;

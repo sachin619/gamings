@@ -56,15 +56,15 @@ get_header();
 
                     <article ng-repeat="getPost in getDetails.catPost" class="portfolio-item pf-hide pf-media pf-{{getPost['category'][0]['name']}}">
                         <div class="portfolio-image" ng-init="$parent.j=$parent.i=i+1" >
-                            <a href="{{getPost['postLink']}}">
-                                <img src="{{getPost['img']}}" alt="Open Imagination">
+                            <a href={{getPost['postLink']}}>
+                                <img src={{getPost['img']}} alt="Open Imagination">
                             </a>
                             <div class="portfolio-overlay">
-                                <a href="{{getPost['postLink']}}" ><i class="icon-link"></i></a>
+                                <a href={{getPost['postLink']}} ><i class="icon-link"></i></a>
                             </div>
                         </div>
                         <div class="portfolio-desc">
-                            <h3><a href="{{getPost['postLink']}}">{{getPost['title']}}</a></h3>
+                            <h3><a href={{getPost['postLink']}}>{{getPost['title']}}</a></h3>
                             <span><strong>Total Trade: {{getDetails.tradeTotal[$index].total}} Points</strong>
                                 <br>
                                 {{getPost['start_date']}} - {{getPost['end_date']}}, {{getPost['venue']}}
