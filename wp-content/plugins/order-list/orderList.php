@@ -142,6 +142,7 @@ class Example_List_Table extends WP_List_Table {
   $getMTitleId = get_page_by_title($getMName, OBJECT, 'matches');
         $getMId = $getMTitleId->ID;
         $whereM = " AND mid=" . $getMId ;
+        unset($whereM);
        }
        
         global $wpdb;
