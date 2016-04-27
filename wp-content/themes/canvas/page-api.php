@@ -428,7 +428,6 @@ class API {
         $query = new WP_Query($args);
         while ($query->have_posts()): $query->the_post();
             $id = get_the_ID();
-
             $post = [
                 'id' => $id,
                 'uid' => $userId,
@@ -440,6 +439,9 @@ class API {
             ];
             foreach (get_fields($id) as $k => $v) {
                 $post[$k] = $v;
+                if($k=='start_date'):$post['matchStartDate']=date('M',strtotime($v));$post['matchStartTime']=date('H:i',strtotime($v));
+                elseif($k=='end_date'):$post['matchEndDate']=date('M',strtotime($v)) ;$post['matchEndTime']=date('H:i',strtotime($v));
+                endif;
             }
 
             array_push($output, $post);

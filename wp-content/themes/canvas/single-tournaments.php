@@ -108,7 +108,7 @@ get_header();
                                 <div class="entry-image hidden-sm">
                                     <a href={{matches['postLink']}}>
                                         <img src={{matches['img']}} alt="">
-                                        <div class="entry-date">{{matches['start_date']}}<span>Apr</span></div>
+                                        <div class="entry-date"><span>{{matches['matchEndDate']}}</span></div>
                                     </a>
                                 </div>
                                 <div class="entry-c">
@@ -117,7 +117,7 @@ get_header();
                                     </div>
                                     <ul class="entry-meta clearfix">
 
-                                        <li><a href="#"><i class="icon-time"></i> 11:00 - 19:00</a></li>
+                                        <li><a href="#"><i class="icon-time"></i> {{matches['matchStartTime']}} - {{matches['matchEndTime']}}</a></li>
                                         <li><a href="#"><i class="icon-map-marker2"></i> {{matches['venue']}}</a></li>
                                     </ul>
                                     <div class="clearfix"></div>
