@@ -114,14 +114,17 @@ app.controller('listingTour', function ($http, $scope, $templateCache) {
     var formData = {};
     ngPost('listing-tournaments', formData, $scope, $http, $templateCache, 'getDetails');
     $scope.filter = function (catName) {
+        $('.hide-loadMore').show();
         $scope.getCat = catName;
         var formInfo = {'categoryName': catName};
         ngPost('listing-tournaments', formInfo, $scope, $http, $templateCache, 'getDetails');
     };
     $scope.loadMore = function (catName, getCount) {
-        console.log(getCount);
+        //console.log(getCount);
         var formInfo = {'categoryName': catName, 'getCount': getCount};
         ngPost('listing-tournaments', formInfo, $scope, $http, $templateCache, 'getDetails');
+        if ($scope.j > getCount)
+            $('.hide-loadMore').hide();
     };
 });
 
@@ -129,6 +132,7 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
     var formData = {};
     ngPost('listing-matches', formData, $scope, $http, $templateCache, 'getDetails');
     $scope.filter = function (catName) {
+        $('.hide-loadMore').show();
         $scope.getCat = catName;
         var formInfo = {'categoryName': catName};
         ngPost('listing-matches', formInfo, $scope, $http, $templateCache, 'getDetails');
@@ -136,6 +140,8 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
     $scope.loadMore = function (catName, getCount) {
         var formInfo = {'categoryName': catName, 'getCount': getCount};
         ngPost('listing-matches', formInfo, $scope, $http, $templateCache, 'getDetails');
+        if ($scope.j > getCount)
+            $('.hide-loadMore').hide();
     };
 });
 

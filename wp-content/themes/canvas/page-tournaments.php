@@ -52,10 +52,10 @@ get_header();
 
                 <!-- Portfolio Items
                 ============================================= -->
-                <div   class="portfolio grid-container portfolio-2 clearfix main-container">
+                <div  ng-init="i=1" class="portfolio grid-container portfolio-2 clearfix main-container">
 
                     <article ng-repeat="getPost in getDetails.catPost" class="portfolio-item pf-hide pf-media pf-{{getPost['category'][0]['name']}}">
-                        <div class="portfolio-image" >
+                        <div class="portfolio-image" ng-init="$parent.j=$parent.i=i+1" >
                             <a href="{{getPost['postLink']}}">
                                 <img src="{{getPost['img']}}" alt="Open Imagination">
                             </a>
@@ -73,7 +73,7 @@ get_header();
                     </article>
 
                 </div><!-- #portfolio end -->
-                <div class="col-lg-12"  style="text-align: center">
+                <div ng-if="getDetails.catPost.length>=4" class="col-lg-12 hide-loadMore"  style="text-align: center">
                     <button type="button" class="btn btn-primary"  ng-click="loadMore(getCat, getDetails.catPost.length+4)">Load More </button>
                 </div>
             </div>
