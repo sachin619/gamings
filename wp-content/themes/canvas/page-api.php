@@ -285,18 +285,22 @@ class API {
         $getCurrentTime = time();
         $getWinnerCount = count($count);/** get count of eliminated team** */
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTeams[0]['tournament_name']->ID, 'team_id' => $teamId, 'pts' => $points];
-        if ($getEndTime >= $getCurrentTime && $getWinnerCount != 1):
-            if ($points <= $uPoints):
-                $remaining = $uPoints - $points;
-                update_user_meta($userId, 'points', $remaining);
-                update_user_meta($userId, 'points_used', $usedCalc);
-                $wpdb->insert('wp_bets', $wpBets);
-                return "You had bet " . $points . " No premiium Points";
+        if ($points > 0):
+            if ($getEndTime >= $getCurrentTime && $getWinnerCount != 1):
+                if ($points <= $uPoints):
+                    $remaining = $uPoints - $points;
+                    update_user_meta($userId, 'points', $remaining);
+                    update_user_meta($userId, 'points_used', $usedCalc);
+                    $wpdb->insert('wp_bets', $wpBets);
+                    return "You had bet " . $points . " No premiium Points";
+                else:
+                    return "Not have enough points";
+                endif;
             else:
-                return "Not have enough points";
+                return "Tournament had been over";
             endif;
         else:
-            return "Tournament had been over";
+            return "Points should be geater than 0";
         endif;
     }
 
@@ -331,26 +335,29 @@ class API {
         $getCount = count($count); //get count of eliminated team
         $getNoCount = count($countNo); //get count of non eliminated team
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $premCalc, 'stage' => $getCount, 'premium' => $getPrem];
-        if ($getEndTime >= $getCurrentTime && $getNoCount != 1):
-            if (!in_array($teamId, $elimiatedTeamId)):
-                if ($points <= $uPoints):
-                    $remaining = $uPoints - $points;
-                    update_user_meta($userId, 'points', $remaining);
-                    update_user_meta($userId, 'points_used', $usedCalc);
-                    $wpdb->insert('wp_bets', $wpBets);
-                    if (!empty(trim($getPrem))):
-                        return "You had bet " . $points . "  " . $getPrem . " Points";
-                    elseif (empty(trim($getPrem))):
-                        return "You had bet " . $points . " No premiium Points";
+        if ($points > 0):
+            if ($getEndTime >= $getCurrentTime && $getNoCount != 1):
+                if (!in_array($teamId, $elimiatedTeamId)):
+                    if ($points <= $uPoints):
+                        $remaining = $uPoints - $points;
+                        update_user_meta($userId, 'points', $remaining);
+                        update_user_meta($userId, 'points_used', $usedCalc);
+                        $wpdb->insert('wp_bets', $wpBets);
+                        if (!empty(trim($getPrem))):
+                            return "You had bet " . $points . "  " . $getPrem . " Points";
+                        elseif (empty(trim($getPrem))):
+                            return "You had bet " . $points . " No premiium Points";
+                        endif;
+                    else:
+                        return "Not have enough points";
                     endif;
                 else:
-                    return "Not have enough points";
+                    return "This team had been Eliminated";
                 endif;
             else:
-                return "This team had been Eliminated";
+                return "Tournament had been over";
             endif;
-        else:
-            return "Tournament had been over";
+            return "Points should be geater than 0";
         endif;
     }
 
