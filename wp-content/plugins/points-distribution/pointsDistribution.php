@@ -93,8 +93,8 @@ class Distribution_Table extends WP_List_Table {
         $columns = array(
             'id' => 'ID',
             'uid' => 'User',
-            'mid' => 'Match',
             'tid' => 'Tournament',
+            'mid' => 'Match',
             'team_id' => 'Team',
             'gain_points' => 'Gain Points',
             'date' => 'Date & Time'

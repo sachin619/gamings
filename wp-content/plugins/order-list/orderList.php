@@ -99,8 +99,8 @@ class Example_List_Table extends WP_List_Table {
         $columns = array(
             'id' => 'ID',
             'uid' => 'User',
-            'mid' => 'Match',
             'tid' => 'Tournament',
+            'mid' => 'Match',
             'team_id' => 'Team',
             'pts' => 'Points',
             'bet_at' => 'Bet Placed On'
