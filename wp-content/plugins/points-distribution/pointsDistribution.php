@@ -39,6 +39,13 @@ class Distribution_Wp_List_Table {
         <div class="wrap">
             <div id="icon-users" class="icon32"></div>
             <h2>Points Distribution</h2>
+            <div>
+                <form method="post" action="<?= get_site_url(); ?>/wp-admin/admin.php?page=pointsDistribution.php">
+                    <input type="text" value="<?= $_POST['tName'] ?>" name="tName" class="tourAuto" placeholder="Select Tournament"  />
+                    <input type="text" value="<?= $_POST['matchTitle'] ?>" placeholder="Select Match"  name="matchTitle" class="matcAuto">
+                    <input type="submit" value="Search" />
+                </form>
+            </div>
             <?php $exampleListTable->display(); ?>
         </div>
         <?php
@@ -108,10 +115,22 @@ class Distribution_Table extends WP_List_Table {
      * @return Array
      */
     private function table_data() {
+        $getTName = trim($_POST['tName']);
+        $getMName = trim($_POST['matchTitle']);
+        $getTitleId = get_page_by_title($getTName, OBJECT, 'tournaments');
+        $getId = $getTitleId->ID;
+        $where = isset($getId) ? " AND tid=" . $getId : "";
+        if ($getMName != ""):
+            $getMTitleId = get_page_by_title($_POST['matchTitle'], OBJECT, 'matches');
+            $getMId = $getMTitleId->ID;
+            if ($getMId != ""):
+                $whereM = " AND mid=" . $getMId;
+            endif;
+        endif;
         global $wpdb;
         $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
         $order = isset($_GET['order']) ? $_GET['order'] : 'asc';
-        $data = $wpdb->get_results("SELECT * FROM wp_distribution ORDER BY $orderby $order ", ARRAY_A);
+        $data = $wpdb->get_results("SELECT * FROM  wp_distribution WHERE id IS NOT NULL  $where $whereM ORDER BY  $orderby $order ", ARRAY_A);
         return $data;
     }
 

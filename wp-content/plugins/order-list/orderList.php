@@ -96,9 +96,7 @@ class Example_List_Table extends WP_List_Table {
         $columns = $this->get_columns();
         $hidden = $this->get_hidden_columns();
         $sortable = $this->get_sortable_columns();
-
         $data = $this->table_data();
-
         $this->_column_headers = array($columns, $hidden, $sortable);
         $this->items = $data;
     }
@@ -130,23 +128,21 @@ class Example_List_Table extends WP_List_Table {
     private function table_data() {
         $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
         $order = isset($_GET['order']) ? $_GET['order'] : 'asc';
-        $getTName = $_POST['tName'];
-        $getMName=$_REQUEST['matchTitle'];
+        $getTName = trim($_POST['tName']);
+        $getMName = trim($_POST['matchTitle']);
         $getTitleId = get_page_by_title($getTName, OBJECT, 'tournaments');
         $getId = $getTitleId->ID;
         $where = isset($getId) ? " AND tid=" . $getId : "";
-        
-      
-       
-       if (isset($_POST['matchTitle'])){
-  $getMTitleId = get_page_by_title($getMName, OBJECT, 'matches');
-        $getMId = $getMTitleId->ID;
-        $whereM = " AND mid=" . $getMId ;
-        unset($whereM);
-       }
-       
+        if ($getMName != ""):
+            $getMTitleId = get_page_by_title($_POST['matchTitle'], OBJECT, 'matches');
+            $getMId = $getMTitleId->ID;
+            if ($getMId != ""):
+                $whereM = " AND mid=" . $getMId;
+            endif;
+        endif;
         global $wpdb;
         $data = $wpdb->get_results("SELECT * FROM wp_bets WHERE id IS NOT NULL  $where $whereM order by $orderby $order ", ARRAY_A);
+
         return $data;
     }
 

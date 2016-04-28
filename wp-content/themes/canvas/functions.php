@@ -529,7 +529,7 @@ function updateMatchPremium($postId) {
             foreach ($resultDis as $distribution) {
                 $disFilter = (array) $distribution;
                 $disCalc = ((int) $disFilter['pts'] * (int) $betsCalc);
-                $data = ['uid' => $disFilter['uid'], 'mid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $disCalc];
+                $data = ['uid' => $disFilter['uid'],'tid'=>$getTeams[0]['tournament_name']->ID, 'mid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $disCalc];
                 $wpdb->insert('wp_distribution', $data);
                 $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
                 $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
