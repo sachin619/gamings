@@ -141,14 +141,14 @@ class API {
             'order' => 'ASC',
             'meta_query' =>
             [
-                'key' => 'end_date',
+                'key' => 'start_date',
                 'value' => $dateFormat,
-                'compare' => '>=',
+                'compare' => '>',
             ],
         ];
         return $this->getResult($args);
     }
-
+    
     function popularTournaments() {
         $args = [
             'post_type' => 'tournaments',
@@ -181,17 +181,25 @@ class API {
     function upcomingTournaments($categorySlug, $getPageCount) {
         $postPerPage = $getPageCount;
         $dateFormat = date('Ymd');
-        $dateTimeFormat = time();
         $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => $postPerPage, 'meta_key' => 'start_date', 'orderby' => 'meta_value_num', 'order' => 'ASC',
-            'meta_query' => ['relation' => 'OR', [
-                    'key' => 'end_date',
-                    'value' => $dateFormat,
-                    'compare' => '>='
-                ], [
-                    'key' => 'betting_allowed_till',
-                    'value' => $dateTimeFormat,
-                    'compare' => '<='
-                ]],
+            'meta_query' => [
+                'key' => 'start_date',
+                'value' => $dateFormat,
+                'compare' => '>'
+            ]
+        ];
+        return $this->getResult($args);
+    }
+
+    function upcomingOngoingTournaments($categorySlug, $getPageCount) {
+        $postPerPage = $getPageCount;
+        $dateFormat = date('Ymd');
+        $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => $postPerPage, 'meta_key' => 'start_date', 'orderby' => 'meta_value_num', 'order' => 'ASC',
+            'meta_query' => [
+                'key'=>'end_date',
+                'value'=>$dateFormat,
+                'compare'=>'>='
+              ]
         ];
         return $this->getResult($args);
     }
@@ -203,8 +211,8 @@ class API {
         else:
             $getPageCount = 4;
         endif;
-        $getCat = $this->getCategories();
-        $result = $this->upcomingTournaments($categorySlug, $getPageCount);
+        $getCat = $this->getCategories(['parent' => 1]);
+        $result = $this->upcomingOngoingTournaments($categorySlug, $getPageCount);
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
             $cat[] = ['catName' => $catName['name']];
@@ -227,7 +235,7 @@ class API {
             $getPageCount = 4;
         endif;
         $dateFormat = time();
-        $getCat = $this->getCategories();
+        $getCat = $this->getCategories(['parent' => 1]);
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'start_date',
@@ -257,13 +265,17 @@ class API {
     }
 
     function multiTradeMatch($tradeInfo) {
+        if (!empty($tradeInfo['data']['pts'])):
 
-        foreach ($tradeInfo['data']['pts'] as $teamId => $points) {
-            $tradeInfo['data']['team_id'] = $teamId;
-            $tradeInfo['data']['pts'] = $points;
-            $get_result[] = $this->tradeMatch($tradeInfo);
-        }
-        return $get_result;
+            foreach ($tradeInfo['data']['pts'] as $teamId => $points) {
+                $tradeInfo['data']['team_id'] = $teamId;
+                $tradeInfo['data']['pts'] = $points;
+                $get_result[] = $this->tradeMatch($tradeInfo);
+            }
+            return $get_result;
+        else:
+            return "Points should be greater than 0";
+        endif;
     }
 
     function tradeMatch($tradeInfo) {
@@ -291,22 +303,26 @@ class API {
         $getCurrentTime = time();
         $getWinnerCount = count($count);/** get count of eliminated team** */
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTeams[0]['tournament_name']->ID, 'team_id' => $teamId, 'pts' => $points];
-        if ($points > 0):
-            if ($getEndTime >= $getCurrentTime && $getWinnerCount != 1):
-                if ($points <= $uPoints):
-                    $remaining = $uPoints - $points;
-                    update_user_meta($userId, 'points', $remaining);
-                    update_user_meta($userId, 'points_used', $usedCalc);
-                    $wpdb->insert('wp_bets', $wpBets);
-                    return "You had bet " . $points . " No premiium Points";
+        if (!empty($tradeInfo['data']['pts'])):
+            if ($points > 0):
+                if ($getEndTime >= $getCurrentTime && $getWinnerCount != 1):
+                    if ($points <= $uPoints):
+                        $remaining = $uPoints - $points;
+                        update_user_meta($userId, 'points', $remaining);
+                        update_user_meta($userId, 'points_used', $usedCalc);
+                        $wpdb->insert('wp_bets', $wpBets);
+                        return "You had bet " . $points . " Points";
+                    else:
+                        return "Not have enough points";
+                    endif;
                 else:
-                    return "Not have enough points";
+                    return "Tournament had been over";
                 endif;
             else:
-                return "Tournament had been over";
+                return "Points should be greater than 0";
             endif;
         else:
-            return "Points should be geater than 0";
+            return "Points should be greater than 0";
         endif;
     }
 
@@ -316,7 +332,7 @@ class API {
         $tId = isset($tradeInfo['data']['tid']) ? $tradeInfo['data']['tid'] : 0;
         $mId = isset($tradeInfo['data']['mid']) ? $tradeInfo['data']['mid'] : 0;
         $teamId = $tradeInfo['data']['team_id'];
-        $points = $tradeInfo['data']['pts'];
+        $points = isset($tradeInfo['data']['pts']) ? $tradeInfo['data']['pts'] : 0;
         $uPointsR = get_user_meta($userId, 'points');
         $uPoints = round($uPointsR[0]);
         $getUsedPoints = get_user_meta($userId, 'points_used');
@@ -341,29 +357,33 @@ class API {
         $getCount = count($count); //get count of eliminated team
         $getNoCount = count($countNo); //get count of non eliminated team
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $premCalc, 'stage' => $getCount, 'premium' => $getPrem];
-        if ($points > 0):
-            if ($getEndTime >= $getCurrentTime && $getNoCount != 1):
-                if (!in_array($teamId, $elimiatedTeamId)):
-                    if ($points <= $uPoints):
-                        $remaining = $uPoints - $points;
-                        update_user_meta($userId, 'points', $remaining);
-                        update_user_meta($userId, 'points_used', $usedCalc);
-                        $wpdb->insert('wp_bets', $wpBets);
-                        if (!empty(trim($getPrem))):
-                            return "You had bet " . $points . "  " . $getPrem . " Points";
-                        elseif (empty(trim($getPrem))):
-                            return "You had bet " . $points . " No premiium Points";
+        if (!empty($tradeInfo['data']['pts'])):
+            if ($points > 0 && !empty($tradeInfo['data']['pts'])):
+                if ($getEndTime >= $getCurrentTime && $getNoCount != 1):
+                    if (!in_array($teamId, $elimiatedTeamId)):
+                        if ($points <= $uPoints):
+                            $remaining = $uPoints - $points;
+                            update_user_meta($userId, 'points', $remaining);
+                            update_user_meta($userId, 'points_used', $usedCalc);
+                            $wpdb->insert('wp_bets', $wpBets);
+                            if (!empty(trim($getPrem))):
+                                return "You had bet " . $points . " Points";
+                            elseif (empty(trim($getPrem))):
+                                return "You had bet " . $points . " Points";
+                            endif;
+                        else:
+                            return "Not have enough points";
                         endif;
                     else:
-                        return "Not have enough points";
+                        return "This team had been Eliminated";
                     endif;
                 else:
-                    return "This team had been Eliminated";
+                    return "Tournament had been over";
                 endif;
-            else:
-                return "Tournament had been over";
+                return "Points should be greater than 0";
             endif;
-            return "Points should be geater than 0";
+        else:
+            return "Points should be greater than 0";
         endif;
     }
 
@@ -414,16 +434,17 @@ class API {
         $email = email_exists($userInfo['data']['user_email']); //check if email id exist
         $username = username_exists($userInfo['data']['user_login']); //check username exists
         if ($email != ""):
-            return "Email Id already exist";
+            return ['msg' => "Email Id already exist", 'errorType' => 'warning'];
         elseif ($username != ""):
-            return "Username already exist";
+            return ['msg' => "Username already exist", 'errorType' => 'warning'];
         else:
             $user_id = wp_insert_user($userData);
             update_user_meta($user_id, 'phone', $userInfo['data']['phone']);
             if (!is_wp_error($user_id)):
-                return "Successfully Registered";
+                update_user_meta($user_id, 'points', '500');
+                return ['msg' => 'Registered & You had got 500 points', 'errorType' => 'success'];
             else:
-                return "Something goes wrong try again later";
+                return ['msg' => "Something goes wrong try again later", 'errorType' => 'danger'];
             endif;
         endif;
     }

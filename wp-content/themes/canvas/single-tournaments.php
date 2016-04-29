@@ -77,10 +77,10 @@ get_header();
 
                                 <td width="30%"> {{teamInfo.team['post_title']}}</td>               
                                 <td > <span ng-if="getDetails['details'][0].uid != null"> {{getDetails['pts'][$index][0].total}} </span></td>
-                                <td class="blockTrade" ng-if="teamInfo.eliminated === 'No'"><input  type="text" name="pts" ng-model="$parent.$parent.points" ng-if="getDetails['details'][0].uid != null"  placeholder="Trade">
+                                <td class="blockTrade" ng-if="teamInfo.eliminated === 'No'"><input  type="text" name="pts" ng-model="$parent.points"   placeholder="Trade">
                                 </td>
-                                <td class="blockAction" ng-if="teamInfo.eliminated === 'No'"><button ng-if="getDetails['details'][0].uid != null" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points)" >Add</button></td>
-                                <td colspan="2" class="stage" ng-if="teamInfo.eliminated !== 'No'"><span ng-if="getDetails['details'][0].uid != null">This Team had been Eliminated.</span></td>       
+                                <td class="blockAction" ng-if="teamInfo.eliminated === 'No'"><button  ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points,getDetails['details'][0].uid)" >Add</button></td>
+                                <td colspan="2" class="stage" ng-if="teamInfo.eliminated !== 'No'"><span>This Team had been Eliminated.</span></td>       
 
                             </tr>
 
@@ -129,7 +129,7 @@ get_header();
 
                                     <div class="row mb15">
                                         <div class="col-md-4"> </div>
-                                        <div class="col-md-8"><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'],matches['id'],points)" class="btn btn-danger">Trade</a></div>
+                                        <div class="col-md-8"><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'],matches['id'],points,getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></div>
                                     </div>
 
 

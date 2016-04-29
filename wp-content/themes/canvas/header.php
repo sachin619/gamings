@@ -10,9 +10,9 @@
  */
 $userInfo = wp_get_current_user();
 $userName = $userInfo->user_login;
-//if(!is_user_logged_in() && !strpos($_SERVER['REQUEST_URI'],'register')):
-//    wp_redirect(get_site_url().'/register');
-//endif;
+if (is_page('register') && is_user_logged_in()):
+    wp_redirect(get_site_url());
+endif;
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js" ng-app="gaming" >
@@ -90,7 +90,7 @@ $userName = $userInfo->user_login;
                                 <?php else: ?>
                                     <li class="mega-menu"><a href="<?= get_site_url() . '/my-account' ?>"><div><i class=""></i>My Account</div></a>
                                     </li>
-                                    <li class="mega-menu"><a href="<?= get_site_url().'/api?action=logout' ?>"> Logout</a></li>
+                                    <li class="mega-menu"><a href="<?= get_site_url() . '/api?action=logout' ?>"> Logout</a></li>
                                 <?php endif ?>
                                 </li>
                             </ul>

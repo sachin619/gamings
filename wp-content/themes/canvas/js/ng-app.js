@@ -43,30 +43,41 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
     var formData = {
         'postId': slug
     };
-    $scope.tradeMatch = function (link, tid, points) {
-        var slug = link.split("/");
-        slug = slug[slug.length - 2];
-        console.log(tid);
-        console.log(points);
-        console.log(slug);
-        var formDataNew = {
-            'mid': tid,
-            'pts': points,
-            'slug': slug
+    $scope.tradeMatch = function (link, tid, points, uid) {
+        if (uid != null) {
+            var slug = link.split("/");
+            slug = slug[slug.length - 2];
+            console.log(tid);
+            console.log(points);
+            console.log(slug);
+            var formDataNew = {
+                'mid': tid,
+                'pts': points,
+                'slug': slug
 
-        };
-        tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
+            };
+            tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
+        } else {
+            sessionStorage.setItem('url',document.URL);
+            window.location = base_url + "register?url=redirect";
+        }
     };
     ngPost('tournaments-detail', formData, $scope, $http, $templateCache, 'getDetails');
-    $scope.trade = function (tid, teamId, pts) {
-        var formData = {
-            'tid': tid,
-            'team_id': teamId,
-            'pts': pts,
-            'slug': slug
+    $scope.trade = function (tid, teamId, pts, uid) {
+        if (uid != null) {
+            var formData = {
+                'tid': tid,
+                'team_id': teamId,
+                'pts': pts,
+                'slug': slug
 
-        };
-        tourDetails('trade', formData, $scope, $http, $templateCache, 'blockName');
+            };
+            tourDetails('trade', formData, $scope, $http, $templateCache, 'blockName');
+        } else {
+               sessionStorage.setItem("url", document.URL);
+            window.location = base_url + "register?url=redirect";
+
+        }
 
     };
 
@@ -85,22 +96,27 @@ app.controller('matchesDetails', function ($scope, $http, $templateCache) {
         'postId': slug
     };
     ngPost('matches-detail', formData, $scope, $http, $templateCache, 'getDetails');
-    $scope.trade = function (link, tid, teamId, pts) {
-        var slug = link.split("/");
-        slug = slug[slug.length - 2];
-        console.log(tid);
-        console.log(pts);
-        console.log(slug);
-        pointsTeamId = {};
-        pointsTeamId[teamId] = pts;
-        var formData = {
-            'mid': tid,
-            'pts': pointsTeamId,
-            'slug': slug
+    $scope.trade = function (link, tid, teamId, pts, uid) {
+        if (uid != null) {
+            var slug = link.split("/");
+            slug = slug[slug.length - 2];
+            console.log(tid);
+            console.log(pts);
+            console.log(slug);
+            pointsTeamId = {};
+            pointsTeamId[teamId] = pts;
+            var formData = {
+                'mid': tid,
+                'pts': pointsTeamId,
+                'slug': slug
 
-        };
-        tourDetails('multi-trade-match', formData, $scope, $http, $templateCache, 'blockName');
+            };
+            tourDetails('multi-trade-match', formData, $scope, $http, $templateCache, 'blockName');
+        } else {
+            sessionStorage.setItem('url',document.URL);
+            window.location = base_url + "register?url=redirect";
 
+        }
     };
 
     $scope.getTrade = function (teamId) {
@@ -154,12 +170,24 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
         cache: $templateCache
     }).
             success(function (response) {
+                $.urlParam = function (name) {
+                    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                    if (results == null) {
+                        return null;
+                    }
+                    else {
+                        return results[1] || 0;
+                    }
+                }
                 if (response === "success_login") {
-                    window.location.href = base_url + 'my-account/';
+                    if ($.urlParam('url') == null) {
+                        window.location.href = base_url + 'my-account/';
+                    } else {
+                        window.location.href =  sessionStorage.getItem("url");;
+                    }
                 } else {
                     $scope[errorBlock] = response;
                     angular.element(document).ready(function () {
-
                         console.log(response);
                         if ($('.blockTrade').length === 1) {
                             $('.blockTrade').replaceWith("<td colspan='2'>Winner </td>");
@@ -182,7 +210,10 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         cache: $templateCache
     }).then(function (response) {
-        alert(response.data);
+
+        swal({
+            title: response.data
+        });
     });
 }
 

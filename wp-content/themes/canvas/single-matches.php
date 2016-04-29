@@ -1,4 +1,5 @@
 <?php
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,7 +13,7 @@ get_header();
     <section id="page-title">
 
         <div class="container clearfix">
-           
+
             <h1 >{{getDetails['details'][0].title}}</h1>
             <ol class="breadcrumb">
                 <li><a href="#">Home</a></li>
@@ -70,25 +71,19 @@ get_header();
                         </thead>
                         <tbody>
                             <tr  ng-repeat="teamInfo in getDetails['details'][0].select_teams">
-                        
-                        <td width="30%"> {{teamInfo.team_name['post_title']}}</td>
-                        <td > {{getDetails['pts'][$index][0].total}}</td>
-                        <td class="blockTrade" ng-if="teamInfo.winner==='No'"><input type="text" name="pts" ng-model="$parent.points"  placeholder="Trade"></td>
-                        <td class="blockAction" ng-if="teamInfo.winner==='No'"><button ng-click="trade(getDetails['details'][0]['postLink'],getDetails['details'][0].id,teamInfo.team_name['ID'],points)" >Add</button></td>
-                        <td colspan="2" ng-if="teamInfo.winner !== 'No'">Looser</td>  
-                        </tr>
 
-
-                        <tr>
-                            <th>Total</th>
-                            <th>{{ getDetails['userTotalTrade']}}</th>
-                            <th> </th>
-                            <th></th>
-                        </tr>
-
-
-
-
+                                <td width="30%"> {{teamInfo.team_name['post_title']}}</td>
+                                <td ><span ng-if="getDetails['details'][0].uid != null"> {{getDetails['pts'][$index][0].total}} </span></td>
+                                <td class="blockTrade" ng-if="teamInfo.winner === 'No'"><input type="text" name="pts" ng-model="$parent.points"  placeholder="Trade"></td>
+                                <td class="blockAction" ng-if="teamInfo.winner === 'No'"><button ng-click="trade(getDetails['details'][0]['postLink'], getDetails['details'][0].id, teamInfo.team_name['ID'], points, getDetails['details'][0].uid)" >Add</button></td>
+                                <td colspan="2" ng-if="teamInfo.winner !== 'No'">Looser</td>  
+                            </tr>
+                            <tr>
+                                <th>Total</th>
+                                <th>{{ getDetails['userTotalTrade']}}</th>
+                                <th> </th>
+                                <th></th>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -101,6 +96,8 @@ get_header();
     <!-- Footer
     ============================================= -->
 </section>
+
 <?php
+
 get_footer();
 ?>

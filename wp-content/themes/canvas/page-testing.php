@@ -3,6 +3,26 @@ wp_head();
 ?>
 
 <?php
+
+    function upcomingTournaments($categorySlug, $getPageCount) {
+        $postPerPage = $getPageCount;
+        $dateFormat = date('Ymd');
+        $dateTimeFormat = time();
+        $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => $postPerPage, 'meta_key' => 'start_date', 'orderby' => 'meta_value_num', 'order' => 'ASC',
+            'meta_query' => ['relation' => 'AND', [
+                    'key' => 'end_date',
+                    'value' => $dateFormat,
+                    'compare' => '>='
+                ], [
+                    'key' => 'betting_allowed_till',
+                    'value' => $dateTimeFormat,
+                    'compare' => '>='
+                ]],
+        ];
+        return $this->getResult($args);
+    }
+echo date('Ymd');exit;
+
 error_reporting(1);
 $get=get_page_by_title( 'T20 Worldcup', OBJECT, 'tournaments' );
 

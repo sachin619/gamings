@@ -109,11 +109,12 @@ get_header();
                                         <input type="password" id="register-form-repassword" name="register-form-repassword" value="" class="form-control" />
                                     </div>
 
-                                    <div class="col_full nobottommargin">
-                                        <button onclick="return false" ng-click="signUp()" class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" value="register">Register Now</button>
-                                        <p>{{errorReg}}</p>
+                                    <div class="col_full ">
+                                        <button onclick="return false" ng-click="signUp()" class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" value="register">Register Now</button>                                       
+                                    </div>           
+                                    <div ng-if="errorReg!=null" class="alert alert-{{errorReg['errorType']}} col_full nobottommargin">
+                                       {{errorReg['msg']}}
                                     </div>
-
                                 </form>
                             </div>
                         </div>

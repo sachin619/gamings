@@ -242,6 +242,8 @@ function twentysixteen_scripts() {
     wp_enqueue_script('angular-min', get_template_directory_uri() . '/js/angular.min.js');
     wp_enqueue_script('jquery-min', get_template_directory_uri() . '/js/jquery.min.js');
     wp_enqueue_script('ng-app', get_template_directory_uri() . '/js/ng-app.js');
+    wp_enqueue_script('sweetalert-min',get_template_directory_uri() .'/js/sweetalert.min.js');
+    wp_enqueue_style('sweetalert-min',get_template_directory_uri() .'/css/sweetalert.min.css');
 
     // Add Genericons, used in the main stylesheet.
     wp_enqueue_style('genericons', get_template_directory_uri() . '/genericons/genericons.css', array(), '3.4.1');
@@ -549,7 +551,6 @@ function slider() {
         'public' => true,
         'supports' => array('title', 'page-attributes', 'thumbnail'),
     );
-
     register_post_type('slider', $args);
 }
 
@@ -597,7 +598,6 @@ function getPremium($type, $Tradetype, $postId) {
             $resultDis = $wpdb->get_results("SELECT sum(pts) as pts,uid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teams['ID'] . "' GROUP BY uid ");
         }
     }
-
     if (count($countElimntd) == 1 && $getTeams[0]['points_distributed'] !== 'Yes') {
         $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "'   ");
         $totBets = (array) $getTotalBets[0];
