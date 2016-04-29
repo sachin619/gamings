@@ -113,7 +113,6 @@ if (!function_exists('twentysixteen_setup')) :
          * specifically font, colors, icons, and column width.
          */
         add_editor_style(array('css/editor-style.css', twentysixteen_fonts_url()));
-
     }
 
 endif; // twentysixteen_setup
@@ -242,8 +241,8 @@ function twentysixteen_scripts() {
     wp_enqueue_script('angular-min', get_template_directory_uri() . '/js/angular.min.js');
     wp_enqueue_script('jquery-min', get_template_directory_uri() . '/js/jquery.min.js');
     wp_enqueue_script('ng-app', get_template_directory_uri() . '/js/ng-app.js');
-    wp_enqueue_script('sweetalert-min',get_template_directory_uri() .'/js/sweetalert.min.js');
-    wp_enqueue_style('sweetalert-min',get_template_directory_uri() .'/css/sweetalert.min.css');
+    wp_enqueue_script('sweetalert-min', get_template_directory_uri() . '/js/sweetalert.min.js');
+    wp_enqueue_style('sweetalert-min', get_template_directory_uri() . '/css/sweetalert.min.css');
 
     // Add Genericons, used in the main stylesheet.
     wp_enqueue_style('genericons', get_template_directory_uri() . '/genericons/genericons.css', array(), '3.4.1');
@@ -531,7 +530,7 @@ function updateMatchPremium($postId) {
             foreach ($resultDis as $distribution) {
                 $disFilter = (array) $distribution;
                 $disCalc = ((int) $disFilter['pts'] * (int) $betsCalc);
-                $data = ['uid' => $disFilter['uid'],'tid'=>$getTeams[0]['tournament_name']->ID, 'mid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $disCalc];
+                $data = ['uid' => $disFilter['uid'], 'tid' => $getTeams[0]['tournament_name']->ID, 'mid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $disCalc];
                 $wpdb->insert('wp_distribution', $data);
                 $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
                 $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
@@ -622,3 +621,14 @@ function getTotalTrade($tradeInfo, $Tradetype) {
     return $result;
 }
 
+add_filter('admin_init', 'my_general_settings_register_fields');
+
+function my_general_settings_register_fields() {
+    register_setting('general', 'token_amt', 'esc_attr');
+    add_settings_field('token_amt', '<label for="token_amt">' . __('Token Amount', 'token_amt') . '</label>', 'my_general_settings_fields_html', 'general');
+}
+
+function my_general_settings_fields_html() {
+    $value = get_option('token_amt', '');
+    echo '<input type="text" id="token_amt" name="token_amt" value="' . $value . '" />';
+}

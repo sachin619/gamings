@@ -64,7 +64,8 @@ get_header();
                         </div>
                         <div class="portfolio-desc">
                             <h3><a href="{{getPost['postLink']}}">{{getPost['title']}}</a></h3>
-                            <span><strong>Total Trade: {{getDetails.tradeTotal[$index].total}} Points</strong>
+                            <span ><strong ng-if="getDetails.tradeTotal[$index].total>0">Total Trade: {{getDetails.tradeTotal[$index].total}} Points</strong>
+                                <strong ng-if="getDetails.tradeTotal[$index].total<=0">Total Trade : Not yet bet</strong>
                                 <br>
                                 {{getPost['start_date']}} - {{getPost['end_date']}}, {{getPost['venue']}}
                             </span>

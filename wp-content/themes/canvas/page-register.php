@@ -56,10 +56,12 @@ get_header();
                                         <input type="password" id="login-form-password" name="password" value="" class="form-control" />
                                     </div>
 
-                                    <div class="col_full nobottommargin">
+                                    <div class="col_full">
                                         <button onclick="return false" ng-click="signIn()" class="button button-3d button-black nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>
-                                        <p>{{errorLog}}</p>
                                         <a href="#" class="fright">Forgot Password?</a>
+                                    </div>
+                                    <div ng-if="errorLog != null" class="alert alert-{{errorLog['errorType']}} col_full nobottommargin">
+                                        {{errorLog['msg']}}
                                     </div>
 
                                 </form>
@@ -72,49 +74,66 @@ get_header();
                             <div class="panel-body" style="padding: 40px;">
                                 <h3>Register for an Account</h3>
 
-                                <form id="register-form" name="registerForm" class="nobottommargin" action="#" method="post">
+                                <form id="register-form" name="registerForm" class="nobottommargin" >
 
                                     <div class="col_full">
                                         <label for="register-form-name">First Name:</label>
-                                        <input type="text" id="register-form-name" name="fName" value="" class="form-control" />
-                                    </div>
+                                        <input type="text" ng-pattern="/^[a-zA-Z]+$/" id="register-form-name" ng-model="user.fName" name="fName" value="" class="form-control" ng-minlength="3" required="" />
+                                        <div ng-show="registerForm.fName.$dirty">
+                                            <span ng-show="registerForm.fName.$error.required">Tell us your First Name</span>
+                                            <span ng-show="registerForm.fName.$error.pattern">Only Alphabets are allowed</span>
+                                            <span ng-show="registerForm.fName.$error.minlength">Minimum 3 Characters</span>
+                                        </div>
 
-                                    <div class="col_full">
-                                        <label for="register-form-name">Last Name:</label>
-                                        <input type="text" id="register-form-name" name="lName" value="" class="form-control" />
-                                    </div>
+                                        <div class="col_full">
+                                            <label for="register-form-name">Last Name:</label>
+                                            <input type="text" ng-pattern="/^[a-zA-Z]+$/" id="register-form-name" ng-model="user.lName" name="lName" value=""  ng-minlength="3" class="form-control" required="" />
+                                            <div ng-show="registerForm.lName.$dirty">
+                                                <span ng-show="registerForm.lName.$error.required">Tell us your Last Name</span>
+                                                <span ng-show="registerForm.lName.$error.pattern">Only Alphabets are allowed</span>
+                                                <span ng-show="registerForm.lName.$error.minlength">Minimum 3 Characters</span>
 
-                                    <div class="col_full">
-                                        <label for="register-form-email">Email Address:</label>
-                                        <input type="text" id="register-form-email" name="email" value="" class="form-control" />
-                                    </div>
+                                            </div>
+                                        </div>
 
-                                    <div class="col_full">
-                                        <label for="register-form-username">Choose a Username:</label>
-                                        <input type="text" id="register-form-username" name="username" value="" class="form-control" />
-                                    </div>
+                                        <div class="col_full">
+                                            <label for="register-form-email">Email Address:</label>
+                                            <input  type="email"  id="register-form-email" ng-model="user.email" name="email" value="" class="form-control" required="" />
 
-                                    <div class="col_full">
-                                        <label for="register-form-phone">Phone:</label>
-                                        <input type="text" id="register-form-phone" name="phone" value="" class="form-control" />
-                                    </div>
+                                            <div ng-show="registerForm.email.$dirty">
+                                                <span ng-show="registerForm.email.$error.required">Tell us your email.</span>
+                                                <span ng-show="registerForm.email.$error.email">This is not a valid email.</span>
+                                            </div>
+                                        </div>
 
-                                    <div class="col_full">
-                                        <label for="register-form-password">Choose Password:</label>
-                                        <input type="password" id="register-form-password" name="password" value="" class="form-control" />
-                                    </div>
+                                        <div class="col_full">
+                                            <label for="register-form-username">Choose a Username:</label>
+                                            <input type="text" id="register-form-username" name="username" ng-model="user.username" value="" class="form-control" ng-minlength="5" />
+                                            <span ng-show="registerForm.username.$error.required">Tell us your Username</span>
+                                            <span ng-show="registerForm.username.$error.minlength">Minimum 5 Characters</span>
+                                        </div>
 
-                                    <div class="col_full">
-                                        <label for="register-form-repassword">Re-enter Password:</label>
-                                        <input type="password" id="register-form-repassword" name="register-form-repassword" value="" class="form-control" />
-                                    </div>
+                                        <div class="col_full">
+                                            <label for="register-form-phone">Phone:</label>
+                                            <input ng-pattern="/^[0-9]{10}$/"  type="text" id="register-form-phone" ng-model="user.phone" name="phone" value="" class="form-control" />
+                                            <div ng-show="registerForm.phone.$dirty" >
+                                                <span ng-show="registerForm.phone.$error.pattern">Mobile Number should be of 10 digit</span>
+                                            </div>
+                                        </div>
 
-                                    <div class="col_full ">
-                                        <button onclick="return false" ng-click="signUp()" class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" value="register">Register Now</button>                                       
-                                    </div>           
-                                    <div ng-if="errorReg!=null" class="alert alert-{{errorReg['errorType']}} col_full nobottommargin">
-                                       {{errorReg['msg']}}
-                                    </div>
+                                        <div class="col_full">
+                                            <label for="register-form-password">Choose Password:</label>
+                                            <input type="password" id="register-form-password" ng-model="user.password" name="password" value="" class="form-control" ng-minlength="5" />
+                                            <span ng-show="registerForm.password.$error.required">Tell us your Username</span>
+                                            <span ng-show="registerForm.password.$error.minlength">Minimum 5 Characters </span>
+                                        </div>
+
+                                        <div class="col_full ">
+                                            <button  ng-disabled="registerForm.$invalid || !registerForm.$dirty"  ng-click="signUp()" class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" value="register">Register Now</button>                                       
+                                        </div>           
+                                        <div ng-if="errorReg != null" class="alert alert-{{errorReg['errorType']}} col_full nobottommargin">
+                                            {{errorReg['msg']}}
+                                        </div>
                                 </form>
                             </div>
                         </div>

@@ -49,7 +49,9 @@ get_header();
                         <p class="mb20"><span class="bld"> Official Website: </span><a href={{getDetails['details'][0].website_link}} target="_blank">{{getDetails['details'][0].website_link}}</a></p>
 
 
-                        <h4>Total Trade So far: {{getDetails['totalBets'][0].total}} Points</h4>
+                        <h4 ng-if="getDetails['totalBets'][0].total>0">Total Trade So far: {{getDetails['totalBets'][0].total}} Points</h4>
+                        <h4 ng-if="getDetails['totalBets'][0].total<=0">Total Trade So far: Not Yet Bet</h4>
+
                         <h5 ng-if="getDetails['details'][0].premium > 1">Premium value : {{getDetails['details'][0].premium}} </h5>
                     </div>
 
@@ -79,7 +81,7 @@ get_header();
                                 <td > <span ng-if="getDetails['details'][0].uid != null"> {{getDetails['pts'][$index][0].total}} </span></td>
                                 <td class="blockTrade" ng-if="teamInfo.eliminated === 'No'"><input  type="text" name="pts" ng-model="$parent.points"   placeholder="Trade">
                                 </td>
-                                <td class="blockAction" ng-if="teamInfo.eliminated === 'No'"><button  ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points,getDetails['details'][0].uid)" >Add</button></td>
+                                <td class="blockAction" ng-if="teamInfo.eliminated === 'No'"><button  ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Add</button></td>
                                 <td colspan="2" class="stage" ng-if="teamInfo.eliminated !== 'No'"><span>This Team had been Eliminated.</span></td>       
 
                             </tr>
@@ -125,11 +127,11 @@ get_header();
                                         <div class="col-md-4">{{teams['team_name']['post_title']}}: </div>
                                         <div class="col-md-8" > <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ></div>
                                     </div>
-                                   
+
 
                                     <div class="row mb15">
                                         <div class="col-md-4"> </div>
-                                        <div class="col-md-8"><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'],matches['id'],points,getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></div>
+                                        <div class="col-md-8"><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></div>
                                     </div>
 
 

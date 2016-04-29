@@ -52,10 +52,10 @@ get_header();
 
                 <!-- Portfolio Items
                 ============================================= -->
-                <div  ng-init="i=1" class="portfolio grid-container portfolio-2 clearfix main-container">
+                <div  ng-init="i = 1" class="portfolio grid-container portfolio-2 clearfix main-container">
 
                     <article ng-repeat="getPost in getDetails.catPost" class="portfolio-item pf-hide pf-media pf-{{getPost['category'][0]['name']}}">
-                        <div class="portfolio-image" ng-init="$parent.j=$parent.i=i+1" >
+                        <div class="portfolio-image" ng-init="$parent.j = $parent.i = i + 1" >
                             <a href={{getPost['postLink']}}>
                                 <img src={{getPost['img']}} alt="Open Imagination">
                             </a>
@@ -65,7 +65,9 @@ get_header();
                         </div>
                         <div class="portfolio-desc">
                             <h3><a href={{getPost['postLink']}}>{{getPost['title']}}</a></h3>
-                            <span><strong>Total Trade: {{getDetails.tradeTotal[$index].total}} Points</strong>
+                            <span>
+                                <strong ng-if="getDetails.tradeTotal[$index].total > 0">Total Trade: {{getDetails.tradeTotal[$index].total}} Points</strong>
+                                <strong ng-if="getDetails.tradeTotal[$index].total <= 0">Total Trade: Not Yet Bet</strong>
                                 <br>
                                 {{getPost['start_date']}} - {{getPost['end_date']}}, {{getPost['venue']}}
                             </span>
@@ -73,8 +75,8 @@ get_header();
                     </article>
 
                 </div><!-- #portfolio end -->
-                <div ng-if="getDetails.catPost.length>=4" class="col-lg-12 hide-loadMore"  style="text-align: center">
-                    <button type="button" class="btn btn-primary"  ng-click="loadMore(getCat, getDetails.catPost.length+4)">Load More </button>
+                <div ng-if="getDetails.catPost.length >= 4" class="col-lg-12 hide-loadMore"  style="text-align: center">
+                    <button type="button" class="btn btn-primary"  ng-click="loadMore(getCat, getDetails.catPost.length + 4)">Load More </button>
                 </div>
             </div>
 
