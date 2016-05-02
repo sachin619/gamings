@@ -98,15 +98,14 @@ endif;
 
                             <!-- Top Search
                             ============================================= -->
+                            <div id="top-cart">
+                                 <a href="#" id="top-cart-trigger"><i class="fa fa-money fa-lg"></i><span>5</span></a>
+                            </div><!-- #top-cart end -->
+
                             <div id="top-search">
-
-
                                 <a href="#" class=""><span class=""><i class="icon-facebook"></i></span><span class="ts-text"></span></a>
-
-
-
                             </div><!-- #top-search end -->
-
+                            
                         </nav><!-- #primary-menu end -->
 
                     </div>

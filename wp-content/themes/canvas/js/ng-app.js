@@ -11,8 +11,6 @@ var base_url = "http://localhost/gamings/";
 
 var app = angular.module('gaming', []);
 app.controller('homeCtrl', function ($scope, $http) {
-      $scope.items1 = [1,2,3,4,5];
-  $scope.items2 = [1,2,3,4,5,6,7,8,9,10];
     $http.get(domain + "home").then(function (response) {
         $scope.home = response.data;
     });

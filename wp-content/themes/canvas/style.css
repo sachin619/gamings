@@ -1680,7 +1680,7 @@ body.top-search-open #top-search a i.icon-line-cross {
 	font-size: 16px;
 }
 
-#top-cart a:hover { color: #1ABC9C; }
+#top-cart a:hover { color: #d52029; }
 
 #top-search form {
 	opacity: 0;
@@ -1765,7 +1765,7 @@ body:not(.device-sm):not(.device-xs):not(.device-xxs) #header.transparent-header
 	height: 16px;
 	line-height: 16px;
 	text-align: center;
-	background-color: #1ABC9C;
+	background-color: #d52029;
 	border-radius: 50%;
 }
 
@@ -13016,3 +13016,76 @@ body:not(.no-transition) #wrapper,
 .mtb20{margin:20px 0;}
 .mb15{margin-bottom:5px;}
 
+
+/***********************TAB Statrt***********************/
+div.bhoechie-tab-container{
+  z-index: 10; float: left;
+  background-color: #ffffff;
+  padding: 0 !important;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  border:1px solid #ddd;
+  margin:30px 0px;
+  /*-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  -moz-box-shadow: 0 6px 12px rgba(0,0,0,.175);*/
+  background-clip: padding-box;
+  opacity: 0.97;
+  filter: alpha(opacity=97);
+}
+div.bhoechie-tab-menu{
+  padding-right: 0;
+  padding-left: 0;
+  padding-bottom: 0;
+}
+div.bhoechie-tab-menu div.list-group{
+  margin-bottom: 0;
+}
+div.bhoechie-tab-menu div.list-group>a{
+  margin-bottom: 0;
+}
+div.bhoechie-tab-menu div.list-group>a .glyphicon,
+div.bhoechie-tab-menu div.list-group>a .fa {
+  color: #d52029;
+}
+div.bhoechie-tab-menu div.list-group>a:first-child{
+  border-top-right-radius: 0;
+  -moz-border-top-right-radius: 0;
+}
+div.bhoechie-tab-menu div.list-group>a:last-child{
+  border-bottom-right-radius: 0;
+  -moz-border-bottom-right-radius: 0;
+}
+div.bhoechie-tab-menu div.list-group>a.active,
+div.bhoechie-tab-menu div.list-group>a.active .glyphicon,
+div.bhoechie-tab-menu div.list-group>a.active .fa{
+  background-color: #d52029;
+  background-image: #d52029;
+  color: #ffffff;
+}
+div.bhoechie-tab-menu div.list-group>a.active:after{
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  margin-top: -13px;
+  border-left: 0;
+  border-bottom: 13px solid transparent;
+  border-top: 13px solid transparent;
+  border-left: 10px solid #d52029;
+}
+
+div.bhoechie-tab-content{
+  background-color: #ffffff;
+  /* border: 1px solid #eeeeee; */
+  padding-left: 20px;
+  padding-top: 10px;
+}
+
+div.bhoechie-tab div.bhoechie-tab-content:not(.active){
+  display: none;
+}
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus{border: none!important;}
+.list-group-item{ font-size: 16px!important;}
+.tabColumn{ float: left; width: 100%; margin:0px; padding:40px 20px;}
+.tabColumn p{ font-size: 16px; text-align: justify;}
