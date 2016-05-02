@@ -3,8 +3,8 @@ wp_head();
 ?>
 
 <?php
-print_r(time(date('Y-m-d ',time())));exit;
-print_r(date('Y-m-d ', '1462183200'));exit;
+print_r(date('Y-m-d h:i a',  strtotime('+18 hour 3 minute')));exit;
+print_r(date('Y-m-d h:i a', '1462183200'));exit;
 
     function upcomingTournaments($categorySlug, $getPageCount) {
         $postPerPage = $getPageCount;

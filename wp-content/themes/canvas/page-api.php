@@ -133,7 +133,7 @@ class API {
     }
 
     function upcomingMatches() {
-        $dateFormat = time()+1;
+        $dateFormat = strtotime('+18 hour 1 minute');
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'start_date',
