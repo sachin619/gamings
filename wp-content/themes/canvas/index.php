@@ -15,6 +15,9 @@
  */
 get_header();
 ?>
+<style>
+
+</style>
 <section ng-controller="homeCtrl">
     <section  id="slider" class="slider-parallax" style="background-color: #222;">
         <div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-pagi="false" data-loop="true" data-animate-in="rollIn" data-speed="450" data-animate-out="rollOut" data-autoplay="5000">
@@ -43,6 +46,23 @@ get_header();
 
                 </div>
 
+                <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
+                    <div owl-carousel-item="" ng-repeat="popular in home.popularTournaments" class="item">
+                        <div class="ipost clearfix">
+                            <div class="feature-box center media-box fbox-bg">
+                                <div class="fbox-media">
+                                    <a href={{popular.postLink}}><img class="image_fade" src={{popular.img}} alt={{popular.title}}></a>
+                                </div>
+                                <div class="fbox-desc">
+                                    <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.end_date}} &nbsp;To &nbsp;{{popular.start_date}}</span><span>{{popular.venue}}</span></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </data-owl-carousel>
+
+
+
                 <div id="oc-images" class="owl-carousel image-carousel carousel-widget" data-margin="30" data-nav="false" data-items-xxs="1" data-items-xs="2" data-items-sm="3" data-items-lg="4">
 
                     <div class="oc-item" ng-repeat="popular in home.popularTournaments">
@@ -57,7 +77,7 @@ get_header();
                             </div>
                         </div>
                     </div>
-        
+
 
                 </div>
                 <div class="clear"></div><!-- <div class="line"></div> -->
@@ -95,7 +115,7 @@ get_header();
                             </div>
                         </div>
                     </div>
-            
+
 
                 </div>
                 <div class="clear"></div><!-- <div class="line"></div> -->
@@ -174,7 +194,7 @@ get_header();
                             </div>
                         </div>
                     </div>
-                  
+
 
                 </div>
                 <div class="clear"></div><!-- <div class="line"></div> -->

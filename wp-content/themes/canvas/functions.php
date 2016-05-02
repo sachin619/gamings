@@ -525,7 +525,6 @@ function updateMatchPremium($postId) {
         if (count($countElimntd) == 1 && $getTeams[0]['points_distributed'] !== 'Yes') {
             $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "'   ");
             $totBets = (array) $getTotalBets[0];
-
             $betsCalc = floor($totBets['pts'] / $totalWinBets['pts']); //total no of bet divide by total no winner
             foreach ($resultDis as $distribution) {
                 $disFilter = (array) $distribution;
@@ -609,7 +608,7 @@ function getPremium($type, $Tradetype, $postId) {
             $wpdb->insert('wp_distribution', $data);
             $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
             $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
-            update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
+            //  update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
         }
         update_post_meta($postId, 'points_distributed', 'Yes');
     }
@@ -625,10 +624,24 @@ add_filter('admin_init', 'my_general_settings_register_fields');
 
 function my_general_settings_register_fields() {
     register_setting('general', 'token_amt', 'esc_attr');
-    add_settings_field('token_amt', '<label for="token_amt">' . __('Token Amount', 'token_amt') . '</label>', 'my_general_settings_fields_html', 'general');
+    add_settings_field('token_amt', '<label for="token_amt">' . __('Post Registration Points', 'token_amt') . '</label>', 'my_general_settings_fields_html', 'general');
+    register_setting('general', 'distributing_days', 'esc_attr');
+    add_settings_field('distributing_days', '<label for="distributing_days">' . __('Distribution Days', 'distributing_days') . '</label>', 'distributing_days_field', 'general');
+    register_setting('general','minimum_bet_amount','esc_attr');
+    add_settings_field('minimum_bet_amount','<label for="minimum_bet_amount">'.__('Minimum Bet Amount','minimum_bet_amount').'</lable>','minimum_bet_amount_field','general');
 }
 
 function my_general_settings_fields_html() {
     $value = get_option('token_amt', '');
     echo '<input type="text" id="token_amt" name="token_amt" value="' . $value . '" />';
+}
+
+function distributing_days_field() {
+    $value = get_option('distributing_days', '');
+    echo '<input type="text" id="distributing_days" name="distributing_days" value="' . $value . '" > ';
+}
+
+function minimum_bet_amount_field(){
+    $value=get_option('minimum_bet_amount','');
+    echo '<input type="text" id="minimum_bet_amount" name="minimum_bet_amount" value="'.$value.'" ' ;
 }
