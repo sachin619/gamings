@@ -133,7 +133,7 @@ class API {
     }
 
     function upcomingMatches() {
-        $dateFormat = time();
+        $dateFormat = time()+1;
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'start_date',
@@ -246,7 +246,7 @@ class API {
             'order' => 'DESC',
             'meta_query' =>
             [
-                'key' => 'end_date',
+                'key' => 'start_date',
                 'value' => $dateFormat,
                 'compare' => '>=',
             ],
