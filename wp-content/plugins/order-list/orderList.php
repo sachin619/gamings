@@ -126,7 +126,7 @@ class Example_List_Table extends WP_List_Table {
      */
     private function table_data() {
         $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
-        $order = isset($_GET['order']) ? $_GET['order'] : 'asc';
+        $order = isset($_GET['order']) ? $_GET['order'] : 'desc';
         $getTName = trim($_POST['tName']);
         $getMName = trim($_POST['matchTitle']);
         $getTitleId = get_page_by_title($getTName, OBJECT, 'tournaments');
