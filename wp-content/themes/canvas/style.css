@@ -5147,8 +5147,8 @@ body:not(.device-touch) .entry-link {
 
 /* Individual Post
 -----------------------------------------------------------------*/
-
-.ipost .entry-image img { border-radius: 0; }
+.ipost {width: 340px!important; margin: 0px!important; padding: 0px;}  
+.ipost .entry-image img { border-radius: 0;}
 
 .ipost .entry-title h3,
 .ipost .entry-title h4 {
@@ -7608,7 +7608,7 @@ body:not(.device-touch) .button.button-full strong {
 .feature-box.media-box .fbox-media img {
 	position: relative;
 	display: block;
-	width: 100%;
+	width: 100%; height: 170px!important;
 	height: auto;
 }
 
