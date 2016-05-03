@@ -592,10 +592,6 @@ class API {
         wp_update_user(['ID' => $this->userId, 'first_name' => esc_attr($info['data']['fname'])]);
         wp_update_user(['ID' => $this->userId, 'last_name' => esc_attr($info['data']['lname'])]);
         update_user_meta($this->userId, 'phone', $info['data']['phone']);
-        $getUserDetails = (array) get_userdata($this->userId);
-        if ($getUserDetails['data']->user_pass != $info['data']['pass']):
-            wp_set_password($info['data']['pass'], $this->userId);
-        endif;
         return "Successfully Updated";
     }
 

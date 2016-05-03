@@ -73,18 +73,12 @@ $userEmail = $userInfo->user_email;
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password" class="col-sm-2 control-label">Password</label>
-                                    <div class="col-sm-10">
-                                        <input type="password"   value={{myAccount['userInfo']['userDetails']['data']['user_pass']}} class="form-control" id="password" name="pass" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label for="mobile" class="col-sm-2 control-label">Mobile</label>
                                     <div class="col-sm-10">
                                         <input type="text" value={{myAccount['userInfo']['phone'][0]}} class="form-control" id="mobile" name="mobile" placeholder="Mobile">
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group"  style="display:none">
                                     <label for="mobile" class="col-sm-2 control-label">Upload Profile Image</label>
                                     <div class="col-sm-10">
                                 <input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
@@ -134,27 +128,13 @@ $userEmail = $userInfo->user_email;
                             <table class = "table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>City</th>
-                                        <th>Pincode</th>
+                                        <th>Transaction Id</th>
+                                        <th>Points Purchased On</th>
+                                        <th>Points Paid</th>
                                     </tr>
                                 </thead>						   
                                 <tbody>
-                                    <tr>
-                                        <td>Tanmay</td>
-                                        <td>Bangalore</td>
-                                        <td>560001</td>
-                                    </tr>						      
-                                    <tr>
-                                        <td>Sachin</td>
-                                        <td>Mumbai</td>
-                                        <td>400003</td>
-                                    </tr>						      
-                                    <tr>
-                                        <td>Uma</td>
-                                        <td>Pune</td>
-                                        <td>411027</td>
-                                    </tr>
+                              	
                                 </tbody>							
                             </table>
                         </div>
@@ -207,14 +187,14 @@ $userEmail = $userInfo->user_email;
                             <div class="form-group">
                                 <label for="password" class="col-sm-3 control-label">New Password</label>
                                 <div class="col-sm-9">
-                                    <input type="password" ng-model="newPassword" value="" class="form-control" id="newPassword" name="pass" placeholder="Password">
+                                    <input type="password" ng-model="newPassword" value="" class="form-control" id="newPassword" name="pass" placeholder="New Password">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="confirmPassword" class="col-sm-3 control-label">Confirm Password</label>
                                 <div class="col-sm-9">
-                                    <input type="password"  ng-model="confirmPassword" value="" class="form-control" id="confirmPassword" name="pass" placeholder="Password">
+                                    <input type="password"  ng-model="confirmPassword" value="" class="form-control" id="confirmPassword" name="pass" placeholder="Confirm Password">
                                 </div>
                             </div>
 

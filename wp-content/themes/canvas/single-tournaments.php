@@ -49,8 +49,7 @@ get_header();
                         <p class="mb20"><span class="bld"> Official Website: </span><a href={{getDetails['details'][0].website_link}} target="_blank">{{getDetails['details'][0].website_link}}</a></p>
 
 
-                        <h4 ng-if="getDetails['totalBets'][0].total>0">Total Trade So far: {{getDetails['totalBets'][0].total}} Points</h4>
-                        <h4 ng-if="getDetails['totalBets'][0].total<=0">Total Trade So far: Not Yet Bet</h4>
+                        <h4 ng-if="getDetails['totalBets'][0].total>0">Total Points Traded So far: {{getDetails['totalBets'][0].total}} Points</h4>
 
                         <h5 ng-if="getDetails['details'][0].premium > 1">Premium value : {{getDetails['details'][0].premium}} </h5>
                     </div>
