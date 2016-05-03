@@ -61,25 +61,6 @@ get_header();
                     </div>
                 </data-owl-carousel>
 
-
-
-                <div id="oc-images" class="owl-carousel image-carousel carousel-widget" data-margin="30" data-nav="false" data-items-xxs="1" data-items-xs="2" data-items-sm="3" data-items-lg="4">
-
-                    <div class="oc-item" ng-repeat="popular in home.popularTournaments">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href={{popular.postLink}}><img class="image_fade" src={{popular.img}} alt={{popular.title}}></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.end_date}} &nbsp;To &nbsp;{{popular.start_date}}</span><span>{{popular.venue}}</span></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
                 <div class="clear"></div><!-- <div class="line"></div> -->
 
             </div>
@@ -101,9 +82,9 @@ get_header();
 
                 </div>
 
-                <div id="oc-images" class="owl-carousel image-carousel carousel-widget" data-margin="30" data-nav="false" data-items-xxs="1" data-items-xs="2" data-items-sm="3" data-items-lg="4">
 
-                    <div class="oc-item" ng-repeat="popular in home.popularMatches">
+                <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
+                    <div owl-carousel-item="" ng-repeat="popular in home.popularMatches" class="item">
                         <div class="ipost clearfix">
                             <div class="feature-box center media-box fbox-bg">
                                 <div class="fbox-media">
@@ -115,9 +96,7 @@ get_header();
                             </div>
                         </div>
                     </div>
-
-
-                </div>
+                </data-owl-carousel>
                 <div class="clear"></div><!-- <div class="line"></div> -->
 
             </div>
@@ -141,9 +120,10 @@ get_header();
                     <div class="divider divider-short divider-center"><i class="icon-circle-blank"></i></div>	
                 </div>
 
-                <div id="oc-images" class="owl-carousel image-carousel carousel-widget" data-margin="30" data-nav="false" data-items-xxs="1" data-items-xs="2" data-items-sm="3" data-items-lg="4">
 
-                    <div ng-repeat="slide in  home.upcomingTournaments" class="oc-item">
+
+                <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
+                    <div owl-carousel-item="" ng-repeat="slide in  home.upcomingTournaments" class="item">
                         <div class="ipost clearfix">
                             <div class="feature-box center media-box fbox-bg">
                                 <div class="fbox-media">
@@ -155,10 +135,7 @@ get_header();
                             </div>
                         </div>
                     </div>
-
-
-
-                </div>
+                </data-owl-carousel>
                 <div class="clear"></div><!-- <div class="line"></div> -->
 
             </div>
@@ -180,9 +157,8 @@ get_header();
 
                 </div>
 
-                <div id="oc-images" class="owl-carousel image-carousel carousel-widget" data-margin="30" data-nav="false" data-items-xxs="1" data-items-xs="2" data-items-sm="3" data-items-lg="4">
-
-                    <div ng-repeat="upcomMat in home.upcomingMatches" class="oc-item">
+                <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
+                    <div owl-carousel-item="" ng-repeat="upcomMat in home.upcomingMatches" class="item">
                         <div class="ipost clearfix">
                             <div class="feature-box center media-box fbox-bg">
                                 <div class="fbox-media">
@@ -194,9 +170,7 @@ get_header();
                             </div>
                         </div>
                     </div>
-
-
-                </div>
+                </data-owl-carousel>
                 <div class="clear"></div><!-- <div class="line"></div> -->
 
             </div>
