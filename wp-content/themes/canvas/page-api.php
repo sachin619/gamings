@@ -62,6 +62,16 @@ switch ($action) {
         break;
     case 'admin-distribution':
         $output = $api->adminDistribution();
+        break;
+    case 'my-account':
+        $output = $api->myAccount($_REQUEST);
+        break;
+    case 'update-user-info':
+        $output = $api->updateUserInfo($_REQUEST);
+        break;
+    case 'password-update':
+        $output = $api->passwordUpdate($_REQUEST);
+        break;
     default:
         $output = ['error' => 'invalid action'];
         break;
@@ -101,6 +111,12 @@ class API {
         $home['upcomingMatches'] = $this->upcomingMatches();
 
         return $home;
+    }
+
+    function myAccount($info) {
+        $myAccount['userInfo'] = $this->getUserDetails();
+        $myAccount['userBets'] = $this->getUserBets();
+        return $myAccount;
     }
 
     function getSlider() {
@@ -285,7 +301,7 @@ class API {
     function tradeMatch($tradeInfo) {
         global $wpdb;
         $userId = $this->userId;
-        $getMinimumBetAmount=get_option('minimum_bet_amount');
+        $getMinimumBetAmount = get_option('minimum_bet_amount');
         $tId = isset($tradeInfo['data']['tid']) ? $tradeInfo['data']['tid'] : 0;
         $mId = isset($tradeInfo['data']['mid']) ? $tradeInfo['data']['mid'] : 0;
         $teamId = $tradeInfo['data']['team_id'];
@@ -310,7 +326,7 @@ class API {
         $getTourId = isset($getTeams[0]['tournament_name']->ID) ? $getTeams[0]['tournament_name']->ID : 0;
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTourId, 'team_id' => $teamId, 'pts' => $points];
         if (!empty($tradeInfo['data']['pts'])):
-            if ($points >=$getMinimumBetAmount):
+            if ($points >= $getMinimumBetAmount):
                 if ($getEndTime >= $getCurrentTime && $getWinnerCount != 1):
                     if ($points <= $uPoints):
                         $remaining = $uPoints - $points;
@@ -335,7 +351,7 @@ class API {
     function trade($tradeInfo) {
         global $wpdb;
         $userId = $this->userId;
-        $getMinimumBetAmount=get_option('minimum_bet_amount');
+        $getMinimumBetAmount = get_option('minimum_bet_amount');
         $tId = isset($tradeInfo['data']['tid']) ? $tradeInfo['data']['tid'] : 0;
         $mId = isset($tradeInfo['data']['mid']) ? $tradeInfo['data']['mid'] : 0;
         $teamId = $tradeInfo['data']['team_id'];
@@ -387,7 +403,7 @@ class API {
                 else:
                     return "Tournament had been over";
                 endif;
-                else:
+            else:
                 return "Minimimum Bet point should be $getMinimumBetAmount";
             endif;
         else:
@@ -531,17 +547,75 @@ class API {
 
     function adminDistribution($userid) {
         global $wpdb;
-        $getDistributionDays=get_option('distributing_days');
-        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where uid ='.$userid);
-        foreach($getResults as $results):
+        $getDistributionDays = get_option('distributing_days');
+        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where uid =' . $userid);
+        foreach ($getResults as $results):
             $getCurrTime = time();
             $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
-            if ( $disDateAdd < $getCurrTime && $results->cleared!=1 ):
+            if ($disDateAdd < $getCurrTime && $results->cleared != 1):
                 $getCurrentPoints = get_user_meta($userid, 'points');
-               $wpdb->update('wp_distribution',['cleared'=>'1'],['uid'=>$userid]);
+                $wpdb->update('wp_distribution', ['cleared' => '1'], ['uid' => $userid]);
                 update_user_meta($userid, 'points', $getCurrentPoints[0] + $results->gain_points);
             endif;
         endforeach;
+    }
+
+    function getUserBets() {
+        global $wpdb;
+        $getAccount = [];
+        $result = $wpdb->get_results('SELECT * FROM wp_bets where uid=' . $this->userId);
+        foreach ($result as $getBetDetails):
+            $tourTitle[] = get_the_title($getBetDetails->tid);
+            $matchTitle[] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
+            $teamTitle[] = get_the_title($getBetDetails->team_id);
+            $pts[] = $getBetDetails->pts;
+            $bet_at[] = $getBetDetails->bet_at;
+            array_push($getAccount, ['tourTitle' => $tourTitle, 'matchTitle' => $matchTitle, 'teamTitle' => $teamTitle, 'pts' => $pts, 'bet_at' => $bet_at]);
+        endforeach;
+        return $getAccount;
+    }
+
+    function getUserDetails() {
+        $getUserDetails = get_userdata($this->userId);
+
+        $firstName = get_user_meta($this->userId, 'first_name');
+        $lastName = get_user_meta($this->userId, 'last_name');
+        $phone = get_user_meta($this->userId, 'phone');
+        $loaderUrl = get_template_directory_uri() . "/images/pageload1.gif";
+        $info = ['firstName' => $firstName, 'lastName' => $lastName, 'userDetails' => $getUserDetails, 'phone' => $phone, 'loaderImg' => $loaderUrl];
+        return $info;
+    }
+
+    function updateUserInfo($info) {
+        wp_update_user(['ID' => $this->userId, 'user_email' => esc_attr($info['data']['email'])]);
+        //wp_update_user(['ID' => $this->userId, 'user_login' => $info['data']['ulogin']]);
+        wp_update_user(['ID' => $this->userId, 'first_name' => esc_attr($info['data']['fname'])]);
+        wp_update_user(['ID' => $this->userId, 'last_name' => esc_attr($info['data']['lname'])]);
+        update_user_meta($this->userId, 'phone', $info['data']['phone']);
+        $getUserDetails = (array) get_userdata($this->userId);
+        if ($getUserDetails['data']->user_pass != $info['data']['pass']):
+            wp_set_password($info['data']['pass'], $this->userId);
+        endif;
+        return "Successfully Updated";
+    }
+
+    function passwordUpdate($info) {
+        $getUserDetails = (array) get_userdata($this->userId);
+        $currentPassword = $getUserDetails['data']->user_pass;
+        $confirmPassword = $info['data']['oldPass'];
+        $newPassword = $info['data']['newPassword'];
+        if (wp_check_password($confirmPassword, $currentPassword, $this->userId)):
+            if ($newPassword != ""):
+                wp_set_password($newPassword, $this->userId);
+                return "Successfully Updated";
+            else:
+                return "New Password cannot be empty";
+            endif;
+        else:
+            return "Old Password Doesn't Match";
+        endif;
+        print_r($info);
+        exit;
     }
 
 }

@@ -15,18 +15,18 @@ app.controller('homeCtrl', function ($scope, $http) {
         $scope.home = response.data;
     });
 
-}).directive("owlCarousel", function() {
+}).directive("owlCarousel", function () {
     return {
         restrict: 'E',
         transclude: false,
         link: function (scope) {
-            scope.initCarousel = function(element) {
-              // provide any default options you want
+            scope.initCarousel = function (element) {
+                // provide any default options you want
                 var defaultOptions = {
                 };
                 var customOptions = scope.$eval($(element).attr('data-options'));
                 // combine the two options objects
-                for(var key in customOptions) {
+                for (var key in customOptions) {
                     defaultOptions[key] = customOptions[key];
                 }
                 // init carousel
@@ -35,18 +35,59 @@ app.controller('homeCtrl', function ($scope, $http) {
         }
     };
 })
-.directive('owlCarouselItem', [function() {
-    return {
-        restrict: 'A',
-        transclude: false,
-        link: function(scope, element) {
-          // wait for the last item in the ng-repeat then call init
-            if(scope.$last) {
-                scope.initCarousel(element.parent());
-            }
-        }
+        .directive('owlCarouselItem', [function () {
+                return {
+                    restrict: 'A',
+                    transclude: false,
+                    link: function (scope, element) {
+                        // wait for the last item in the ng-repeat then call init
+                        if (scope.$last) {
+                            scope.initCarousel(element.parent());
+                        }
+                    }
+                };
+            }]);
+
+app.controller('myAccount', function ($scope, $http, $templateCache) {
+    formData = {};
+    ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
+    $scope.userUpdate = function () {
+        $('.loader').show();
+        var password = $('#password').val();
+        var fname = $('#fname').val();
+        var lname = $('#lname').val();
+        var uname = $('#uname').val();
+        var email = $('#email').val();
+        var phone = $('#mobile').val();
+
+
+        var userInfo = {pass: password, fname: fname, lname: lname, uname: uname, email: email, phone: phone};
+        tourDetails('update-user-info', userInfo, $scope, $http, $templateCache, 'getUserInfo');
     };
-}]);
+    $scope.updatePassword = function () {
+        $('.loader').show();
+        var oldPassword = $('#oldPassword').val();
+        var newPassword = $('#newPassword').val();
+        var userInfo = {oldPass: oldPassword, newPassword: newPassword};
+        tourDetails('password-update', userInfo, $scope, $http, $templateCache, 'udpatePassword');
+    };
+
+    $scope.uploadFile = function (files) {
+        console.log(files);
+
+        var fd = new FormData();
+        //Take the first selected file
+        fd.append("file", files[0]);
+        var uploadUrl = "http://localhost/practice/";
+        $http.post(uploadUrl, fd, {
+            withCredentials: true,
+            headers: {'Content-Type': undefined},
+            transformRequest: angular.identity
+        }).success(console.log('success')).error(console.log('error'));
+    };
+
+});
+
 app.controller('signupCtrl', function ($scope, $http, $templateCache) {
     $scope.signUp = function () {
         var formData = {
@@ -89,7 +130,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
             };
             tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
         } else {
-            sessionStorage.setItem('url',document.URL);
+            sessionStorage.setItem('url', document.URL);
             window.location = base_url + "register?url=redirect";
         }
     };
@@ -105,7 +146,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
             };
             tourDetails('trade', formData, $scope, $http, $templateCache, 'blockName');
         } else {
-               sessionStorage.setItem("url", document.URL);
+            sessionStorage.setItem("url", document.URL);
             window.location = base_url + "register?url=redirect";
 
         }
@@ -144,7 +185,7 @@ app.controller('matchesDetails', function ($scope, $http, $templateCache) {
             };
             tourDetails('multi-trade-match', formData, $scope, $http, $templateCache, 'blockName');
         } else {
-            sessionStorage.setItem('url',document.URL);
+            sessionStorage.setItem('url', document.URL);
             window.location = base_url + "register?url=redirect";
 
         }
@@ -209,12 +250,13 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                     else {
                         return results[1] || 0;
                     }
-                }
+                };
                 if (response === "success_login") {
                     if ($.urlParam('url') == null) {
                         window.location.href = base_url + 'my-account/';
                     } else {
-                        window.location.href =  sessionStorage.getItem("url");;
+                        window.location.href = sessionStorage.getItem("url");
+                        ;
                     }
                 } else {
                     $scope[errorBlock] = response;
@@ -241,7 +283,7 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         cache: $templateCache
     }).then(function (response) {
-
+        $('.loader').hide();
         swal({
             title: response.data
         });

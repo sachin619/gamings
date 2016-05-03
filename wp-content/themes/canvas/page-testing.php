@@ -1,8 +1,43 @@
 <?php
+//acf_form_head(); 
 wp_head();
 ?>
 
 <?php
+$getImage=wp_get_attachment_image_src(179, 'full' );
+print_r($getImage);
+exit;
+//insert wp attachment
+$filename = '/kungfu.jpg';
+$parent_post_id = 0;
+$filetype = wp_check_filetype( basename( $filename ), null );
+$wp_upload_dir = wp_upload_dir();
+$attachment = array(
+	'guid'           => $wp_upload_dir['url'] . '/' . basename( $filename ), 
+	'post_mime_type' => $filetype['type'],
+	'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
+	'post_content'   => '',
+	'post_status'    => 'inherit'
+);
+$attach_id = wp_insert_attachment( $attachment, $filename, $parent_post_id );
+//insert wp attachment
+exit;
+
+
+$getImage=wp_get_attachment_image_src(64, 'full' );
+print_r($getImage);
+exit;
+
+$postarr=['post_type'=>'attachment','guid'=>'http://localhost/gamings/wp-content/uploads/2016/05/kungfu.jpg'];
+wp_insert_post($postarr);exit;
+exit;
+$getId=  get_user_meta(12,'profile_pic');
+
+print_r( $getImage);
+exit;die();
+$getImage=explode(".",the_field('profile_pic', 'user_12'));
+
+echo get_avatar_url( 15 );exit;
 print_r(date('Y-m-d h:i:s', time()));exit;
 print_r(date('Y-m-d h:i a', '1462183200'));exit;
 
