@@ -333,7 +333,7 @@ class API {
                         update_user_meta($userId, 'points', $remaining);
                         update_user_meta($userId, 'points_used', $usedCalc);
                         $wpdb->insert('wp_bets', $wpBets);
-                        return "You had bet " . $points . " Points";
+                        return "You have traded " . $points . " Point's";
                     else:
                         return "Not have enough points";
                     endif;
@@ -390,9 +390,9 @@ class API {
                             update_user_meta($userId, 'points_used', $usedCalc);
                             $wpdb->insert('wp_bets', $wpBets);
                             if (!empty(trim($getPrem))):
-                                return "You had bet " . $points . " Points";
+                                return "You have traded " . $points . " Point's";
                             elseif (empty(trim($getPrem))):
-                                return "You had bet " . $points . " Points";
+                                return "You have traded" . $points . " Point's";
                             endif;
                         else:
                             return "Not have enough points";
@@ -468,7 +468,7 @@ class API {
             update_user_meta($user_id, 'phone', $userInfo['data']['phone']);
             if (!is_wp_error($user_id)):
                 update_user_meta($user_id, 'points', get_option("token_amt"));
-                return ['msg' => 'Registered Successfully & You had got 500 points', 'errorType' => 'success'];
+                return ['msg' => 'Registered Successfully & You have got 500 points', 'errorType' => 'success'];
             else:
                 return ['msg' => "Something goes wrong try again later", 'errorType' => 'danger'];
             endif;
