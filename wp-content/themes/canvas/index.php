@@ -45,9 +45,8 @@ get_header();
                     <div class="divider divider-short divider-center"><i class="icon-circle-blank"></i></div>
 
                 </div>
-
                 <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
-                    <div owl-carousel-item="" ng-repeat="popular in home.popularTournaments" class="item">
+                    <div owl-carousel-item="" ng-repeat="popular in home.popularTournaments" >
                         <div class="ipost clearfix">
                             <div class="feature-box center media-box fbox-bg">
                                 <div class="fbox-media">
@@ -200,7 +199,7 @@ get_header();
                                     <div class="team-desc team-desc-bg">
                                         <div class="team-title">
                                             <a href={{home.siteUrl}}/tournaments/?category={{categories['name']}}>
-                                            <h4>{{categories['name']}} </h4>
+                                                <h4>{{categories['name']}} </h4>
                                             </a>
                                         </div>
                                     </div>

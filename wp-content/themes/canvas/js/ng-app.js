@@ -14,7 +14,6 @@ app.controller('homeCtrl', function ($scope, $http) {
     $http.get(domain + "home").then(function (response) {
         $scope.home = response.data;
     });
-
 }).directive("owlCarousel", function () {
     return {
         restrict: 'E',

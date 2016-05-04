@@ -645,3 +645,13 @@ function minimum_bet_amount_field(){
     $value=get_option('minimum_bet_amount','');
     echo '<input type="text" id="minimum_bet_amount" name="minimum_bet_amount" value="'.$value.'" ' ;
 }
+
+function formatNumberAbbreviation($number) {
+    $abbrevs = array(12 => "T", 9 => "B", 6 => "M", 3 => "K", 0 => "");
+
+    foreach ($abbrevs as $exponent => $abbrev) {
+        if ($number >= pow(10, $exponent)) {
+            return number_format($number / pow(10, $exponent), 2) . $abbrev;
+        }
+    }
+}
