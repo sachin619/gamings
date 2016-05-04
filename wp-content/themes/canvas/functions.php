@@ -533,7 +533,7 @@ function updateMatchPremium($postId) {
                 $wpdb->insert('wp_distribution', $data);
                 $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
                 $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
-                update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
+               // update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
             }
             update_post_meta($postId, 'points_distributed', 'Yes');
         }

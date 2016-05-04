@@ -1750,19 +1750,19 @@ body:not(.device-sm):not(.device-xs):not(.device-xxs) #header.transparent-header
 -----------------------------------------------------------------*/
 
 
-#top-cart { margin-right: 0; }
+#top-cart { margin-right: 20px; }
 
 #top-cart > a > span {
 	display: block;
 	position: absolute;
-	top: -7px;
+	top: -12px;
 	left: auto;
-	right: -14px;
-	font-size: 10px;
+	right: -9px;
+	font-size: 14px;
 	color: #FFF;
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-	width: 16px;
-	height: 16px;
+	/*width: 16px;
+	height: 16px;*/ padding:5px 10px;
 	line-height: 16px;
 	text-align: center;
 	background-color: #d52029;
@@ -3527,7 +3527,7 @@ body:not(.device-touch) .portfolio {
 .portfolio-item .portfolio-image img {
 	display: block;
 	width: 100%;
-	height: auto;
+	height: 280px;
 }
 
 body:not(.device-touch):not(.device-xs):not(.device-xxs) .portfolio-notitle .portfolio-image img {
@@ -4721,7 +4721,7 @@ body.device-touch.device-xxs .portfolio-notitle .portfolio-overlay { display: no
 	display: block;
 	position: relative;
 	width: 100%;
-	height: auto;
+	height: 100%;
 }
 
 .entry-image iframe { display: block; }
@@ -4890,7 +4890,7 @@ body:not(.device-touch) .entry-link {
 
 .bothsidebar .small-thumbs .entry-image {
 	width: 200px;
-	margin: 0 25px 0 0;
+	margin: 0 25px 0 0; height: 180px;
 }
 
 .bothsidebar .small-thumbs.alt .entry-image { margin: 0 0 0 25px; }
@@ -5147,7 +5147,7 @@ body:not(.device-touch) .entry-link {
 
 /* Individual Post
 -----------------------------------------------------------------*/
-.ipost {width: 340px!important; margin: 0px!important; padding: 0px;}  
+.ipost {/*width: 340px!important;*/ margin: 0px!important; padding: 0px;}  
 .ipost .entry-image img { border-radius: 0;}
 
 .ipost .entry-title h3,
@@ -6393,7 +6393,7 @@ body:not(.device-xs):not(.device-xxs) .countdown.countdown-large.coming-soon .co
 	font-size: 14px;
 	height: 40px;
 	line-height: 40px;
-	background-color: #1ABC9C;
+	background-color: #d52029;
 	color: #FFF;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -6565,7 +6565,7 @@ body:not(.device-touch) .button {
 }
 
 .button.button-3d:hover {
-	background-color: #1ABC9C !important;
+	background-color: #B91E25 !important;
 	opacity: 0.9;
 }
 
@@ -7248,7 +7248,7 @@ body:not(.device-touch) .button.button-full strong {
 .feature-box.fbox-plain .fbox-icon img {
 	border: none !important;
 	background-color: transparent !important;
-	color: #1ABC9C;
+	color: #d52029;
 	border-radius: 0;
 }
 
