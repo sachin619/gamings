@@ -78,11 +78,11 @@ $userEmail = $userInfo->user_email;
                                         <input type="text" value={{myAccount['userInfo']['phone'][0]}} class="form-control" id="mobile" name="mobile" placeholder="Mobile">
                                     </div>
                                 </div>
-                                <div class="form-group"  style="display:none">
+                                <div class="form-group">
                                     <label for="mobile" class="col-sm-2 control-label">Upload Profile Image</label>
                                     <div class="col-sm-10">
-                                <input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
-                                    
+                                        <input type="file"  id="img" name="file" value="browse" />
+
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -134,7 +134,7 @@ $userEmail = $userInfo->user_email;
                                     </tr>
                                 </thead>						   
                                 <tbody>
-                              	
+
                                 </tbody>							
                             </table>
                         </div>

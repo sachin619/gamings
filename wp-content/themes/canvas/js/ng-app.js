@@ -63,6 +63,26 @@ app.controller('myAccount', function ($scope, $http, $templateCache) {
 
         var userInfo = {pass: password, fname: fname, lname: lname, uname: uname, email: email, phone: phone};
         tourDetails('update-user-info', userInfo, $scope, $http, $templateCache, 'getUserInfo');
+        //for image upload
+        var file_data = $('#img').prop('files')[0];
+        var form_data = new FormData();
+        form_data.append('file', file_data);
+        console.log(form_data);
+
+        //alert(form_data);                             
+        $.ajax({
+            url:domain+'upload-img', // point to server-side PHP script 
+            dataType: 'text', // what to expect back from the PHP script, if anything
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function (php_script_response) {
+                console.log(php_script_response);// display response from the PHP script, if any
+            }
+        });
+
     };
     $scope.updatePassword = function () {
         $('.loader').show();
@@ -305,4 +325,8 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
     });
 }
 
+$(document).on('click', 'body', function () {
+//    $('.sweet-alert').remove();
+//        $('.sweet-overlay').remove();
 
+});

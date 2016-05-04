@@ -72,6 +72,9 @@ switch ($action) {
     case 'password-update':
         $output = $api->passwordUpdate($_REQUEST);
         break;
+    case 'upload-img':
+        $output = $api->uploadImg($_REQUEST);
+        break;
     default:
         $output = ['error' => 'invalid action'];
         break;
@@ -613,6 +616,46 @@ class API {
         endif;
         print_r($info);
         exit;
+    }
+
+    function uploadImg($imgInfo) {
+        $rand = rand(0, 99999999999);
+        $fileName = $rand . $_FILES['file']['name'];
+        $getDir = wp_upload_dir();
+        $getDirUrl = $getDir['basedir'];
+        if (0 < $_FILES['file']['error']) {
+            echo 'Error: ' . $_FILES['file']['error'] . '<br>';
+        } else {
+            move_uploaded_file($_FILES['file']['tmp_name'], $getDirUrl . '/profile/' . $fileName);
+        }
+
+        $getId = get_user_meta($this->userId, 'profile_pic');
+        if ($getId[0] != ""):
+            wp_delete_attachment($getId[0]);
+            $imgInfo = ['img' => $fileName];
+            $getImgId = $this->uploadPic($imgInfo);
+            update_user_meta($this->userId, 'profile_pic', $getImgId);
+        else:
+            $imgInfo = ['img' => $fileName];
+            $getImgId = $this->uploadPic($imgInfo);
+            update_user_meta($this->userId, 'profile_pic', $getImgId);
+        endif;
+    }
+
+    function uploadPic($imgInfo) {
+        $filename = 'profile/' . $imgInfo['img'];
+        $parent_post_id = 0;
+        $filetype = wp_check_filetype(basename($filename), null);
+        $wp_upload_dir = wp_upload_dir();
+        $attachment = array(
+            'guid' => $wp_upload_dir['url'] . '/' . basename($filename),
+            'post_mime_type' => $filetype['type'],
+            'post_title' => preg_replace('/\.[^.]+$/', '', basename($filename)),
+            'post_content' => '',
+            'post_status' => 'inherit'
+        );
+        $attach_id = wp_insert_attachment($attachment, $filename, $parent_post_id);
+        return $attach_id;
     }
 
 }
