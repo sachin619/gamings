@@ -80,7 +80,7 @@ get_header();
                                         <label for="register-form-name">First Name:</label>
                                         <input type="text" ng-pattern="/^[a-zA-Z]+$/" id="register-form-name" ng-model="user.fName" name="fName" value="" class="form-control" ng-minlength="3" required="" />
                                         <div ng-show="registerForm.fName.$dirty">
-                                            <span ng-show="registerForm.fName.$error.required">Tell us your First Name</span>
+                                            <span ng-show="registerForm.fName.$error.required">Required</span>
                                             <span ng-show="registerForm.fName.$error.pattern">Only Alphabets are allowed</span>
                                             <span ng-show="registerForm.fName.$error.minlength">Minimum 3 Characters</span>
                                         </div>
@@ -89,7 +89,7 @@ get_header();
                                             <label for="register-form-name">Last Name:</label>
                                             <input type="text" ng-pattern="/^[a-zA-Z]+$/" id="register-form-name" ng-model="user.lName" name="lName" value=""  ng-minlength="3" class="form-control" required="" />
                                             <div ng-show="registerForm.lName.$dirty">
-                                                <span ng-show="registerForm.lName.$error.required">Tell us your Last Name</span>
+                                                <span ng-show="registerForm.lName.$error.required">Required</span>
                                                 <span ng-show="registerForm.lName.$error.pattern">Only Alphabets are allowed</span>
                                                 <span ng-show="registerForm.lName.$error.minlength">Minimum 3 Characters</span>
 
@@ -101,15 +101,15 @@ get_header();
                                             <input  type="email"  id="register-form-email" ng-model="user.email" name="email" value="" class="form-control" required="" />
 
                                             <div ng-show="registerForm.email.$dirty">
-                                                <span ng-show="registerForm.email.$error.required">Tell us your email.</span>
+                                                <span ng-show="registerForm.email.$error.required">Required</span>
                                                 <span ng-show="registerForm.email.$error.email">This is not a valid email.</span>
                                             </div>
                                         </div>
 
                                         <div class="col_full">
                                             <label for="register-form-username">Choose a Username:</label>
-                                            <input type="text" id="register-form-username" name="username" ng-model="user.username" value="" class="form-control" ng-minlength="5" />
-                                            <span ng-show="registerForm.username.$error.required">Tell us your Username</span>
+                                            <input type="text" id="register-form-username" name="username" ng-model="user.username" value="" class="form-control" ng-minlength="5" required="" />
+                                            <span ng-show="registerForm.username.$error.required">Required</span>
                                             <span ng-show="registerForm.username.$error.minlength">Minimum 5 Characters</span>
                                         </div>
 
@@ -123,8 +123,8 @@ get_header();
 
                                         <div class="col_full">
                                             <label for="register-form-password">Choose Password:</label>
-                                            <input type="password" id="register-form-password" ng-model="user.password" name="password" value="" class="form-control" ng-minlength="5" />
-                                            <span ng-show="registerForm.password.$error.required">Tell us your Username</span>
+                                            <input type="password" id="register-form-password" ng-model="user.password" name="password" value="" class="form-control" ng-minlength="5" required="" />
+                                            <span ng-show="registerForm.password.$error.required">Required</span>
                                             <span ng-show="registerForm.password.$error.minlength">Minimum 5 Characters </span>
                                         </div>
 

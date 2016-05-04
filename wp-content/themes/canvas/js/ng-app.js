@@ -116,7 +116,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
         'postId': slug
     };
     $scope.tradeMatch = function (link, tid, points, uid) {
-        if (uid != null) {
+        if (uid != null) {  //for login redirect
             var slug = link.split("/");
             slug = slug[slug.length - 2];
             console.log(tid);
@@ -133,7 +133,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
             sessionStorage.setItem('url', document.URL);
             window.location = base_url + "register?url=redirect";
         }
-    };
+    }; //for login redirect
     ngPost('tournaments-detail', formData, $scope, $http, $templateCache, 'getDetails');
     $scope.trade = function (tid, teamId, pts, uid) {
         if (uid != null) {
@@ -145,6 +145,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
 
             };
             tourDetails('trade', formData, $scope, $http, $templateCache, 'blockName');
+
         } else {
             sessionStorage.setItem("url", document.URL);
             window.location = base_url + "register?url=redirect";
@@ -199,7 +200,21 @@ app.controller('matchesDetails', function ($scope, $http, $templateCache) {
 });
 
 app.controller('listingTour', function ($http, $scope, $templateCache) {
-    var formData = {};
+    $.urlParam = function (name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results == null) {
+            return null;
+        }
+        else {
+            return results[1] || 0;
+        }
+    };
+    if ($.urlParam('category') !== '') {
+        var formData = {'categoryName': $.urlParam('category')};
+    }
+    else {
+        var formData = {};
+    }
     ngPost('listing-tournaments', formData, $scope, $http, $templateCache, 'getDetails');
     $scope.filter = function (catName) {
         $('.hide-loadMore').show();

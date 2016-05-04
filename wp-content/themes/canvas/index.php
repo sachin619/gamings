@@ -191,151 +191,25 @@ get_header();
 
             <div class="container clearfix">
 
-                <div id="oc-images" class="owl-carousel image-carousel carousel-widget" data-margin="30" data-nav="false" data-items-xxs="1" data-items-xs="2" data-items-sm="3" data-items-lg="4">
 
-                    <div class="oc-item">
+                <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
+                    <div owl-carousel-item="" ng-repeat="categories in home.category" class="item">
                         <div class="ipost clearfix">
                             <div class="feature-box center media-box fbox-bg">
                                 <div class="team">
                                     <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Cricket</h4></div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Football</h4></div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Kabaddi</h4></div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Tennis</h4></div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Hockey</h4></div>
+                                        <div class="team-title">
+                                            <a href={{home.siteUrl}}/tournaments/?category={{categories['name']}}>
+                                            <h4>{{categories['name']}} </h4>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Cricket</h4></div>
-                                    </div>
-                                </div>
+                </data-owl-carousel>                           
 
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Football</h4></div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Kabaddi</h4></div>
-                                    </div>
-                                </div>
-
-                            </div>	
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Tennis</h4></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Hockey</h4></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Kabaddi</h4></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="oc-item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title"><h4>Hockey</h4></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="clear"></div><!-- <div class="line"></div> -->
 
             </div>
