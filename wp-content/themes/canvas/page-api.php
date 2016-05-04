@@ -120,6 +120,7 @@ class API {
     function myAccount($info) {
         $myAccount['userInfo'] = $this->getUserDetails();
         $myAccount['userBets'] = $this->getUserBets();
+        $myAccount['unClearedPoints']=$this->getUnclearedPoints();
         return $myAccount;
     }
 
@@ -585,8 +586,9 @@ class API {
         $firstName = get_user_meta($this->userId, 'first_name');
         $lastName = get_user_meta($this->userId, 'last_name');
         $phone = get_user_meta($this->userId, 'phone');
+        $points = get_user_meta($this->userId, 'points');
         $loaderUrl = get_template_directory_uri() . "/images/pageload1.gif";
-        $info = ['firstName' => $firstName, 'lastName' => $lastName, 'userDetails' => $getUserDetails, 'phone' => $phone, 'loaderImg' => $loaderUrl];
+        $info = ['firstName' => $firstName, 'lastName' => $lastName, 'userDetails' => $getUserDetails, 'phone' => $phone, 'loaderImg' => $loaderUrl, 'points' => $points];
         return $info;
     }
 
@@ -656,6 +658,13 @@ class API {
         );
         $attach_id = wp_insert_attachment($attachment, $filename, $parent_post_id);
         return $attach_id;
+    }
+
+    function getUnclearedPoints() {
+        global $wpdb;
+        $userId=$this->userId;
+        $getUnClearedPoints = $wpdb->get_results("SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=$userId AND cleared=0 GROUP BY uid");
+        return $getUnClearedPoints[0]->unclearedPoints;
     }
 
 }

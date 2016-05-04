@@ -4,6 +4,11 @@ wp_head();
 ?>
 <!--<img src="http://localhost/gamings/wp-content/uploads/profile/loader.gif" />-->
 <?php
+
+global $wpdb;
+$getUnClearedPoints=$wpdb->get_results('SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=1 AND cleared=0 GROUP BY uid');
+print_r($getUnClearedPoints[0]->unclearedPoints);exit;
+
 $getId = get_user_meta(12, 'profile_pic');
 
 if ($getId[0] != ""):

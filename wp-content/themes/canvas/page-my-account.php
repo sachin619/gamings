@@ -46,6 +46,9 @@ $userEmail = $userInfo->user_email;
                         <a href="#" class="list-group-item text-center">
                             <h4 class="fa fa-user fa-lg"></h4><br/>CHANGE PASSWORD
                         </a>
+                        <a href="#" class="list-group-item text-center">
+                            <h4 class="fa fa-money fa-lg"></h4><br/>MY POINTS
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 bhoechie-tab">
@@ -203,6 +206,26 @@ $userEmail = $userInfo->user_email;
                                     <button type="submit" onclick="return false;" ng-click="updatePassword()" class="btn btn-danger">Submit</button> <span style="display: none" class="loader"><img src={{myAccount['userInfo']['loaderImg']}} /></span>
                                 </div>
                             </div>
+                        </form>
+                    </div>
+
+                    <div class="bhoechie-tab-content">
+                        <form class="form-horizontal">
+
+                            <div class="form-group">
+                                <label for="oPass" class="col-sm-3 control-label">Cleared Points</label>
+                                <div class="col-sm-9">
+                                    {{myAccount['userInfo']['points'][0]}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-sm-3 control-label">Uncleared Points</label>
+                                <div class="col-sm-9">
+                                    {{myAccount['unClearedPoints']}}
+                                </div>
+                            </div>
+
+               
                         </form>
                     </div>
                 </div>
