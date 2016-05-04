@@ -55,6 +55,7 @@ get_header();
                                 </div>
                                 <div class="fbox-desc">
                                     <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.end_date}} &nbsp;To &nbsp;{{popular.start_date}}</span><span>{{popular.venue}}</span></h3>
+                                    <h3><span class="subtitle" ng-if="popular.total_tour_bets > 0">Total Points Traded So far: {{popular.total_tour_bets}} Points</span></h3>
                                 </div>
                             </div>
                         </div>
@@ -92,6 +93,8 @@ get_header();
                                 </div>
                                 <div class="fbox-desc">
                                     <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.end_date}} &nbsp;To &nbsp;{{popular.start_date}}</span><span>{{popular.venue}}</span></h3>
+                                    <h3><span class="subtitle" ng-if="popular.total_bets > 0">Total Points Traded So far: {{popular.total_bets}} Points</span></h3>
+
                                 </div>
                             </div>
                         </div>
@@ -131,6 +134,7 @@ get_header();
                                 </div>
                                 <div class="fbox-desc">
                                     <h3 class="imagetex">{{slide.title}}<span class="subtitle">{{ slide.start_date}} &nbsp;To &nbsp;{{ slide.end_date}}</span><span>{{ slide.venue}}</span></h3>
+                                    <h3><span class="subtitle" ng-if="slide.total_tour_bets > 0">Total Points Traded So far: {{slide.total_tour_bets}} Points</span></h3>
                                 </div>
                             </div>
                         </div>
@@ -166,6 +170,7 @@ get_header();
                                 </div>
                                 <div class="fbox-desc">
                                     <h3 class="imagetex">{{upcomMat.title}}<span class="subtitle">{{upcomMat.start_date}} &nbsp;To &nbsp;{{upcomMat.end_date}}</span><span>{{upcomMat.venue}}</span></h3>
+                                    <h3><span class="subtitle" ng-if="upcomMat.total_bets > 0">Total Points Traded So far: {{upcomMat.total_bets}} Points</span></h3>
                                 </div>
                             </div>
                         </div>
