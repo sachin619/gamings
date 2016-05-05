@@ -655,3 +655,18 @@ function formatNumberAbbreviation($number) {
         }
     }
 }
+
+    function adminDistribution($userid) {
+        global $wpdb;
+        $getDistributionDays = get_option('distributing_days');
+        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where uid =' . $userid);
+        foreach ($getResults as $results):
+            $getCurrTime = time();
+            $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
+            if ($disDateAdd < $getCurrTime && $results->cleared != 1):
+                $getCurrentPoints = get_user_meta($userid, 'points');
+                $wpdb->update('wp_distribution', ['cleared' => '1'], ['uid' => $userid]);
+                update_user_meta($userid, 'points', $getCurrentPoints[0] + $results->gain_points);
+            endif;
+        endforeach;
+    }

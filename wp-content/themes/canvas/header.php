@@ -100,6 +100,7 @@ endif;
                             ============================================= -->
                             <?php
                             if (!empty($userName)):
+                                adminDistribution($user_ID);
                                 $getUserPoints = get_user_meta($user_ID, 'points');
                                 $getFilterPoints = formatNumberAbbreviation($getUserPoints[0]);
                                 ?>
