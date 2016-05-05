@@ -79,10 +79,10 @@ endif;
                                 <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'],'tournaments')>0?'current':'' ; ?>"><a href="<?= get_site_url() ?>/tournaments"><div><i class=""></i>Tournaments</div></a>
 
                                 </li>
-                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'],'about')>0?'current':'' ; ?>"><a href="#"><div><i class=""></i>About</div></a>
+                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'],'about')>0?'current':'' ; ?>"><a href="<?= get_site_url() ?>/about-us"><div><i class=""></i>About</div></a>
 
                                 </li>
-                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'],'contact')>0?'current':'' ; ?>"><a href="#"><div><i class=""></i>Contact</div></a>								
+                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'],'contact')>0?'current':'' ; ?>"><a href="<?= get_site_url()  ?>/contact-us"><div><i class=""></i>Contact</div></a>								
                                 </li>
                                 <?php if (empty($userName)): ?>
                                     <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'],'register')>0?'current':'' ; ?>"><a href="<?= get_site_url() . '/register' ?>"><div><i class=""></i>Login/Register</div></a>								

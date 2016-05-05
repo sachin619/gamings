@@ -35,7 +35,7 @@ $userEmail = $userInfo->user_email;
                             <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>MY BETS
                         </a>
                         <a href="#" class="list-group-item text-center">
-                            <h4 class="fa fa-shopping-cart fa-lg"></h4><br/>MY ORDERS
+                            <h4 class="fa fa-shopping-cart fa-lg"></h4><br/>Purchase History
                         </a>
                         <a href="#" class="list-group-item text-center">
                             <h4 class="fa fa-database fa-lg"></h4><br/>BUY MORE POINTS
