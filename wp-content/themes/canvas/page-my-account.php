@@ -59,7 +59,7 @@ $userEmail = $userInfo->user_email;
                                 <div class="form-group">
                                     <label for="name" class="col-sm-2 control-label">First Name</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="fname" name='fname' value={{myAccount['userInfo']['firstName'][0]}} placeholder="First Name">
+                                        <input type="text" class="form-control" id="fname" name='fname' ng-model="fname" value={{myAccount['userInfo']['firstName'][0]}} placeholder="First Name" required="" ng-minlength="3">
                                     </div>
                                 </div>	
                                 <div class="form-group">
@@ -179,31 +179,42 @@ $userEmail = $userInfo->user_email;
                         </div>
                     </div>
                     <div class="bhoechie-tab-content">
-                        <form class="form-horizontal">
+                        <form id="changePassword" name="changePassword" class="form-horizontal">
 
                             <div class="form-group">
                                 <label for="oPass" class="col-sm-3 control-label">Old Password</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" value="" id="oldPassword" name="oPass" placeholder="Old Password">
+                                    <input type="text" class="form-control" value="" ng-model="oldPassword" id="oldPassword" name="oldPassword" placeholder="Old Password" required="">
+                                    <div ng-show="changePassword.oldPassword.$dirty">
+                                        <span ng-show="changePassword.oldPassword.$error.required">Required</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="col-sm-3 control-label">New Password</label>
-                                <div class="col-sm-9">
-                                    <input type="password" ng-model="newPassword" value="" class="form-control" id="newPassword" name="pass" placeholder="New Password">
+                                <div class="col-sm-9"><!-- ID and NAME should be same -->
+                                    <input type="password" ng-model="newPassword" value="" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" required="" ng-minlength="5">
+                                    <div ng-show="changePassword.newPassword.$dirty">
+                                        <span ng-show="changePassword.newPassword.$error.required">Required</span>
+                                        <span ng-show="changePassword.newPassword.$error.minlength">Minimum length should be 5</span>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="confirmPassword" class="col-sm-3 control-label">Confirm Password</label>
                                 <div class="col-sm-9">
-                                    <input type="password"  ng-model="confirmPassword" value="" class="form-control" id="confirmPassword" name="pass" placeholder="Confirm Password">
+                                    <input type="password" value="" class="form-control" ng-model="confirmPassword" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required="" ng-pattern={{newPassword}} >
+                                    <div ng-show="changePassword.confirmPassword.$dirty">
+                                        <span ng-show="changePassword.confirmPassword.$error.required" >Required</span>
+                                        <span ng-show="changePassword.confirmPassword.$error.pattern">Password does not match</span>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
-                                    <button type="submit" onclick="return false;" ng-click="updatePassword()" class="btn btn-danger">Submit</button> <span style="display: none" class="loader"><img src={{myAccount['userInfo']['loaderImg']}} /></span>
+                                    <button ng-disabled="!changePassword.$dirty || changePassword.$invalid" type="submit" onclick="return false;" ng-click="updatePassword()" class="btn btn-danger">Submit</button> <span style="display: none" class="loader"><img src={{myAccount['userInfo']['loaderImg']}} /></span>
                                 </div>
                             </div>
                         </form>
@@ -225,7 +236,7 @@ $userEmail = $userInfo->user_email;
                                 </div>
                             </div>
 
-               
+
                         </form>
                     </div>
                 </div>
