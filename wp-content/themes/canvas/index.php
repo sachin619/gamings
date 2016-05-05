@@ -193,19 +193,19 @@ get_header();
 
                 <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
                     <div owl-carousel-item="" ng-repeat="categories in home.category" class="item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="team">
-                                    <div class="team-desc team-desc-bg">
-                                        <div class="team-title">
-                                            <a href={{home.siteUrl}}/tournaments/?category={{categories['name']}}>
+                        <a href={{home.siteUrl}}/tournaments/?category={{categories['name']}}>
+                            <div class="ipost clearfix">
+                                <div class="feature-box center media-box fbox-bg">
+                                    <div class="team">
+                                        <div class="team-desc team-desc-bg">
+                                            <div class="team-title">
                                                 <h4>{{categories['name']}} </h4>
-                                            </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </data-owl-carousel>                           
 
