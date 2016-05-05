@@ -60,6 +60,9 @@ get_header();
                                         <button onclick="return false" ng-click="signIn()" class="button button-3d button-black nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>
                                         <a href="#" class="fright">Forgot Password?</a>
                                     </div>
+                                    <div class="col_full">
+                                        <?php do_action('facebook_login_button'); ?>
+                                    </div>
                                     <div ng-if="errorLog != null" class="alert alert-{{errorLog['errorType']}} col_full nobottommargin">
                                         {{errorLog['msg']}}
                                     </div>

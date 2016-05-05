@@ -104,7 +104,7 @@ endif;
                                 $getFilterPoints = formatNumberAbbreviation($getUserPoints[0]);
                                 ?>
                                 <div id="top-cart">
-                                    <a href="#" id="top-cart-trigger"><i class="fa fa-money fa-lg"></i><span><?= $getFilterPoints ?></span></a>
+                                    <a href="#" id="top-cart-trigger"><i class="fa fa-money fa-lg" style="font-size:36px;"></i><span><?= $getFilterPoints ?></span></a>
                                 </div><!-- #top-cart end -->
                             <?php endif; ?>
                             <?php if (empty($userName)): ?>
