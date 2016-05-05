@@ -120,7 +120,7 @@ class API {
     function myAccount($info) {
         $myAccount['userInfo'] = $this->getUserDetails();
         $myAccount['userBets'] = $this->getUserBets();
-        $myAccount['unClearedPoints']=$this->getUnclearedPoints();
+        $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
         return $myAccount;
     }
 
@@ -156,7 +156,8 @@ class API {
     }
 
     function upcomingMatches() {
-        $dateFormat = strtotime('+18 hour 1 minute');
+        //$dateFormat = strtotime('+18 hour 1 minute');
+        $dateFormat =time();
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'start_date',
@@ -223,8 +224,8 @@ class API {
                 'key' => 'end_date',
                 'value' => $dateFormat,
                 'compare' => '>=',
-                'order_by'=>'start_date',
-                'order'=>'ASC'
+                'order_by' => 'start_date',
+                'order' => 'ASC'
             ]
         ];
         return $this->getResult($args);
@@ -271,7 +272,7 @@ class API {
             'order' => 'ASC',
             'meta_query' =>
             [
-                'key' => 'start_date',
+                'key' => 'end_date',
                 'value' => $dateFormat,
                 'compare' => '>=',
             ],
@@ -664,7 +665,7 @@ class API {
 
     function getUnclearedPoints() {
         global $wpdb;
-        $userId=$this->userId;
+        $userId = $this->userId;
         $getUnClearedPoints = $wpdb->get_results("SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=$userId AND cleared=0 GROUP BY uid");
         return $getUnClearedPoints[0]->unclearedPoints;
     }
