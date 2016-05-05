@@ -107,10 +107,11 @@ endif;
                                     <a href="#" id="top-cart-trigger"><i class="fa fa-money fa-lg"></i><span><?= $getFilterPoints ?></span></a>
                                 </div><!-- #top-cart end -->
                             <?php endif; ?>
-                            <div id="top-search">
-                                <a href="#" class=""><span class=""><i class="icon-facebook"></i></span><span class="ts-text"></span></a>
-                            </div><!-- #top-search end -->
-
+                            <?php if (empty($userName)): ?>
+                                <div id="top-search">
+                                    <a href="#" class=""><span class=""><i class="icon-facebook"></i></span><span class="ts-text"></span></a>
+                                </div><!-- #top-search end -->
+                            <?php endif; ?>
                         </nav><!-- #primary-menu end -->
 
                     </div>
