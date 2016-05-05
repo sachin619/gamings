@@ -219,6 +219,7 @@ app.controller('matchesDetails', function ($scope, $http, $templateCache) {
 });
 
 app.controller('listingTour', function ($http, $scope, $templateCache) {
+    $scope.selectedIndex = 'home';
     $.urlParam = function (name) {
         var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
         if (results == null) {
@@ -235,7 +236,10 @@ app.controller('listingTour', function ($http, $scope, $templateCache) {
         var formData = {};
     }
     ngPost('listing-tournaments', formData, $scope, $http, $templateCache, 'getDetails');
-    $scope.filter = function (catName) {
+    $scope.selectedIndex = 'home';
+    $scope.filter = function (catName,index) {
+        $scope.selectedIndex=index;
+        console.log(index);
         $('.hide-loadMore').show();
         $scope.getCat = catName;
         var formInfo = {'categoryName': catName};
@@ -251,9 +255,11 @@ app.controller('listingTour', function ($http, $scope, $templateCache) {
 });
 
 app.controller('listingMatch', function ($http, $scope, $templateCache) {
+    $scope.selectedIndex='home';
     var formData = {};
     ngPost('listing-matches', formData, $scope, $http, $templateCache, 'getDetails');
-    $scope.filter = function (catName) {
+    $scope.filter = function (catName,$index) {
+        $scope.selectedIndex=$index;
         $('.hide-loadMore').show();
         $scope.getCat = catName;
         var formInfo = {'categoryName': catName};

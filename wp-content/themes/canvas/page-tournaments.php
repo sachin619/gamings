@@ -39,8 +39,8 @@ get_header();
                 ============================================= -->
                 <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
 
-                    <li class="activeFilter"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('')">Show All</a></li>
-                    <li ng-repeat="categories in getDetails.catName"><a href="#" onclick="return false;" ng-click="filter(categories['catName'])" data-filter=".pf-{{categories['catName']}}">{{categories['catName']}}</a></li>
+                    <li class="" ng-class="{activeFilter: selectedIndex==='home' || selectedIndex===$index }"><a href="#" data-filter="*"  onclick="return false;" ng-click="filter('')"  >Show All</a></li>
+                    <li ng-repeat="categories in getDetails.catName" ng-class="{activeFilter: $index===selectedIndex}"><a href="#" onclick="return false;" ng-click="filter(categories['catName'],$index)"  data-filter=".pf-{{categories['catName']}}">{{categories['catName']}}</a></li>
 
                 </ul><!-- #portfolio-filter end -->
 
