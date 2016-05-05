@@ -222,7 +222,9 @@ class API {
             'meta_query' => [
                 'key' => 'end_date',
                 'value' => $dateFormat,
-                'compare' => '>='
+                'compare' => '>=',
+                'order_by'=>'start_date',
+                'order'=>'ASC'
             ]
         ];
         return $this->getResult($args);
@@ -263,10 +265,10 @@ class API {
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'start_date',
-            'order_by' => 'meta_value_num',
+            'order_by' => 'start_date',
             'category_name' => $categorySlug,
             'posts_per_page' => $getPageCount,
-            'order' => 'DESC',
+            'order' => 'ASC',
             'meta_query' =>
             [
                 'key' => 'start_date',
