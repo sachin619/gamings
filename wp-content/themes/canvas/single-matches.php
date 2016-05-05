@@ -74,9 +74,14 @@ get_header();
 
                                 <td width="30%"> {{teamInfo.team_name['post_title']}}</td>
                                 <td ><span ng-if="getDetails['details'][0].uid != null"> {{getDetails['pts'][$index][0].total}} </span></td>
-                                <td class="blockTrade" ng-if="teamInfo.winner === 'No'"><input type="text" name="pts" ng-model="$parent.points"  placeholder="Trade"></td>
-                                <td class="blockAction" ng-if="teamInfo.winner === 'No'"><button ng-click="trade(getDetails['details'][0]['postLink'], getDetails['details'][0].id, teamInfo.team_name['ID'], points, getDetails['details'][0].uid)" >Add</button></td>
-                                <td colspan="2" ng-if="teamInfo.winner !== 'No'">Looser</td>  
+                                <td class="blockTrade" >
+                                    <input type="text" ng-if="teamInfo.winner === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" name="pts" ng-model="$parent.points"  placeholder="Trade">
+                                    <span colspan="2" ng-if="teamInfo.winner !== 'No'">Looser</span>  
+                                    <span colspan="2" ng-if="teamInfo.winner !== 'Yes' && getDetails['details'][0]['points_distributed'] === 'Yes' ">Winner</span>  
+                                </td>
+                                <td class="blockAction" >
+                                    <button ng-click="trade(getDetails['details'][0]['postLink'], getDetails['details'][0].id, teamInfo.team_name['ID'], points, getDetails['details'][0].uid)" ng-if="teamInfo.winner === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" >Add</button>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Total</th>

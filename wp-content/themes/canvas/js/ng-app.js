@@ -70,7 +70,7 @@ app.controller('myAccount', function ($scope, $http, $templateCache) {
 
         //alert(form_data);                             
         $.ajax({
-            url:domain+'upload-img', // point to server-side PHP script 
+            url: domain + 'upload-img', // point to server-side PHP script 
             dataType: 'text', // what to expect back from the PHP script, if anything
             cache: false,
             contentType: false,
@@ -237,8 +237,8 @@ app.controller('listingTour', function ($http, $scope, $templateCache) {
     }
     ngPost('listing-tournaments', formData, $scope, $http, $templateCache, 'getDetails');
     $scope.selectedIndex = 'home';
-    $scope.filter = function (catName,index) {
-        $scope.selectedIndex=index;
+    $scope.filter = function (catName, index) {
+        $scope.selectedIndex = index;
         console.log(index);
         $('.hide-loadMore').show();
         $scope.getCat = catName;
@@ -255,11 +255,11 @@ app.controller('listingTour', function ($http, $scope, $templateCache) {
 });
 
 app.controller('listingMatch', function ($http, $scope, $templateCache) {
-    $scope.selectedIndex='home';
+    $scope.selectedIndex = 'home';
     var formData = {};
     ngPost('listing-matches', formData, $scope, $http, $templateCache, 'getDetails');
-    $scope.filter = function (catName,$index) {
-        $scope.selectedIndex=$index;
+    $scope.filter = function (catName, $index) {
+        $scope.selectedIndex = $index;
         $('.hide-loadMore').show();
         $scope.getCat = catName;
         var formInfo = {'categoryName': catName};
@@ -300,13 +300,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                     }
                 } else {
                     $scope[errorBlock] = response;
-                    angular.element(document).ready(function () {
-                        console.log(response);
-                        if ($('.blockTrade').length === 1) {
-                            $('.blockTrade').replaceWith("<td colspan='2'>Winner </td>");
-                            $('.blockAction').replaceWith("");
-                        }
-                    });
+  
                 }
                 ;
             }).
@@ -335,3 +329,10 @@ $(document).on('click', 'body', function () {
 //        $('.sweet-overlay').remove();
 
 });
+
+function hideDiv(){
+    $(document).ready(function(){
+           console.log($('.demo').html());  
+
+    });
+}

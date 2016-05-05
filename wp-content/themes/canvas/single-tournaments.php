@@ -49,7 +49,7 @@ get_header();
                         <p class="mb20"><span class="bld"> Official Website: </span><a href={{getDetails['details'][0].website_link}} target="_blank">{{getDetails['details'][0].website_link}}</a></p>
 
 
-                        <h4 ng-if="getDetails['totalBets'][0].total>0">Total Points Traded So far: {{getDetails['totalBets'][0].total}} Points</h4>
+                        <h4 ng-if="getDetails['totalBets'][0].total > 0">Total Points Traded So far: {{getDetails['totalBets'][0].total}} Points</h4>
 
                         <h5 ng-if="getDetails['details'][0].premium > 1">Premium value : {{getDetails['details'][0].premium}} </h5>
                     </div>
@@ -73,15 +73,20 @@ get_header();
                         </thead>
                         <tbody> 
 
-
                             <tr   ng-repeat="teamInfo in getDetails['details'][0].participating_team">
 
-                                <td width="30%"> {{teamInfo.team['post_title']}}</td>               
+                                <td class="demo" width="30%"> {{teamInfo.team['post_title']}}</td>               
                                 <td > <span ng-if="getDetails['details'][0].uid != null"> {{getDetails['pts'][$index][0].total}} </span></td>
-                                <td class="blockTrade" ng-if="teamInfo.eliminated === 'No'"><input  type="text" name="pts" ng-model="$parent.points"   placeholder="Trade">
+                                <td class="blockTrade" ng-class="statusInfo"  >
+                                    <input ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" type="text" name="pts" ng-model="$parent.points"   placeholder="Trade">
+                                    <span ng-if="getDetails['details'][0]['points_distributed'] === 'Yes' && teamInfo.eliminated === 'No'">Winner </span>
+                                    <span  class="stage" ng-if="teamInfo.eliminated !== 'No'"><span>This Team had been Eliminated.</span></span>       
+
                                 </td>
-                                <td class="blockAction" ng-if="teamInfo.eliminated === 'No'"><button  ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Add</button></td>
-                                <td colspan="2" class="stage" ng-if="teamInfo.eliminated !== 'No'"><span>This Team had been Eliminated.</span></td>       
+                                <td class="blockAction" >
+                                    <button  ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Add</button>
+
+                                </td>
 
                             </tr>
 
