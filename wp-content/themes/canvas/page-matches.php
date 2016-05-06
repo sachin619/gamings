@@ -7,9 +7,7 @@
  */
 get_header();
 ?>
-<style type="text/css">
-    .portfolio-item{width: 33%!important;}
-</style>
+
 <section ng-controller="listingMatch"> 
     <!-- Page Title
             ============================================= -->
