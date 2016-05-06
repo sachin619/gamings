@@ -28,31 +28,131 @@ $userEmail = $userInfo->user_email;
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bhoechie-tab-container">
                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 bhoechie-tab-menu">
                     <div class="list-group">
+
                         <a href="#" class="list-group-item active text-center">
-                            <h4 class="fa fa-user fa-lg"></h4><br/>EDIT PROFILE
-                        </a>
+                            <h4 class="fa fa-money fa-lg"></h4><br/>MY POINTS
+                        </a>   <!--My points -->
                         <a href="#" class="list-group-item text-center">
                             <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>MY BETS
-                        </a>
+                        </a>    <!-- My bets-->                   
                         <a href="#" class="list-group-item text-center">
-                            <h4 class="fa fa-shopping-cart fa-lg"></h4><br/>Purchase History
-                        </a>
+                            <h4 class="fa fa-shopping-cart fa-lg"></h4><br/>PURCHASE HISTORY
+                        </a>   <!-- Purchase History -->
                         <a href="#" class="list-group-item text-center">
                             <h4 class="fa fa-database fa-lg"></h4><br/>BUY MORE POINTS
-                        </a>
+                        </a>   <!-- Buy More Points -->
                         <a href="#" class="list-group-item text-center">
                             <h4 class="fa fa-money fa-lg"></h4><br/>ENCASH MY POINTS
-                        </a>
+                        </a>   <!-- Encash My Points -->
+                        <a href="#" class="list-group-item  text-center">
+                            <h4 class="fa fa-user fa-lg"></h4><br/>EDIT PROFILE
+                        </a>   <!-- edit profile-->
                         <a href="#" class="list-group-item text-center">
                             <h4 class="fa fa-user fa-lg"></h4><br/>CHANGE PASSWORD
-                        </a>
-                        <a href="#" class="list-group-item text-center">
-                            <h4 class="fa fa-money fa-lg"></h4><br/>MY POINTS
-                        </a>
+                        </a>   <!-- Change Password -->
+
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 bhoechie-tab">
-                    <!-- flight section -->
+
+                    <div class="bhoechie-tab-content">
+                        <form class="form-horizontal">
+
+                            <div class="form-group">
+                                <label for="oPass" class="col-sm-3 control-label">Cleared Points</label>
+                                <div class="col-sm-9">
+                                    {{myAccount['userInfo']['points'][0]}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-sm-3 control-label">Uncleared Points</label>
+                                <div class="col-sm-9">
+                                    {{myAccount['unClearedPoints']}}
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div> <!-- My points -->
+                    <div class="bhoechie-tab-content">
+                        <div class="tabColumn">
+                            <table class = "table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Tournaments</th>
+                                        <th>Match</th>
+                                        <th>Team</th>
+                                        <th>Points</th>
+                                        <th>Bet Placed On</th>
+
+                                    </tr>
+                                </thead>						   
+                                <tbody>
+                                    <tr ng-repeat="myInfo in myAccount['userBets']">
+                                        <td >{{myInfo['tourTitle'][$index]}}</td>
+                                        <td>{{myInfo['matchTitle'][$index]}}</td>
+                                        <td>{{myInfo['teamTitle'][$index]}}</td>
+                                        <td>{{myInfo['pts'][$index]}}</td>
+                                        <td>{{myInfo['bet_at'][$index]}}</td>
+
+                                    </tr>						      
+
+                                </tbody>							
+                            </table>
+                        </div>
+                    </div>   <!-- My bets-->
+                    <div class="bhoechie-tab-content">
+                        <div class="tabColumn">
+                            <table class = "table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Transaction Id</th>
+                                        <th>Points Purchased On</th>
+                                        <th>Points Paid</th>
+                                    </tr>
+                                </thead>						   
+                                <tbody>
+
+                                </tbody>							
+                            </table>
+                        </div>
+                    </div>   <!-- Purchase History -->
+                    <div class="bhoechie-tab-content">
+                        <div class="tabColumn">
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-3 control-label">Buy Points</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="name" placeholder="Buy Points">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-9">
+                                        <button type="submit" class="btn btn-danger">Pay Now</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>   <!-- Buy More Points -->
+                    <div class="bhoechie-tab-content">
+                        <div class="tabColumn">
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-3 control-label">Encash Points</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="name" placeholder="Encash Points">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-9">
+                                        <button type="submit" class="btn btn-danger">Pay Now</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>   <!--  Encash My Points -->
                     <div class="bhoechie-tab-content active">
                         <div class="tabColumn">
                             <form class="form-horizontal">
@@ -95,89 +195,7 @@ $userEmail = $userInfo->user_email;
                                 </div>
                             </form>
                         </div>
-                    </div>
-                    <!-- train section -->
-                    <div class="bhoechie-tab-content">
-                        <div class="tabColumn">
-                            <table class = "table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Tournaments</th>
-                                        <th>Match</th>
-                                        <th>Team</th>
-                                        <th>Points</th>
-                                        <th>Bet Placed On</th>
-
-                                    </tr>
-                                </thead>						   
-                                <tbody>
-                                    <tr ng-repeat="myInfo in myAccount['userBets']">
-                                        <td >{{myInfo['tourTitle'][$index]}}</td>
-                                        <td>{{myInfo['matchTitle'][$index]}}</td>
-                                        <td>{{myInfo['teamTitle'][$index]}}</td>
-                                        <td>{{myInfo['pts'][$index]}}</td>
-                                        <td>{{myInfo['bet_at'][$index]}}</td>
-
-                                    </tr>						      
-
-                                </tbody>							
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- hotel search -->
-                    <div class="bhoechie-tab-content">
-                        <div class="tabColumn">
-                            <table class = "table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Transaction Id</th>
-                                        <th>Points Purchased On</th>
-                                        <th>Points Paid</th>
-                                    </tr>
-                                </thead>						   
-                                <tbody>
-
-                                </tbody>							
-                            </table>
-                        </div>
-                    </div>
-                    <div class="bhoechie-tab-content">
-                        <div class="tabColumn">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-3 control-label">Buy Points</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="name" placeholder="Buy Points">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-3 col-sm-9">
-                                        <button type="submit" class="btn btn-danger">Pay Now</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="bhoechie-tab-content">
-                        <div class="tabColumn">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-3 control-label">Encash Points</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="name" placeholder="Encash Points">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-3 col-sm-9">
-                                        <button type="submit" class="btn btn-danger">Pay Now</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    </div>   <!-- edit profile-->
                     <div class="bhoechie-tab-content">
                         <form id="changePassword" name="changePassword" class="form-horizontal">
 
@@ -218,27 +236,8 @@ $userEmail = $userInfo->user_email;
                                 </div>
                             </div>
                         </form>
-                    </div>
+                    </div>  <!-- Change Password -->
 
-                    <div class="bhoechie-tab-content">
-                        <form class="form-horizontal">
-
-                            <div class="form-group">
-                                <label for="oPass" class="col-sm-3 control-label">Cleared Points</label>
-                                <div class="col-sm-9">
-                                    {{myAccount['userInfo']['points'][0]}}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="password" class="col-sm-3 control-label">Uncleared Points</label>
-                                <div class="col-sm-9">
-                                    {{myAccount['unClearedPoints']}}
-                                </div>
-                            </div>
-
-
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
