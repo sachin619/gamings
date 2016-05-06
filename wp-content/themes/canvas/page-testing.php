@@ -4,7 +4,10 @@ wp_head();
 ?>
 <!--<img src="http://localhost/gamings/wp-content/uploads/profile/loader.gif" />-->
 <?php
-
+//echo time();
+ $date = date('m/d/Y h:i:s a', time());
+echo strtotime($date);
+exit;
 global $wpdb;
 $getUnClearedPoints=$wpdb->get_results('SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=1 AND cleared=0 GROUP BY uid');
 print_r($getUnClearedPoints[0]->unclearedPoints);exit;

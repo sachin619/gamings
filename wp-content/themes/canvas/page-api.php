@@ -157,7 +157,7 @@ class API {
 
     function upcomingMatches() {
         //$dateFormat = strtotime('+18 hour 1 minute');
-        $dateFormat =time();
+        $dateFormat = time();
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'start_date',
@@ -219,13 +219,11 @@ class API {
     function upcomingOngoingTournaments($categorySlug, $getPageCount) {
         $postPerPage = $getPageCount;
         $dateFormat = date('Ymd');
-        $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => $postPerPage, 'meta_key' => 'start_date', 'orderby' => 'meta_value_num', 'order' => 'DESC',
+        $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => $postPerPage, 'meta_key' => 'start_date', 'orderby' => 'start_date', 'order' => 'ASC',
             'meta_query' => [
                 'key' => 'end_date',
                 'value' => $dateFormat,
-                'compare' => '>=',
-                'order_by' => 'start_date',
-                'order' => 'ASC'
+                'compare' => '>='
             ]
         ];
         return $this->getResult($args);
@@ -489,6 +487,7 @@ class API {
         $query = new WP_Query($args);
         while ($query->have_posts()): $query->the_post();
             $id = get_the_ID();
+            $postType = get_post_type($id);
             $post = [
                 'id' => $id,
                 'uid' => $userId,
@@ -502,8 +501,21 @@ class API {
                 $post[$k] = $v;
                 if ($k == 'start_date'):$post['matchStartDate'] = date('M', strtotime($v));
                     $post['matchStartTime'] = date('H:i', strtotime($v));
+                    if ($postType == 'matches'):
+                        $post['start_date'] = date('d M, Y H:i a', strtotime($v));
+                    else:
+                        $post['start_date'] = date('d M, Y', strtotime($v));
+
+                    endif;
                 elseif ($k == 'end_date'):$post['matchEndDate'] = date('M', strtotime($v));
                     $post['matchEndTime'] = date('H:i', strtotime($v));
+                    if ($postType == 'matches'):
+                        $post['end_date'] = date('d M, Y H:i a', strtotime($v));
+                    else:
+                        $post['end_date'] = date('d M, Y', strtotime($v));
+
+                    endif;
+
                 endif;
             }
 
