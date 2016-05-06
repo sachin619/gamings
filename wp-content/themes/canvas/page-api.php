@@ -466,9 +466,9 @@ class API {
         $email = email_exists($userInfo['data']['user_email']); //check if email id exist
         $username = username_exists($userInfo['data']['user_login']); //check username exists
         if ($email != ""):
-            return ['msg' => "Email Id already exist", 'errorType' => 'info'];
+            return ['msg' => "Email Id already exist", 'errorType' => 'danger'];
         elseif ($username != ""):
-            return ['msg' => "Username already exist", 'errorType' => 'info'];
+            return ['msg' => "Username already exist", 'errorType' => 'danger'];
         else:
             $user_id = wp_insert_user($userData);
             update_user_meta($user_id, 'phone', $userInfo['data']['phone']);

@@ -108,6 +108,8 @@ app.controller('myAccount', function ($scope, $http, $templateCache) {
 });
 
 app.controller('signupCtrl', function ($scope, $http, $templateCache) {
+    formData = {};
+    ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
     $scope.signUp = function () {
         var formData = {
             'user_login': document.registerForm.username.value,
@@ -120,6 +122,8 @@ app.controller('signupCtrl', function ($scope, $http, $templateCache) {
         ngPost('registration', formData, $scope, $http, $templateCache, 'errorReg');
     };
     $scope.signIn = function () {
+        $('.loader').show();
+        $('.alert').hide();
         var formData = {
             'userName': document.loginForm.username.value,
             'password': document.loginForm.password.value
@@ -282,6 +286,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
         cache: $templateCache
     }).
             success(function (response) {
+                if(typeName=='login'){  $('.loader').hide();$('.alert').show();};
                 $.urlParam = function (name) {
                     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
                     if (results == null) {
@@ -293,6 +298,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                 };
                 if (response === "success_login") {
                     if ($.urlParam('url') == null) {
+                        $('.alert').hide();
                         window.location.href = base_url + 'my-account/';
                     } else {
                         window.location.href = sessionStorage.getItem("url");
@@ -300,7 +306,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                     }
                 } else {
                     $scope[errorBlock] = response;
-  
+
                 }
                 ;
             }).
@@ -330,9 +336,9 @@ $(document).on('click', 'body', function () {
 
 });
 
-function hideDiv(){
-    $(document).ready(function(){
-           console.log($('.demo').html());  
+function hideDiv() {
+    $(document).ready(function () {
+        console.log($('.demo').html());
 
     });
 }

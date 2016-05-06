@@ -57,16 +57,19 @@ get_header();
                                     </div>
 
                                     <div class="col_full">
-                                        <button onclick="return false" ng-click="signIn()" class="button button-3d button-black nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>
+                                        <button onclick="return false"  ng-click="signIn()" class="button loginButton button-3d button-black nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>
+                                        <span class="loader loaderAlign"><img src={{myAccount['userInfo']['loaderImg']}} /></span>
+
                                         <a href="#" class="fright">Forgot Password?</a>
                                     </div>
-                                    <div class="col_full">
-                                        <?php do_action('facebook_login_button'); ?>
-                                    </div>
-                                    <div ng-if="errorLog != null" class="alert alert-{{errorLog['errorType']}} col_full nobottommargin">
+                                    <div class='customAlert'>
+                                    <div ng-if="errorLog != null" class="alert  alert-{{errorLog['errorType']}} col_full nobottommargin">
                                         {{errorLog['msg']}}
                                     </div>
-
+                                    </div>
+                                    <div class="col_full"><br>
+                                        <?php do_action('facebook_login_button'); ?>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -134,7 +137,7 @@ get_header();
                                         <div class="col_full ">
                                             <button  ng-disabled="registerForm.$invalid || !registerForm.$dirty"  ng-click="signUp()" class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" value="register">Register Now</button>                                       
                                         </div>           
-                                        <div ng-if="errorReg != null" class="alert alert-{{errorReg['errorType']}} col_full nobottommargin">
+                                        <div ng-if="errorReg != null" class="alert  alert-{{errorReg['errorType']}} col_full nobottommargin">
                                             {{errorReg['msg']}}
                                         </div>
                                 </form>
@@ -151,7 +154,17 @@ get_header();
     </div>
 
 </section><!-- #content end -->
-
+<style>
+    .loaderAlign{
+        display: none;float:left
+    }
+    .loginButton{
+        float:left;
+    }
+    .customAlert{
+        padding-top: 46px;
+    }
+</style>
 <?php
 get_footer();
 ?>
