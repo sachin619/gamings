@@ -585,7 +585,7 @@ class API {
     function getUserBets() {
         global $wpdb;
         $getAccount = [];
-        $result = $wpdb->get_results('SELECT * FROM wp_bets where uid=' . $this->userId);
+        $result = $wpdb->get_results('SELECT * FROM wp_bets where uid=' . $this->userId.' order by bet_at DESC');
         foreach ($result as $getBetDetails):
             $tourTitle[] = get_the_title($getBetDetails->tid);
             $matchTitle[] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
