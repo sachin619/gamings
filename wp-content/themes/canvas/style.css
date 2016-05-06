@@ -3744,13 +3744,13 @@ body.device-touch.device-xxs .portfolio-notitle .portfolio-desc { display: none 
 	padding: 0 20px 20px 0;
 }
 
-.portfolio-2 .portfolio-desc { padding: 20px 5px 10px; }
+.portfolio-2 .portfolio-desc { padding:10px; background: #d4202b; }
 
-.portfolio-2 .portfolio-desc h3 { font-size: 21px; }
+.portfolio-2 .portfolio-desc h3 { font-size: 20px; color: #fff;}
 
 .portfolio-2 .portfolio-desc span {
 	margin-top: 4px;
-	font-size: 14px;
+	font-size: 14px; color: #ccc;
 }
 
 
@@ -11365,7 +11365,7 @@ button.toast-close-button {
 
 
 #footer {
-	position: relative;
+	position: relative; margin: 0px!important;
 	background-color: #EEE;
 	border-top: 5px solid rgba(0,0,0,0.2);
 }

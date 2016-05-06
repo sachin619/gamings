@@ -37,16 +37,16 @@ get_header();
 
                 <!-- Portfolio Filter
                 ============================================= -->
-                <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
+                <!-- <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
 
                     <li class="" ng-class="{activeFilter: selectedIndex==='home' || selectedIndex===$index }"><a href="#" data-filter="*"  onclick="return false;" ng-click="filter('')"  >Show All</a></li>
                     <li ng-repeat="categories in getDetails.catName" ng-class="{activeFilter: $index===selectedIndex}"><a href="#" onclick="return false;" ng-click="filter(categories['catName'],$index)"  data-filter=".pf-{{categories['catName']}}">{{categories['catName']}}</a></li>
 
-                </ul><!-- #portfolio-filter end -->
+                </ul> --><!-- #portfolio-filter end -->
 
-                <div id="portfolio-shuffle" class="portfolio-shuffle" data-container="#portfolio">
+                <!-- <div id="portfolio-shuffle" class="portfolio-shuffle" data-container="#portfolio">
                     <i class="icon-random"></i>
-                </div>
+                </div> -->
 
                 <div class="clear"></div>
 
@@ -54,17 +54,18 @@ get_header();
                 ============================================= -->
                 <div  ng-init="i = 1" class="portfolio grid-container portfolio-2 clearfix main-container">
 
-                    <article ng-repeat="getPost in getDetails.catPost" class="portfolio-item pf-hide pf-media pf-{{getPost['category'][0]['name']}}">
+                    <article ng-repeat="getPost in getDetails.catPost" class="col-md-4 pf-hide pf-media pf-{{getPost['category'][0]['name']}}" style="margin: 0 0 20px 0;">
+                        <a href={{getPost['postLink']}}>
                         <div class="portfolio-image" ng-init="$parent.j = $parent.i = i + 1" >
-                            <a href={{getPost['postLink']}}>
-                                <img src={{getPost['img']}} alt="Open Imagination">
-                            </a>
-                            <div class="portfolio-overlay">
+                            
+                                <img src={{getPost['img']}} alt="Open Imagination" width="100%" height="200px">
+                           
+                            <!-- <div class="portfolio-overlay">
                                 <a href={{getPost['postLink']}} ><i class="icon-link"></i></a>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="portfolio-desc">
-                            <h3><a href={{getPost['postLink']}}>{{getPost['title']}}</a></h3>
+                            <h3>{{getPost['title']}}</h3>
                             <span>
                                 <strong ng-if="getDetails.tradeTotal[$index].total > 0">Total Trade: {{getDetails.tradeTotal[$index].total}} Points</strong>
                                 <strong ng-if="getDetails.tradeTotal[$index].total <= 0">Total Trade: Not Yet Bet</strong>
@@ -72,11 +73,16 @@ get_header();
                                 {{getPost['start_date']}} - {{getPost['end_date']}}, {{getPost['venue']}}
                             </span>
                         </div>
+                         </a>
                     </article>
 
                 </div><!-- #portfolio end -->
-                <div ng-if="getDetails.catPost.length >= 4" class="col-lg-12 hide-loadMore"  style="text-align: center">
-                    <button type="button" class="btn btn-primary"  ng-click="loadMore(getCat, getDetails.catPost.length + 4)">Load More </button>
+                <div class="col-lg-12" style="margin: 20px 0px;">
+                <div class="col-md-4"></div>
+                <div ng-if="getDetails.catPost.length >= 4" class="col-md-4 hide-loadMore">
+                    <button type="button" class="btn btn-danger btn-lg btn-block"  ng-click="loadMore(getCat, getDetails.catPost.length + 4)">Load More </button>
+                </div>
+                <div class="col-md-4"></div>
                 </div>
             </div>
 
