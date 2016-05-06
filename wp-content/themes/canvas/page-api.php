@@ -234,7 +234,7 @@ class API {
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
-            $getPageCount = 4;
+            $getPageCount = 6;
         endif;
         $getCat = $this->getCategories(['parent' => 1]);
         $result = $this->upcomingOngoingTournaments($categorySlug, $getPageCount);
@@ -257,7 +257,7 @@ class API {
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
-            $getPageCount = 4;
+            $getPageCount = 6;
         endif;
         $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);
