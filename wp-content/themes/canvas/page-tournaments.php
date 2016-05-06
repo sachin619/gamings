@@ -37,12 +37,12 @@ get_header();
 
                 <!-- Portfolio Filter
                 ============================================= -->
-                <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
+                <!-- <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
 
                     <li class="" ng-class="{activeFilter: selectedIndex==='home' || selectedIndex===$index }"><a href="#" data-filter="*"  onclick="return false;" ng-click="filter('')"  >Show All</a></li>
                     <li ng-repeat="categories in getDetails.catName" ng-class="{activeFilter: $index===selectedIndex}"><a href="#" onclick="return false;" ng-click="filter(categories['catName'],$index)"  data-filter=".pf-{{categories['catName']}}">{{categories['catName']}}</a></li>
 
-                </ul><!-- #portfolio-filter end -->
+                </ul> --><!-- #portfolio-filter end -->
 
                 <!-- <div id="portfolio-shuffle" class="portfolio-shuffle" data-container="#portfolio">
                     <i class="icon-random"></i>
@@ -79,8 +79,8 @@ get_header();
                 </div><!-- #portfolio end -->
                 <div class="col-lg-12" style="margin: 20px 0px;">
                 <div class="col-md-4"></div>
-                <div ng-if="getDetails.catPost.length >= 6" class="col-md-4 hide-loadMore">
-                    <button type="button" class="btn btn-danger btn-lg btn-block"  ng-click="loadMore(getCat, getDetails.catPost.length + 6)">Load More </button>
+                <div ng-if="getDetails.catPost.length >= 4" class="col-md-4 hide-loadMore">
+                    <button type="button" class="btn btn-danger btn-lg btn-block"  ng-click="loadMore(getCat, getDetails.catPost.length + 4)">Load More </button>
                 </div>
                 <div class="col-md-4"></div>
                 </div>
