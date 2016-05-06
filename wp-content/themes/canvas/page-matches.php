@@ -54,7 +54,7 @@ get_header();
                 ============================================= -->
                 <div  ng-init="i=1"  id="portfolio" class="portfolio grid-container portfolio-2 clearfix main-container">
 
-                    <article ng-repeat="getPost in getDetails.catPost" class="portfolio-item col-md-4 pf-hide pf-media pf-{{getPost['category'][0]['name']}}">
+                    <article ng-repeat="getPost in getDetails.catPost" class="col-md-4 pf-hide pf-media pf-{{getPost['category'][0]['name']}}">
                         <div ng-init="$parent.j=$parent.i=i+1" class="portfolio-image" >
                             <a href="{{getPost['postLink']}}">
                                 <img src="{{getPost['img']}}" alt="Open Imagination">
