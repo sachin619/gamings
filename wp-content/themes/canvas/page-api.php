@@ -326,7 +326,7 @@ class API {
                 $count[] = $teamFilter[0]['ID'];
             endif;
         }
-        $getEndTime = strtotime($getTeams[0]['end_date']);
+        $getEndTime = strtotime($getTeams[0]['end_date_original']);
         $getCurrentTime = time();
         $getWinnerCount = count($count);/** get count of eliminated team** */
         $getTourId = isset($getTeams[0]['tournament_name']->ID) ? $getTeams[0]['tournament_name']->ID : 0;
@@ -344,7 +344,7 @@ class API {
                         return "Not have enough points";
                     endif;
                 else:
-                    return "Tournament had been over";
+                    return "Match had been over";
                 endif;
             else:
                 return "Minimum Points should be $getMinimumBetAmount";
@@ -501,6 +501,7 @@ class API {
                 $post[$k] = $v;
                 if ($k == 'start_date'):$post['matchStartDate'] = date('M', strtotime($v));
                     $post['matchStartTime'] = date('H:i', strtotime($v));
+                    $post['start_date_original'] = $v;
                     if ($postType == 'matches'):
                         $post['start_date'] = date('d M, Y H:i a', strtotime($v));
                     else:
@@ -508,6 +509,7 @@ class API {
 
                     endif;
                 elseif ($k == 'end_date'):$post['matchEndDate'] = date('M', strtotime($v));
+                    $post['end_date_original'] = $v;
                     $post['matchEndTime'] = date('H:i', strtotime($v));
                     if ($postType == 'matches'):
                         $post['end_date'] = date('d M, Y H:i a', strtotime($v));

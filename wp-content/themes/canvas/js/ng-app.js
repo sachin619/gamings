@@ -149,7 +149,6 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
                 'mid': tid,
                 'pts': points,
                 'slug': slug
-
             };
             tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
         } else {
@@ -164,11 +163,11 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
                 'tid': tid,
                 'team_id': teamId,
                 'pts': pts,
-                'slug': slug
+                'slug': slug,
+                'type': 'tournaments'
 
             };
             tourDetails('trade', formData, $scope, $http, $templateCache, 'blockName');
-
         } else {
             sessionStorage.setItem("url", document.URL);
             window.location = base_url + "register?url=redirect";
@@ -204,8 +203,8 @@ app.controller('matchesDetails', function ($scope, $http, $templateCache) {
             var formData = {
                 'mid': tid,
                 'pts': pointsTeamId,
-                'slug': slug
-
+                'slug': slug,
+                'type': 'matches'
             };
             tourDetails('multi-trade-match', formData, $scope, $http, $templateCache, 'blockName');
         } else {
@@ -286,7 +285,11 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
         cache: $templateCache
     }).
             success(function (response) {
-                if(typeName=='login'){  $('.loader').hide();$('.alert').show();};
+                if (typeName == 'login') {
+                    $('.loader').hide();
+                    $('.alert').show();
+                }
+                ;
                 $.urlParam = function (name) {
                     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
                     if (results == null) {
@@ -323,6 +326,14 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         cache: $templateCache
     }).then(function (response) {
+        if (formData['type'] === 'tournaments') {
+            var formDataReload = {'postId': formData['slug']};
+            ngPost('tournaments-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
+        }
+        else if (formData['type'] === 'matches') {
+            var formDataReload = {'postId': formData['slug']};
+            ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
+        }
         $('.loader').hide();
         swal({
             title: response.data
