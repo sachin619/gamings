@@ -585,15 +585,19 @@ class API {
     function getUserBets() {
         global $wpdb;
         $getAccount = [];
-        $result = $wpdb->get_results('SELECT * FROM wp_bets where uid=' . $this->userId.' order by bet_at DESC');
+        $result = $wpdb->get_results('SELECT * FROM wp_bets where uid=' . $this->userId . ' order by bet_at DESC');
+       $i=1;
         foreach ($result as $getBetDetails):
-            $tourTitle[] = get_the_title($getBetDetails->tid);
-            $matchTitle[] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
-            $teamTitle[] = get_the_title($getBetDetails->team_id);
-            $pts[] = $getBetDetails->pts;
-            $bet_at[] = $getBetDetails->bet_at;
-            array_push($getAccount, ['tourTitle' => $tourTitle, 'matchTitle' => $matchTitle, 'teamTitle' => $teamTitle, 'pts' => $pts, 'bet_at' => $bet_at]);
+            $tourDetails['id']=$i++; 
+            $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
+            $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
+            $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
+            $tourDetails['pts'] = $getBetDetails->pts;
+            $tourDetails['bet_at'] = $getBetDetails->bet_at;
+            array_push($getAccount, ['tourDetails' => $tourDetails]);
+
         endforeach;
+
         return $getAccount;
     }
 

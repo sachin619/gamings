@@ -243,6 +243,7 @@ function twentysixteen_scripts() {
     wp_enqueue_script('ng-app', get_template_directory_uri() . '/js/ng-app.js');
     wp_enqueue_script('sweetalert-min', get_template_directory_uri() . '/js/sweetalert.min.js');
     wp_enqueue_style('sweetalert-min', get_template_directory_uri() . '/css/sweetalert.min.css');
+    wp_enqueue_script('simplePagination',get_template_directory_uri().'/js/simplePagination.js');
 
     // Add Genericons, used in the main stylesheet.
     wp_enqueue_style('genericons', get_template_directory_uri() . '/genericons/genericons.css', array(), '3.4.1');
