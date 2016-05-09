@@ -4,13 +4,43 @@ wp_head();
 ?>
 <!--<img src="http://localhost/gamings/wp-content/uploads/profile/loader.gif" />-->
 <?php
+    $api=new API();
+    $api->testing();
+global $wpdb;
+
+$query = $wpdb->get_results("SELECT * FROM wp_bets");
+$i = 0;
+$combineRes[]=['id','Users','Tournaments','Matches','Teams','Points','Bet At'];
+$combineRes[]=['','','','','','',''];
+foreach ($query as $getResult):
+    //echo $getResult->id;echo "<br>";
+    $getUsername = get_userdata($getResult->uid);
+    $userName = $getUsername->data->display_name;
+    $tourName=get_the_title($getResult->tid);
+    $matchTitle= !empty( $getResult->mid)?get_the_title( $getResult->mid):'-' ;
+    $teamTitle=  get_the_title($getResult->team_id);
+    $combineRes[] = array($getResult->id, $userName,$tourName, $matchTitle,$teamTitle, $getResult->pts, $getResult->bet_at);
+endforeach;
+
+
+$fp = fopen('file.csv', 'w');
+
+foreach ($combineRes as $fields) {
+
+    fputcsv($fp, $fields);
+}
+
+fclose($fp);
+exit;
+exit;
 //echo time();
- $date = date('m/d/Y h:i:s a', time());
+$date = date('m/d/Y h:i:s a', time());
 echo strtotime($date);
 exit;
 global $wpdb;
-$getUnClearedPoints=$wpdb->get_results('SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=1 AND cleared=0 GROUP BY uid');
-print_r($getUnClearedPoints[0]->unclearedPoints);exit;
+$getUnClearedPoints = $wpdb->get_results('SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=1 AND cleared=0 GROUP BY uid');
+print_r($getUnClearedPoints[0]->unclearedPoints);
+exit;
 
 $getId = get_user_meta(12, 'profile_pic');
 

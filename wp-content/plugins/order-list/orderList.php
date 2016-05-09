@@ -23,6 +23,7 @@ class Paulund_Wp_List_Table {
      */
     public function __construct() {
         add_action('admin_menu', array($this, 'add_menu_example_list_table_page'));
+        wp_enqueue_style('jqueryUi', get_template_directory_uri() . '/css/jqueryUi.css');
         wp_enqueue_script('jquery10', get_template_directory_uri() . '/js/jquery10.js');
         wp_enqueue_script('jquery-ui', get_template_directory_uri() . '/js/jquery-ui.js');
         wp_enqueue_script('custom', get_template_directory_uri() . '/js/custom.js');
@@ -44,6 +45,7 @@ class Paulund_Wp_List_Table {
         $exampleListTable = new Example_List_Table();
         $exampleListTable->prepare_items();
         // echo "<pre>"; print_r($exampleListTable);
+        
         ?>
 
         <input type="hidden" id="basePluginUrl" value="<?= get_site_url(); ?>" />
@@ -54,8 +56,17 @@ class Paulund_Wp_List_Table {
                 <form method="post" action="<?= get_site_url(); ?>/wp-admin/admin.php?page=example-list-table.php">
                     <input type="text" value="<?= $_POST['tName'] ?>" name="tName" class="tourAuto" placeholder="Select Tournament"  />
                     <input type="text" value="<?= $_POST['matchTitle'] ?>" placeholder="Select Match"  name="matchTitle" class="matcAuto">
+                    <input type="text" class="datepicker" value="<?= $_POST['startDate'] ?>" name="startDate" placeholder="Start Date" />
+                    <input type="text" class="datepicker" name="endDate" value="<?= $_POST['endDate'] ?>" placeholder="End Date" />
                     <input type="submit" value="Search" />
                 </form>
+                <a href="<?= get_admin_url() ?>csv/file.csv"><button>Download CSV</button></a>
+                <script>
+                    $(document).ready(function () {
+                        $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
+
+                    });
+                </script>
             </div>
             <?php $exampleListTable->display(); ?>
         </div>
@@ -63,6 +74,7 @@ class Paulund_Wp_List_Table {
     }
 
 }
+
 // WP_List_Table is not loaded automatically so we need to load it in our application
 if (!class_exists('WP_List_Table')) {
     require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
@@ -125,6 +137,11 @@ class Example_List_Table extends WP_List_Table {
      * @return Array
      */
     private function table_data() {
+        $startDate = $_POST['startDate'];
+        $endDate = $_POST['endDate'];
+        if (isset($startDate) && isset($endDate)): //start and end date
+            $whereM.=" AND bet_at BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
+        endif;
         $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
         $order = isset($_GET['order']) ? $_GET['order'] : 'desc';
         $getTName = trim($_POST['tName']);
@@ -140,9 +157,28 @@ class Example_List_Table extends WP_List_Table {
             endif;
         endif;
         global $wpdb;
-        $data = $wpdb->get_results("SELECT * FROM wp_bets WHERE id IS NOT NULL  $where $whereM order by $orderby $order ", ARRAY_A);
-
+        $data = $wpdb->get_results("SELECT * FROM wp_bets WHERE id IS NOT NULL  $where $whereM   order by $orderby $order  ", ARRAY_A);
+        $this->getCsv($data);
         return $data;
+    }
+
+    public function getCsv($query) {
+        $combineRes[] = ['id', 'Users', 'Tournaments', 'Matches', 'Teams', 'Points', 'Bet At'];
+        $combineRes[] = ['', '', '', '', '', '', ''];
+        foreach ($query as $getResult):
+            //echo $getResult->id;echo "<br>";
+            $getUsername = get_userdata($getResult['uid']);
+            $userName = $getUsername->data->display_name;
+            $tourName = get_the_title($getResult['tid']);
+            $matchTitle = !empty($getResult['mid']) ? get_the_title($getResult['mid']) : '-';
+            $teamTitle = get_the_title($getResult['team_id']);
+            $combineRes[] = array($getResult['id'], $userName, $tourName, $matchTitle, $teamTitle, $getResult['pts'], $getResult['bet_at']);
+        endforeach;
+        $fp = fopen('csv/file.csv', 'w');
+        foreach ($combineRes as $fields) {
+            fputcsv($fp, $fields);
+        }
+        fclose($fp);
     }
 
     public function column_default($item, $column_name) {
