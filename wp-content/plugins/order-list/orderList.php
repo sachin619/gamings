@@ -61,12 +61,6 @@ class Paulund_Wp_List_Table {
                     <input type="submit" value="Search" />
                 </form>
                 <a href="<?= get_admin_url() ?>csv/file.csv"><button>Download CSV</button></a>
-                <script>
-                    $(document).ready(function () {
-                        $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
-
-                    });
-                </script>
             </div>
             <?php $exampleListTable->display(); ?>
         </div>
