@@ -4,6 +4,9 @@ wp_head();
 ?>
 <!--<img src="http://localhost/gamings/wp-content/uploads/profile/loader.gif" />-->
 <?php
+
+echo get_template_directory();
+exit;
     $api=new API();
     $api->testing();
 global $wpdb;

@@ -48,8 +48,16 @@ app.controller('homeCtrl', function ($scope, $http) {
             }]);
 
 app.controller('myAccount', function ($scope, Pagination, $http, $templateCache) {
-    formData = {'pagination':Pagination,'type':'myAccount'};
+    formData = {'pagination': Pagination, 'type': 'myAccount'};
     ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
+    $scope.searchByDate = function () {
+        console.log($('.startDate').val());
+        console.log($('.endDate').val());
+        var startDate=$('.startDate').val();
+        var endDate=$('.endDate').val();
+        formData = {'pagination': Pagination, 'type': 'myAccount','startDate':startDate,'endDate':endDate};
+        ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
+    };
     $scope.userUpdate = function () {
         $('.loader').show();
         var password = $('#password').val();
@@ -280,8 +288,8 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
         cache: $templateCache
     }).
             success(function (response) {
-                if (typeof response['userBets'] !== 'undefined' && formData['type']==='myAccount') {
-                    var Pagination=formData['pagination'];
+                if (typeof response['userBets'] !== 'undefined' && formData['type'] === 'myAccount') {
+                    var Pagination = formData['pagination'];
                     $scope.posts = response['userBets'];
                     $scope.pagination = Pagination.getNew(10);
                     $scope.pagination.numPages = Math.ceil($scope.posts.length / $scope.pagination.perPage);
