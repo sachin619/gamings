@@ -72,7 +72,12 @@ get_header();
                         </div>
                     </article> -->
 
-                    <div class="table-responsive">
+                    
+
+                </div><!-- #portfolio end -->
+
+
+                <div class="table-responsive">
                     <table class="table table-bordered nobottommargin">
 
                         <thead>
@@ -107,9 +112,8 @@ get_header();
                             </tr>                            
                         </tbody>
                     </table>
-                </div>
-
-                </div><!-- #portfolio end -->
+                    </div>
+                    
                 <div class="col-lg-12" ng-if="getDetails.catPost.length>=4" style="text-align: center">
                     <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 4)">Load More </button>
                 </div>
