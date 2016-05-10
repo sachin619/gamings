@@ -169,8 +169,8 @@ get_header();
                         </thead>
                         <tbody> 
                             <tr>
-                                <td>rthyhtr</td>             
-                                <td>fdgfdg</td>
+                                <td>19 May <br> 11:00</td>             
+                                <td>Tournament Name</td>
                                 <td>rthyhtr</td>             
                                 <td>fdgfdg</td>
                                 <td>erfgrefre</td>
