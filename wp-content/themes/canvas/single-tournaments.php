@@ -164,6 +164,7 @@ get_header();
                                 <th>V/S</th>
                                 <th>Team 2</th>
                                 <th>Trade</th>
+                                <th>Action</th>
                                 <th>Total Trade</th>
                             </tr>
                         </thead>
@@ -178,6 +179,7 @@ get_header();
                                 <td><a href={{matches['postLink']}}>{{matches['title']}}</a></td>
                                 <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" >
                                 <br>Yor Trade : 5000K</td>
+                                <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
                                 <td>10000K</td>
                             </tr>                            
                         </tbody>
