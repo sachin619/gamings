@@ -42,14 +42,16 @@ get_header();
 
                     <li class="" ng-class="{activeFilter: selectedIndex===$index || selectedIndex=='home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('',$index)">Popular</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter(categories['catName'],$index)" data-filter=".pf-{{categories['catName']}}">All Tournaments</a></li>
+                    <li><a href="#" onclick="return false;"  ng-click="filter(categories['catName'],$index)" data-filter=".pf-{{categories['catName']}}">Tournaments 1</a></li>
+                    <li><a href="#" onclick="return false;"  ng-click="filter(categories['catName'],$index)" data-filter=".pf-{{categories['catName']}}">Tournaments 2</a></li>
                 </ul>
 
 
-                <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
+                <!-- <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
 
                     <li class="" ng-class="{activeFilter: selectedIndex===$index || selectedIndex=='home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('',$index)">Show All</a></li>
                     <li ng-repeat="categories in getDetails.catName" ng-class="{activeFilter:selectedIndex===$index}"><a href="#" onclick="return false;"  ng-click="filter(categories['catName'],$index)" data-filter=".pf-{{categories['catName']}}">{{categories['catName']}}</a></li>
-                </ul><!-- #portfolio-filter end -->
+                </ul> --><!-- #portfolio-filter end -->
 
                 <!-- <div id="portfolio-shuffle" class="portfolio-shuffle" data-container="#portfolio">
                     <i class="icon-random"></i>
