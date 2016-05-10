@@ -153,7 +153,7 @@ get_header();
 
 
                 <div class="table-responsive">
-                    <table class="table table">
+                    <table class="table table-bordered nobottommargin">
 
                         <thead>
                             <tr>
