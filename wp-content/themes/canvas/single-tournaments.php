@@ -171,7 +171,7 @@ get_header();
                         <tbody> 
                             <tr ng-repeat="matches in getDetails.matches">
                                 <td><i class="icon-time"></i> {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
-                                <td>Tournament Name</td>
+                                <td>Tournament</td>
                                 <td><a href={{matches['postLink']}}>{{matches['title']}}</a></td>             
                                 <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" >
                                 <br>Yor Trade : 5000K</td>
