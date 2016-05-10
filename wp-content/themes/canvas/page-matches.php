@@ -98,7 +98,9 @@ get_header();
                                <th colspan="9" style="background: rgba(0,0,0,0.05);">Today</thToday> 
                             </tr>
                             <tr ng-repeat="getPost in getDetails.catPost">
-                                <td><i class="icon-time"></i> {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
+                                <td><i class="icon-time"></i> {{getPost['start_date']}} - {{getPost['end_date']}},
+                                <br><i class="icon-map-marker2"></i> {{getPost['venue']}}
+                                </td>          
                                 <td>Tournament Name</td>
                                 <td><a href={{matches['postLink']}}>{{matches['title']}}</a></td>             
                                 <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" >
@@ -113,7 +115,7 @@ get_header();
                         </tbody>
                     </table>
                     </div>
-                    
+
                 <div class="col-lg-12" ng-if="getDetails.catPost.length>=4" style="text-align: center">
                     <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 4)">Load More </button>
                 </div>
