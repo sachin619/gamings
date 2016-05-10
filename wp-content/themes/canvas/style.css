@@ -3453,7 +3453,7 @@ body.stretched .container-fullwidth .breadcrumb { right: 60px !important; }
 
 .portfolio-filter li.activeFilter a {
 	color: #FFF !important;
-	background-color: #1ABC9C;
+	background-color: #d9534f;
 	margin: -1px 0;
 	padding: 13px 18px;
 }
