@@ -28,4 +28,8 @@ function matchTrigger(term) {
     });
 }
 
+$(document).ready(function () {
+    $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
+});
+
 

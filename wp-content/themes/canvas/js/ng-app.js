@@ -9,7 +9,7 @@ var base_url = "http://localhost/gamings/";
 
 
 
-var app = angular.module('gaming', []);
+var app = angular.module('gaming', ['simplePagination']);
 app.controller('homeCtrl', function ($scope, $http) {
     $http.get(domain + "home").then(function (response) {
         $scope.home = response.data;
@@ -47,9 +47,17 @@ app.controller('homeCtrl', function ($scope, $http) {
                 };
             }]);
 
-app.controller('myAccount', function ($scope, $http, $templateCache) {
-    formData = {};
+app.controller('myAccount', function ($scope, Pagination, $http, $templateCache) {
+    formData = {'pagination': Pagination, 'type': 'myAccount'};
     ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
+    $scope.searchByDate = function () {
+        console.log($('.startDate').val());
+        console.log($('.endDate').val());
+        var startDate=$('.startDate').val();
+        var endDate=$('.endDate').val();
+        formData = {'pagination': Pagination, 'type': 'myAccount','startDate':startDate,'endDate':endDate};
+        ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
+    };
     $scope.userUpdate = function () {
         $('.loader').show();
         var password = $('#password').val();
@@ -92,8 +100,6 @@ app.controller('myAccount', function ($scope, $http, $templateCache) {
     };
 
     $scope.uploadFile = function (files) {
-        console.log(files);
-
         var fd = new FormData();
         //Take the first selected file
         fd.append("file", files[0]);
@@ -142,9 +148,6 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
         if (uid != null) {  //for login redirect
             var slug = link.split("/");
             slug = slug[slug.length - 2];
-            console.log(tid);
-            console.log(points);
-            console.log(slug);
             var formDataNew = {
                 'mid': tid,
                 'pts': points,
@@ -285,6 +288,12 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
         cache: $templateCache
     }).
             success(function (response) {
+                if (typeof response['userBets'] !== 'undefined' && formData['type'] === 'myAccount') {
+                    var Pagination = formData['pagination'];
+                    $scope.posts = response['userBets'];
+                    $scope.pagination = Pagination.getNew(10);
+                    $scope.pagination.numPages = Math.ceil($scope.posts.length / $scope.pagination.perPage);
+                }
                 if (typeName == 'login') {
                     $('.loader').hide();
                     $('.alert').show();

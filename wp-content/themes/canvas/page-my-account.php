@@ -55,7 +55,7 @@ $userEmail = $userInfo->user_email;
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 bhoechie-tab">
 
-                    <div class="bhoechie-tab-content">
+                    <div class="bhoechie-tab-content active">
                         <form class="form-horizontal">
 
                             <div class="form-group">
@@ -79,6 +79,7 @@ $userEmail = $userInfo->user_email;
                             <table class = "table table-bordered">
                                 <thead>
                                     <tr>
+                                        <th>Sr.No</th>
                                         <th>Tournaments</th>
                                         <th>Match</th>
                                         <th>Team</th>
@@ -87,16 +88,21 @@ $userEmail = $userInfo->user_email;
 
                                     </tr>
                                 </thead>						   
-                                <tbody>
-                                    <tr ng-repeat="myInfo in myAccount['userBets']">
-                                        <td >{{myInfo['tourTitle'][$index]}}</td>
-                                        <td>{{myInfo['matchTitle'][$index]}}</td>
-                                        <td>{{myInfo['teamTitle'][$index]}}</td>
-                                        <td>{{myInfo['pts'][$index]}}</td>
-                                        <td>{{myInfo['bet_at'][$index]}}</td>
-
+                                <tbody >
+                                    <tr ng-repeat="myInfo in posts| startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+                                        <td>{{myInfo['tourDetails']['id']}}</td>
+                                        <td >{{myInfo['tourDetails']['tourTitle']}}</td>
+                                        <td>{{myInfo['tourDetails']['matchTitle']}}</td>
+                                        <td>{{myInfo['tourDetails']['teamTitle']}}</td>
+                                        <td>{{myInfo['tourDetails']['pts']}}</td>
+                                        <td>{{myInfo['tourDetails']['bet_at']}}</td>
                                     </tr>						      
-
+                                <button ng-click="pagination.prevPage()">Previous</button>
+                                <button ng-click="pagination.nextPage()">Next</button>
+                                <input type="text" class="datepicker startDate" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" />
+                                <input type="text" class="datepicker endDate" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
+                                <button ng-click="searchByDate()">Search</button>
+                                <a href="<?= get_template_directory_uri().'/csv/'?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button>Download</button></a>
                                 </tbody>							
                             </table>
                         </div>
@@ -153,7 +159,7 @@ $userEmail = $userInfo->user_email;
                             </form>
                         </div>
                     </div>   <!--  Encash My Points -->
-                    <div class="bhoechie-tab-content active">
+                    <div class="bhoechie-tab-content">
                         <div class="tabColumn">
                             <form class="form-horizontal">
                                 <div class="form-group">

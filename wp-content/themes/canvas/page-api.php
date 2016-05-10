@@ -119,7 +119,7 @@ class API {
 
     function myAccount($info) {
         $myAccount['userInfo'] = $this->getUserDetails();
-        $myAccount['userBets'] = $this->getUserBets();
+        $myAccount['userBets'] = $this->getUserBets($info);
         $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
         return $myAccount;
     }
@@ -234,7 +234,7 @@ class API {
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
-            $getPageCount = 4;
+            $getPageCount = 6;
         endif;
         $getCat = $this->getCategories(['parent' => 1]);
         $result = $this->upcomingOngoingTournaments($categorySlug, $getPageCount);
@@ -257,7 +257,7 @@ class API {
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
-            $getPageCount = 4;
+            $getPageCount = 6;
         endif;
         $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);
@@ -582,18 +582,30 @@ class API {
         endforeach;
     }
 
-    function getUserBets() {
+    function getUserBets($info) {
+       // print_r($info);
+       // exit;
+        $startDate = $info['data']['startDate'];
+        $endDate = $info['data']['endDate'];
+        if (isset($startDate) && isset($endDate)): //start and end date
+            $whereM.=" AND bet_at BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
+        endif;
         global $wpdb;
         $getAccount = [];
-        $result = $wpdb->get_results('SELECT * FROM wp_bets where uid=' . $this->userId.' order by bet_at DESC');
+        $result = $wpdb->get_results("SELECT * FROM wp_bets where uid= $this->userId  $whereM order by bet_at DESC");
+        $this->getCsv($result);
+        $i = 1;
         foreach ($result as $getBetDetails):
-            $tourTitle[] = get_the_title($getBetDetails->tid);
-            $matchTitle[] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
-            $teamTitle[] = get_the_title($getBetDetails->team_id);
-            $pts[] = $getBetDetails->pts;
-            $bet_at[] = $getBetDetails->bet_at;
-            array_push($getAccount, ['tourTitle' => $tourTitle, 'matchTitle' => $matchTitle, 'teamTitle' => $teamTitle, 'pts' => $pts, 'bet_at' => $bet_at]);
+            $tourDetails['id'] = $i++;
+            $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
+            $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
+            $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
+            $tourDetails['pts'] = $getBetDetails->pts;
+            $tourDetails['bet_at'] = $getBetDetails->bet_at;
+            array_push($getAccount, ['tourDetails' => $tourDetails]);
+
         endforeach;
+
         return $getAccount;
     }
 
@@ -682,6 +694,26 @@ class API {
         $userId = $this->userId;
         $getUnClearedPoints = $wpdb->get_results("SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=$userId AND cleared=0 GROUP BY uid");
         return $getUnClearedPoints[0]->unclearedPoints;
+    }
+
+    public function getCsv($query) {
+        //print_r($query);exit;
+        $combineRes[] = ['id', 'Users', 'Tournaments', 'Matches', 'Teams', 'Points', 'Bet At'];
+        $combineRes[] = ['', '', '', '', '', '', ''];
+        foreach ($query as $getResult):
+            //echo $getResult->id;echo "<br>";
+            $getUsername = get_userdata($getResult->uid);
+            $userName = $getUsername->data->display_name;
+            $tourName = get_the_title($getResult->tid);
+            $matchTitle = !empty($getResult->mid) ? get_the_title($getResult->mid) : '-';
+            $teamTitle = get_the_title($getResult->team_id);
+            $combineRes[] = array($getResult->id, $userName, $tourName, $matchTitle, $teamTitle, $getResult->pts, $getResult->bet_at);
+        endforeach;
+        $fp = fopen(get_template_directory().'/csv/'.$this->userId.'file.csv', 'w');
+        foreach ($combineRes as $fields) {
+            fputcsv($fp, $fields);
+        }
+        fclose($fp);
     }
 
 }

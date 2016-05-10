@@ -43,8 +43,11 @@ class Distribution_Wp_List_Table {
                 <form method="post" action="<?= get_site_url(); ?>/wp-admin/admin.php?page=pointsDistribution.php">
                     <input type="text" value="<?= $_POST['tName'] ?>" name="tName" class="tourAuto" placeholder="Select Tournament"  />
                     <input type="text" value="<?= $_POST['matchTitle'] ?>" placeholder="Select Match"  name="matchTitle" class="matcAuto">
+                    <input type="text" class="datepicker" value="<?= $_POST['startDate'] ?>" name="startDate" placeholder="Start Date" />
+                    <input type="text" class="datepicker" name="endDate" value="<?= $_POST['endDate'] ?>" placeholder="End Date" />
                     <input type="submit" value="Search" />
                 </form>
+                <a href="<?= get_admin_url() ?>csv/file.csv"><button>Download CSV</button></a>
             </div>
             <?php $exampleListTable->display(); ?>
         </div>
@@ -115,6 +118,11 @@ class Distribution_Table extends WP_List_Table {
      * @return Array
      */
     private function table_data() {
+        $startDate = $_POST['startDate'];
+        $endDate = $_POST['endDate'];
+        if (isset($startDate) && isset($endDate)): //start and end date
+            $whereM.=" AND date BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
+        endif;
         $getTName = trim($_POST['tName']);
         $getMName = trim($_POST['matchTitle']);
         $getTitleId = get_page_by_title($getTName, OBJECT, 'tournaments');
@@ -131,7 +139,27 @@ class Distribution_Table extends WP_List_Table {
         $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
         $order = isset($_GET['order']) ? $_GET['order'] : 'desc';
         $data = $wpdb->get_results("SELECT * FROM  wp_distribution WHERE id IS NOT NULL  $where $whereM ORDER BY  $orderby $order ", ARRAY_A);
+        $this->getCsv($data);
         return $data;
+    }
+
+    public function getCsv($query) {
+        $combineRes[] = ['id', 'Users', 'Tournaments', 'Matches', 'Teams', 'Gain Points', 'Date'];
+        $combineRes[] = ['', '', '', '', '', '', ''];
+        foreach ($query as $getResult):
+            //echo $getResult->id;echo "<br>";
+            $getUsername = get_userdata($getResult['uid']);
+            $userName = $getUsername->data->display_name;
+            $tourName = get_the_title($getResult['tid']);
+            $matchTitle = !empty($getResult['mid']) ? get_the_title($getResult['mid']) : '-';
+            $teamTitle = get_the_title($getResult['team_id']);
+            $combineRes[] = array($getResult['id'], $userName, $tourName, $matchTitle, $teamTitle, $getResult['gain_points'], $getResult['date']);
+        endforeach;
+        $fp = fopen('csv/file.csv', 'w');
+        foreach ($combineRes as $fields) {
+            fputcsv($fp, $fields);
+        }
+        fclose($fp);
     }
 
     public function column_default($item, $column_name) {
