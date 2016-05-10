@@ -157,7 +157,9 @@ get_header();
 
                         <thead>
                             <tr>
-
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
+                                <th>Trade</th>
                                 <th>Team 1</th>
                                 <th>Trade</th>
                                 <th>Team 2</th>
@@ -167,6 +169,8 @@ get_header();
                         </thead>
                         <tbody> 
                             <tr>
+                                <td>rthyhtr</td>             
+                                <td>fdgfdg</td>
                                 <td>rthyhtr</td>             
                                 <td>fdgfdg</td>
                                 <td>erfgrefre</td>
