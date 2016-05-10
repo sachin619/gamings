@@ -161,6 +161,7 @@ get_header();
                                 <th>Tournament Name</th>
                                 <th>Team 1</th>
                                 <th>Trade</th>
+                                <th>V/S</th>
                                 <th>Team 2</th>
                                 <th>Trade</th>
                                 <th>Total Trade</th>
@@ -172,6 +173,7 @@ get_header();
                                 <td>Tournament Name</td>
                                 <td><a href={{matches['postLink']}}>{{matches['title']}}</a></td>             
                                 <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ></td>
+                                <td>V/S</td>
                                 <td><a href={{matches['postLink']}}>{{matches['title']}}</a></td>
                                 <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ></td>
                                 <td>erfgrefre</td>
