@@ -620,7 +620,7 @@ class API {
         endif;
         global $wpdb;
         $getAccount = [];
-        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts) as pts,bet_at FROM wp_bets where uid= $this->userId  $whereM group by team_id order by bet_at DESC");
+        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets where uid= $this->userId group by tid,team_id  order by bet_at DESC");
         //$this->getCsv($result);
         $i = 1;
         foreach ($result as $getBetDetails):
