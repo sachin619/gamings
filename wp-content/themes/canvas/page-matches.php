@@ -18,11 +18,11 @@ get_header();
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Ongoing / Upcoming Tournaments</h1>
+            <h1>Ongoing / Upcoming Matches</h1>
             <ol class="breadcrumb">
                 <li><a href="#">Home</a></li>
 
-                <li class="active">Tournaments</li>
+                <li class="active">Matches</li>
             </ol>
         </div>
 
