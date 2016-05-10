@@ -80,7 +80,7 @@ endif;
                                         <li class="<?= strpos($_SERVER['REQUEST_URI'], 'matches') > 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() ?>/matches"><div><i class=""></i>Matches</div></a>
 
                                         </li>
-                                        <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'tournaments') > 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() ?>/tournaments"><div><i class=""></i>Tournaments</div></a>
+                                        <li class="<?= strpos($_SERVER['REQUEST_URI'], 'tournaments') > 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() ?>/tournaments"><div><i class=""></i>Tournaments</div></a>
                                         </li>
                                     </ul>
                                 </li>
