@@ -170,7 +170,7 @@ get_header();
                         </thead>
                         <tbody> 
                             <tr>
-                               <th colspan="9">Today</thToday> 
+                               <th colspan="9" bgcolor="#dddddd">Today</thToday> 
                             </tr>
                             <tr ng-repeat="matches in getDetails.matches">
                                 <td><i class="icon-time"></i> {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
