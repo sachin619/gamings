@@ -75,7 +75,7 @@ endif;
 
                                 </li>
 
-                                <li><a href="#"><div>Features</div></a>
+                                <li><a href="#"><div>Cricket</div></a>
                                     <ul>
                                         <li class="<?= strpos($_SERVER['REQUEST_URI'], 'matches') > 0 ?  : ''; ?>"><a href="<?= get_site_url() ?>/matches"><div>Matches</div></a>
 
