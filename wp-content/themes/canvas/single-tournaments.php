@@ -107,7 +107,7 @@ get_header();
 
 
                 <h3 class="text-center mtb20">	Ongoing & Upcoming Matches</h3>
-                <div class="bothsidebar">
+                <!-- <div class="bothsidebar">
                     <div class="row events small-thumbs">
                         <div class="row">
                             <div ng-repeat="matches in getDetails.matches" class="entry clearfix col-md-6">
@@ -122,7 +122,6 @@ get_header();
                                         <h2><a href={{matches['postLink']}}>{{matches['title']}}</a></h2>
                                     </div>
                                     <ul class="entry-meta clearfix">
-
                                         <li><a href="#"><i class="icon-time"></i> {{matches['matchStartTime']}} - {{matches['matchEndTime']}}</a></li>
                                         <li><a href="#"><i class="icon-map-marker2"></i> {{matches['venue']}}</a></li>
                                     </ul>
@@ -131,25 +130,17 @@ get_header();
                                         <div class="col-md-4">{{teams['team_name']['post_title']}}: </div>
                                         <div class="col-md-8" > <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ></div>
                                     </div>
-
-
                                     <div class="row mb15">
                                         <div class="col-md-4"> </div>
                                         <div class="col-md-8"><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></div>
                                     </div>
-
-
-
-
-
                                 </div>
                             </div>
                         </div>
 
 
                     </div>
-
-                </div>		
+                </div> -->		
 
 
                 <div class="table-responsive">
