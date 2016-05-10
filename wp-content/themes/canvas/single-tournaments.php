@@ -161,7 +161,7 @@ get_header();
                         </thead>
                         <tbody> 
                             <tr>
-                               <th colspan="9" bgcolor="rgba(0,0,0,0.05)">Today</thToday> 
+                               <th colspan="9" style="background: rgba(0,0,0,0.05);">Today</thToday> 
                             </tr>
                             <tr ng-repeat="matches in getDetails.matches">
                                 <td><i class="icon-time"></i> {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
