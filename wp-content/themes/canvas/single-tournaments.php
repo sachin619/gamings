@@ -159,7 +159,6 @@ get_header();
                             <tr>
                                 <th>&nbsp;</th>
                                 <th>&nbsp;</th>
-                                <th>Trade</th>
                                 <th>Team 1</th>
                                 <th>Trade</th>
                                 <th>Team 2</th>
@@ -169,7 +168,7 @@ get_header();
                         </thead>
                         <tbody> 
                             <tr>
-                                <td>19 May <br> 11:00</td>             
+                                <td>{{matches['matchStartTime']}} - {{matches['matchEndTime']}}</td>          
                                 <td>Tournament Name</td>
                                 <td>rthyhtr</td>             
                                 <td>fdgfdg</td>
