@@ -121,6 +121,7 @@ class API {
         $myAccount['userInfo'] = $this->getUserDetails();
         $myAccount['userBets'] = $this->getUserBets($info);
         $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
+        $myAccount['winLoss'] = $this->getWinLossBets($info);
         return $myAccount;
     }
 
@@ -583,8 +584,8 @@ class API {
     }
 
     function getUserBets($info) {
-       // print_r($info);
-       // exit;
+        // print_r($info);
+        // exit;
         $startDate = $info['data']['startDate'];
         $endDate = $info['data']['endDate'];
         if (isset($startDate) && isset($endDate)): //start and end date
@@ -596,6 +597,35 @@ class API {
         $this->getCsv($result);
         $i = 1;
         foreach ($result as $getBetDetails):
+            $tourDetails['id'] = $i++;
+            $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
+            $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
+            $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
+            $tourDetails['pts'] = $getBetDetails->pts;
+            $tourDetails['bet_at'] = $getBetDetails->bet_at;
+            array_push($getAccount, ['tourDetails' => $tourDetails]);
+
+        endforeach;
+
+        return $getAccount;
+    }
+
+    function getWinLossBets($info) {
+        // print_r($info);
+        // exit;
+        $startDate = $info['data']['startDate'];
+        $endDate = $info['data']['endDate'];
+        if (isset($startDate) && isset($endDate)): //start and end date
+            $whereM.=" AND bet_at BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
+        endif;
+        global $wpdb;
+        $getAccount = [];
+        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts) as pts,bet_at FROM wp_bets where uid= $this->userId  $whereM group by team_id order by bet_at DESC");
+        //$this->getCsv($result);
+        $i = 1;
+        foreach ($result as $getBetDetails):
+            $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE tid=$getBetDetails->tid AND team_id=$getBetDetails->team_id");
+            $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
             $tourDetails['id'] = $i++;
             $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
             $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
@@ -709,7 +739,7 @@ class API {
             $teamTitle = get_the_title($getResult->team_id);
             $combineRes[] = array($getResult->id, $userName, $tourName, $matchTitle, $teamTitle, $getResult->pts, $getResult->bet_at);
         endforeach;
-        $fp = fopen(get_template_directory().'/csv/'.$this->userId.'file.csv', 'w');
+        $fp = fopen(get_template_directory() . '/csv/' . $this->userId . 'file.csv', 'w');
         foreach ($combineRes as $fields) {
             fputcsv($fp, $fields);
         }
