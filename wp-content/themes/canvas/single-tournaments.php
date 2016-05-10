@@ -157,8 +157,8 @@ get_header();
 
                         <thead>
                             <tr>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
+                                <th>Time / Date</th>
+                                <th>Tournament Name</th>
                                 <th>Team 1</th>
                                 <th>Trade</th>
                                 <th>Team 2</th>
