@@ -81,19 +81,7 @@
 
 			$('.travel-date-group .inline-calendar').datepicker();
 
-			$('.datetimepicker').datetimepicker({
-				showClose: true
-			});
-
-			$('.datetimepicker1').datetimepicker({
-				format: 'LT',
-				showClose: true
-			});
-
-			$('.datetimepicker2').datetimepicker({
-				inline: true,
-				sideBySide: true
-			});
+			
 
 		});
 
