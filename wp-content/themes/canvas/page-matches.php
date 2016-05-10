@@ -53,7 +53,6 @@ get_header();
                 <!-- Portfolio Items
                 ============================================= -->
                 <div  ng-init="i=1"  id="portfolio" class="portfolio grid-container portfolio-2 clearfix main-container">
-
                     <article ng-repeat="getPost in getDetails.catPost" class="col-md-4 pf-hide pf-media pf-{{getPost['category'][0]['name']}}">
                         <div ng-init="$parent.j=$parent.i=i+1" class="portfolio-image" >
                             <a href="{{getPost['postLink']}}">
@@ -72,6 +71,44 @@ get_header();
                             </span>
                         </div>
                     </article>
+
+                    <div class="table-responsive">
+                    <table class="table table-bordered nobottommargin">
+
+                        <thead>
+                            <tr>
+                                <th width="12%">Time / Location</th>
+                                <th>Tournament</th>
+                                <th>Team 1</th>
+                                <th>Trade</th>
+                                <th>V/S</th>
+                                <th>Team 2</th>
+                                <th>Trade</th>
+                                <th>Action</th>
+                                <th>Total Trade</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+                            <tr>
+                               <th colspan="9" style="background: rgba(0,0,0,0.05);">Today</thToday> 
+                            </tr>
+                            <tr ng-repeat="matches in getDetails.matches">
+                                <td><i class="icon-time"></i> {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
+                                <td>Tournament Name</td>
+                                <td><a href={{matches['postLink']}}>{{matches['title']}}</a></td>             
+                                <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" >
+                                <br>Yor Trade : 5000K</td>
+                                <td>V/S</td>
+                                <td><a href={{matches['postLink']}}>{{matches['title']}}</a></td>
+                                <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" >
+                                <br>Yor Trade : 5000K</td>
+                                <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
+                                <td>10000K</td>
+                            </tr>                            
+                        </tbody>
+                    </table>
+                </div>
+                    
                 </div><!-- #portfolio end -->
                 <div class="col-lg-12" ng-if="getDetails.catPost.length>=4" style="text-align: center">
                     <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 4)">Load More </button>
