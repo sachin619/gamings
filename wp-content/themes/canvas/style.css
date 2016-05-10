@@ -3449,7 +3449,7 @@ body.stretched .container-fullwidth .breadcrumb { right: 60px !important; }
 
 .portfolio-filter li:last-child a { border-radius: 0 4px 4px 0; }
 
-.portfolio-filter li a:hover { color: #1ABC9C; }
+.portfolio-filter li a:hover { color: #d9534f; }
 
 .portfolio-filter li.activeFilter a {
 	color: #FFF !important;
