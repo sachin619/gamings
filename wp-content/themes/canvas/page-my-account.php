@@ -34,7 +34,10 @@ $userEmail = $userInfo->user_email;
                         </a>   <!--My points -->
                         <a href="#" class="list-group-item text-center">
                             <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>MY BETS
-                        </a>    <!-- My bets-->                   
+                        </a>    <!-- My bets--> 
+                        <a href="#" class="list-group-item text-center">
+                            <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>MY WIN/LOSS POINTS
+                        </a>    <!-- My Win Loss points -->    
                         <a href="#" class="list-group-item text-center">
                             <h4 class="fa fa-shopping-cart fa-lg"></h4><br/>PURCHASE HISTORY
                         </a>   <!-- Purchase History -->
@@ -102,11 +105,37 @@ $userEmail = $userInfo->user_email;
                                 <input type="text" class="datepicker startDate" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" />
                                 <input type="text" class="datepicker endDate" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
                                 <button ng-click="searchByDate()">Search</button>
-                                <a href="<?= get_template_directory_uri().'/csv/'?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button>Download</button></a>
+                                <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button>Download</button></a>
                                 </tbody>							
                             </table>
                         </div>
                     </div>   <!-- My bets-->
+                    <div class="bhoechie-tab-content">
+                        <div class="tabColumn">
+                            <table class = "table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.No</th>
+                                        <th>Tournaments</th>
+                                        <th>Match</th>
+                                        <th>Team</th>
+                                        <th>Points</th>
+                                        <th>Bet Placed On</th>
+
+                                    </tr>
+                                </thead>						   
+                                <tbody >
+                                    <tr ng-repeat="myInfo in myAccount['winLoss']">
+                                        <td>{{myInfo['tourDetails']['id']}}</td>
+                                        <td >{{myInfo['tourDetails']['tourTitle']}}</td>
+                                        <td>{{myInfo['tourDetails']['matchTitle']}}</td>
+                                        <td>{{myInfo['tourDetails']['teamTitle']}}</td>
+                                        <td ng-class="myInfo['tourDetails']['win']=='Yes'?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
+                                        <td>{{myInfo['tourDetails']['bet_at']}}</td>
+                                    </tr>						      
+                            </table>
+                        </div>
+                    </div>   <!--  My Win Loss points-->
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
                             <table class = "table table-bordered">
@@ -269,3 +298,11 @@ get_footer();
         });
     });
 </script>
+<style>
+    .win{
+        background-color: #adebad;
+    }   
+    .loss{
+        background-color: #ff6666;
+    }
+</style>
