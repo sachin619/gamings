@@ -158,10 +158,11 @@ get_header();
                         <thead>
                             <tr>
 
-                                <th>Team</th>
-                                <th >Your Trade</th>
-                                <th >Add Trade</th>
-                                <th >Action</th>
+                                <th>Team 1</th>
+                                <th>Trade</th>
+                                <th>Team 2</th>
+                                <th>Trade</th>
+                                <th>Total Trade</th>
                             </tr>
                         </thead>
                         <tbody> 
@@ -170,13 +171,8 @@ get_header();
                                 <td>fdgfdg</td>
                                 <td>erfgrefre</td>
                                 <td>erfgrefre</td>
-                            </tr>
-                            <tr>
-                                <td>rthyhtr</td>             
-                                <td>fdgfdg</td>
                                 <td>erfgrefre</td>
-                                <td>erfgrefre</td>
-                            </tr>
+                            </tr>                            
                         </tbody>
                     </table>
                 </div>
