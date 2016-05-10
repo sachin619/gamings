@@ -104,9 +104,9 @@ $userEmail = $userInfo->user_email;
                                 <button ng-click="pagination.nextPage()">Next</button>
 
                                 <span class="input-daterange input-group">
-                                <input type="text" class="datepicker startDate sm-form-control tleft" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" />
-                                <span class="input-group-addon">to</span>
-                                <input type="text" class="datepicker endDate sm-form-control tleft" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
+                                    <input type="text" class="datepicker startDate sm-form-control tleft" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" />
+                                    <span class="input-group-addon">to</span>
+                                    <input type="text" class="datepicker endDate sm-form-control tleft" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
                                 </span>
                                 
                                 <button ng-click="searchByDate()">Search</button>
