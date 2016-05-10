@@ -104,11 +104,11 @@ $userEmail = $userInfo->user_email;
                                 <button ng-click="pagination.nextPage()">Next</button>
 
                                 <span class="input-daterange input-group">
-                                    <input type="text" class="datepicker startDate sm-form-control tleft" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" />
+                                    <input type="text" class="datePicker startDate sm-form-control tleft" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" />
                                     <span class="input-group-addon">to</span>
-                                    <input type="text" class="datepicker endDate sm-form-control tleft" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
+                                    <input type="text" class="datePicker endDate sm-form-control tleft" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
                                 </span>
-                                
+
                                 <button ng-click="searchByDate()">Search</button>
                                 <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button>Download</button></a>
                                 </tbody>							
@@ -130,14 +130,16 @@ $userEmail = $userInfo->user_email;
                                     </tr>
                                 </thead>						   
                                 <tbody >
-                                    <tr ng-repeat="myInfo in myAccount['winLoss']">
+                                    <tr ng-repeat="myInfo in winList| startFrom: paginationWin.page * paginationWin.perPage | limitTo: paginationWin.perPage">
                                         <td>{{myInfo['tourDetails']['id']}}</td>
                                         <td >{{myInfo['tourDetails']['tourTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['matchTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['teamTitle']}}</td>
                                         <td ng-class="myInfo['tourDetails']['win']=='Yes'?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
-                                    </tr>						      
+                                    </tr>
+                                <button ng-click="paginationWin.prevPage()">Previous</button>
+                                <button ng-click="paginationWin.nextPage()">Next</button>
                             </table>
                         </div>
                     </div>   <!--  My Win Loss points-->

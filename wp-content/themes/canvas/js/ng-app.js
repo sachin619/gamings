@@ -53,9 +53,9 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
     $scope.searchByDate = function () {
         console.log($('.startDate').val());
         console.log($('.endDate').val());
-        var startDate=$('.startDate').val();
-        var endDate=$('.endDate').val();
-        formData = {'pagination': Pagination, 'type': 'myAccount','startDate':startDate,'endDate':endDate};
+        var startDate = $('.startDate').val();
+        var endDate = $('.endDate').val();
+        formData = {'pagination': Pagination, 'type': 'myAccount', 'startDate': startDate, 'endDate': endDate};
         ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
     };
     $scope.userUpdate = function () {
@@ -291,8 +291,13 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                 if (typeof response['userBets'] !== 'undefined' && formData['type'] === 'myAccount') {
                     var Pagination = formData['pagination'];
                     $scope.posts = response['userBets'];
+                    $scope.winList = response['winLoss'];
                     $scope.pagination = Pagination.getNew(10);
+                    $scope.paginationWin = Pagination.getNew(10);
+
                     $scope.pagination.numPages = Math.ceil($scope.posts.length / $scope.pagination.perPage);
+                    $scope.paginationWin.numPages = Math.ceil($scope.winList.length / $scope.paginationWin.perPage);
+
                 }
                 if (typeName == 'login') {
                     $('.loader').hide();
