@@ -157,7 +157,7 @@ get_header();
 
                         <thead>
                             <tr>
-                                <th width="20%">Time / Location</th>
+                                <th width="10%">Time / Location</th>
                                 <th>Tournament</th>
                                 <th>Team 1</th>
                                 <th>Trade</th>
