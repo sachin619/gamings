@@ -102,15 +102,13 @@ $userEmail = $userInfo->user_email;
                                     </tr>						      
                                 <button ng-click="pagination.prevPage()">Previous</button>
                                 <button ng-click="pagination.nextPage()">Next</button>
-                                
 
-                                <div class="input-daterange input-group">
-                                    <input type="text" value="" class="sm-form-control tleft" placeholder="MM/DD/YYYY">
+                                <span class="input-daterange input-group">
+                                    <input type="text" class="datepicker startDate sm-form-control tleft" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" />
                                     <span class="input-group-addon">to</span>
-                                    <input type="text" value="" class="sm-form-control tleft" placeholder="MM/DD/YYYY">
-                                </div>    
-
-
+                                    <input type="text" class="datepicker endDate sm-form-control tleft" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
+                                </span>
+                                
                                 <button ng-click="searchByDate()">Search</button>
                                 <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button>Download</button></a>
                                 </tbody>							
