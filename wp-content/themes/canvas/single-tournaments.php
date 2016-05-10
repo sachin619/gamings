@@ -110,7 +110,7 @@ get_header();
                 <div class="bothsidebar">
                     <div class="row events small-thumbs">
                         <div class="row">
-                            <div  ng-repeat="matches in getDetails.matches" class="entry clearfix col-md-6">
+                            <div ng-repeat="matches in getDetails.matches" class="entry clearfix col-md-6">
                                 <div class="entry-image hidden-sm">
                                     <a href={{matches['postLink']}}>
                                         <img src={{matches['img']}} alt="">
@@ -167,13 +167,13 @@ get_header();
                             </tr>
                         </thead>
                         <tbody> 
-                            <tr>
+                            <tr ng-repeat="matches in getDetails.matches">
                                 <td>{{matches['matchStartTime']}} - {{matches['matchEndTime']}}</td>          
                                 <td>Tournament Name</td>
-                                <td>rthyhtr</td>             
-                                <td>fdgfdg</td>
-                                <td>erfgrefre</td>
-                                <td>erfgrefre</td>
+                                <td><a href={{matches['postLink']}}>{{matches['title']}}</a></td>             
+                                <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ></td>
+                                <td><a href={{matches['postLink']}}>{{matches['title']}}</a></td>
+                                <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ></td>
                                 <td>erfgrefre</td>
                             </tr>                            
                         </tbody>
