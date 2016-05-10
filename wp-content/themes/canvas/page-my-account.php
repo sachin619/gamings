@@ -109,13 +109,6 @@ $userEmail = $userInfo->user_email;
                                 <input type="text" class="datepicker endDate sm-form-control tleft" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
                                 </span>
                                 
-                                <div class="input-daterange input-group">
-                                    <input type="text" value="" class="sm-form-control tleft" placeholder="MM/DD/YYYY">
-                                    <span class="input-group-addon">to</span>
-                                    <input type="text" value="" class="sm-form-control tleft" placeholder="MM/DD/YYYY">
-                                </div>    
-
-
                                 <button ng-click="searchByDate()">Search</button>
                                 <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button>Download</button></a>
                                 </tbody>							
