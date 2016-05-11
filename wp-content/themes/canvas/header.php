@@ -74,17 +74,18 @@ endif;
                                 <li class=" <?= strcmp('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_site_url() . '/') == 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() ?>"><div><i class=""></i>Home</div></a>
 
                                 </li>
-
-                                <li><a href="#"><div>Cricket</div></a>
-                                    <ul>
-                                        <li class="<?= strpos($_SERVER['REQUEST_URI'], 'matches') > 0 ?  : ''; ?>"><a href="<?= get_site_url() ?>/matches"><div>Matches</div></a>
-
-                                        </li>
-                                        <li class="<?= strpos($_SERVER['REQUEST_URI'], 'tournaments') > 0 ?   : ''; ?>"><a href="<?= get_site_url() ?>/tournaments"><div> Tournaments</div></a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                    
+                                <?php
+                                $args = ['parent' => 1];
+                                $getCategoires = get_categories($args);
+                                foreach ($getCategoires as $catName):
+                                    ?>
+                                    <li class="mega-menu"><a href=""><div><?= $catName->name ?></div></a>
+                                        <ul>
+                                            <li><a href="<?= get_site_url().'/tournaments/?category='.$catName->name ?>"><div>Tournaments </div> </a> </li>
+                                            <li><a href="<?= get_site_url().'/matches/?category='.$catName->name ?>"><div>Matches </div> </a> </li>
+                                        </ul>
+                                    </li>
+                                <?php endforeach; ?>
                                 <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'about') > 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() ?>/about-us"><div><i class=""></i>About</div></a>
 
                                 </li>
