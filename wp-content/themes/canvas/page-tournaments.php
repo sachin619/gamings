@@ -68,7 +68,6 @@ get_header();
                             <h3>{{getPost['title']}}</h3>
                             <span>
                                 <strong ng-if="getDetails.tradeTotal[$index].total > 0">Total Trade: {{getDetails.tradeTotal[$index].total}} Points</strong>
-                                <strong ng-if="getDetails.tradeTotal[$index].total <= 0">Total Trade: Not Yet Bet</strong>
                                 <br>
                                 {{getPost['start_date']}} - {{getPost['end_date']}}, {{getPost['venue']}}
                             </span>

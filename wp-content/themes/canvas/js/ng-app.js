@@ -291,18 +291,22 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
             'mid': tid,
             'pts': points,
             'slug': slug,
-            'type': 'matchesList'
+            'mainSlug':$.urlParam('category'),
+            'type': 'matchesList',
+            'catType':sessionStorage.getItem('type')
         };
+        console.log(sessionStorage.getItem('type'));
         tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
     }; //for login redirect
     //console.log( $.urlParam('category'));
     ngPost('listing-matches', formData, $scope, $http, $templateCache, 'getDetails');
     $scope.filter = function (type, $index) {
-        console.log($.urlParam('category'));
-        console.log(type);
+        //console.log($.urlParam('category'));
+        //console.log(type);
         $scope.selectedIndex = $index;
         $('.hide-loadMore').show();
         $scope.getCat = type;
+        sessionStorage.setItem('type',type);
         var formInfo = {'categoryName': $.urlParam('category'), 'type': type};
         ngPost('listing-matches', formInfo, $scope, $http, $templateCache, 'getDetails');
     };
@@ -394,8 +398,9 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
             ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         }
         else if (formData['type'] === 'matchesList') {
-
-            ngPost('listing-matches', formData, $scope, $http, $templateCache, 'getDetails');
+            var formDataReload = {'categoryName': formData['mainSlug'],'type': formData['catType']};
+            console.log(formDataReload);
+            ngPost('listing-matches', formDataReload, $scope, $http, $templateCache, 'getDetails');
         }
         else if (formData['type'] === 'tournamentsMatches') {
             var formDataReload = {'postId': formData['mainSlug']};
