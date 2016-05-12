@@ -300,7 +300,7 @@ class API {
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
-            $getPageCount = 6;
+            $getPageCount = 3;
         endif;
         $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);

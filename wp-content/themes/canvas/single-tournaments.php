@@ -168,11 +168,7 @@ get_header();
 
 
                                 <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}}: </td>
-                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ></td>
-
-
-
-
+                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" > </td>
                                 <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
                                 <td>{{matches["total_bets"]}}</td>
                             </tr>                            

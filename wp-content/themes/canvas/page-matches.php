@@ -40,7 +40,7 @@ get_header();
                 ============================================= -->
                 <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
 
-                    <li class="" ng-class="{activeFilter: selectedIndex===$index || selectedIndex=='home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('popular')">Popular</a></li>
+                    <li class="" ng-class="{activeFilter: selectedIndex === $index || selectedIndex == 'home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('popular')">Popular</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('all')" data-filter=".pf-{{categories['catName']}}">All Matches</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('today')" data-filter=".pf-{{categories['catName']}}">Today</a></li>
                 </ul>
@@ -94,7 +94,6 @@ get_header();
                                 <th>Tournament</th>
                                 <th>Team 1</th>
                                 <th>Trade</th>
-                                <th>V/S</th>
                                 <th>Team 2</th>
                                 <th>Trade</th>
                                 <th>Action</th>
@@ -102,30 +101,23 @@ get_header();
                             </tr>
                         </thead>
                         <tbody> 
-                            <tr>
-                               <th colspan="9" style="background: rgba(0,0,0,0.05);">Today</thToday> 
-                            </tr>
-                            <tr ng-repeat="getPost in getDetails.catPost">
-                                <td><i class="icon-time"></i> {{getPost['start_date']}} - {{getPost['end_date']}},
-                                <br><i class="icon-map-marker2"></i> {{getPost['venue']}}
-                                </td>          
-                                <td><a href="#">Tournament Name</a></td>
-                                <td><a href="{{getPost['postLink']}}">{{getPost['title']}}</a></td>             
-                                <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" >
-                                <br>Yor Trade : 5000K</td>
-                                <td>V/S</td>
-                                <td><a href="{{getPost['postLink']}}">{{getPost['title']}}</a></td>
-                                <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" >
-                                <br>Yor Trade : 5000K</td>
+                     
+                            <tr ng-repeat="matches in getDetails.catPost">
+                                <td><i class="icon-time"></i> {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
+                                <td>{{matches['tournament_name']['post_title']}}</td>
+
+
+                                <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}}: </td>
+                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" > </td>
                                 <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
-                                <td>{{getPost['total_bets']}}</td>
+                                <td>{{matches["total_bets"]}}</td>
                             </tr>                            
                         </tbody>
                     </table>
-                    </div>
+                </div>
 
-                <div class="col-lg-12" ng-if="getDetails.catPost.length>=4" style="text-align: center">
-                    <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 4)">Load More </button>
+                <div class="col-lg-12" ng-if="getDetails.catPost.length >= 3" style="text-align: center">
+                    <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 3)">Load More </button>
                 </div>
 
             </div>
