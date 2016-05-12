@@ -139,25 +139,6 @@ endif;
                                     </ul>
                                 </li>
                             <?php endforeach; ?>
-
-                            <!-- <li class="current"><a href="#"><div>Gallery</div></a></li>
-                            <li><a href="#"><div>Features</div></a></li>
-                            <li><a href="#"><div>Models</div></a>
-                                <ul>
-                                    <li><a href="#"><div>Small Size</div></a></li>
-                                    <li><a href="#"><div>Normal Size</div></a></li>
-                                    <li><a href="#"><div>Large Size</div></a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#"><div>Reviews</div></a>
-                                <ul>
-                                    <li><a href="#"><div>Expert Reviews</div></a></li>
-                                    <li><a href="#"><div>User Reviews</div></a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#"><div>Compare</div></a></li>
-                            <li><a href="#"><div>Build</div></a></li>
-                            <li><a href="#"><div>Order</div></a></li> -->
                         </ul>
                     </nav>
 
