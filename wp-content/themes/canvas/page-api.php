@@ -201,20 +201,32 @@ class API {
         ];
         $result = $this->getResult($args);
         $allResult = $this->getResult($args);
-//print_r($result[0]['select_teams']);
-        $i = -1;
-        foreach ($result as $getResult) {
-            $mId = $getResult[id];
-            $i++;
-            foreach ($getResult['select_teams'] as $teams) {
-                //print_r($teams['team_name']->ID . "  " . $mId);
-                $tid = $teams['team_name']->ID;
+////print_r($result[0]['select_teams']);
+//        $i = -1;
+//        foreach ($result as $getResult) {
+//            $mId = $getResult[id];
+//            $i++;
+//            foreach ($getResult['select_teams'] as $teams) {
+//                //print_r($teams['team_name']->ID . "  " . $mId);
+//                $tid = $teams['team_name']->ID;
+//
+//                $getTotalBets = $wpdb->get_results("SELECT sum(pts)as pts FROM wp_bets WHERE uid=$userId AND mid=$mId AND team_id=$tid group by team_id");
+//                $getTotal[$i][] = $getTotalBets[0]->pts;
+//            }
+//        }
+//        
 
-                $getTotalBets = $wpdb->get_results("SELECT sum(pts)as pts FROM wp_bets WHERE uid=$userId AND mid=$mId AND team_id=$tid group by team_id");
-                $getTotal[$i][] = $getTotalBets[0]->pts;
+        foreach ($allResult as $getPost) {
+            $tId = $getPost['id'];
+            foreach ($getPost['select_teams'] as $resultN) {
+                $teamInfo = (array) $resultN['team_name'];
+                $teamId = $teamInfo['ID'];
+                $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId];
+                $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
             }
         }
-        return ['details' => $allResult, 'totalPoints' => $getTotal];
+
+        return ['details' => $allResult, 'totalPoints' => $getTotal, 'tradeTotal' => $var];
     }
 
     function popularTournaments() {
@@ -277,6 +289,7 @@ class API {
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
+            
             $getPageCount = 6;
         endif;
         $getCat = $this->getCategories(['parent' => 1]);
@@ -296,11 +309,12 @@ class API {
     }
 
     function listingMatches($getCatSlug) {
+        $userId = $this->userId;
         $categorySlug = $getCatSlug['data']['categoryName'];
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
-            $getPageCount = 3;
+            $getPageCount = 50;
         endif;
         $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);
@@ -315,40 +329,49 @@ class API {
                 'meta_query' => ['relation' => 'AND', ['key' => 'end_date', 'value' => $dateFormat, 'compare' => '>=',]],
             ];
         else:
-        $args = [
-            'post_type' => 'matches',
-            'meta_key' => 'total_bets',
-            'orderby' => 'meta_value',
-            'category_name' => $categorySlug,
-            'posts_per_page' => $getPageCount,
-            'order' => 'DESC',
-            'meta_query' => [  'key' => 'end_date',  'value' => $dateFormat,  'compare' => '>=', ],
-        ];
+            $args = [
+                'post_type' => 'matches',
+                'meta_key' => 'total_bets',
+                'orderby' => 'meta_value',
+                'category_name' => $categorySlug,
+                'posts_per_page' => $getPageCount,
+                'order' => 'DESC',
+                'meta_query' => [ 'key' => 'end_date', 'value' => $dateFormat, 'compare' => '>=',],
+            ];
         endif;
         $result = $this->getResult($args);
+
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
             $cat[] = ['catName' => $catName['name']];
         }
 
         foreach ($result as $getPost) {
-            $tradeInfo = ['tid' => $getPost['id']];
-            $getTrade = $this->getTotalTrade($tradeInfo, 'mid');
-            $converTrade[] = (array) $getTrade[0];
+            $tId = $getPost['id'];
+            foreach ($getPost['select_teams'] as $resultN) {
+                $teamInfo = (array) $resultN['team_name'];
+                $teamId = $teamInfo['ID'];
+                $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId,];
+                $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
+            }
         }
 
-        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $converTrade];
+        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var];
         return $output;
     }
 
     function multiTradeMatch($tradeInfo) {
         if (!empty($tradeInfo['data']['pts'])):
-
             foreach ($tradeInfo['data']['pts'] as $teamId => $points) {
                 $tradeInfo['data']['team_id'] = $teamId;
                 $tradeInfo['data']['pts'] = $points;
                 $get_result[] = $this->tradeMatch($tradeInfo);
             }
+            $tradeInfo["tid"] = $tradeInfo['data']['mid'];
+            $getTotalBets = $this->getTotalTrade($tradeInfo, 'mid');
+            $getTotalBetsFilter = (array) $getTotalBets[0];
+            $mid = $tradeInfo['data']['mid'];
+            update_post_meta($mid, 'total_bets', $getTotalBetsFilter['total']);
             return $get_result;
         else:
             return "Points should be greater than zero";
@@ -564,7 +587,9 @@ class API {
                     $post['matchEndTime'] = date('H:i', strtotime($v));
                     if ($postType == 'matches'):
                         $post['end_date'] = date('d M, Y H:i a', strtotime($v));
+                        $post['onlySDate'] = date('d M, Y ', strtotime($v));
                     else:
+                        $post['onlyEDate'] = date('d M, Y ', strtotime($v));
                         $post['end_date'] = date('d M, Y', strtotime($v));
 
                     endif;

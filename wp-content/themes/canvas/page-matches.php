@@ -103,12 +103,10 @@ get_header();
                         <tbody> 
                      
                             <tr ng-repeat="matches in getDetails.catPost">
-                                <td><i class="icon-time"></i> {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
+                                <td><i class="icon-time"></i>{{matches['onlySDate']}} {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
                                 <td>{{matches['tournament_name']['post_title']}}</td>
-
-
                                 <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}}: </td>
-                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" > </td>
+                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ><br>Your Trade : {{getDetails['tradeTotal'][matches['id']][$index][0]['total']}} </td>
                                 <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
                                 <td>{{matches["total_bets"]}}</td>
                             </tr>                            
@@ -116,14 +114,19 @@ get_header();
                     </table>
                 </div>
 
-                <div class="col-lg-12" ng-if="getDetails.catPost.length >= 3" style="text-align: center">
-                    <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 3)">Load More </button>
+                <div class="col-lg-12 loadMoreBlock" ng-if="getDetails.catPost.length >= 50" style="text-align: center">
+                    <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 50)">Load More </button>
                 </div>
 
             </div>
 
     </section><!-- #content end -->
 </section>
+<style>
+    .loadMoreBlock{
+        padding-top:6px;
+    }
+</style>
 <?php
 
 get_footer();

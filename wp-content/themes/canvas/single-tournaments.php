@@ -163,12 +163,12 @@ get_header();
                                 <th colspan="9" style="background: rgba(0,0,0,0.05);">Today</thToday> 
                             </tr>
                             <tr ng-repeat="matches in getDetails.matches['details']">
-                                <td><i class="icon-time"></i> {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
+                                <td><i class="icon-time"></i>{{matches['onlySDate']}} {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
                                 <td>{{getDetails['details'][0].title}}</td>
 
 
                                 <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}}: </td>
-                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" > </td>
+                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ><br> Your Trade : {{getDetails.matches['tradeTotal'][matches['id']][$index][0]['total']}}</td>
                                 <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
                                 <td>{{matches["total_bets"]}}</td>
                             </tr>                            
