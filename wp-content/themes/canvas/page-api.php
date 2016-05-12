@@ -110,9 +110,9 @@ class API {
         $home['slider'] = $this->getSlider();
         $home['popularTournaments'] = $this->popularTournaments();
         $home['popularMatches'] = $this->popularMatches();
-        $home['upcomingTournaments'] = $this->upcomingTournaments();
-        $home['upcomingMatches'] = $this->upcomingMatches();
-        $home['category'] = $this->getCategories(['parent' => 1]);
+        //$home['upcomingTournaments'] = $this->upcomingTournaments();
+        //$home['upcomingMatches'] = $this->upcomingMatches();
+        //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
         return $home;
     }
