@@ -175,6 +175,48 @@ class API {
         return $this->getResult($args);
     }
 
+    function tournamentsMatches($tid) {
+        global $wpdb;
+        $userId = $this->userId;
+        $tourId = get_the_ID();
+        //$dateFormat = strtotime('+18 hour 1 minute');
+        $dateFormat = time();
+        $args = [
+            'post_type' => 'matches',
+            'meta_key' => 'start_date',
+            'posts_per_page' => 12,
+            'order_by' => 'meta_value_num',
+            'order' => 'ASC',
+            'meta_query' => ['relation' => 'AND',
+                [
+                    'key' => 'start_date',
+                    'value' => $dateFormat,
+                    'compare' => '>',
+                ], [
+                    'key' => 'tournament_name',
+                    'value' => get_the_ID(),
+                    'compare' => '='
+                ]
+            ]
+        ];
+        $result = $this->getResult($args);
+        $allResult = $this->getResult($args);
+//print_r($result[0]['select_teams']);
+        $i = -1;
+        foreach ($result as $getResult) {
+            $mId = $getResult[id];
+            $i++;
+            foreach ($getResult['select_teams'] as $teams) {
+                //print_r($teams['team_name']->ID . "  " . $mId);
+                $tid = $teams['team_name']->ID;
+
+                $getTotalBets = $wpdb->get_results("SELECT sum(pts)as pts FROM wp_bets WHERE uid=$userId AND mid=$mId AND team_id=$tid group by team_id");
+                $getTotal[$i][] = $getTotalBets[0]->pts;
+            }
+        }
+        return ['details' => $allResult, 'totalPoints' => $getTotal];
+    }
+
     function popularTournaments() {
         $args = [
             'post_type' => 'tournaments',
@@ -201,7 +243,7 @@ class API {
         $tradeInfo = ['tid' => $tId, 'user_id' => $userId];
         $getTotalBets = $this->getTotalTrade($tradeInfo, 'tid');
         $userTotalTrade = $this->getUserTotalTrade($tradeInfo, 'tid');
-        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'matches' => $this->upcomingMatches()];
+        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'matches' => $this->tournamentsMatches($postId)];
         return $detailsData;
     }
 

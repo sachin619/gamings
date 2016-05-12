@@ -163,18 +163,18 @@ get_header();
                             <tr>
                                <th colspan="9" style="background: rgba(0,0,0,0.05);">Today</thToday> 
                             </tr>
-                            <tr ng-repeat="matches in getDetails.matches">
+                            <tr ng-repeat="matches in getDetails.matches['details']">
                                 <td><i class="icon-time"></i> {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
-                                <td>Tournament Name</td>
-                                <td><a href={{matches['postLink']}}>{{matches['title']}}</a></td>             
-                                <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" >
-                                <br>Yor Trade : 5000K</td>
+                                <td>{{getDetails['details'][0].title}}</td>
+                                <td><a href={{matches['postLink']}}>{{matches['select_teams'][0]['team_name']['post_title']}}</a></td>             
+                                <td><input type="text" ng-model="$parent.points[matches['select_teams'][0]['team_name']['ID']]" >
+                                <br>Yor Trade : {{getDetails.matches['totalPoints'][$index][0]}}</td>
                                 <td>V/S</td>
-                                <td><a href={{matches['postLink']}}>{{matches['title']}}</a></td>
-                                <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" >
-                                <br>Yor Trade : 5000K</td>
+                                <td><a href={{matches['postLink']}}>{{matches['select_teams'][1]['team_name']['post_title']}}</a></td>
+                                <td><input type="text" ng-model="$parent.points[matches['select_teams'][1]['team_name']['ID']]" >
+                                <br>Yor Trade : {{getDetails.matches['totalPoints'][$index][1]}}</td>
                                 <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
-                                <td>10000K</td>
+                                <td>{{matches["total_bets"] }}</td>
                             </tr>                            
                         </tbody>
                     </table>
