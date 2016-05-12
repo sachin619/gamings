@@ -40,10 +40,9 @@ get_header();
                 ============================================= -->
                 <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
 
-                    <li class="" ng-class="{activeFilter: selectedIndex===$index || selectedIndex=='home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('',$index)">Popular</a></li>
-                    <li><a href="#" onclick="return false;"  ng-click="filter(categories['catName'],$index)" data-filter=".pf-{{categories['catName']}}">All Tournaments</a></li>
-                    <li><a href="#" onclick="return false;"  ng-click="filter(categories['catName'],$index)" data-filter=".pf-{{categories['catName']}}">Tournaments 1</a></li>
-                    <li><a href="#" onclick="return false;"  ng-click="filter(categories['catName'],$index)" data-filter=".pf-{{categories['catName']}}">Tournaments 2</a></li>
+                    <li class="" ng-class="{activeFilter: selectedIndex===$index || selectedIndex=='home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('popular')">Popular</a></li>
+                    <li><a href="#" onclick="return false;"  ng-click="filter('all')" data-filter=".pf-{{categories['catName']}}">All Matches</a></li>
+                    <li><a href="#" onclick="return false;"  ng-click="filter('today')" data-filter=".pf-{{categories['catName']}}">Today</a></li>
                 </ul>
 
 
@@ -119,7 +118,7 @@ get_header();
                                 <td><input type="text" ng-model="$parent.points[teams['team_name']['ID']]" >
                                 <br>Yor Trade : 5000K</td>
                                 <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
-                                <td>10000K</td>
+                                <td>{{getPost['total_bets']}}</td>
                             </tr>                            
                         </tbody>
                     </table>

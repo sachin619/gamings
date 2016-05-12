@@ -304,25 +304,33 @@ class API {
         endif;
         $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);
+        if ($getCatSlug['data']['type'] == 'today'):
+            $args = [
+                'post_type' => 'matches',
+                'meta_key' => 'start_date',
+                'orderby' => 'meta_value',
+                'category_name' => $categorySlug,
+                'posts_per_page' => $getPageCount,
+                'order' => 'ASC',
+                'meta_query' => ['relation' => 'AND', ['key' => 'end_date', 'value' => $dateFormat, 'compare' => '>=',]],
+            ];
+        else:
         $args = [
             'post_type' => 'matches',
-            'meta_key' => 'start_date',
-            'order_by' => 'start_date',
+            'meta_key' => 'total_bets',
+            'orderby' => 'meta_value',
             'category_name' => $categorySlug,
             'posts_per_page' => $getPageCount,
-            'order' => 'ASC',
-            'meta_query' =>
-            [
-                'key' => 'end_date',
-                'value' => $dateFormat,
-                'compare' => '>=',
-            ],
+            'order' => 'DESC',
+            'meta_query' => [  'key' => 'end_date',  'value' => $dateFormat,  'compare' => '>=', ],
         ];
+        endif;
         $result = $this->getResult($args);
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
             $cat[] = ['catName' => $catName['name']];
         }
+
         foreach ($result as $getPost) {
             $tradeInfo = ['tid' => $getPost['id']];
             $getTrade = $this->getTotalTrade($tradeInfo, 'mid');
@@ -607,7 +615,7 @@ class API {
             endif;
         endforeach;
         return $getTitleName;
-        //$getTitleName[] = $getTitle['tournament_name']->post_title;
+//$getTitleName[] = $getTitle['tournament_name']->post_title;
     }
 
     function adminDistribution($userid) {
@@ -626,8 +634,8 @@ class API {
     }
 
     function getUserBets($info) {
-        // print_r($info);
-        // exit;
+// print_r($info);
+// exit;
         $startDate = $info['data']['startDate'];
         $endDate = $info['data']['endDate'];
         if (isset($startDate) && isset($endDate)): //start and end date
@@ -653,8 +661,8 @@ class API {
     }
 
     function getWinLossBets($info) {
-        // print_r($info);
-        // exit;
+// print_r($info);
+// exit;
         $startDate = $info['data']['startDate'];
         $endDate = $info['data']['endDate'];
         if (isset($startDate) && isset($endDate)): //start and end date
@@ -663,7 +671,7 @@ class API {
         global $wpdb;
         $getAccount = [];
         $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets where uid= $this->userId group by tid,team_id  order by bet_at DESC");
-        //$this->getCsv($result);
+//$this->getCsv($result);
         $i = 1;
         foreach ($result as $getBetDetails):
             $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE tid=$getBetDetails->tid AND team_id=$getBetDetails->team_id");
@@ -695,7 +703,7 @@ class API {
 
     function updateUserInfo($info) {
         wp_update_user(['ID' => $this->userId, 'user_email' => esc_attr($info['data']['email'])]);
-        //wp_update_user(['ID' => $this->userId, 'user_login' => $info['data']['ulogin']]);
+//wp_update_user(['ID' => $this->userId, 'user_login' => $info['data']['ulogin']]);
         wp_update_user(['ID' => $this->userId, 'first_name' => esc_attr($info['data']['fname'])]);
         wp_update_user(['ID' => $this->userId, 'last_name' => esc_attr($info['data']['lname'])]);
         update_user_meta($this->userId, 'phone', $info['data']['phone']);
@@ -769,7 +777,7 @@ class API {
     }
 
     public function getCsv($query) {
-        //print_r($query);exit;
+//print_r($query);exit;
         $combineRes[] = ['id', 'Users', 'Tournaments', 'Matches', 'Teams', 'Points', 'Bet At'];
         $combineRes[] = ['', '', '', '', '', '', ''];
         foreach ($query as $getResult):
