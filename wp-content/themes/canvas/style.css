@@ -2063,7 +2063,7 @@ body.top-search-open #side-panel-trigger { opacity: 0; }
 
 #page-menu-wrap {
 	z-index: 99;
-	background-color: #1ABC9C;
+	background-color: #d4202b;
 	-webkit-transform: translate3d(0,0,0);
 	-ms-transform: translate3d(0,0,0);
 	-o-transform: translate3d(0,0,0);
@@ -2107,7 +2107,7 @@ body.top-search-open #side-panel-trigger { opacity: 0; }
 
 #page-menu nav {
 	position: relative;
-	float: right;
+	float: left;
 }
 
 #page-menu nav ul {
@@ -2153,7 +2153,7 @@ body:not(.device-touch) #page-menu nav li a {
 	left: 0;
 	z-index: 149;
 	height: auto;
-	background-color: #1ABC9C;
+	background-color: #d4202b;
 }
 
 #page-menu ul ul ul { display: none !important; } /* Disable Multi-Level Links */
