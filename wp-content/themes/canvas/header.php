@@ -136,8 +136,6 @@ endif;
 
                 <div class="container clearfix">
 
-                    <div class="menu-title">Explore <span>CANVAS</span></div>
-
                     <nav>
                         <ul>
                             <li class="current"><a href="#"><div>Gallery</div></a></li>
