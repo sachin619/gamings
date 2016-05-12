@@ -127,13 +127,12 @@ endif;
 
                     <nav>
                         <ul>
-
                         <?php
                             $args = ['parent' => 1];
                             $getCategoires = get_categories($args);
                             foreach ($getCategoires as $catName):
                                 ?>
-                                <li class="mega-menu"><a href=""><div><?= $catName->name ?></div></a>
+                                <li class="current"><a href=""><div><?= $catName->name ?></div></a>
                                     <ul>
                                         <li><a href="<?= get_site_url().'/tournaments/?category='.$catName->name ?>"><div>Tournaments </div> </a> </li>
                                         <li><a href="<?= get_site_url().'/matches/?category='.$catName->name ?>"><div>Matches </div> </a> </li>
