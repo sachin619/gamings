@@ -74,18 +74,7 @@ endif;
                                 <li class=" <?= strcmp('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_site_url() . '/') == 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() ?>"><div><i class=""></i>Home</div></a>
 
                                 </li>
-                                <?php
-                                $args = ['parent' => 1];
-                                $getCategoires = get_categories($args);
-                                foreach ($getCategoires as $catName):
-                                    ?>
-                                    <li class="mega-menu"><a href=""><div><?= $catName->name ?></div></a>
-                                        <ul>
-                                            <li><a href="<?= get_site_url().'/tournaments/?category='.$catName->name ?>"><div>Tournaments </div> </a> </li>
-                                            <li><a href="<?= get_site_url().'/matches/?category='.$catName->name ?>"><div>Matches </div> </a> </li>
-                                        </ul>
-                                    </li>
-                                <?php endforeach; ?>
+                                
                                 <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'about') > 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() ?>/about-us"><div><i class=""></i>About</div></a>
 
                                 </li>
@@ -138,7 +127,21 @@ endif;
 
                     <nav>
                         <ul>
-                            <li class="current"><a href="#"><div>Gallery</div></a></li>
+
+                        <?php
+                            $args = ['parent' => 1];
+                            $getCategoires = get_categories($args);
+                            foreach ($getCategoires as $catName):
+                                ?>
+                                <li class="mega-menu"><a href=""><div><?= $catName->name ?></div></a>
+                                    <ul>
+                                        <li><a href="<?= get_site_url().'/tournaments/?category='.$catName->name ?>"><div>Tournaments </div> </a> </li>
+                                        <li><a href="<?= get_site_url().'/matches/?category='.$catName->name ?>"><div>Matches </div> </a> </li>
+                                    </ul>
+                                </li>
+                            <?php endforeach; ?>
+
+                            <!-- <li class="current"><a href="#"><div>Gallery</div></a></li>
                             <li><a href="#"><div>Features</div></a></li>
                             <li><a href="#"><div>Models</div></a>
                                 <ul>
@@ -155,7 +158,7 @@ endif;
                             </li>
                             <li><a href="#"><div>Compare</div></a></li>
                             <li><a href="#"><div>Build</div></a></li>
-                            <li><a href="#"><div>Order</div></a></li>
+                            <li><a href="#"><div>Order</div></a></li> -->
                         </ul>
                     </nav>
 
@@ -166,3 +169,4 @@ endif;
             </div>
 
         </div><!-- #page-menu end -->
+
