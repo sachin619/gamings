@@ -98,7 +98,27 @@ $userEmail = $userInfo->user_email;
                                         <td>{{myInfo['tourDetails']['teamTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
-                                    </tr>						      
+                                    </tr>	
+
+                                <div class="col-lg-12">
+                                    <div class="col-md-3">
+                                        <button ng-click="pagination.prevPage()">Previous</button>
+                                        <button ng-click="pagination.nextPage()">Next</button>
+                                    </div> 
+                                    <div class="col-md-6">
+                                        <span class="input-daterange input-group">
+                                            <input type="text" class="datePicker startDate sm-form-control tleft" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" />
+                                            <span class="input-group-addon">to</span>
+                                            <input type="text" class="datePicker endDate sm-form-control tleft" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
+                                        </span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button ng-click="searchByDate()">Search</button>
+                                        <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button>Download</button>
+                                        </a>
+                                    </div>  
+                                </div>    
+
                                 <button ng-click="pagination.prevPage()">Previous</button>
                                 <button ng-click="pagination.nextPage()">Next</button>
 
@@ -109,7 +129,8 @@ $userEmail = $userInfo->user_email;
                                 </span>
 
                                 <button ng-click="searchByDate()">Search</button>
-                                <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button>Download</button></a>
+                                <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button>Download</button>
+                                </a>
                                 </tbody>							
                             </table>
                         </div>
