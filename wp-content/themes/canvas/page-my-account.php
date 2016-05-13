@@ -15,7 +15,6 @@ $userEmail = $userInfo->user_email;
             <h1>My Account</h1>
             <ol class="breadcrumb">
                 <li><a href="#">Home</a></li>
-                <li><a href="#">Pages</a></li>
                 <li class="active">My Account</li>
             </ol>
         </div>
