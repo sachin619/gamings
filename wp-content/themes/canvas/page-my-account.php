@@ -206,39 +206,39 @@ $userEmail = $userInfo->user_email;
                         <div class="tabColumn">
                             <form class="form-horizontal">
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-2 control-label">First Name</label>
-                                    <div class="col-sm-10">
+                                    <label for="name" class="col-sm-4 control-label">First Name</label>
+                                    <div class="col-sm-8">
                                         <input type="text" class="form-control" id="fname" name='fname' ng-model="fname" value={{myAccount['userInfo']['firstName'][0]}} placeholder="First Name" required="" ng-minlength="3">
                                     </div>
                                 </div>	
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-2 control-label">Last Name</label>
-                                    <div class="col-sm-10">
+                                    <label for="name" class="col-sm-4 control-label">Last Name</label>
+                                    <div class="col-sm-8">
                                         <input type="text" class="form-control" id="lname" name='lname' value={{myAccount['userInfo']['lastName'][0]}} placeholder="Last Name">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email" class="col-sm-2 control-label">Email</label>
-                                    <div class="col-sm-10">
+                                    <label for="email" class="col-sm-4 control-label">Email</label>
+                                    <div class="col-sm-8">
                                         <input type="email" class="form-control" value={{myAccount['userInfo']['userDetails']['data']['user_email']}} id="email" name="email" placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="mobile" class="col-sm-2 control-label">Mobile</label>
-                                    <div class="col-sm-10">
+                                    <label for="mobile" class="col-sm-4 control-label">Mobile</label>
+                                    <div class="col-sm-8">
                                         <input type="text" value={{myAccount['userInfo']['phone'][0]}} class="form-control" id="mobile" name="mobile" placeholder="Mobile">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="mobile" class="col-sm-2 control-label">Upload Profile Image</label>
-                                    <div class="col-sm-10">
+                                    <label for="mobile" class="col-sm-4 control-label">Upload Profile Image</label>
+                                    <div class="col-sm-8">
                                         <input type="file"  id="img" name="file" value="browse" />
 
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
+                                    <div class="col-sm-offset-4 col-sm-10">
                                         <button type="submit" onclick="return false;" ng-click="userUpdate()" class="btn btn-danger">Submit</button> <span style="display: none" class="loader"><img src={{myAccount['userInfo']['loaderImg']}} /></span>
                                     </div>
                                 </div>
