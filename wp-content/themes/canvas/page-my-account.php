@@ -117,7 +117,7 @@ $userEmail = $userInfo->user_email;
                             </table>
                             <div class="col-lg-12">
                                 <button ng-click="pagination.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
-                                <button ng-click="pagination.nextPage()" class="button button-mini button-dark button-rounded">Next</button>
+                                <button ng-click="pagination.nextPage()" class="button button-mini button-dark button-rounded pull-right">Next</button>
                             </div>
                         </div>
                     </div>   <!-- My bets-->
