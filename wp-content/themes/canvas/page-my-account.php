@@ -121,7 +121,7 @@ $userEmail = $userInfo->user_email;
                             </table>
                         </div>
                     </div>   <!-- My bets-->
-                    <div class="col-lg-12"><br></div>
+                    
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
                             <table class = "table table-bordered">
