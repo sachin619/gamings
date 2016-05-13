@@ -98,8 +98,7 @@ $userEmail = $userInfo->user_email;
                                         <td>{{myInfo['tourDetails']['teamTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
-                                    </tr>	
-
+                                    </tr>
                                 <div class="col-lg-12">
                                     <div class="col-md-3">
                                         <button ng-click="pagination.prevPage()">Previous</button>
@@ -117,12 +116,12 @@ $userEmail = $userInfo->user_email;
                                         <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button>Download</button>
                                         </a>
                                     </div>  
-                                </div>   
-
+                                </div>  
                                 </tbody>							
                             </table>
                         </div>
                     </div>   <!-- My bets-->
+                    <div class="col-lg-12"><br></div>
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
                             <table class = "table table-bordered">
