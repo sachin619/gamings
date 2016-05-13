@@ -329,6 +329,8 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
         cache: $templateCache
     }).
             success(function (response) {
+                        $('.loader').hide();
+
                 //for pagination of matches
                 if (typeof formData['loadMore'] !== 'undefined')
                     var getCountResult = response['catPost'].length;
@@ -427,7 +429,8 @@ function hideDiv() {
     });
 }
 
-app.controller('contactCtrl', function ($scope, $http,$templateCache) {
+app.controller('contactCtrl', function ($scope, $http, $templateCache) {
+    $('.loader').hide();
     $('#template-contactform').validate({
         rules: {
             fname: {minlength: 5, required: true},
@@ -442,15 +445,15 @@ app.controller('contactCtrl', function ($scope, $http,$templateCache) {
             message: "Minimum length should be 10"
         }
     });
-
+    $scope.loadImg = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
     $scope.contacForm = function () {
+        
         $('#template-contactform').valid();
         if (!$('#template-contactform').valid()) {
             return false;
         }
-        var formData=$('#template-contactform').serialize();
+        $('.loader').show();
+        var formData = $('#template-contactform').serialize();
         ngPost('contact-us', formData, $scope, $http, $templateCache, 'errorReg');
-
-
     };
 });

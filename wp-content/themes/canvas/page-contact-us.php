@@ -75,6 +75,7 @@ get_header();
                         <br>
                         <div class="col-md-12">
                             <button name="submit" type="button" id="submit-button" onclick=""  placeholder="Name" ng-click="contacForm()" tabindex="5" value="Submit" class="button btn-danger button-3d nomargin">Submit</button>
+                            <img src="{{loadImg}}" class="loader" />
                         </div><br>
                         <div class=" col-ch">
                             <div  ng-if="errorReg != null" class="alert alert-{{errorReg['errorType']}} col_full  nobottommargin">
