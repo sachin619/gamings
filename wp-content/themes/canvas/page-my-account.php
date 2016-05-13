@@ -99,7 +99,7 @@ $userEmail = $userInfo->user_email;
                                         <td>{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
                                     </tr>
-                                <div class="col-lg-12">
+                                <div class="col-lg-12" style="margin: 0 0 20px 0;">
                                     <div class="col-md-3">
                                         <button ng-click="pagination.prevPage()">Previous</button>
                                         <button ng-click="pagination.nextPage()">Next</button>
@@ -121,7 +121,7 @@ $userEmail = $userInfo->user_email;
                             </table>
                         </div>
                     </div>   <!-- My bets-->
-                    
+
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
                             <table class = "table table-bordered">
