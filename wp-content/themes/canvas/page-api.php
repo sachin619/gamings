@@ -75,6 +75,9 @@ switch ($action) {
     case 'upload-img':
         $output = $api->uploadImg($_REQUEST);
         break;
+    case 'contact-us':
+        $output = $api->contacUs($_REQUEST);
+        break;
     default:
         $output = ['error' => 'invalid action'];
         break;
@@ -550,8 +553,8 @@ class API {
                 update_user_meta($user_id, 'points', get_option("token_amt"));
                 $userInfo['data']['userName'] = $userInfo['data']['user_email'];
                 $userInfo['data']['password'] = $userInfo['data']['user_pass'];
-               return $this->login($userInfo);
-               // return ['msg' => 'Registered Successfully & You have got 500 points', 'errorType' => 'success'];
+                return $this->login($userInfo);
+            // return ['msg' => 'Registered Successfully & You have got 500 points', 'errorType' => 'success'];
             else:
                 return ['msg' => "Something goes wrong try again later", 'errorType' => 'danger'];
             endif;
@@ -822,6 +825,15 @@ class API {
             fputcsv($fp, $fields);
         }
         fclose($fp);
+    }
+
+    public function contacUs($getData) {
+        global $wpdb;
+        $userDetails = [];
+     $data=   parse_str($getData['data'], $userDetails);
+        print_r($userDetails['fname']);
+        $query=$wpbd->insert("wp_contact_us",$data);
+        print_r($query);
     }
 
 }

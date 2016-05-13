@@ -291,9 +291,9 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
             'mid': tid,
             'pts': points,
             'slug': slug,
-            'mainSlug':$.urlParam('category'),
+            'mainSlug': $.urlParam('category'),
             'type': 'matchesList',
-            'catType':sessionStorage.getItem('type')
+            'catType': sessionStorage.getItem('type')
         };
         console.log(sessionStorage.getItem('type'));
         tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
@@ -306,7 +306,7 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
         $scope.selectedIndex = $index;
         $('.hide-loadMore').show();
         $scope.getCat = type;
-        sessionStorage.setItem('type',type);
+        sessionStorage.setItem('type', type);
         var formInfo = {'categoryName': $.urlParam('category'), 'type': type};
         ngPost('listing-matches', formInfo, $scope, $http, $templateCache, 'getDetails');
     };
@@ -398,7 +398,7 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
             ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         }
         else if (formData['type'] === 'matchesList') {
-            var formDataReload = {'categoryName': formData['mainSlug'],'type': formData['catType']};
+            var formDataReload = {'categoryName': formData['mainSlug'], 'type': formData['catType']};
             console.log(formDataReload);
             ngPost('listing-matches', formDataReload, $scope, $http, $templateCache, 'getDetails');
         }
@@ -426,3 +426,31 @@ function hideDiv() {
 
     });
 }
+
+app.controller('contactCtrl', function ($scope, $http,$templateCache) {
+    $('#template-contactform').validate({
+        rules: {
+            fname: {minlength: 5, required: true},
+            email: {required: true, email: true},
+            phone: {required: true, minlength: 10, maxlength: 10, number: true},
+            message: {required: true, minlength: 10}
+
+        },
+        messages: {fname: "Minimum length should be 5",
+            email: "Not a valid Email Id",
+            phone: "Enter a valid mobile number",
+            message: "Minimum length should be 10"
+        }
+    });
+
+    $scope.contacForm = function () {
+        $('#template-contactform').valid();
+        if (!$('#template-contactform').valid()) {
+            return false;
+        }
+        var formData=$('#template-contactform').serialize();
+        ngPost('contact-us', formData, $scope, $http, $templateCache, 'getDetails');
+
+
+    };
+});
