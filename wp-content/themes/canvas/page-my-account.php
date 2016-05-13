@@ -77,11 +77,7 @@ $userEmail = $userInfo->user_email;
                         </form>
                     </div> <!-- My points -->
                     <div class="bhoechie-tab-content">
-                        <div class="tabColumn">
-                        <div class="col-md-3">
-                                        <button ng-click="pagination.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
-                                        <button ng-click="pagination.nextPage()" class="button button-mini button-dark button-rounded">Next</button>
-                                    </div> 
+                        <div class="tabColumn">                         
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -119,6 +115,10 @@ $userEmail = $userInfo->user_email;
                                 </div>  
                                 </tbody>							
                             </table>
+                            <div class="col-lg-12">
+                                <button ng-click="pagination.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
+                                <button ng-click="pagination.nextPage()" class="button button-mini button-dark button-rounded">Next</button>
+                            </div>
                         </div>
                     </div>   <!-- My bets-->
 
