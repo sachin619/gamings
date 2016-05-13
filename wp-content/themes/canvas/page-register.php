@@ -60,7 +60,6 @@ get_header();
                                         <span class="loader loaderAlign"><img src={{myAccount['userInfo']['loaderImg']}} /></span>
 
                                         <a href="#" class="fright" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Forgot Password?</a>
-                                        <a href="<?php echo wp_lostpassword_url(); ?>" title="Lost Password">Lost Password</a>
                                     </div>
                                     <div class='customAlert'>
                                         <div ng-if="errorLog != null" class="alert  alert-{{errorLog['errorType']}} col_full nobottommargin">
@@ -173,10 +172,10 @@ get_header();
                     <div class="form-group">  
                         <button type="button" ng-click="forgotPassword()" class="btn btn-danger">Submit</button>
                         <img src="{{loadImg}}" class="loaderForgot" />
-                        <div class="alert alert-danger  forgotPassword-success">
+                        <div class="alert alert-danger  forgotPassword-error">
                            User or Email does not exist.
                         </div>
-                        <div class="alert alert-success  forgotPassword-error">
+                        <div class="alert alert-success  forgotPassword-success">
                           Email send successfully
                         </div>
                     </div>
