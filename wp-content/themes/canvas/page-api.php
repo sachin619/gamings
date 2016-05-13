@@ -575,7 +575,8 @@ class API {
                 'img' => $this->getFeaturedImg($id),
                 'content' => get_the_content(),
                 'postLink' => get_permalink($post->ID),
-                'category' => get_the_category($post->ID)
+                'category' => get_the_category($post->ID),
+                'siteUrl'=>get_site_url()
             ];
             foreach (get_fields($id) as $k => $v) {
                 $post[$k] = $v;
