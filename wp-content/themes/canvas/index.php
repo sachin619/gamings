@@ -110,7 +110,7 @@ get_header();
 
     <!-- Content
     ============================================= -->
-    <section id="content" >
+    <section id="content" class="hide">
 
         <div class="content-wrap">
 
@@ -150,7 +150,7 @@ get_header();
 
     <!-- Content
     ============================================= -->
-    <section id="content">
+    <section id="content" class="hide">
 
         <div class="content-wrap">
 
@@ -185,7 +185,7 @@ get_header();
     </section><!-- #content end -->
     <!-- Content
     ============================================= -->
-    <section id="content">
+    <section id="content" class="hide">
 
         <div class="content-wrap">
 

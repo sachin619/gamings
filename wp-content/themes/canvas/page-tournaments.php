@@ -79,8 +79,8 @@ get_header();
                 </div><!-- #portfolio end -->
                 <div class="col-lg-12" style="margin: 20px 0px;">
                 <div class="col-md-4"></div>
-                <div ng-if="getDetails.catPost.length >= 4" class="col-md-4 hide-loadMore">
-                    <button type="button" class="btn btn-danger btn-lg btn-block"  ng-click="loadMore(getCat, getDetails.catPost.length + 4)">Load More </button>
+                <div ng-if="getDetails.catPost.length >= 6" class="col-md-4 hide-loadMore">
+                    <button type="button" class="btn btn-danger btn-lg btn-block"  ng-click="loadMore(getCat, getDetails.catPost.length + 6)">Load More </button>
                 </div>
                 <div class="col-md-4"></div>
                 </div>

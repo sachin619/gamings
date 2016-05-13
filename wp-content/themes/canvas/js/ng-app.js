@@ -141,6 +141,7 @@ app.controller('signupCtrl', function ($scope, $http, $templateCache) {
 app.controller('tourDetails', function ($scope, $http, $templateCache) {
     var slug = document.location.pathname.split("/");
     slug = slug[slug.length - 2];
+    slugCopy = slug;
     var formData = {
         'postId': slug
     };
@@ -151,8 +152,12 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
             var formDataNew = {
                 'mid': tid,
                 'pts': points,
-                'slug': slug
+                'slug': slug,
+                'mainSlug': slugCopy,
+                'type': 'tournamentsMatches'
             };
+            //console.log(slugCopy);
+
             tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
         } else {
             sessionStorage.setItem('url', document.URL);
@@ -253,10 +258,9 @@ app.controller('listingTour', function ($http, $scope, $templateCache) {
     };
     $scope.loadMore = function (catName, getCount) {
         //console.log(getCount);
-        var formInfo = {'categoryName': catName, 'getCount': getCount};
+        var formInfo = {'categoryName': $.urlParam('category'), 'getCount': getCount, 'loadMore': 'true'};
         ngPost('listing-tournaments', formInfo, $scope, $http, $templateCache, 'getDetails');
-        if ($scope.j > getCount)
-            $('.hide-loadMore').hide();
+
     };
 });
 
@@ -278,23 +282,38 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
     else {
         var formData = {};
     }
+
+    $scope.tradeMatch = function (link, tid, points, uid) {
+
+        var slug = link.split("/");
+        slug = slug[slug.length - 2];
+        var formDataNew = {
+            'mid': tid,
+            'pts': points,
+            'slug': slug,
+            'type': 'matchesList'
+        };
+        tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
+    }; //for login redirect
     //console.log( $.urlParam('category'));
     ngPost('listing-matches', formData, $scope, $http, $templateCache, 'getDetails');
     $scope.filter = function (type, $index) {
-        console.log( $.urlParam('category'));
+        console.log($.urlParam('category'));
         console.log(type);
         $scope.selectedIndex = $index;
         $('.hide-loadMore').show();
         $scope.getCat = type;
-        var formInfo = {'categoryName': $.urlParam('category'),'type':type};
+        var formInfo = {'categoryName': $.urlParam('category'), 'type': type};
         ngPost('listing-matches', formInfo, $scope, $http, $templateCache, 'getDetails');
     };
-//    $scope.loadMore = function (catName, getCount) {
-//        var formInfo = {'categoryName': catName, 'getCount': getCount};
-//        ngPost('listing-matches', formInfo, $scope, $http, $templateCache, 'getDetails');
-//        if ($scope.j > getCount)
-//            $('.hide-loadMore').hide();
-//    };
+    $scope.loadMore = function (catName, getCount) {
+        //console.log($.urlParam('category'));
+        // console.log(getCount);
+        var formInfo = {'categoryName': $.urlParam('category'), 'getCount': getCount, 'loadMore': 'true'};
+        ngPost('listing-matches', formInfo, $scope, $http, $templateCache, 'getDetails');
+        if ($scope.j > getCount)
+            $('.hide-loadMore').hide();
+    };
 });
 
 function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
@@ -306,6 +325,14 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
         cache: $templateCache
     }).
             success(function (response) {
+                //for pagination of matches
+                if (typeof formData['loadMore'] !== 'undefined')
+                    var getCountResult = response['catPost'].length;
+                var getPaginateCount = formData['getCount'];
+                if (getPaginateCount > getCountResult) {
+                    $('.hide-loadMore').hide();
+                }
+                //for pagination of matches
                 if (typeof response['userBets'] !== 'undefined' && formData['type'] === 'myAccount') {
                     var Pagination = formData['pagination'];
                     $scope.posts = response['userBets'];
@@ -365,6 +392,15 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
         else if (formData['type'] === 'matches') {
             var formDataReload = {'postId': formData['slug']};
             ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
+        }
+        else if (formData['type'] === 'matchesList') {
+
+            ngPost('listing-matches', formData, $scope, $http, $templateCache, 'getDetails');
+        }
+        else if (formData['type'] === 'tournamentsMatches') {
+            var formDataReload = {'postId': formData['mainSlug']};
+            ngPost('tournaments-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
+
         }
         $('.loader').hide();
         swal({
