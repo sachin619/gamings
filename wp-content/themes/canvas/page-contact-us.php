@@ -15,8 +15,10 @@ get_header();
     #fname-error{ display:block !important}
     #email-error{ display:block !important}
     #message-error{ display:block !important}
-
+    .col-ch{padding-top: 380px;}
 </style>
+
+
 <!-- Page Title
 ============================================= -->
 <section id="page-title">
@@ -68,13 +70,17 @@ get_header();
                         </div>
 
                         <div class="col-md-12 form-group">
-                            <textarea class="required sm-form-control" id="message" name="message" rows="6" cols="30">Messages</textarea>
+                            <textarea class="required sm-form-control" id="message" name="message" rows="6" cols="30" placeholder="Message"></textarea>
                         </div>
                         <br>
                         <div class="col-md-12">
                             <button name="submit" type="button" id="submit-button" onclick=""  placeholder="Name" ng-click="contacForm()" tabindex="5" value="Submit" class="button btn-danger button-3d nomargin">Submit</button>
+                        </div><br>
+                        <div class=" col-ch">
+                            <div  ng-if="errorReg != null" class="alert alert-{{errorReg['errorType']}} col_full  nobottommargin">
+                                {{errorReg['msg']}}
+                            </div>
                         </div>
-
                     </form>
                 </div>
 
@@ -140,7 +146,6 @@ get_header();
     </div>
 
 </section><!-- #content end -->
-
 
 
 <?php

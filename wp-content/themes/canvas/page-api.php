@@ -830,10 +830,20 @@ class API {
     public function contacUs($getData) {
         global $wpdb;
         $userDetails = [];
-     $data=   parse_str($getData['data'], $userDetails);
-        print_r($userDetails['fname']);
-        $query=$wpbd->insert("wp_contact_us",$data);
-        print_r($query);
+        parse_str($getData['data'], $userDetails);
+        $results = $wpdb->insert("wp_contact_us", $userDetails);
+        if (!$results):
+            return ['msg' => "Something goes wrong try again later", 'errorType' => 'danger'];
+        else:
+            $headers = 'Content-type: text/html';
+            $name = $userDetails['fname'];
+            $email = $userDetails['email'];
+            $phone = $userDetails['phone'];
+            $message = $userDetails['message'];
+            $body = "<p>Name : $name</p><p>Email : $email</p>Phone : $phone <p>Message : $message</p>";
+            wp_mail(get_option('smtp_user'), "Contact Us", $body,$headers);
+            return ['msg' => "Thank you for getting in touch. We will respond to you shortly.", 'errorType' => 'success'];
+        endif;
     }
 
 }

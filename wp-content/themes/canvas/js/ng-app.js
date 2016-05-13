@@ -449,7 +449,7 @@ app.controller('contactCtrl', function ($scope, $http,$templateCache) {
             return false;
         }
         var formData=$('#template-contactform').serialize();
-        ngPost('contact-us', formData, $scope, $http, $templateCache, 'getDetails');
+        ngPost('contact-us', formData, $scope, $http, $templateCache, 'errorReg');
 
 
     };

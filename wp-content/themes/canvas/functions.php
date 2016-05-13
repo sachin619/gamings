@@ -243,9 +243,9 @@ function twentysixteen_scripts() {
     wp_enqueue_script('ng-app', get_template_directory_uri() . '/js/ng-app.js');
     wp_enqueue_script('sweetalert-min', get_template_directory_uri() . '/js/sweetalert.min.js');
     wp_enqueue_style('sweetalert-min', get_template_directory_uri() . '/css/sweetalert.min.css');
-    wp_enqueue_script('simplePagination',get_template_directory_uri().'/js/simplePagination.js');
+    wp_enqueue_script('simplePagination', get_template_directory_uri() . '/js/simplePagination.js');
     wp_enqueue_script('custom', get_template_directory_uri() . '/js/custom.js');
-    wp_enqueue_script('jquery-validate-min',get_template_directory_uri().'/js/jquery.validate.min.js');
+    wp_enqueue_script('jquery-validate-min', get_template_directory_uri() . '/js/jquery.validate.min.js');
     //wp_enqueue_style('jqueryUi', get_template_directory_uri() . '/css/jqueryUi.css');
     // Add Genericons, used in the main stylesheet.
     wp_enqueue_style('genericons', get_template_directory_uri() . '/genericons/genericons.css', array(), '3.4.1');
@@ -536,7 +536,7 @@ function updateMatchPremium($postId) {
                 $wpdb->insert('wp_distribution', $data);
                 $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
                 $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
-               // update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
+                // update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
             }
             update_post_meta($postId, 'points_distributed', 'Yes');
         }
@@ -630,8 +630,8 @@ function my_general_settings_register_fields() {
     add_settings_field('token_amt', '<label for="token_amt">' . __('Post Registration Points', 'token_amt') . '</label>', 'my_general_settings_fields_html', 'general');
     register_setting('general', 'distributing_days', 'esc_attr');
     add_settings_field('distributing_days', '<label for="distributing_days">' . __('Distribution Days', 'distributing_days') . '</label>', 'distributing_days_field', 'general');
-    register_setting('general','minimum_bet_amount','esc_attr');
-    add_settings_field('minimum_bet_amount','<label for="minimum_bet_amount">'.__('Minimum Bet Amount','minimum_bet_amount').'</lable>','minimum_bet_amount_field','general');
+    register_setting('general', 'minimum_bet_amount', 'esc_attr');
+    add_settings_field('minimum_bet_amount', '<label for="minimum_bet_amount">' . __('Minimum Bet Amount', 'minimum_bet_amount') . '</lable>', 'minimum_bet_amount_field', 'general');
 }
 
 function my_general_settings_fields_html() {
@@ -644,9 +644,9 @@ function distributing_days_field() {
     echo '<input type="text" id="distributing_days" name="distributing_days" value="' . $value . '" > ';
 }
 
-function minimum_bet_amount_field(){
-    $value=get_option('minimum_bet_amount','');
-    echo '<input type="text" id="minimum_bet_amount" name="minimum_bet_amount" value="'.$value.'" ' ;
+function minimum_bet_amount_field() {
+    $value = get_option('minimum_bet_amount', '');
+    echo '<input type="text" id="minimum_bet_amount" name="minimum_bet_amount" value="' . $value . '" ';
 }
 
 function formatNumberAbbreviation($number) {
@@ -659,17 +659,18 @@ function formatNumberAbbreviation($number) {
     }
 }
 
-    function adminDistribution($userid) {
-        global $wpdb;
-        $getDistributionDays = get_option('distributing_days');
-        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where uid =' . $userid);
-        foreach ($getResults as $results):
-            $getCurrTime = time();
-            $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
-            if ($disDateAdd < $getCurrTime && $results->cleared != 1):
-                $getCurrentPoints = get_user_meta($userid, 'points');
-                $wpdb->update('wp_distribution', ['cleared' => '1'], ['uid' => $userid]);
-                update_user_meta($userid, 'points', $getCurrentPoints[0] + $results->gain_points);
-            endif;
-        endforeach;
-    }
+function adminDistribution($userid) {
+    global $wpdb;
+    $getDistributionDays = get_option('distributing_days');
+    $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where uid =' . $userid);
+    foreach ($getResults as $results):
+        $getCurrTime = time();
+        $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
+        if ($disDateAdd < $getCurrTime && $results->cleared != 1):
+            $getCurrentPoints = get_user_meta($userid, 'points');
+            $wpdb->update('wp_distribution', ['cleared' => '1'], ['uid' => $userid]);
+            update_user_meta($userid, 'points', $getCurrentPoints[0] + $results->gain_points);
+        endif;
+    endforeach;
+}
+
