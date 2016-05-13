@@ -101,7 +101,7 @@ $userEmail = $userInfo->user_email;
                                     </tr>
                                 <div class="col-lg-12" style="margin: 0 0 20px 0;">
                                     <div class="col-md-3">
-                                        <button ng-click="pagination.prevPage()">Previous</button>
+                                        <button ng-click="pagination.prevPage()" class="button button-mini button-border button-rounded">Previous</button>
                                         <button ng-click="pagination.nextPage()">Next</button>
                                     </div> 
                                     <div class="col-md-6">
