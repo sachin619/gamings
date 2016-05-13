@@ -78,6 +78,9 @@ switch ($action) {
     case 'contact-us':
         $output = $api->contacUs($_REQUEST);
         break;
+    case 'forgot-password':
+        $output = $api->forgotPassword($_REQUEST);
+        break;
     default:
         $output = ['error' => 'invalid action'];
         break;
@@ -204,22 +207,7 @@ class API {
         ];
         $result = $this->getResult($args);
         $allResult = $this->getResult($args);
-////print_r($result[0]['select_teams']);
-//        $i = -1;
-//        foreach ($result as $getResult) {
-//            $mId = $getResult[id];
-//            $i++;
-//            foreach ($getResult['select_teams'] as $teams) {
-//                //print_r($teams['team_name']->ID . "  " . $mId);
-//                $tid = $teams['team_name']->ID;
-//
-//                $getTotalBets = $wpdb->get_results("SELECT sum(pts)as pts FROM wp_bets WHERE uid=$userId AND mid=$mId AND team_id=$tid group by team_id");
-//                $getTotal[$i][] = $getTotalBets[0]->pts;
-//            }
-//        }
-//        
-
-        foreach ($allResult as $getPost) {
+    foreach ($allResult as $getPost) {
             $tId = $getPost['id'];
             foreach ($getPost['select_teams'] as $resultN) {
                 $teamInfo = (array) $resultN['team_name'];
@@ -520,7 +508,7 @@ class API {
         $userid = wp_signon($credential, false);
         if (!is_wp_error($userid)):
             //$this->adminDistribution($userid->ID);
-            return "success_login";
+            return ['msg'=> "success_login",'userData'=>$this->getUserDetails()];
         else:
             return ['msg' => "Not a valid username or password", 'errorType' => 'danger'];
 
@@ -576,7 +564,7 @@ class API {
                 'content' => get_the_content(),
                 'postLink' => get_permalink($post->ID),
                 'category' => get_the_category($post->ID),
-                'siteUrl'=>get_site_url()
+                'siteUrl' => get_site_url()
             ];
             foreach (get_fields($id) as $k => $v) {
                 $post[$k] = $v;
@@ -842,8 +830,20 @@ class API {
             $phone = $userDetails['phone'];
             $message = $userDetails['message'];
             $body = "<p>Name : $name</p><p>Email : $email</p>Phone : $phone <p>Message : $message</p>";
-            wp_mail(get_option('smtp_user'), "Contact Us", $body,$headers);
+            wp_mail(get_option('smtp_user'), "Contact Us", $body, $headers);
             return ['msg' => "Thank you for getting in touch. We will respond to you shortly.", 'errorType' => 'success'];
+        endif;
+    }
+
+    public function forgotPassword($userInfo) {
+          $email = email_exists($userInfo['user_login']); //check if email id exist
+        $username = username_exists($userInfo['user_login']); //check username exists
+        if ($email != ""):
+            return "Yes";
+        elseif ($username != ""):
+            return "Yes";
+        else:
+            return "No";
         endif;
     }
 

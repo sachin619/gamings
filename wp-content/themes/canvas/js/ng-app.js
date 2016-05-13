@@ -114,6 +114,18 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
 });
 
 app.controller('signupCtrl', function ($scope, $http, $templateCache) {
+    $(".loaderForgot").hide();
+    $('.forgotPassword-success').hide();
+    $('.forgotPassword-error').hide();
+    $scope.loadImg = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
+    $scope.forgotPassword = function () {
+        $(".loaderForgot").show();
+        formData = $('#user_login').val();
+        var baseUrl = domain + 'forgot-password';
+        ngPostForgotPassword(baseUrl, formData, $scope, $http, $templateCache, 'getDetails');
+    };
+
+
     formData = {};
     ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
     $scope.signUp = function () {
@@ -136,6 +148,7 @@ app.controller('signupCtrl', function ($scope, $http, $templateCache) {
         };
         ngPost('login', formData, $scope, $http, $templateCache, 'errorLog');
     };
+
 });
 
 app.controller('tourDetails', function ($scope, $http, $templateCache) {
@@ -329,7 +342,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
         cache: $templateCache
     }).
             success(function (response) {
-                        $('.loader').hide();
+                $('.loader').hide();
 
                 //for pagination of matches
                 if (typeof formData['loadMore'] !== 'undefined')
@@ -364,7 +377,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                         return results[1] || 0;
                     }
                 };
-                if (response === "success_login") {
+                if (response['msg'] === "success_login") {
                     if ($.urlParam('url') == null) {
                         $('.alert').hide();
                         window.location.href = base_url + 'my-account/';
@@ -447,7 +460,7 @@ app.controller('contactCtrl', function ($scope, $http, $templateCache) {
     });
     $scope.loadImg = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
     $scope.contacForm = function () {
-        
+
         $('#template-contactform').valid();
         if (!$('#template-contactform').valid()) {
             return false;
@@ -457,3 +470,30 @@ app.controller('contactCtrl', function ($scope, $http, $templateCache) {
         ngPost('contact-us', formData, $scope, $http, $templateCache, 'errorReg');
     };
 });
+
+
+function ngPostForgotPassword(url, formData, $scope, $http, $templateCache, errorBlock) {
+    $http({
+        method: "POST",
+        url: url,
+        data: $.param({'user_login': formData}),
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        cache: $templateCache
+    }).success(function (response) {
+        $(".loaderForgot").hide();
+        $scope[errorBlock] = response;
+        if (response === "Yes") {
+            $('.forgotPassword-success').show();
+            $('.forgotPassword-error').hide();
+
+            var url = base_url + 'wp-login.php?action=lostpassword';
+            ngPostForgotPassword(url, formData, $scope, $http, $templateCache, 'getDetails');
+        } else if (response === "No") {
+            $('.forgotPassword-success').hide();
+            $('.forgotPassword-error').show();
+            console.log('No');
+        }
+    }).error(function (response) {
+        $scope[errorBlock] = response;
+    });
+}

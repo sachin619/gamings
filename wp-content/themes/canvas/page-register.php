@@ -15,7 +15,6 @@ get_header();
         <h1>Login / Register</h1>
         <ol class="breadcrumb">
             <li><a href="#">Home</a></li>
-            <li><a href="#">Pages</a></li>
             <li class="active">Login / Register</li>
         </ol>
     </div>
@@ -60,12 +59,13 @@ get_header();
                                         <button onclick="return false"  ng-click="signIn()" class="button loginButton button-3d button-black nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>
                                         <span class="loader loaderAlign"><img src={{myAccount['userInfo']['loaderImg']}} /></span>
 
-                                        <a href="#" class="fright">Forgot Password?</a>
+                                        <a href="#" class="fright" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Forgot Password?</a>
+                                        <a href="<?php echo wp_lostpassword_url(); ?>" title="Lost Password">Lost Password</a>
                                     </div>
                                     <div class='customAlert'>
-                                    <div ng-if="errorLog != null" class="alert  alert-{{errorLog['errorType']}} col_full nobottommargin">
-                                        {{errorLog['msg']}}
-                                    </div>
+                                        <div ng-if="errorLog != null" class="alert  alert-{{errorLog['errorType']}} col_full nobottommargin">
+                                            {{errorLog['msg']}}
+                                        </div>
                                     </div>
                                     <div class="col_full"><br>
                                         <?php do_action('facebook_login_button'); ?>
@@ -153,6 +153,41 @@ get_header();
 
     </div>
 
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Forgot Password</h4>Please enter your username or email address. You will receive a link to create a new password via email.
+
+                </div>
+                <div class="modal-body header-modal">
+                    <div class="form-group">
+                        <label for="usr">Username/Email:</label>
+                        <input type="email" class="form-control" id="user_login" placeholder="Username/Email">
+                    </div>  
+
+                    <div class="form-group">  
+                        <button type="button" ng-click="forgotPassword()" class="btn btn-danger">Submit</button>
+                        <img src="{{loadImg}}" class="loaderForgot" />
+                        <div class="alert alert-danger  forgotPassword-success">
+                           User or Email does not exist.
+                        </div>
+                        <div class="alert alert-success  forgotPassword-error">
+                          Email send successfully
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>   
 </section><!-- #content end -->
 <style>
     .loaderAlign{
