@@ -78,7 +78,11 @@ $userEmail = $userInfo->user_email;
                     </div> <!-- My points -->
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
-                            <table class = "table table-bordered">
+                        <div class="col-md-3">
+                                        <button ng-click="pagination.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
+                                        <button ng-click="pagination.nextPage()" class="button button-mini button-dark button-rounded">Next</button>
+                                    </div> 
+                            <table class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th>Sr.No</th>
