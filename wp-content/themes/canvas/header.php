@@ -19,21 +19,20 @@ endif;
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="author" content="SemiColonWeb" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
         <!-- Stylesheets
         ============================================= -->
         <link href="<?= get_template_directory_uri() ?>/css/google_fonts.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/font-awesome.min.css">
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/bootstrap.css" type="text/css" />
-        <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/responsive.css" type="text/css" />
-        <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/style.css" type="text/css" />
+        <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/style_old.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/swiper.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/dark.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/font-icons.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/datepicker.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/animate.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/magnific-popup.css" type="text/css" />
-        
+        <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/responsive.css" type="text/css" />
         
         <!--[if lt IE 9]>
                 <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
