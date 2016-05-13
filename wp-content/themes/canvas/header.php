@@ -25,13 +25,13 @@ endif;
         
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/bootstrap.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/responsive.css" type="text/css" />
-         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/style.css" type="text/css" />
-        <!--<link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/swiper.css" type="text/css" />
+        <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/style.css" type="text/css" />
+        <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/swiper.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/dark.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/font-icons.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/datepicker.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/animate.css" type="text/css" />
-        <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/magnific-popup.css" type="text/css" /> -->
+        <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/magnific-popup.css" type="text/css" />
         
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/google_fonts.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/font-awesome.min.css">
