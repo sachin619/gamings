@@ -102,7 +102,7 @@ $userEmail = $userInfo->user_email;
                                 <div class="col-lg-12" style="margin: 0 0 20px 0;">
                                     <div class="col-md-3">
                                         <button ng-click="pagination.prevPage()" class="button button-mini button-border button-rounded">Previous</button>
-                                        <button ng-click="pagination.nextPage()">Next</button>
+                                        <button ng-click="pagination.nextPage()" class="button button-mini button-border button-rounded">Next</button>
                                     </div> 
                                     <div class="col-md-6">
                                         <span class="input-daterange input-group">
@@ -112,8 +112,8 @@ $userEmail = $userInfo->user_email;
                                         </span>
                                     </div>
                                     <div class="col-md-3">
-                                        <button ng-click="searchByDate()">Search</button>
-                                        <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button>Download</button>
+                                        <button ng-click="searchByDate()" class="button button-mini button-border button-rounded">Search</button>
+                                        <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button class="button button-mini button-border button-rounded">Download</button>
                                         </a>
                                     </div>  
                                 </div>  
