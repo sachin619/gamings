@@ -289,7 +289,7 @@ class API {
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
-            
+
             $getPageCount = 6;
         endif;
         $getCat = $this->getCategories(['parent' => 1]);
@@ -548,7 +548,10 @@ class API {
             update_user_meta($user_id, 'phone', $userInfo['data']['phone']);
             if (!is_wp_error($user_id)):
                 update_user_meta($user_id, 'points', get_option("token_amt"));
-                return ['msg' => 'Registered Successfully & You have got 500 points', 'errorType' => 'success'];
+                $userInfo['data']['userName'] = $userInfo['data']['user_email'];
+                $userInfo['data']['password'] = $userInfo['data']['user_pass'];
+               return $this->login($userInfo);
+               // return ['msg' => 'Registered Successfully & You have got 500 points', 'errorType' => 'success'];
             else:
                 return ['msg' => "Something goes wrong try again later", 'errorType' => 'danger'];
             endif;
