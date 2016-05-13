@@ -144,10 +144,12 @@ $userEmail = $userInfo->user_email;
                                         <td>{{myInfo['tourDetails']['teamTitle']}}</td>
                                         <td ng-class="myInfo['tourDetails']['win']=='Yes'?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
-                                    </tr>
-                                <button ng-click="paginationWin.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
-                                <button ng-click="paginationWin.nextPage()" class="button button-mini button-dark button-rounded">Next</button>
+                                    </tr>                                
                             </table>
+                            <div class="col-lg-12">
+                                <button ng-click="paginationWin.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
+                                <button ng-click="paginationWin.nextPage()" class="button button-mini button-dark button-rounded pull-right">Next</button>
+                            </div>
                         </div>
                     </div>   <!--  My Win Loss points-->
                     <div class="bhoechie-tab-content">
