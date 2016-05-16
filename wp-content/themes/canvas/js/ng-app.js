@@ -8,7 +8,6 @@ var base_url = "http://localhost/gamings/";
 
 
 
-
 var app = angular.module('gaming', ['simplePagination']);
 app.controller('homeCtrl', function ($scope, $http) {
     $http.get(domain + "home").then(function (response) {

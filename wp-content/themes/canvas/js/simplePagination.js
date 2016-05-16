@@ -27,6 +27,9 @@
         if (paginator.page < paginator.numPages - 1) {
           paginator.page += 1;
         }
+        var getcount=(paginator.page+1)*10;
+        $('.detectCount').val(getcount);
+        console.log(getcount);
       };
 
       paginator.toPageId = function(id) {
