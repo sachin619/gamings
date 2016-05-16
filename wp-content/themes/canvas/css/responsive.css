@@ -368,7 +368,7 @@
 
 	#primary-menu > ul,
 	#primary-menu > div > ul {
-		display: none!important;
+		display: none;
 		float: none !important;
 		border: 0 !important;
 		padding: 0 !important;
