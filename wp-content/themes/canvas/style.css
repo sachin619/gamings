@@ -1070,7 +1070,7 @@ body.stretched #header.full-header .container {
 #primary-menu ul.mobile-primary-menu { display: none; }
 
 #header.full-header #primary-menu > ul {
-	float: left!important;
+	float: left!important; width: 100%;
 	padding-right: 15px!important;
 	margin-right: 15px!important;
 	border-right: 1px solid #EEE;
