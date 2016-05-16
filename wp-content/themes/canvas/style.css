@@ -1072,7 +1072,7 @@ body.stretched #header.full-header .container {
 #header.full-header #primary-menu > ul {
 	float: left!important;
 	padding-right: 15px!important;
-	margin-right: 50px!important;
+	margin-right: 15px!important;
 	border-right: 1px solid #EEE;
 }
 
@@ -1097,13 +1097,13 @@ body.stretched #header.full-header .container {
 }
 
 #primary-menu ul {
-	list-style: outside none none;
+	list-style: outside none none!important;
 	margin: 0;
 }
 
 #primary-menu > ul { float: left; }
 
-#primary-menu ul li { position: relative; }
+#primary-menu ul li { position: relative!important; }
 
 #primary-menu ul li.mega-menu { position: inherit; }
 
