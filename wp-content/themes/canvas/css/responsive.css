@@ -348,13 +348,13 @@
 	#logo a.standard-logo { display: inline-block; }
 
 	#primary-menu {
-		display: block;
-		float: none;
+		display: block!important;
+		float: none!important;
 	}
 
 	#primary-menu-trigger {
 		opacity: 1;
-		pointer-events: auto;
+		pointer-events: auto!important;
 		top: 25px;
 		margin-top: 0;
 		left: 0;
