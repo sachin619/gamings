@@ -1001,8 +1001,8 @@ body.stretched #header.full-header .container {
 }
 
 #header.full-header #logo {
-	padding-right: 30px;
-	margin-right: 30px;
+	padding-right: 30px!important;
+	margin-right: 30px!important;
 	border-right: 1px solid #EEE;
 }
 
