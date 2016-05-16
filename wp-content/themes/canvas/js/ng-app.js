@@ -6,8 +6,7 @@
 var domain = "http://localhost/gamings/api?action=";
 var base_url = "http://localhost/gamings/";
 
-
-
+var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
 var app = angular.module('gaming', ['simplePagination']);
 app.controller('homeCtrl', function ($scope, $http) {
     $http.get(domain + "home").then(function (response) {
@@ -495,4 +494,40 @@ function ngPostForgotPassword(url, formData, $scope, $http, $templateCache, erro
     }).error(function (response) {
         $scope[errorBlock] = response;
     });
+}
+
+
+app.controller('forgotPasswordCtrl', function ($scope, $http, $templateCache) {
+
+    $scope.loaderSrc = loaderLocation;
+    $('.loader').hide();
+    getUrlParameter();
+    $scope.resetPassword = function () {        
+        $('#forgotPassword').validate({
+            rules:{
+                password:{minlength:5}
+            },
+            messages:{
+                password:"Minimum lenght should be 5"
+            }
+        });
+        if (!$('#forgotPassword').valid()) {
+            return false;
+        }
+        $('.loader').show();
+        var formInfo = {'newPassword': $scope.password, 'key': $.urlParam('key'), 'login': $.urlParam('login')};
+        ngPost('forgot-password-reset', formInfo, $scope, $http, $templateCache, 'errorReg');
+    };
+});
+
+function getUrlParameter() {
+    $.urlParam = function (name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results == null) {
+            return null;
+        }
+        else {
+            return results[1] || 0;
+        }
+    };
 }

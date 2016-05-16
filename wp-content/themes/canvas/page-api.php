@@ -81,6 +81,9 @@ switch ($action) {
     case 'forgot-password':
         $output = $api->forgotPassword($_REQUEST);
         break;
+    case 'forgot-password-reset':
+        $output = $api->forgotPasswordReset($_REQUEST);
+        break;
     default:
         $output = ['error' => 'invalid action'];
         break;
@@ -207,7 +210,7 @@ class API {
         ];
         $result = $this->getResult($args);
         $allResult = $this->getResult($args);
-    foreach ($allResult as $getPost) {
+        foreach ($allResult as $getPost) {
             $tId = $getPost['id'];
             foreach ($getPost['select_teams'] as $resultN) {
                 $teamInfo = (array) $resultN['team_name'];
@@ -265,7 +268,7 @@ class API {
     function upcomingOngoingTournaments($categorySlug, $getPageCount) {
         $postPerPage = $getPageCount;
         $dateFormat = date('Ymd');
-        $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => $postPerPage, 'meta_key' => 'start_date', 'orderby' => 'start_date', 'order' => 'ASC',
+        $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => $postPerPage, 'meta_key' => 'total_tour_bets', 'orderby' => 'meta_value_num', 'order' => 'DESC',
             'meta_query' => [
                 'key' => 'end_date',
                 'value' => $dateFormat,
@@ -460,6 +463,11 @@ class API {
                             update_user_meta($userId, 'points', $remaining);
                             update_user_meta($userId, 'points_used', $usedCalc);
                             $wpdb->insert('wp_bets', $wpBets);
+                            $tradeInfo["tid"] = $tId; //update total bets
+                            $getTotalBets = $this->getTotalTrade($tradeInfo, 'tid');
+                            $getTotalBetsFilter = (array) $getTotalBets[0];
+                            $mid = $tradeInfo['data']['tid'];
+                            update_post_meta($mid, 'total_tour_bets', $getTotalBetsFilter['total']); //update total bets
                             if (!empty(trim($getPrem))):
                                 return "You have traded " . $points . " Point's";
                             elseif (empty(trim($getPrem))):
@@ -508,7 +516,7 @@ class API {
         $userid = wp_signon($credential, false);
         if (!is_wp_error($userid)):
             //$this->adminDistribution($userid->ID);
-            return ['msg'=> "success_login",'userData'=>$this->getUserDetails()];
+            return ['msg' => "success_login", 'userData' => $this->getUserDetails()];
         else:
             return ['msg' => "Not a valid username or password", 'errorType' => 'danger'];
 
@@ -761,17 +769,17 @@ class API {
         }
 
         $getId = get_user_meta($this->userId, 'profile_pic');
-        if($_FILES['file']['name']!=""):
-        if ($getId[0] != ""):
-            wp_delete_attachment($getId[0]);
-            $imgInfo = ['img' => $fileName];
-            $getImgId = $this->uploadPic($imgInfo);
-            update_user_meta($this->userId, 'profile_pic', $getImgId);
-        else:
-            $imgInfo = ['img' => $fileName];
-            $getImgId = $this->uploadPic($imgInfo);
-            update_user_meta($this->userId, 'profile_pic', $getImgId);
-        endif;
+        if ($_FILES['file']['name'] != ""):
+            if ($getId[0] != ""):
+                wp_delete_attachment($getId[0]);
+                $imgInfo = ['img' => $fileName];
+                $getImgId = $this->uploadPic($imgInfo);
+                update_user_meta($this->userId, 'profile_pic', $getImgId);
+            else:
+                $imgInfo = ['img' => $fileName];
+                $getImgId = $this->uploadPic($imgInfo);
+                update_user_meta($this->userId, 'profile_pic', $getImgId);
+            endif;
         endif;
     }
 
@@ -838,7 +846,7 @@ class API {
     }
 
     public function forgotPassword($userInfo) {
-          $email = email_exists($userInfo['user_login']); //check if email id exist
+        $email = email_exists($userInfo['user_login']); //check if email id exist
         $username = username_exists($userInfo['user_login']); //check username exists
         if ($email != ""):
             return "Yes";
@@ -846,6 +854,27 @@ class API {
             return "Yes";
         else:
             return "No";
+        endif;
+    }
+
+    public function forgotPasswordReset($info) {
+
+        $getPassword = $info['data']['newPassword'];
+        $getkey = $info['data']['key'];
+        $getLogin = $info['data']['login'];
+        $result = check_password_reset_key($getkey, $getLogin);
+                    //print_r($result);exit;
+
+        if (isset($result->errors)):
+            return ['msg' => "Invalid key", 'errorType' => 'danger'];
+        else:
+            $user_id = (array) $result->data;
+            $getResult = wp_set_password($getPassword, $user_id['ID']);
+            if (!is_wp_error($getResult)):
+                return ['msg' => "Password Changed Successfully", 'errorType' => 'success'];
+            else:
+                return ['msg' => "Invalid key", 'errorType' => 'danger'];
+            endif;
         endif;
     }
 
