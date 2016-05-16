@@ -25,7 +25,7 @@ endif;
         <link href="<?= get_template_directory_uri() ?>/css/google_fonts.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/font-awesome.min.css">
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/bootstrap.css" type="text/css" />
-        <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/style_new.css" type="text/css" />
+        <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/style.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/swiper.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/dark.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/font-icons.css" type="text/css" />
