@@ -355,8 +355,8 @@
 	#primary-menu-trigger {
 		opacity: 1;
 		pointer-events: auto!important;
-		top: 25px;
-		margin-top: 0;
+		top: 25px!important;
+		margin-top: 0!important;
 		left: 0;
 		z-index: 1;
 	}
