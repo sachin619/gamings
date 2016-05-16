@@ -1117,8 +1117,8 @@ body.stretched #header.full-header .container {
 #primary-menu ul li > a {
 	display: block;
 	line-height: 22px;
-	padding: 39px 15px;
-	color: #444;
+	padding: 39px 15px!important;
+	color: #444!important;
 	font-weight: bold;
 	font-size: 13px;
 	letter-spacing: 1px;
