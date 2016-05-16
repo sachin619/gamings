@@ -1639,7 +1639,7 @@ body:not(.device-sm):not(.device-xs):not(.device-xxs) #primary-menu.style-2.cent
 #top-cart,
 #side-panel-trigger {
 	float: right;
-	margin: 40px 0 40px 15px;
+	margin: 40px 0 40px 15px!important;
 }
 
 #top-cart { position: relative; }

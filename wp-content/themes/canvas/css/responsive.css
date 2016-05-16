@@ -604,7 +604,7 @@
 	#top-search a,
 	#top-cart,
 	#side-panel-trigger {
-		position: absolute;
+		position: absolute!important;
 		top: 0;
 		left: auto;
 		right: 15px;
