@@ -29,7 +29,7 @@
 
 <script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/functions.js"></script>
 
-<script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery-ui.js"></script>
+<!--<script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery-ui.js"></script>-->
 <!-- Footer Scripts
 ============================================= -->
 
