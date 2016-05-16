@@ -27,7 +27,7 @@ get_header();
             $slider = api($apiEndpoint . "get-slider");
             foreach ($slider as $sliderImg):
                 ?>
-                <a href="#"><img src="<?= $sliderImg['img'] ?>" alt="Slider"></a>
+                <a href="#"><img ng-src="<?= $sliderImg['img'] ?>" alt="Slider"></a>
             <?php endforeach ?>
 
         </div>
@@ -51,7 +51,7 @@ get_header();
                         <div class="ipost clearfix">
                             <div class="feature-box center media-box fbox-bg">
                                 <div class="fbox-media">
-                                    <a href={{popular.postLink}}><img class="image_fade" src={{popular.img}} alt={{popular.title}}></a>
+                                    <a href={{popular.postLink}}><img class="image_fade" ng-src={{popular.img}} alt={{popular.title}}></a>
                                 </div>
                                 <div class="fbox-desc">
                                     <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{ popular.end_date}}</span><span>{{popular.venue}}</span></h3>
@@ -89,7 +89,7 @@ get_header();
                         <div class="ipost clearfix">
                             <div class="feature-box center media-box fbox-bg">
                                 <div class="fbox-media">
-                                    <a href={{popular.postLink}}><img class="image_fade" src={{popular.img}} alt={{popular.title}}></a>
+                                    <a href={{popular.postLink}}><img class="image_fade" ng-src={{popular.img}} alt={{popular.title}}></a>
                                 </div>
                                 <div class="fbox-desc">
                                     <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{popular.end_date}}</span><span>{{popular.venue}}</span></h3>

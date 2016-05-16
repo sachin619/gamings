@@ -37,7 +37,7 @@ get_header();
                     <div class="col-md-6">		
                         <div class="entry-image">
 
-                            <a href={{getDetails['details'][0].postLink}}><img src={{getDetails['details'][0].img}} alt={{getDetails['details'][0].title}}></a>
+                            <a href={{getDetails['details'][0].postLink}}><img ng-src={{getDetails['details'][0].img}} alt={{getDetails['details'][0].title}}></a>
                         </div><!-- .entry-image end -->
 
 

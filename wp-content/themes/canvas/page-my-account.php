@@ -241,7 +241,7 @@ $userEmail = $userInfo->user_email;
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-offset-4 col-sm-10">
-                                        <button type="submit" onclick="return false;" ng-click="userUpdate()" class="btn btn-danger">Submit</button> <span style="display: none" class="loader"><img src={{myAccount['userInfo']['loaderImg']}} /></span>
+                                        <button type="submit" onclick="return false;" ng-click="userUpdate()" class="btn btn-danger">Submit</button> <span style="display: none" class="loader"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
                                     </div>
                                 </div>
                             </form>
@@ -283,7 +283,7 @@ $userEmail = $userInfo->user_email;
 
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-9">
-                                    <button ng-disabled="!changePassword.$dirty || changePassword.$invalid" type="submit" onclick="return false;" ng-click="updatePassword()" class="btn btn-danger">Submit</button> <span style="display: none" class="loader"><img src={{myAccount['userInfo']['loaderImg']}} /></span>
+                                    <button ng-disabled="!changePassword.$dirty || changePassword.$invalid" type="submit" onclick="return false;" ng-click="updatePassword()" class="btn btn-danger">Submit</button> <span style="display: none" class="loader"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
                                 </div>
                             </div>
                         </form>

@@ -58,7 +58,7 @@ get_header();
                         <a href={{getPost['postLink']}}>
                         <div class="portfolio-image" ng-init="$parent.j = $parent.i = i + 1" >
                             
-                                <img src={{getPost['img']}} alt="Open Imagination" width="100%" height="200px">
+                                <img ng-src={{getPost['img']}} alt="Open Imagination" width="100%" height="200px">
                            
                             <!-- <div class="portfolio-overlay">
                                 <a href={{getPost['postLink']}} ><i class="icon-link"></i></a>
