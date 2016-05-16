@@ -57,7 +57,7 @@ get_header();
 
                                     <div class="col_full">
                                         <button onclick="return false"  ng-click="signIn()" class="button loginButton button-3d button-black nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>
-                                        <span class="loader loaderAlign"><img src={{myAccount['userInfo']['loaderImg']}} /></span>
+                                        <span class="loader loaderAlign"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
 
                                         <a href="#" class="fright" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Forgot Password?</a>
                                     </div>
@@ -171,7 +171,7 @@ get_header();
 
                     <div class="form-group">  
                         <button type="button" ng-click="forgotPassword()" class="btn btn-danger">Submit</button>
-                        <img src="{{loadImg}}" class="loaderForgot" />
+                        <img ng-src="{{loadImg}}" class="loaderForgot" />
                         <div class="alert alert-danger  forgotPassword-error">
                            User or Email does not exist.
                         </div>
