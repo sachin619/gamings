@@ -26,13 +26,10 @@
 ============================================= -->
 <script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery.js"></script>
 <script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/plugins.js"></script>
-
-<script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/functions.js"></script>
-
-<!--<script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery-ui.js"></script>-->
+<script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery-ui.js"></script>
 <!-- Footer Scripts
 ============================================= -->
-
+<script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/functions.js"></script>
 <script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/datepicker.js"></script>
 <script type="text/javascript">
     $(function () {
