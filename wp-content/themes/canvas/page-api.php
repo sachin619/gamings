@@ -761,6 +761,7 @@ class API {
         }
 
         $getId = get_user_meta($this->userId, 'profile_pic');
+        if($_FILES['file']['name']!=""):
         if ($getId[0] != ""):
             wp_delete_attachment($getId[0]);
             $imgInfo = ['img' => $fileName];
@@ -770,6 +771,7 @@ class API {
             $imgInfo = ['img' => $fileName];
             $getImgId = $this->uploadPic($imgInfo);
             update_user_meta($this->userId, 'profile_pic', $getImgId);
+        endif;
         endif;
     }
 
