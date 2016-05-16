@@ -1070,9 +1070,9 @@ body.stretched #header.full-header .container {
 #primary-menu ul.mobile-primary-menu { display: none; }
 
 #header.full-header #primary-menu > ul {
-	float: left;
-	padding-right: 15px;
-	margin-right: 50px;
+	float: left!important;
+	padding-right: 15px!important;
+	margin-right: 50px!important;
 	border-right: 1px solid #EEE;
 }
 
@@ -1097,7 +1097,7 @@ body.stretched #header.full-header .container {
 }
 
 #primary-menu ul {
-	list-style: none;
+	list-style: outside none none;
 	margin: 0;
 }
 
