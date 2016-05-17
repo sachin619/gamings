@@ -515,8 +515,8 @@ class API {
         $credential = ['user_login' => $username, 'user_password' => $password];
         $userid = wp_signon($credential, false);
         if (!is_wp_error($userid)):
-            //$this->adminDistribution($userid->ID);
-            return ['msg' => "success_login", 'userData' =>get_userdata( $this->userId)];
+            $getId = (array) $userid->data;
+            return ['msg' => "success_login", 'userData' => get_userdata($getId['ID'])];
         else:
             return ['msg' => "Not a valid username or password", 'errorType' => 'danger'];
 
@@ -863,7 +863,7 @@ class API {
         $getkey = $info['data']['key'];
         $getLogin = $info['data']['login'];
         $result = check_password_reset_key($getkey, $getLogin);
-                    //print_r($result);exit;
+        //print_r($result);exit;
 
         if (isset($result->errors)):
             return ['msg' => "Invalid key", 'errorType' => 'danger'];
