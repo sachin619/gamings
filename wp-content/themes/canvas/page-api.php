@@ -516,7 +516,7 @@ class API {
         $userid = wp_signon($credential, false);
         if (!is_wp_error($userid)):
             //$this->adminDistribution($userid->ID);
-            return ['msg' => "success_login", 'userData' => $this->getUserDetails()];
+            return ['msg' => "success_login", 'userData' =>get_userdata( $this->userId)];
         else:
             return ['msg' => "Not a valid username or password", 'errorType' => 'danger'];
 
