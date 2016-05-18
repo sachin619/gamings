@@ -188,8 +188,11 @@ class API {
         global $wpdb;
         $userId = $this->userId;
         $tourId = get_the_ID();
-        //$dateFormat = strtotime('+18 hour 1 minute');
-        $dateFormat = time();
+        date_default_timezone_set('Asia/Calcutta');
+        $dateTime = date("Y-m-d H:i:s"); // time in India
+        $dateFormat = strtotime($dateTime);
+//        print_r($dateFormat);exit;
+        //$dateFormat = time();
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'start_date',
@@ -198,9 +201,9 @@ class API {
             'order' => 'ASC',
             'meta_query' => ['relation' => 'AND',
                 [
-                    'key' => 'start_date',
+                    'key' => 'end_date',
                     'value' => $dateFormat,
-                    'compare' => '>',
+                    'compare' => '>=',
                 ], [
                     'key' => 'tournament_name',
                     'value' => get_the_ID(),
