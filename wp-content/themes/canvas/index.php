@@ -72,7 +72,7 @@ get_header();
 
     <!-- Content
     ============================================= -->
-    <section id="content">
+    <section id="content" class="hide">
 
         <div class="content-wrap">
 
@@ -110,7 +110,7 @@ get_header();
 
     <!-- Content
     ============================================= -->
-    <section id="content" class="hide">
+    <section id="content" >
 
         <div class="content-wrap">
 
