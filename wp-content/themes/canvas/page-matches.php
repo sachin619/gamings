@@ -36,10 +36,12 @@ get_header();
 
             <div class="container clearfix">
 
+                <div class="col-lg-12">
+                    <img src="images/matches_banner.jpg">
+                </div>
                 <!-- Portfolio Filter
                 ============================================= -->
                 <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
-
                     <li class="" ng-class="{activeFilter: selectedIndex === $index || selectedIndex == 'home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('popular')">Popular</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('all')" data-filter=".pf-{{categories['catName']}}">All Matches</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('today')" data-filter=".pf-{{categories['catName']}}">Today</a></li>
