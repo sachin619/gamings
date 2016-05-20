@@ -20,7 +20,7 @@ endif;
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="author" content="SemiColonWeb" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
         <!-- Stylesheets
         ============================================= -->
         <link href="<?= get_template_directory_uri() ?>/css/google_fonts.css" rel="stylesheet" type="text/css" />
