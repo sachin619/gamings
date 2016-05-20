@@ -9,7 +9,9 @@ switch ($action) {
     case 'home':
         $output = $api->home();
         break;
-
+    case 'home-match-listing':
+        $output = $api->homeMatchListing();
+        break;
     case 'get-slider':
         $output = $api->getSlider();
         break;
@@ -119,8 +121,20 @@ class API {
         $home['slider'] = $this->getSlider();
         $home['popularTournaments'] = $this->popularTournaments();
         //$home['popularMatches'] = $this->popularMatches();
-        $home['upcomingTournaments'] = $this->upcomingTournaments();
-        //$home['upcomingMatches'] = $this->upcomingMatches();
+        //$home['upcomingTournaments'] = $this->upcomingTournaments();
+        $home['upcomingMatches'] = $this->listingPopularMatches();
+        //$home['category'] = $this->getCategories(['parent' => 1]);
+        $home['siteUrl'] = get_site_url();
+        return $home;
+    }
+
+    function homeMatchListing() {
+
+        //$home['slider'] = $this->getSlider();
+       // $home['popularTournaments'] = $this->popularTournaments();
+        //$home['popularMatches'] = $this->popularMatches();
+       // $home['upcomingTournaments'] = $this->upcomingTournaments();
+        $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
         return $home;
@@ -323,7 +337,59 @@ class API {
                 'category_name' => $categorySlug,
                 'posts_per_page' => $getPageCount,
                 'order' => 'ASC',
-                'meta_query' => ['relation' => 'AND', ['key' => 'end_date', 'value' => $dateFormat, 'compare' => '>=',]],
+                'meta_query' => ['relation' => 'AND', ['key' => 'start_date', 'value' => $dateFormat, 'compare' => 'Like',]],
+            ];
+        else:
+            $args = [
+                'post_type' => 'matches',
+                'meta_key' => 'total_bets',
+                'orderby' => 'meta_value',
+                'category_name' => $categorySlug,
+                'posts_per_page' => $getPageCount,
+                'order' => 'DESC',
+                'meta_query' => [ 'key' => 'end_date', 'value' => $dateFormat, 'compare' => '>=',],
+            ];
+        endif;
+        $result = $this->getResult($args);
+
+        foreach ($getCat as $categories) {
+            $catName = (array) $categories;
+            $cat[] = ['catName' => $catName['name']];
+        }
+
+        foreach ($result as $getPost) {
+            $tId = $getPost['id'];
+            foreach ($getPost['select_teams'] as $resultN) {
+                $teamInfo = (array) $resultN['team_name'];
+                $teamId = $teamInfo['ID'];
+                $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId,];
+                $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
+            }
+        }
+
+        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var];
+        return $output;
+    }
+
+    function listingPopularMatches($getCatSlug) {
+        $userId = $this->userId;
+        $categorySlug = $getCatSlug['data']['categoryName'];
+        if (!empty($getCatSlug['data']['getCount'])):
+            $getPageCount = $getCatSlug['data']['getCount'];
+        else:
+            $getPageCount = 50;
+        endif;
+        $dateFormat = date('Ymd');
+        $getCat = $this->getCategories(['parent' => 1]);
+        if ($getCatSlug['data']['type'] == 'today'):
+            $args = [
+                'post_type' => 'matches',
+                'meta_key' => 'start_date',
+                'orderby' => 'meta_value',
+                'category_name' => $categorySlug,
+                'posts_per_page' => $getPageCount,
+                'order' => 'ASC',
+                'meta_query' => ['relation' => 'AND', ['key' => 'start_date','type'=>'Date' ,'value' => $dateFormat, 'compare' => '>=',]],
             ];
         else:
             $args = [

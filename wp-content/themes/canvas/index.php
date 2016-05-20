@@ -72,7 +72,7 @@ get_header();
 
     <!-- Content
     ============================================= -->
-    <section id="content" class="hide">
+    <section id="content" class="">
 
         <div class="content-wrap">
 
@@ -83,23 +83,48 @@ get_header();
 
                 </div>
 
+<div class="container clearfix">
 
-                <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
-                    <div owl-carousel-item="" ng-repeat="popular in home.popularMatches" class="item">
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href={{popular.postLink}}><img class="image_fade" ng-src={{popular.img}} alt={{popular.title}}></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{popular.end_date}}</span><span>{{popular.venue}}</span></h3>
-                                    <h3><span class="subtitle" ng-if="popular.total_bets > 0">Total Points Traded So far: {{popular.total_bets}} Points</span></h3>
+                <!-- Portfolio Filter
+                ============================================= -->
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </data-owl-carousel>
+                <div class="clear"></div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered nobottommargin">
+
+                        <thead>
+                            <tr>
+                                <th width="12%">Time / Location</th>
+                                <th>Tournament</th>
+                                <th>Team 1</th>
+                                <th>Trade</th>
+                                <th>Team 2</th>
+                                <th>Trade</th>
+                                <th>Action</th>
+                                <th>Total Trade</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+<!--                     {{home['upcomingMatches']['catPost']}}-->
+                            <tr ng-repeat="matches in homeMatchListing['upcomingMatches']['catPost']">
+                                <td><i class="icon-time"></i>{{matches['onlySDate']}} {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i ng-if="matches['venue']!=''" class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
+                                <td><a href="{{matches['siteUrl']+'/tournaments/'+matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a></td>
+                                <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}}: </td>
+                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ><br>Your Trade : {{home['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']}} </td>
+                                <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points,homeMatchListing['upcomingMatches']['catPost'][0]['uid'])" class="btn btn-danger">Trade</a></td>
+                                <td>{{matches["total_bets"]}}</td>
+                            </tr>                            
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-lg-12 loadMoreBlock" ng-if="getDetails.catPost.length >= 50" style="text-align: center">
+                    <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 50)">Load More </button>
+                </div>
+
+            </div>
+
                 <div class="clear"></div><!-- <div class="line"></div> -->
 
             </div>

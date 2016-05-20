@@ -8,10 +8,43 @@ var base_url = "http://localhost/gamings/";
 
 var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
 var app = angular.module('gaming', ['simplePagination']);
-app.controller('homeCtrl', function ($scope, $http) {
+
+function getMatchListing ($http,$scope){
+    
+     $http.get(domain + "home-match-listing").then(function (response) {
+        $scope.homeMatchListing = response.data;
+    });
+};
+
+app.controller('homeCtrl', function ($scope, $http, $templateCache) {
     $http.get(domain + "home").then(function (response) {
         $scope.home = response.data;
     });
+    $http.get(domain + "home-match-listing").then(function (response) {
+        $scope.homeMatchListing = response.data;
+    });
+    getUrlParameter();
+    $scope.tradeMatch = function (link, tid, points, uid) {
+
+        if (uid != null) {
+            var slug = link.split("/");
+            slug = slug[slug.length - 2];
+            var formDataNew = {
+                'mid': tid,
+                'pts': points,
+                'slug': slug,
+                'mainSlug': $.urlParam('category'),
+                'type': 'homeMatchListing',
+                'catType': sessionStorage.getItem('type')
+            };
+            console.log(sessionStorage.getItem('type'));
+            tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
+          
+        } else {
+            sessionStorage.setItem('url', document.URL);
+            window.location = base_url + "register?url=redirect";
+        }
+    }; //for login redirect
 }).directive("owlCarousel", function () {
     return {
         restrict: 'E',
@@ -296,18 +329,23 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
 
     $scope.tradeMatch = function (link, tid, points, uid) {
 
-        var slug = link.split("/");
-        slug = slug[slug.length - 2];
-        var formDataNew = {
-            'mid': tid,
-            'pts': points,
-            'slug': slug,
-            'mainSlug': $.urlParam('category'),
-            'type': 'matchesList',
-            'catType': sessionStorage.getItem('type')
-        };
-        console.log(sessionStorage.getItem('type'));
-        tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
+        if (uid != null) {
+            var slug = link.split("/");
+            slug = slug[slug.length - 2];
+            var formDataNew = {
+                'mid': tid,
+                'pts': points,
+                'slug': slug,
+                'mainSlug': $.urlParam('category'),
+                'type': 'matchesList',
+                'catType': sessionStorage.getItem('type')
+            };
+            console.log(sessionStorage.getItem('type'));
+            tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
+        } else {
+            sessionStorage.setItem('url', document.URL);
+            window.location = base_url + "register?url=redirect";
+        }
     }; //for login redirect
     //console.log( $.urlParam('category'));
     ngPost('listing-matches', formData, $scope, $http, $templateCache, 'getDetails');
@@ -341,7 +379,6 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
     }).
             success(function (response) {
                 $('.loader').hide();
-
                 //for pagination of matches
                 if (typeof formData['loadMore'] !== 'undefined')
                     var getCountResult = response['catPost'].length;
@@ -402,6 +439,11 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         cache: $templateCache
     }).then(function (response) {
+        if(formData['type'] === 'homeMatchListing'){
+       getMatchListing($http,$scope);
+               // $scope.homeMatchListing = response.data;
+        
+        }
         if (formData['type'] === 'tournaments') {
             var formDataReload = {'postId': formData['slug']};
             ngPost('tournaments-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
@@ -502,13 +544,13 @@ app.controller('forgotPasswordCtrl', function ($scope, $http, $templateCache) {
     $scope.loaderSrc = loaderLocation;
     $('.loader').hide();
     getUrlParameter();
-    $scope.resetPassword = function () {        
+    $scope.resetPassword = function () {
         $('#forgotPassword').validate({
-            rules:{
-                password:{minlength:5}
+            rules: {
+                password: {minlength: 5}
             },
-            messages:{
-                password:"Minimum lenght should be 5"
+            messages: {
+                password: "Minimum lenght should be 5"
             }
         });
         if (!$('#forgotPassword').valid()) {
