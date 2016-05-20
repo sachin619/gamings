@@ -17,6 +17,18 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
         $scope.homeMatchListing = response.data;
     });
     getUrlParameter();
+
+    $scope.loadMore = function (catName, getCount) {
+        console.log('hey');
+        console.log(getCount);
+
+        //console.log($.urlParam('category'));
+        // console.log(getCount);
+        var formInfo = {'categoryName': '', 'getCount': getCount, 'loadMoreMatch': 'true'};
+        ngPost('home-match-listing', formInfo, $scope, $http, $templateCache, 'homeMatchListing');
+        if ($scope.j > getCount)
+            $('.hide-loadMore').hide();
+    };
     $scope.tradeMatch = function (link, tid, points, uid) {
 
         if (uid != null) {
@@ -32,7 +44,7 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
             };
             console.log(sessionStorage.getItem('type'));
             tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
-        
+
         } else {
             sessionStorage.setItem('url', document.URL);
             window.location = base_url + "register?url=redirect";
@@ -371,6 +383,11 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
         cache: $templateCache
     }).
             success(function (response) {
+                if (typeName == 'home-match-listing') {
+                    $scope[errorBlock] = response;
+               
+                }
+
                 $('.loader').hide();
                 //for pagination of matches
                 if (typeof formData['loadMore'] !== 'undefined')
@@ -432,7 +449,7 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         cache: $templateCache
     }).then(function (response) {
-        
+
         if (formData['type'] === 'popularMatches') {
             $http.get(domain + "home-match-listing").then(function (response) {
                 $scope.homeMatchListing = response.data;

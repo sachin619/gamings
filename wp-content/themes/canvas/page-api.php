@@ -10,7 +10,7 @@ switch ($action) {
         $output = $api->home();
         break;
     case 'home-match-listing':
-        $output = $api->homeMatchListing();
+        $output = $api->homeMatchListing($_REQUEST);
         break;
     case 'get-slider':
         $output = $api->getSlider();
@@ -121,20 +121,20 @@ class API {
         $home['slider'] = $this->getSlider();
         $home['popularTournaments'] = $this->popularTournaments();
         //$home['popularMatches'] = $this->popularMatches();
-        //$home['upcomingTournaments'] = $this->upcomingTournaments();
+        $home['upcomingTournaments'] = $this->upcomingTournaments();
        // $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
         return $home;
     }
 
-    function homeMatchListing() {
+    function homeMatchListing($info) {
 
         //$home['slider'] = $this->getSlider();
         // $home['popularTournaments'] = $this->popularTournaments();
         //$home['popularMatches'] = $this->popularMatches();
         // $home['upcomingTournaments'] = $this->upcomingTournaments();
-        $home['upcomingMatches'] = $this->listingPopularMatches();
+        $home['upcomingMatches'] = $this->listingPopularMatches($info);
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
         return $home;
@@ -378,12 +378,13 @@ class API {
     }
 
     function listingPopularMatches($getCatSlug) {
+        //print_r($getCatSlug);exit;
         $userId = $this->userId;
         $categorySlug = $getCatSlug['data']['categoryName'];
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
-            $getPageCount = 50;
+            $getPageCount = 5;
         endif;
         $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);

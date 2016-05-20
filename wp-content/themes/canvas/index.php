@@ -33,44 +33,7 @@ get_header();
         </div>
 
     </section>
-
-    <!-- Content
-    ============================================= -->
-    <section id="content" >
-
-        <div class="content-wrap">
-
-            <div class="container clearfix">
-                <div class="center">
-                    <h2>POPULAR TOURNAMENTS</h2>
-                    <div class="divider divider-short divider-center"><i class="icon-circle-blank"></i></div>
-
-                </div>
-                <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
-                    <div owl-carousel-item="" ng-repeat="popular in home.popularTournaments" >
-                        <div class="ipost clearfix">
-                            <div class="feature-box center media-box fbox-bg">
-                                <div class="fbox-media">
-                                    <a href={{popular.postLink}}><img class="image_fade" ng-src={{popular.img}} alt={{popular.title}}></a>
-                                </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{ popular.end_date}}</span><span>{{popular.venue}}</span></h3>
-                                    <h3><span class="subtitle" ng-if="popular.total_tour_bets > 0">Total Points Traded So far: {{popular.total_tour_bets}} Points</span></h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </data-owl-carousel>
-
-                <div class="clear"></div><!-- <div class="line"></div> -->
-
-            </div>
-
-        </div>
-
-    </section><!-- #content end -->
-
-    <!-- Content
+   <!-- Content
     ============================================= -->
     <section id="content" class="">
 
@@ -119,8 +82,8 @@ get_header();
                     </table>
                 </div>
 
-                <div class="col-lg-12 loadMoreBlock" ng-if="getDetails.catPost.length >= 50" style="text-align: center">
-                    <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 50)">Load More </button>
+                <div class="col-lg-12 loadMoreBlock" ng-if="homeMatchListing['upcomingMatches']['catPost'].length >= 5" style="text-align: center">
+                    <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, homeMatchListing['upcomingMatches']['catPost'].length + 5)">Load More </button>
                 </div>
 
             </div>
@@ -133,7 +96,44 @@ get_header();
 
     </section><!-- #content end -->
 
+  
     <!-- Content
+    ============================================= -->
+    <section id="content" >
+
+        <div class="content-wrap">
+
+            <div class="container clearfix">
+                <div class="center">
+                    <h2>POPULAR TOURNAMENTS</h2>
+                    <div class="divider divider-short divider-center"><i class="icon-circle-blank"></i></div>
+
+                </div>
+                <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
+                    <div owl-carousel-item="" ng-repeat="popular in home.popularTournaments" >
+                        <div class="ipost clearfix">
+                            <div class="feature-box center media-box fbox-bg">
+                                <div class="fbox-media">
+                                    <a href={{popular.postLink}}><img class="image_fade" ng-src={{popular.img}} alt={{popular.title}}></a>
+                                </div>
+                                <div class="fbox-desc">
+                                    <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{ popular.end_date}}</span><span>{{popular.venue}}</span></h3>
+                                    <h3><span class="subtitle" ng-if="popular.total_tour_bets > 0">Total Points Traded So far: {{popular.total_tour_bets}} Points</span></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </data-owl-carousel>
+
+                <div class="clear"></div><!-- <div class="line"></div> -->
+
+            </div>
+
+        </div>
+
+    </section><!-- #content end -->
+
+   <!-- Content
     ============================================= -->
     <section id="content" >
 
