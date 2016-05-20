@@ -37,7 +37,7 @@ get_header();
             <div class="container clearfix">
                 <div class="row">
                     <div class="col-lg-12 matches_banner">
-                        <img src="<?= get_template_directory_uri() ?>/images/matches_banner.jpg">
+                        <a href="#"> <img src="<?= get_template_directory_uri() ?>/images/matches_banner.jpg"></a>
                     </div>
                 </div>
                 <!-- Portfolio Filter
