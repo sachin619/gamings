@@ -143,10 +143,7 @@ body {
 	font-family: 'Lato', sans-serif;
 }
 
-a {
-	text-decoration: none !important;
-	color: #D31F2A;
-}
+a {	text-decoration: none !important;color: #D31F2A;}
 
 a:hover { color: #222; }
 
