@@ -107,7 +107,7 @@ get_header();
                                 <td><a href="{{matches['siteUrl']+'/tournaments/'+matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a></td>
                                 <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}}: </td>
                                 <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ><br>Your Trade : {{getDetails['tradeTotal'][matches['id']][$index][0]['total']}} </td>
-                                <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
+                                <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points,getDetails.catPost[0]['uid'])" class="btn btn-danger">Trade</a></td>
                                 <td>{{matches["total_bets"]}}</td>
                             </tr>                            
                         </tbody>
