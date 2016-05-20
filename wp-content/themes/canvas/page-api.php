@@ -320,8 +320,12 @@ class API {
     }
 
     function listingMatches($getCatSlug) {
+        global $wpdb;
         $userId = $this->userId;
         $categorySlug = $getCatSlug['data']['categoryName'];
+        $getCatDetail = get_terms('category', array('name__like' => $categorySlug));
+        $getCatId = $getCatDetail[0]->term_id;
+        //print_r($getCatId) ;exit;
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
@@ -330,20 +334,17 @@ class API {
         $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);
         if ($getCatSlug['data']['type'] == 'today'):
-        $dateFormatNew = date('Y-m-d');
-
-         //echo   $dateFormat ;
-            $args = [
-                'post_type' => 'matches',
-                'meta_key' => 'start_date',
-                'orderby' => 'meta_value',
-                'category_name' => $categorySlug,
-                'posts_per_page' => $getPageCount,
-                'order' => 'ASC',
-                'meta_query' => ['relation' => 'AND', ['key' => 'start_date', 'value' => $dateFormatNew, 'compare' => '>=', 'type' => 'DATE']],
-            ];
-           $customPosts = new WP_Query($args);
-echo "Last SQL-Query: {$customPosts->request}";exit;
+            $dateFormatNew = date('Y-m-d');
+            $collectPost = [];
+            $query = "SELECT SQL_CALC_FOUND_ROWS wp_posts.ID FROM wp_posts INNER JOIN wp_term_relationships ON (wp_posts.ID = wp_term_relationships.object_id) INNER JOIN wp_postmeta ON ( wp_posts.ID = wp_postmeta .post_id ) INNER JOIN wp_postmeta AS mt1 ON ( wp_posts.ID = mt1.post_id ) WHERE 1=1 AND ( wp_term_relationships.term_taxonomy_id IN ('" . $getCatId . "') ) AND ( wp_postmeta.meta_key = 'start_date' AND ( ( mt1.meta_key = 'start_date' AND DATE_FORMAT(FROM_UNIXTIME(mt1.meta_value), '%Y-%m-%d') >= '" . $dateFormatNew . "' ) ) ) AND wp_posts.post_type = 'matches' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'acf-disabled' OR wp_posts.post_status = 'private') GROUP BY wp_posts.ID ORDER BY wp_postmeta.meta_value ASC LIMIT 0, 50 ";
+            $getResult = $wpdb->get_results($query);
+            foreach ($getResult as $collectId):
+                array_push($collectPost, $collectId->ID);
+            endforeach;
+            if (count($getResult) != 0):
+                $args = [ 'post_type' => 'matches', 'post__in' => $collectPost];
+                $result = $this->getResult($args);
+            endif;
         else:
             $args = [
                 'post_type' => 'matches',
@@ -386,17 +387,7 @@ echo "Last SQL-Query: {$customPosts->request}";exit;
         endif;
         $dateFormat = date('Ymd');
         $getCat = $this->getCategories(['parent' => 1]);
-        if ($getCatSlug['data']['type'] == 'today'):
-            $args = [
-                'post_type' => 'matches',
-                'meta_key' => 'start_date',
-                'orderby' => 'meta_value',
-                'category_name' => $categorySlug,
-                'posts_per_page' => $getPageCount,
-                'order' => 'ASC',
-                'meta_query' => ['relation' => 'AND', ['key' => 'start_date', 'type' => 'Date', 'value' => $dateFormat, 'compare' => '>=',]],
-            ];
-        else:
+
             $args = [
                 'post_type' => 'matches',
                 'meta_key' => 'total_bets',
@@ -406,7 +397,7 @@ echo "Last SQL-Query: {$customPosts->request}";exit;
                 'order' => 'DESC',
                 'meta_query' => [ 'key' => 'end_date', 'value' => $dateFormat, 'compare' => '>=',],
             ];
-        endif;
+       
         $result = $this->getResult($args);
 
         foreach ($getCat as $categories) {
