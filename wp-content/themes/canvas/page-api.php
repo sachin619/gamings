@@ -131,9 +131,9 @@ class API {
     function homeMatchListing() {
 
         //$home['slider'] = $this->getSlider();
-       // $home['popularTournaments'] = $this->popularTournaments();
+        // $home['popularTournaments'] = $this->popularTournaments();
         //$home['popularMatches'] = $this->popularMatches();
-       // $home['upcomingTournaments'] = $this->upcomingTournaments();
+        // $home['upcomingTournaments'] = $this->upcomingTournaments();
         $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
@@ -330,6 +330,9 @@ class API {
         $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);
         if ($getCatSlug['data']['type'] == 'today'):
+        $dateFormatNew = date('Y-m-d');
+
+         //echo   $dateFormat ;
             $args = [
                 'post_type' => 'matches',
                 'meta_key' => 'start_date',
@@ -337,8 +340,10 @@ class API {
                 'category_name' => $categorySlug,
                 'posts_per_page' => $getPageCount,
                 'order' => 'ASC',
-                'meta_query' => ['relation' => 'AND', ['key' => 'start_date', 'value' => $dateFormat, 'compare' => 'Like',]],
+                'meta_query' => ['relation' => 'AND', ['key' => 'start_date', 'value' => $dateFormatNew, 'compare' => '>=', 'type' => 'DATE']],
             ];
+           $customPosts = new WP_Query($args);
+echo "Last SQL-Query: {$customPosts->request}";exit;
         else:
             $args = [
                 'post_type' => 'matches',
@@ -389,7 +394,7 @@ class API {
                 'category_name' => $categorySlug,
                 'posts_per_page' => $getPageCount,
                 'order' => 'ASC',
-                'meta_query' => ['relation' => 'AND', ['key' => 'start_date','type'=>'Date' ,'value' => $dateFormat, 'compare' => '>=',]],
+                'meta_query' => ['relation' => 'AND', ['key' => 'start_date', 'type' => 'Date', 'value' => $dateFormat, 'compare' => '>=',]],
             ];
         else:
             $args = [
