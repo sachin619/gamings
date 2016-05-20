@@ -35,9 +35,10 @@ get_header();
         <div class="content-wrap">
 
             <div class="container clearfix">
-
-                <div class="col-lg-12">
-                    <img src="<?= get_template_directory_uri() ?>/images/matches_banner.jpg">
+                <div class="row>"
+                    <div class="col-lg-12">
+                        <img src="<?= get_template_directory_uri() ?>/images/matches_banner.jpg">
+                    </div>
                 </div>
                 <!-- Portfolio Filter
                 ============================================= -->
