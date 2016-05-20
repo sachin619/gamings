@@ -122,7 +122,7 @@ class API {
         $home['popularTournaments'] = $this->popularTournaments();
         //$home['popularMatches'] = $this->popularMatches();
         //$home['upcomingTournaments'] = $this->upcomingTournaments();
-        $home['upcomingMatches'] = $this->listingPopularMatches();
+       // $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
         return $home;
@@ -349,7 +349,7 @@ class API {
             $args = [
                 'post_type' => 'matches',
                 'meta_key' => 'total_bets',
-                'orderby' => 'meta_value',
+                'orderby' => 'meta_value_num',
                 'category_name' => $categorySlug,
                 'posts_per_page' => $getPageCount,
                 'order' => 'DESC',
@@ -385,21 +385,20 @@ class API {
         else:
             $getPageCount = 50;
         endif;
-        $dateFormat = date('Ymd');
+        $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);
 
             $args = [
                 'post_type' => 'matches',
                 'meta_key' => 'total_bets',
-                'orderby' => 'meta_value',
-                'category_name' => $categorySlug,
+                'orderby' => 'meta_value_num',
+              
                 'posts_per_page' => $getPageCount,
                 'order' => 'DESC',
                 'meta_query' => [ 'key' => 'end_date', 'value' => $dateFormat, 'compare' => '>=',],
             ];
        
         $result = $this->getResult($args);
-
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
             $cat[] = ['catName' => $catName['name']];
@@ -414,7 +413,6 @@ class API {
                 $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
             }
         }
-
         $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var];
         return $output;
     }

@@ -9,13 +9,6 @@ var base_url = "http://localhost/gamings/";
 var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
 var app = angular.module('gaming', ['simplePagination']);
 
-function getMatchListing ($http,$scope){
-    
-     $http.get(domain + "home-match-listing").then(function (response) {
-        $scope.homeMatchListing = response.data;
-    });
-};
-
 app.controller('homeCtrl', function ($scope, $http, $templateCache) {
     $http.get(domain + "home").then(function (response) {
         $scope.home = response.data;
@@ -34,12 +27,12 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
                 'pts': points,
                 'slug': slug,
                 'mainSlug': $.urlParam('category'),
-                'type': 'homeMatchListing',
+                'type': 'popularMatches',
                 'catType': sessionStorage.getItem('type')
             };
             console.log(sessionStorage.getItem('type'));
             tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
-          
+        
         } else {
             sessionStorage.setItem('url', document.URL);
             window.location = base_url + "register?url=redirect";
@@ -439,10 +432,11 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         cache: $templateCache
     }).then(function (response) {
-        if(formData['type'] === 'homeMatchListing'){
-       getMatchListing($http,$scope);
-               // $scope.homeMatchListing = response.data;
         
+        if (formData['type'] === 'popularMatches') {
+            $http.get(domain + "home-match-listing").then(function (response) {
+                $scope.homeMatchListing = response.data;
+            });
         }
         if (formData['type'] === 'tournaments') {
             var formDataReload = {'postId': formData['slug']};
