@@ -1541,9 +1541,8 @@
 
 @media (max-width: 479px) {
 
-	/*.container,
 	#header.full-header .container,
-	.container-fullwidth { width: 310px !important; }*/
+	.container-fullwidth { width: 310px !important; }
 
 	.container.vertical-middle { width: 100% !important; }
 
