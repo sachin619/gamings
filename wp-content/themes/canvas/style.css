@@ -1076,7 +1076,7 @@ body.stretched #header.full-header .container {
 #header.transparent-header.full-header #primary-menu > ul { border-right-color: rgba(0,0,0,0.1); }
 
 #primary-menu-trigger,
-{
+#page-submenu-trigger {
 	opacity: 0;
 	pointer-events: auto;
 	cursor: pointer;
