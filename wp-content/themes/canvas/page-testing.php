@@ -2,9 +2,17 @@
 //acf_form_head(); 
 wp_head();
 ?>
+      <script>
+                function getTimezoneName() {
+        timezone =  jstz.determine();
+       document.write(timezone.name()) ;
+    }
+    getTimezoneName();
+        </script>
 <!--<img src="http://localhost/gamings/wp-content/uploads/profile/loader.gif" />-->
 <?php
-
+$getTime= "<script>var x='hey';document.write($.now())</script>";
+print_r( date('Y-m-d h:i a'));exit;
 //get date of wordpress
 $getDate= current_time('mysql');
 $convertDate=strtotime($getDate."-7 days");

@@ -46,6 +46,11 @@ if (!function_exists('twentysixteen_setup')) :
      * @since Twenty Sixteen 1.0
      */
     function twentysixteen_setup() {
+//        echo "<script src='" . get_template_directory_uri() . "/js/jstz.min.js'></script>";
+//        echo "<script>  function getTimezoneName() {timezone =  jstz.determine();document.write(timezone.name());}</script>";
+//        $getTimezone = '<script>getTimezoneName()</script>';
+//        date_default_timezone_set($getTimezone);
+//echo $getTimezone;
         /*
          * Make theme available for translation.
          * Translations can be filed in the /languages/ directory.
@@ -239,6 +244,7 @@ function twentysixteen_scripts() {
     // Add custom fonts, used in the main stylesheet.
     wp_enqueue_style('twentysixteen-fonts', twentysixteen_fonts_url(), array(), null);
     wp_enqueue_script('angular-min', get_template_directory_uri() . '/js/angular.min.js');
+    wp_enqueue_script('jstz-min', get_template_directory_uri() . '/js/jstz.min.js');
     wp_enqueue_script('jquery-min', get_template_directory_uri() . '/js/jquery.min.js');
     wp_enqueue_script('ng-app', get_template_directory_uri() . '/js/ng-app.js');
     wp_enqueue_script('sweetalert-min', get_template_directory_uri() . '/js/sweetalert.min.js');
@@ -673,4 +679,3 @@ function adminDistribution($userid) {
         endif;
     endforeach;
 }
-
