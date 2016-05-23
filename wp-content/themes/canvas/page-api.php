@@ -122,7 +122,7 @@ class API {
         $home['popularTournaments'] = $this->popularTournaments();
         //$home['popularMatches'] = $this->popularMatches();
         $home['upcomingTournaments'] = $this->upcomingTournaments();
-       // $home['upcomingMatches'] = $this->listingPopularMatches();
+        // $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
         return $home;
@@ -334,9 +334,37 @@ class API {
         $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);
         if ($getCatSlug['data']['type'] == 'today'):
-            $dateFormatNew = date('Y-m-d');
+            $getDate = current_time('mysql');
+            $convertDate = strtotime($getDate);
+            $dateFormatNew = date('Y-m-d', $convertDate);
             $collectPost = [];
             $query = "SELECT SQL_CALC_FOUND_ROWS wp_posts.ID FROM wp_posts INNER JOIN wp_term_relationships ON (wp_posts.ID = wp_term_relationships.object_id) INNER JOIN wp_postmeta ON ( wp_posts.ID = wp_postmeta .post_id ) INNER JOIN wp_postmeta AS mt1 ON ( wp_posts.ID = mt1.post_id ) WHERE 1=1 AND ( wp_term_relationships.term_taxonomy_id IN ('" . $getCatId . "') ) AND ( wp_postmeta.meta_key = 'start_date' AND ( ( mt1.meta_key = 'start_date' AND DATE_FORMAT(FROM_UNIXTIME(mt1.meta_value), '%Y-%m-%d') = '" . $dateFormatNew . "' ) ) ) AND wp_posts.post_type = 'matches' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'acf-disabled' OR wp_posts.post_status = 'private') GROUP BY wp_posts.ID ORDER BY wp_postmeta.meta_value ASC LIMIT 0, 50 ";
+            $getResult = $wpdb->get_results($query);
+            foreach ($getResult as $collectId):
+                array_push($collectPost, $collectId->ID);
+            endforeach;
+            if (count($getResult) != 0):
+                $args = [ 'post_type' => 'matches', 'post__in' => $collectPost];
+                $result = $this->getResult($args);
+            endif;
+        elseif ($getCatSlug['data']['type'] == 'daysBefore'):
+            $getDate = current_time('mysql');
+            $sevenDaysBefore = strtotime($getDate . "-7 days");
+            $args = [
+                'post_type' => 'matches',
+                'meta_key' => 'total_bets',
+                'orderby' => 'meta_value_num',
+                'category_name' => $categorySlug,
+                'posts_per_page' => $getPageCount,
+                'order' => 'DESC',
+                'meta_query' => [ 'key' => 'end_date', 'value' => $sevenDaysBefore, 'compare' => '<=',],
+            ];
+        elseif ($getCatSlug['data']['type'] == 'ongoing'):
+            $getDate = current_time('mysql');
+            $convertDate = strtotime($getDate);
+            $dateFormatNew = date('Y-m-d', $convertDate);
+            $collectPost = [];
+            $query = "SELECT SQL_CALC_FOUND_ROWS wp_posts.ID FROM wp_posts INNER JOIN wp_term_relationships ON (wp_posts.ID = wp_term_relationships.object_id) INNER JOIN wp_postmeta ON ( wp_posts.ID = wp_postmeta .post_id ) INNER JOIN wp_postmeta AS mt1 ON ( wp_posts.ID = mt1.post_id ) WHERE 1=1 AND ( wp_term_relationships.term_taxonomy_id IN ('" . $getCatId . "') ) AND ( wp_postmeta.meta_key = 'start_date' AND ( ( mt1.meta_key = 'start_date' AND DATE_FORMAT(FROM_UNIXTIME(mt1.meta_value), '%Y-%m-%d') = '" . $dateFormatNew . "' AND mt1.meta_value > $convertDate ) ) ) AND wp_posts.post_type = 'matches' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'acf-disabled' OR wp_posts.post_status = 'private') GROUP BY wp_posts.ID ORDER BY wp_postmeta.meta_value ASC LIMIT 0, 50 ";
             $getResult = $wpdb->get_results($query);
             foreach ($getResult as $collectId):
                 array_push($collectPost, $collectId->ID);
@@ -389,16 +417,15 @@ class API {
         $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);
 
-            $args = [
-                'post_type' => 'matches',
-                'meta_key' => 'total_bets',
-                'orderby' => 'meta_value_num',
-              
-                'posts_per_page' => $getPageCount,
-                'order' => 'DESC',
-                'meta_query' => [ 'key' => 'end_date', 'value' => $dateFormat, 'compare' => '>=',],
-            ];
-       
+        $args = [
+            'post_type' => 'matches',
+            'meta_key' => 'total_bets',
+            'orderby' => 'meta_value_num',
+            'posts_per_page' => $getPageCount,
+            'order' => 'DESC',
+            'meta_query' => [ 'key' => 'end_date', 'value' => $dateFormat, 'compare' => '>=',],
+        ];
+
         $result = $this->getResult($args);
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
@@ -452,6 +479,7 @@ class API {
         $slug = isset($tradeInfo['data']['slug']) ? $tradeInfo['data']['slug'] : 0;/** get count of eliminated team** */
         $args = ['post_type' => 'matches', 'name' => $slug];
         $getTeams = $this->getResult($args);
+
         foreach ($getTeams[0]['select_teams'] as $team) {
             $teamFilter[] = (array) $team['team_name'];
             if ($team['winner'] == 'Yes') :
@@ -459,21 +487,29 @@ class API {
             endif;
         }
         $getEndTime = strtotime($getTeams[0]['end_date_original']);
+        $getStartTime = strtotime($getTeams[0]['start_date_original']);
         $getCurrentTime = time();
+        $getDate = current_time('mysql');
+        $curTime = strtotime($getDate);
         $getWinnerCount = count($count);/** get count of eliminated team** */
         $getTourId = isset($getTeams[0]['tournament_name']->ID) ? $getTeams[0]['tournament_name']->ID : 0;
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTourId, 'team_id' => $teamId, 'pts' => $points];
         if (!empty($tradeInfo['data']['pts'])):
             if ($points >= $getMinimumBetAmount):
                 if ($getEndTime >= $getCurrentTime && $getWinnerCount != 1):
-                    if ($points <= $uPoints):
-                        $remaining = $uPoints - $points;
-                        update_user_meta($userId, 'points', $remaining);
-                        update_user_meta($userId, 'points_used', $usedCalc);
-                        $wpdb->insert('wp_bets', $wpBets);
-                        return "You have traded " . $points . " Point's";
+                    if ($getStartTime > $curTime):
+                        if ($points <= $uPoints):
+                            $remaining = $uPoints - $points;
+                            update_user_meta($userId, 'points', $remaining);
+                            update_user_meta($userId, 'points_used', $usedCalc);
+                            $wpdb->insert('wp_bets', $wpBets);
+                            return "You have traded " . $points . " Point's";
+                        else:
+                            return "Not have enough points";
+                        endif;
                     else:
-                        return "Not have enough points";
+                        return "Match had been started";
+
                     endif;
                 else:
                     return "Match had been over";

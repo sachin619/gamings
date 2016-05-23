@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -46,8 +45,9 @@ get_header();
                     <li class="" ng-class="{activeFilter: selectedIndex === $index || selectedIndex == 'home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('popular')">Popular</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('all')" data-filter=".pf-{{categories['catName']}}">All Matches</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('today')" data-filter=".pf-{{categories['catName']}}">Today</a></li>
+                    <li><a href="#" onclick="return false;"  ng-click="filter('daysBefore')" data-filter=".pf-{{categories['catName']}}">Previous</a></li>
+                    <li><a href="#" onclick="return false;"  ng-click="filter('ongoing')" data-filter=".pf-{{categories['catName']}}">Current</a></li>
                 </ul>
-
 
                 <!-- <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
 
@@ -104,13 +104,15 @@ get_header();
                             </tr>
                         </thead>
                         <tbody> 
-                     
+
                             <tr ng-repeat="matches in getDetails.catPost">
-                                <td><i class="icon-time"></i>{{matches['onlySDate']}} {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i ng-if="matches['venue']!=''" class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
-                                <td><a href="{{matches['siteUrl']+'/tournaments/'+matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a></td>
+                                <td><i class="icon-time"></i>{{matches['onlySDate']}} {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i ng-if="matches['venue'] != ''" class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
+                                <td><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a></td>
                                 <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}}: </td>
-                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ><br>Your Trade : {{getDetails['tradeTotal'][matches['id']][$index][0]['total']}} </td>
-                                <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points,getDetails.catPost[0]['uid'])" class="btn btn-danger">Trade</a></td>
+                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ><br>Your Trade : {{getDetails['tradeTotal'][matches['id']][$index][0]['total']}} 
+                                    <b style="color:#d43f3a" ng-if="teams['winner'] == 'Yes'">Win</b> 
+                                    <b style="color:#d43f3a" ng-if="teams['winner'] == 'No' && matches['points_distributed'] == 'Yes'">Lose</b>  </td>
+                                <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails.catPost[0]['uid'])" class="btn btn-danger">Trade</a></td>
                                 <td>{{matches["total_bets"]}}</td>
                             </tr>                            
                         </tbody>
@@ -131,6 +133,5 @@ get_header();
     }
 </style>
 <?php
-
 get_footer();
 ?>

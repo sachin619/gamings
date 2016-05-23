@@ -5,6 +5,11 @@ wp_head();
 <!--<img src="http://localhost/gamings/wp-content/uploads/profile/loader.gif" />-->
 <?php
 
+//get date of wordpress
+$getDate= current_time('mysql');
+$convertDate=strtotime($getDate."-7 days");
+echo date('d-m-y',$convertDate);
+//get date of wordpress
 echo get_template_directory();
 exit;
     $api=new API();
