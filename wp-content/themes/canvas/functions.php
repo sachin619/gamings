@@ -46,10 +46,9 @@ if (!function_exists('twentysixteen_setup')) :
      * @since Twenty Sixteen 1.0
      */
     function twentysixteen_setup() {
-//        echo "<script src='" . get_template_directory_uri() . "/js/jstz.min.js'></script>";
-//        echo "<script>  function getTimezoneName() {timezone =  jstz.determine();document.write(timezone.name());}</script>";
-//        $getTimezone = '<script>getTimezoneName()</script>';
-//        date_default_timezone_set($getTimezone);
+    
+       // date_default_timezone_set( 'America/New_York');
+     // date_default_timezone_set( $_COOKIE['wordpress_useclientstimezone_timezone']);
 //echo $getTimezone;
         /*
          * Make theme available for translation.
