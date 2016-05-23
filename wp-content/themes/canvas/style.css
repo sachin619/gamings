@@ -2102,10 +2102,10 @@ body.top-search-open #side-panel-trigger { opacity: 0; }
 
 #page-menu .menu-title span { font-weight: 600; }
 
-#page-menu nav {
+/*#page-menu nav {
 	position: relative;
 	float: left;
-}
+}*/
 
 #page-menu nav ul {
 	margin-bottom: 0;
