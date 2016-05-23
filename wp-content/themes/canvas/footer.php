@@ -44,6 +44,10 @@
             format: 'yyyy-mm-dd'
         });
     })
+
 </script>
+<?php
+$getTime = "<script>getTimezoneName();</script>";
+?>
 </body>
 </html>

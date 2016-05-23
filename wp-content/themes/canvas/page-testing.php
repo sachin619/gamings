@@ -6,8 +6,25 @@ wp_head();
 
 
 <?php
-$timezone=$_COOKIE['wordpress_useclientstimezone_timezone'];
-print_r($timezone);exit;
+echo $_SESSION['clientTimeZone'];exit;
+function converToTz($time,$toTz,$fromTz)
+    {   
+        // timezone by php friendly values
+        $date = new DateTime($time, new DateTimeZone($fromTz));
+        $date->setTimezone(new DateTimeZone($toTz));
+        $converTime= $date->format('H:i:s');
+        return $converTime;
+    }
+$time="18:29:16";
+$toTz="America/Guatemala";
+$fromTz="Asia/Kolkata";
+echo converToTz($time,$toTz,$fromTz);exit;
+//echo "testing";
+//print_r($_COOKIE);
+$getDate= current_time('mysql');
+echo date_default_timezone_get();exit;
+print_r($getDate);exit;
+
 ?>
 
 
@@ -25,7 +42,8 @@ print_r($timezone);exit;
         </script>
 <!--<img src="http://localhost/gamings/wp-content/uploads/profile/loader.gif" />-->
 <?php
-$getTime= "<script>var x='hey';document.write($.now())</script>";
+$getTime= "<script>getTimezoneName</script>";
+echo $getTime;exit;
 print_r( date('Y-m-d h:i a'));exit;
 //get date of wordpress
 $getDate= current_time('mysql');
