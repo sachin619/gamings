@@ -1077,7 +1077,7 @@ body.stretched #header.full-header .container {
 
 #primary-menu-trigger,
 #page-submenu-trigger {
-	opacity: 1;
+	opacity: 0;
 	pointer-events: auto;
 	cursor: pointer;
 	font-size: 14px;
