@@ -2,6 +2,20 @@
 //acf_form_head(); 
 wp_head();
 ?>
+
+
+
+<?php
+$timezone=$_COOKIE['wordpress_useclientstimezone_timezone'];
+print_r($timezone);exit;
+?>
+
+
+
+
+
+
+
       <script>
                 function getTimezoneName() {
         timezone =  jstz.determine();
