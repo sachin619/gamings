@@ -106,7 +106,7 @@ get_header();
                         <tbody> 
                      
                             <tr ng-repeat="matches in getDetails.catPost">
-                                <td><i class="icon-time"></i>{{matches['onlySDate']}} {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i ng-if="matches['venue']!=''" class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
+                                <td> {{matches['onlySDate']}} {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue']!=''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
                                 <td><a href="{{matches['siteUrl']+'/tournaments/'+matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a></td>
                                 <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}}: </td>
                                 <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ><br>Your Trade : {{getDetails['tradeTotal'][matches['id']][$index][0]['total']}} </td>
