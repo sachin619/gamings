@@ -32,7 +32,7 @@ get_header();
                         <div class="spost clearfix">
                             <div class="bannerheight">
                                 <div class="proile_img">
-                                    <span class="nobg"><img ng-src={{getDetails['details'][0].img}} alt={{getDetails['details'][0].title}}></span>
+                                    <span class="nobg"><img class="profilimg" ng-src={{getDetails['details'][0].img}} alt={{getDetails['details'][0].title}}></span>
                                 </div>
                                 <div class="profile_text">
                                     <div class="entry-title">
