@@ -10,7 +10,7 @@ get_header();
 <section ng-controller="tourDetails">
     <!-- Page Title
             ============================================= -->
-    <section id="page-title">
+    <!--<section id="page-title">
 
         <div class="container clearfix">
 
@@ -22,7 +22,7 @@ get_header();
             </ol>
         </div>
 
-    </section><!-- #page-title end -->
+    </section>--><!-- #page-title end -->
 
     <section>
         <div class="background-image clearfix" style="background: url('http://celebrity-connect.cruxservers.in/wp-content/uploads/2016/04/tvfilm-cover.jpg') no-repeat;">
