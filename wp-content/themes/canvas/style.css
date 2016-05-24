@@ -13151,10 +13151,10 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 }
 
 .entry-title a {
-    color: #d4202b; text-shadow: 1px 1px 1px #000;
+    color: #FFF; text-shadow: 1px 1px 1px #000;
 }
 .entry-title a:hover {
-    color: #fff!important;
+    color: #d4202b!important;
 }
 .widget p:not(.lead) {
     font-size: 14px;
