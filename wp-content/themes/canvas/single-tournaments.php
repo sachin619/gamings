@@ -25,7 +25,7 @@ get_header();
     </section>--><!-- #page-title end -->
 
     <section>
-        <div class="background-image clearfix" style="background: url('http://celebrity-connect.cruxservers.in/wp-content/uploads/2016/04/tvfilm-cover.jpg') no-repeat;">
+        <div class="background-image clearfix" style="background: url('<?= get_template_directory_uri() ?>/images/grass_bg.jpg') no-repeat;">
             <div class="container">
                 <div class="widget">
                     <div id="post-list-footer">
@@ -48,13 +48,6 @@ get_header();
                                         <a href="http://http://srbachchan.tumblr.com/" target="__blank" class="celeb-web ng-binding">http://srbachchan.tumblr.com/</a>
                                     </div>
 
-                                </div>
-                                <div class="btncontainer pull-right">
-                                    <a href="../login" class="button button-large button-rounded button-red cust-btn"><span>Follow</span></a>
-                                    <div class="clearfix"></div>
-                                    <a href="../login" class="button button-large button-rounded button-red cust-btn"><span>Message</span></a>
-                                    <div class="clearfix"></div>
-                                    <a href="../login" class="button button-large button-rounded button-red cust-btn"><span>Contact</span></a>
                                 </div>
                             </div>
                         </div>
