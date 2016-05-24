@@ -13130,7 +13130,7 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
     background: none !important;
 }
 .profilimg {
-    max-width: 325px;
+    /*max-width: 325px;*/
     border-radius: 4px;
 }
 .profile_text {
