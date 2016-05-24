@@ -13137,7 +13137,7 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 .profile_text {
     float: left;
     margin: 21px;
-    color: #fff;
+    color: #fff; width: 600px;
     /* font-style: italic; */
     text-shadow: 1px 1px 1px #000;
     border-radius: 4px;
