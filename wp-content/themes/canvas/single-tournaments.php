@@ -44,11 +44,11 @@ get_header();
                                         <h2 class="ng-binding">{{getDetails['details'][0].title}} </h2>
                                         <p class="ng-binding">{{getDetails['details'][0].description}}</p>
 
-                                        <p class="ng-binding">Time and Location: {{getDetails['details'][0].start_date}}– {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
+                                        <p class="ng-binding">Time & Location: {{getDetails['details'][0].start_date}} – {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
 
-                                        <p ng-if="getDetails['totalBets'][0].total > 0">Total Points Traded So far: {{getDetails['totalBets'][0].total}} Points</p>
+                                        <p ng-if="getDetails['totalBets'][0].total > 0">Total Points Traded So Far: {{getDetails['totalBets'][0].total}} Points</p>
 
-                                        <p ng-if="getDetails['details'][0].premium > 1">Premium value : {{getDetails['details'][0].premium}} </p>
+                                        <h5 ng-if="getDetails['details'][0].premium > 1">Premium Value: {{getDetails['details'][0].premium}} </h5>
 
                                         <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a>
                                     </div>
