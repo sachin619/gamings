@@ -41,7 +41,7 @@ get_header();
                                 <div class="col-md-8">
                                 <div class="profile_text">
                                     <div class="entry-title">
-                                        <h2><a href="#" class="ng-binding">{{getDetails['details'][0].title}}</a></h2>
+                                        <h2 class="ng-binding">{{getDetails['details'][0].title}} </h2>
                                         <p class="ng-binding">{{getDetails['details'][0].description}}</p>
 
                                         <p class="ng-binding">{{getDetails['details'][0].start_date}}– {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
