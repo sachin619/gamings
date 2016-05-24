@@ -44,7 +44,7 @@ get_header();
                                         <h2 class="ng-binding">{{getDetails['details'][0].title}} </h2>
                                         <p class="ng-binding">{{getDetails['details'][0].description}}</p>
 
-                                        <p class="ng-binding">{{getDetails['details'][0].start_date}}– {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
+                                        <p class="ng-binding">Time and Location: {{getDetails['details'][0].start_date}}– {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
 
                                         <p ng-if="getDetails['totalBets'][0].total > 0">Total Points Traded So far: {{getDetails['totalBets'][0].total}} Points</p>
 
