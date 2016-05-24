@@ -45,8 +45,7 @@ get_header();
                                         <p class="ng-binding"><!-- ngIf: celeb.age --><span class="age-mar-right ng-binding ng-scope" ng-if="celeb.age">73</span><!-- end ngIf: celeb.age -->Male</p>
 
                                         <p class="ng-binding">Mumbai</p>
-
-                                        <a href="http://http://srbachchan.tumblr.com/" target="__blank" class="celeb-web ng-binding">http://srbachchan.tumblr.com/</a>
+                                        <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a>
                                     </div>
 
                                 </div>
