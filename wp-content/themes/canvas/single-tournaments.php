@@ -38,9 +38,9 @@ get_header();
                                 <div class="profile_text">
                                     <div class="entry-title">
                                         <h2><a href="#" class="ng-binding">{{getDetails['details'][0].title}}</a></h2>
-                                        <p class="ng-binding">Television &amp; Film Actor</p>
+                                        <p class="ng-binding">{{getDetails['details'][0].description}}</p>
 
-                                        <p class="ng-binding">Actor</p>
+                                        <p class="ng-binding">{{getDetails['details'][0].start_date}}– {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
 
                                         <p class="ng-binding"><!-- ngIf: celeb.age --><span class="age-mar-right ng-binding ng-scope" ng-if="celeb.age">73</span><!-- end ngIf: celeb.age -->Male</p>
 
