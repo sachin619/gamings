@@ -28,13 +28,17 @@ get_header();
         <div class="background-image clearfix" style="background: url('<?= get_template_directory_uri() ?>/images/grass_bg.jpg') no-repeat;">
            <div class="background-image-overly"></div>
             <div class="container">
+                <div class="row">
                 <div class="widget">
                     <div id="post-list-footer">
                         <div class="spost clearfix">
                             <div class="bannerheight">
-                                <div class="proile_img">
-                                    <span class="nobg"><img class="profilimg" ng-src={{getDetails['details'][0].img}} alt={{getDetails['details'][0].title}}></span>
+                                <div class="col-md-4">
+                                    <div class="proile_img">
+                                        <span class="nobg"><img class="profilimg" ng-src={{getDetails['details'][0].img}} alt={{getDetails['details'][0].title}}></span>
+                                    </div>
                                 </div>
+                                <div class="col-md-8">
                                 <div class="profile_text">
                                     <div class="entry-title">
                                         <h2><a href="#" class="ng-binding">{{getDetails['details'][0].title}}</a></h2>
@@ -48,11 +52,12 @@ get_header();
 
                                         <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a>
                                     </div>
-
+                                </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                  </div>
                 </div>
             </div>
 
