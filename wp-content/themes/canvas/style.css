@@ -13150,10 +13150,12 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
     letter-spacing: 1px;
 }
 
-.entry-title h2 a {
+.entry-title a {
     color: #fff; text-shadow: none!important;
 }
-
+.entry-title a:hover {
+    color: #fff!important;
+}
 .widget p:not(.lead) {
     font-size: 14px;
 }
