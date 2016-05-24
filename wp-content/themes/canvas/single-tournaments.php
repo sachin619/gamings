@@ -24,6 +24,46 @@ get_header();
 
     </section><!-- #page-title end -->
 
+    <section>
+        <div class="background-image clearfix" style="background: url('http://celebrity-connect.cruxservers.in/wp-content/uploads/2016/04/tvfilm-cover.jpg') no-repeat;">
+            <div class="container">
+                <div class="widget">
+                    <div id="post-list-footer">
+                        <div class="spost clearfix">
+                            <div class="bannerheight">
+                                <div class="proile_img">
+                                    <span class="nobg"><img class="profilimg" ng-src="http://celebrity-connect.cruxservers.in/wp-content/uploads/2016/04/AB.jpg" src="http://celebrity-connect.cruxservers.in/wp-content/uploads/2016/04/AB.jpg"></span>
+                                </div>
+                                <div class="profile_text">
+                                    <div class="entry-title">
+                                        <h2><a href="#" class="ng-binding">Amitabh Bachchan</a></h2>
+                                        <p class="ng-binding">Television &amp; Film Actor</p>
+
+                                        <p class="ng-binding">Actor</p>
+
+                                        <p class="ng-binding"><!-- ngIf: celeb.age --><span class="age-mar-right ng-binding ng-scope" ng-if="celeb.age">73</span><!-- end ngIf: celeb.age -->Male</p>
+
+                                        <p class="ng-binding">Mumbai</p>
+
+                                        <a href="http://http://srbachchan.tumblr.com/" target="__blank" class="celeb-web ng-binding">http://srbachchan.tumblr.com/</a>
+                                    </div>
+
+                                </div>
+                                <div class="btncontainer pull-right">
+                                    <a href="../login" class="button button-large button-rounded button-red cust-btn"><span>Follow</span></a>
+                                    <div class="clearfix"></div>
+                                    <a href="../login" class="button button-large button-rounded button-red cust-btn"><span>Message</span></a>
+                                    <div class="clearfix"></div>
+                                    <a href="../login" class="button button-large button-rounded button-red cust-btn"><span>Contact</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div></section>
+
     <!-- Content
     ============================================= -->
     <section>
