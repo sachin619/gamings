@@ -47,7 +47,6 @@ get_header();
                                         <p>Official Website: <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a></p>
                                         <p ng-if="getDetails['details'][0].premium > 1">Premium Value: {{getDetails['details'][0].premium}} </p>
                                         <h4 ng-if="getDetails['totalBets'][0].total > 0">Total Points Traded So Far: {{getDetails['totalBets'][0].total}} Points</h4>
-
                                     </div>
                                 </div>
                                 </div>
