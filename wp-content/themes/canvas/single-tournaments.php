@@ -10,7 +10,7 @@ get_header();
 <section ng-controller="tourDetails">
     <!-- Page Title
             ============================================= -->
-    <!--<section id="page-title">
+    <section id="page-title">
 
         <div class="container clearfix">
 
@@ -22,7 +22,7 @@ get_header();
             </ol>
         </div>
 
-    </section>--><!-- #page-title end -->
+    </section>--><!-- #page-title end
 
     <section>
         <div class="background-image clearfix" style="background: url('<?= get_template_directory_uri() ?>/images/grass_bg.jpg') no-repeat;">
