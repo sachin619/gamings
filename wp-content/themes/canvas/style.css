@@ -13088,3 +13088,66 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 .tabColumn p{ font-size: 16px; text-align: justify;}
 
 .matches_banner{ margin: 0 0 20px 0;}
+
+/*tournaments Details Page*/
+.background-image {
+    position: relative;
+    width: 100% !important;
+    height: auto;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    background-size: cover !important;
+    -o-background-size: cover !important;
+}
+.bannerheight {
+    height: 230px;
+    width: 100%;
+    padding: 22px 0px;
+}
+.proile_img {
+    float: left;
+    margin: 28px 0px 17px;
+    padding: 0px;
+    border: solid 2px #fff;
+    -moz-border: solid 2px #fff;
+    -webkit-border: solid 2px #fff;
+    -o-border: solid 2px #fff;
+    border-radius: 4px !important;
+}
+.nobg {
+    background: none !important;
+}
+.profilimg {
+    max-width: 126px;
+    border-radius: 4px;
+}
+.profile_text {
+    float: left;
+    margin: 21px;
+    color: #fff;
+    /* font-style: italic; */
+    text-shadow: 1px 1px 1px #000;
+    border-radius: 4px;
+}
+
+.entry-title h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.entry-title h2 a {
+    color: #fff;
+}
+
+.widget p:not(.lead) {
+    font-size: 14px;
+}
+.profile_text p {
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
