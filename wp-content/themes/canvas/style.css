@@ -13113,9 +13113,9 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
     filter:alpha(opacity=60); /* IE transparency */
 }
 .bannerheight {
-    height: 230px;
+    height: 300px;
     width: 100%;
-    padding: 22px 0px;
+    padding: 0px;
 }
 .proile_img {
     float: left;
