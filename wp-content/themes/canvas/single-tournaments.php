@@ -42,9 +42,10 @@ get_header();
 
                                         <p class="ng-binding">{{getDetails['details'][0].start_date}}– {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
 
-                                        <p class="ng-binding"><!-- ngIf: celeb.age --><span class="age-mar-right ng-binding ng-scope" ng-if="celeb.age">73</span><!-- end ngIf: celeb.age -->Male</p>
+                                        <p ng-if="getDetails['totalBets'][0].total > 0">Total Points Traded So far: {{getDetails['totalBets'][0].total}} Points</p>
 
-                                        <p class="ng-binding">Mumbai</p>
+                                        <p ng-if="getDetails['details'][0].premium > 1">Premium value : {{getDetails['details'][0].premium}} </p>
+
                                         <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a>
                                     </div>
 
