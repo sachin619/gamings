@@ -26,7 +26,7 @@ get_header();
 
     <section>
         <div class="background-image clearfix" style="background: url('<?= get_template_directory_uri() ?>/images/grass_bg.jpg') no-repeat;">
-           <div class="background-image-overly">
+           <div class="background-image-overly"></div>
             <div class="container">
                 <div class="widget">
                     <div id="post-list-footer">
@@ -55,7 +55,7 @@ get_header();
                     </div>
                 </div>
             </div>
-            </div>
+
         </div></section>
 
     <!-- Content
