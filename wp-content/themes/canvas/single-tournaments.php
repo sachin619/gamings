@@ -36,7 +36,7 @@ get_header();
                                 </div>
                                 <div class="profile_text">
                                     <div class="entry-title">
-                                        <h2><a href="#" class="ng-binding">Amitabh Bachchan</a></h2>
+                                        <h2><a href="#" class="ng-binding">{{getDetails['details'][0].title}}</a></h2>
                                         <p class="ng-binding">Television &amp; Film Actor</p>
 
                                         <p class="ng-binding">Actor</p>
