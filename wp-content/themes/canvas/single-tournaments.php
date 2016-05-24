@@ -66,13 +66,13 @@ get_header();
 
             <div class="container clearfix">
 
-                <div class="row">
+                <!--<div class="row">
 
                     <div class="col-md-6">		
                         <div class="entry-image">
 
                             <a href={{getDetails['details'][0].postLink}}><img ng-src={{getDetails['details'][0].img}} alt={{getDetails['details'][0].title}}></a>
-                        </div><!-- .entry-image end -->
+                        </div>
 
 
 
@@ -88,7 +88,7 @@ get_header();
                         <h5 ng-if="getDetails['details'][0].premium > 1">Premium value : {{getDetails['details'][0].premium}} </h5>
                     </div>
 
-                </div>
+                </div>-->
 
                 <h3 class="text-center mtb20">Team Participating</h3>
 
