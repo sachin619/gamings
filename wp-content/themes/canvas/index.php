@@ -71,7 +71,7 @@ get_header();
                         <tbody> 
 <!--                     {{home['upcomingMatches']['catPost']}}-->
                             <tr ng-repeat="matches in homeMatchListing['upcomingMatches']['catPost']">
-                                <td> {{matches['onlySDate']}}<br> {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue']!=''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
+                                <td> {{matches['onlySDate']}} {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue']!=''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
                                 <td><a href="{{matches['siteUrl']+'/tournaments/'+matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a></td>
                                 <td  ng-repeat-start="teams in matches['select_teams']"><b>{{teams['team_name']['post_title']}}</b></td>
                                 <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" style="width: 100%;" placeholder=" Add Trade" ><br>Your Trade : {{homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']}} </td>
