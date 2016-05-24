@@ -13151,7 +13151,7 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 }
 
 .entry-title h2 a {
-    color: #fff;
+    color: #fff; text-shadow: none;
 }
 
 .widget p:not(.lead) {
