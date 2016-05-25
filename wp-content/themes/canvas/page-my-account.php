@@ -37,13 +37,13 @@ $userEmail = $userInfo->user_email;
                         <a href="#" class="list-group-item text-center">
                             <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>MY WIN/LOSS POINTS
                         </a>    <!-- My Win Loss points -->    
-                        <a href="#" class="list-group-item text-center">
-                            <h4 class="fa fa-shopping-cart fa-lg"></h4><br/>PURCHASE HISTORY
+                        <a href="#" class="list-group-item text-center hide">
+                            <h4 class="fa fa-shopping-cart fa-lg "></h4><br/>PURCHASE HISTORY
                         </a>   <!-- Purchase History -->
-                        <a href="#" class="list-group-item text-center">
+                        <a href="#" class="list-group-item text-center hide">
                             <h4 class="fa fa-database fa-lg"></h4><br/>BUY MORE POINTS
                         </a>   <!-- Buy More Points -->
-                        <a href="#" class="list-group-item text-center">
+                        <a href="#" class="list-group-item text-center hide">
                             <h4 class="fa fa-money fa-lg"></h4><br/>ENCASH MY POINTS
                         </a>   <!-- Encash My Points -->
                         <a href="#" class="list-group-item  text-center">
