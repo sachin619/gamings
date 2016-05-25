@@ -112,7 +112,7 @@ get_header();
                                 <td  ng-repeat-end> <input type="text" class="trade form-control" style="display: {{hideTrade}}" ng-model="$parent.points[teams['team_name']['ID']]" style="width: 100%;" placeholder=" Add Trade"> Your Trade: {{getDetails['tradeTotal'][matches['id']][$index][0]['total']}}
                                     <b style="color:#d43f3a" ng-if="teams['winner'] == 'Yes'">Win</b> 
                                     <b style="color:#d43f3a" ng-if="teams['winner'] == 'No' && matches['points_distributed'] == 'Yes'">Lose</b>  </td>
-                                <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails.catPost[0]['uid'])" class="btn btn-danger">Trade</a></td>
+                                <td><a href="#" style="display: {{hideTrade}}" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails.catPost[0]['uid'])" class="btn btn-danger">Trade</a></td>
                                 <td>{{matches["total_bets"]}}</td>
                             </tr>                            
                         </tbody>
