@@ -10,6 +10,7 @@ var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif"
 var app = angular.module('gaming', ['simplePagination']);
 
 app.controller('homeCtrl', function ($scope, $http, $templateCache) {
+    sessionStorage.setItem('getCount','');
     $http.get(domain + "home").then(function (response) {
         $scope.home = response.data;
     });
@@ -19,18 +20,15 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
     getUrlParameter();
 
     $scope.loadMore = function (catName, getCount) {
-        console.log('hey');
         console.log(getCount);
-
+        sessionStorage.setItem('getCount',getCount);
         //console.log($.urlParam('category'));
         // console.log(getCount);
-        var formInfo = {'categoryName': '', 'getCount': getCount, 'loadMoreMatch': 'true'};
+        var formInfo = {'categoryName': '', 'getCount': sessionStorage.getItem('getCount'), 'loadMoreMatch': 'true'};
         ngPost('home-match-listing', formInfo, $scope, $http, $templateCache, 'homeMatchListing');
-        if ($scope.j > getCount)
-            $('.hide-loadMore').hide();
+       
     };
     $scope.tradeMatch = function (link, tid, points, uid) {
-
         if (uid != null) {
             var slug = link.split("/");
             slug = slug[slug.length - 2];
@@ -461,9 +459,10 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
     }).then(function (response) {
 
         if (formData['type'] === 'popularMatches') {
-            $http.get(domain + "home-match-listing").then(function (response) {
+            $http.get(domain + "home-match-listing&data[getCount]="+sessionStorage.getItem('getCount')).then(function (response) {
                 $scope.homeMatchListing = response.data;
             });
+            
         }
         if (formData['type'] === 'tournaments') {
             var formDataReload = {'postId': formData['slug']};
