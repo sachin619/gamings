@@ -113,14 +113,13 @@ get_header();
                                 <td class="demo" width="30%"> {{teamInfo.team['post_title']}}</td>               
                                 <td > <span ng-if="getDetails['details'][0].uid != null"> {{getDetails['pts'][$index][0].total}} </span></td>
                                 <td class="blockTrade" ng-class="statusInfo"  >
-                                    <input ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" type="text" name="pts" ng-model="$parent.points"   placeholder="Trade">
+                                    <input class="form-control" ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" type="text" name="pts" ng-model="$parent.points"   placeholder=" Trade">
                                     <span ng-if="getDetails['details'][0]['points_distributed'] === 'Yes' && teamInfo.eliminated === 'No'">Winner </span>
                                     <span  class="stage" ng-if="teamInfo.eliminated !== 'No'"><span>This Team had been Eliminated.</span></span>       
 
                                 </td>
                                 <td class="blockAction" >
-                                    <button  ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Add</button>
-
+                                    <button class="btn btn-danger"  ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Add</button>
                                 </td>
 
                             </tr>
@@ -200,10 +199,8 @@ get_header();
                             <tr ng-repeat="matches in getDetails.matches['details']">
                                 <td><i class="icon-time"></i>{{matches['onlySDate']}} {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
                                 <td>{{getDetails['details'][0].title}}</td>
-
-
                                 <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}}: </td>
-                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ><br> Your Trade : {{getDetails.matches['tradeTotal'][matches['id']][$index][0]['total']}}</td>
+                                <td  ng-repeat-end> <input type="text" class="form-control" ng-model="$parent.points[teams['team_name']['ID']]" > Your Trade : {{getDetails.matches['tradeTotal'][matches['id']][$index][0]['total']}}</td>
                                 <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
                                 <td>{{matches["total_bets"]}}</td>
                             </tr>                            
