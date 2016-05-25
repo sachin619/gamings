@@ -329,7 +329,7 @@ class API {
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
-            $getPageCount = 50;
+            $getPageCount = 5;
         endif;
         $dateFormat = time();
         $getCat = $this->getCategories(['parent' => 1]);

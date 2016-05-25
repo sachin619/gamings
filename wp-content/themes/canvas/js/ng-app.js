@@ -10,7 +10,7 @@ var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif"
 var app = angular.module('gaming', ['simplePagination']);
 
 app.controller('homeCtrl', function ($scope, $http, $templateCache) {
-    sessionStorage.setItem('getCount','');
+    sessionStorage.setItem('getCount', '');
     $http.get(domain + "home").then(function (response) {
         $scope.home = response.data;
     });
@@ -21,12 +21,12 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
 
     $scope.loadMore = function (catName, getCount) {
         console.log(getCount);
-        sessionStorage.setItem('getCount',getCount);
+        sessionStorage.setItem('getCount', getCount);
         //console.log($.urlParam('category'));
         // console.log(getCount);
         var formInfo = {'categoryName': '', 'getCount': sessionStorage.getItem('getCount'), 'loadMoreMatch': 'true'};
         ngPost('home-match-listing', formInfo, $scope, $http, $templateCache, 'homeMatchListing');
-       
+
     };
     $scope.tradeMatch = function (link, tid, points, uid) {
         if (uid != null) {
@@ -312,7 +312,7 @@ app.controller('listingTour', function ($http, $scope, $templateCache) {
 });
 
 app.controller('listingMatch', function ($http, $scope, $templateCache) {
-
+    sessionStorage.setItem('getCount', '');
     $scope.selectedIndex = 'home';
     $.urlParam = function (name) {
         var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -323,7 +323,7 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
             return results[1] || 0;
         }
     };
-    $scope.categoryName=$.urlParam('category');
+    $scope.categoryName = $.urlParam('category');
 
     if ($.urlParam('category') !== '') {
         var formData = {'categoryName': $.urlParam('category')};
@@ -345,7 +345,6 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
                 'type': 'matchesList',
                 'catType': sessionStorage.getItem('type')
             };
-            console.log(sessionStorage.getItem('type'));
             tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
         } else {
             sessionStorage.setItem('url', document.URL);
@@ -357,7 +356,12 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
     $scope.filter = function (type, $index) {
         //console.log($.urlParam('category'));
         //console.log(type);
-        if(type==="daysBefore" || type==="ongoing"){$scope.hideTrade="none";}else{$scope.hideTrade="block";};
+        if (type === "daysBefore" || type === "ongoing") {
+            $scope.hideTrade = "none";
+        } else {
+            $scope.hideTrade = "block";
+        }
+        ;
         $scope.selectedIndex = $index;
         $('.hide-loadMore').show();
         $scope.getCat = type;
@@ -368,10 +372,9 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
     $scope.loadMore = function (catName, getCount) {
         //console.log($.urlParam('category'));
         // console.log(getCount);
+        sessionStorage.setItem('getCount', getCount);
         var formInfo = {'categoryName': $.urlParam('category'), 'getCount': getCount, 'loadMore': 'true'};
         ngPost('listing-matches', formInfo, $scope, $http, $templateCache, 'getDetails');
-        if ($scope.j > getCount)
-            $('.hide-loadMore').hide();
     };
 });
 
@@ -386,7 +389,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
             success(function (response) {
                 if (typeName == 'home-match-listing') {
                     $scope[errorBlock] = response;
-               
+
                 }
 
                 $('.loader').hide();
@@ -397,13 +400,13 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                 if (getPaginateCount > getCountResult) {
                     $('.hide-loadMore').hide();
                 }
-                   if (typeof formData['loadMoreMatch'] !== 'undefined')
+                if (typeof formData['loadMoreMatch'] !== 'undefined')
                     var getCountResult = response['upcomingMatches']['catPost'].length;
                 var getPaginateCount = formData['getCount'];
                 if (getPaginateCount > getCountResult) {
                     $('.hide-loadMore').hide();
                 }
-                
+
                 //for pagination of matches
                 if (typeof response['userBets'] !== 'undefined' && formData['type'] === 'myAccount') {
                     var Pagination = formData['pagination'];
@@ -459,10 +462,10 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
     }).then(function (response) {
 
         if (formData['type'] === 'popularMatches') {
-            $http.get(domain + "home-match-listing&data[getCount]="+sessionStorage.getItem('getCount')).then(function (response) {
+            $http.get(domain + "home-match-listing&data[getCount]=" + sessionStorage.getItem('getCount')).then(function (response) {
                 $scope.homeMatchListing = response.data;
             });
-            
+
         }
         if (formData['type'] === 'tournaments') {
             var formDataReload = {'postId': formData['slug']};
@@ -473,7 +476,7 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
             ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         }
         else if (formData['type'] === 'matchesList') {
-            var formDataReload = {'categoryName': formData['mainSlug'], 'type': formData['catType']};
+            var formDataReload = {'categoryName': formData['mainSlug'], 'type': formData['catType'], 'getCount': sessionStorage.getItem('getCount')};
             console.log(formDataReload);
             ngPost('listing-matches', formDataReload, $scope, $http, $templateCache, 'getDetails');
         }
