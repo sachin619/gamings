@@ -2,7 +2,11 @@
 //acf_form_head(); 
 wp_head();
 ?>
-
+<script>
+    var now = new Date();
+    var nowUtc = new Date( now.getUTCHours(), now.getUTCMinutes());
+console.log(nowUtc);
+</script>
 
 
 <?php

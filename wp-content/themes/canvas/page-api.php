@@ -121,7 +121,7 @@ class API {
         $home['slider'] = $this->getSlider();
         $home['popularTournaments'] = $this->popularTournaments();
         //$home['popularMatches'] = $this->popularMatches();
-       // $home['upcomingTournaments'] = $this->upcomingTournaments();
+        // $home['upcomingTournaments'] = $this->upcomingTournaments();
         // $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
@@ -325,7 +325,6 @@ class API {
         $categorySlug = $getCatSlug['data']['categoryName'];
         $getCatDetail = get_terms('category', array('name__like' => $categorySlug));
         $getCatId = $getCatDetail[0]->term_id;
-        //print_r($getCatId) ;exit;
         if (!empty($getCatSlug['data']['getCount'])):
             $getPageCount = $getCatSlug['data']['getCount'];
         else:
@@ -338,16 +337,19 @@ class API {
             $convertDate = strtotime($getDate);
             $dateFormatNew = date('Y-m-d', $convertDate);
             $collectPost = [];
-            $query = "SELECT SQL_CALC_FOUND_ROWS wp_posts.ID FROM wp_posts INNER JOIN wp_term_relationships ON (wp_posts.ID = wp_term_relationships.object_id) INNER JOIN wp_postmeta ON ( wp_posts.ID = wp_postmeta .post_id ) INNER JOIN wp_postmeta AS mt1 ON ( wp_posts.ID = mt1.post_id ) WHERE 1=1 AND ( wp_term_relationships.term_taxonomy_id IN ('" . $getCatId . "') ) AND ( wp_postmeta.meta_key = 'start_date' AND ( ( mt1.meta_key = 'start_date' AND DATE(FROM_UNIXTIME(mt1.meta_value)) LIKE '%".$dateFormatNew."%' ) ) ) AND wp_posts.post_type = 'matches' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'acf-disabled' OR wp_posts.post_status = 'private') GROUP BY wp_posts.ID ORDER BY wp_postmeta.meta_value ASC LIMIT $getPageCount ";
+            $query = "SELECT SQL_CALC_FOUND_ROWS wp_posts.ID,mt1.meta_value as startDate FROM wp_posts INNER JOIN wp_term_relationships ON (wp_posts.ID = wp_term_relationships.object_id) INNER JOIN wp_postmeta ON ( wp_posts.ID = wp_postmeta .post_id ) INNER JOIN wp_postmeta AS mt1 ON ( wp_posts.ID = mt1.post_id ) WHERE 1=1 AND ( wp_term_relationships.term_taxonomy_id IN ('" . $getCatId . "') ) AND ( wp_postmeta.meta_key = 'start_date' AND ( ( mt1.meta_key = 'start_date' AND DATE(FROM_UNIXTIME(mt1.meta_value)) LIKE '%" . $dateFormatNew . "%' ) ) ) AND wp_posts.post_type = 'matches' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'acf-disabled' OR wp_posts.post_status = 'private') GROUP BY wp_posts.ID ORDER BY wp_postmeta.meta_value ASC LIMIT $getPageCount ";
             $getResult = $wpdb->get_results($query);
             foreach ($getResult as $collectId):
-               
                 array_push($collectPost, $collectId->ID);
+                if ($collectId->startDate < $convertDate):
+                    // $collectOngoing=$collectId->ID;
+                    $collectOngoing[$collectId->ID] = $collectId->ID;
+                endif;
             endforeach;
-         
+            // print_r($collectPost);exit;
             if (count($getResult) != 0):
                 $args = [ 'post_type' => 'matches', 'post__in' => $collectPost];
-                $result = $this->getResult($args);
+                $result = $this->getResult($args, $collectOngoing);
             endif;
         elseif ($getCatSlug['data']['type'] == 'daysBefore'):
             $getDate = current_time('mysql');
@@ -403,7 +405,7 @@ class API {
             }
         }
 
-        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var];
+        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'getOngoing' => $collectOngoing];
         return $output;
     }
 
@@ -659,7 +661,7 @@ class API {
         endif;
     }
 
-    function getResult($args) {
+    function getResult($args, $collectOngoing) {
         $userId = $this->userId;
         $output = [];
         $query = new WP_Query($args);
@@ -674,7 +676,8 @@ class API {
                 'content' => get_the_content(),
                 'postLink' => get_permalink($post->ID),
                 'category' => get_the_category($post->ID),
-                'siteUrl' => get_site_url()
+                'siteUrl' => get_site_url(),
+                'ongoing'=>''
             ];
             foreach (get_fields($id) as $k => $v) {
                 $post[$k] = $v;
@@ -704,8 +707,10 @@ class API {
 
             array_push($output, $post);
         endwhile;
+        //exit;
         return $output;
     }
+    
 
     function getFeaturedImg($id) {
         $image = wp_get_attachment_image_src(get_post_thumbnail_id($id), 'full'); //post image
