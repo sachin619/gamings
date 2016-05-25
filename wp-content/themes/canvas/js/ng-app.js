@@ -325,6 +325,8 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
             return results[1] || 0;
         }
     };
+    $scope.categoryName=$.urlParam('category');
+
     if ($.urlParam('category') !== '') {
         var formData = {'categoryName': $.urlParam('category')};
     }
@@ -357,6 +359,7 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
     $scope.filter = function (type, $index) {
         //console.log($.urlParam('category'));
         //console.log(type);
+        if(type==="daysBefore" || type==="ongoing"){$scope.hideTrade="none";};
         $scope.selectedIndex = $index;
         $('.hide-loadMore').show();
         $scope.getCat = type;
