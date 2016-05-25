@@ -359,7 +359,7 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
     $scope.filter = function (type, $index) {
         //console.log($.urlParam('category'));
         //console.log(type);
-        if(type==="daysBefore" || type==="ongoing"){$scope.hideTrade="none";};
+        if(type==="daysBefore" || type==="ongoing"){$scope.hideTrade="none";}else{$scope.hideTrade="block";};
         $scope.selectedIndex = $index;
         $('.hide-loadMore').show();
         $scope.getCat = type;
