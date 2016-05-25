@@ -119,8 +119,7 @@ get_header();
 
                                 </td>
                                 <td class="blockAction" >
-                                    <button  ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Add</button>
-
+                                    <button class="btn btn-danger"  ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Add</button>
                                 </td>
 
                             </tr>
