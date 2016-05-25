@@ -6,6 +6,10 @@ wp_head();
 
 
 <?php
+$getDate=date('Y-m-d h:i a',1464027242);
+echo $getDate;exit;
+
+echo strtotime('2016-05-23 7:00 pm');exit;
 echo $_SESSION['clientTimeZone'];exit;
 function converToTz($time,$toTz,$fromTz)
     {   
