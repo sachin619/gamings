@@ -399,6 +399,13 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                 if (getPaginateCount > getCountResult) {
                     $('.hide-loadMore').hide();
                 }
+                   if (typeof formData['loadMoreMatch'] !== 'undefined')
+                    var getCountResult = response['upcomingMatches']['catPost'].length;
+                var getPaginateCount = formData['getCount'];
+                if (getPaginateCount > getCountResult) {
+                    $('.hide-loadMore').hide();
+                }
+                
                 //for pagination of matches
                 if (typeof response['userBets'] !== 'undefined' && formData['type'] === 'myAccount') {
                     var Pagination = formData['pagination'];
