@@ -63,13 +63,13 @@ $userEmail = $userInfo->user_email;
                             <div class="form-group">
                                 <label for="oPass" class="col-sm-3 control-label">Cleared Points</label>
                                 <div class="col-sm-9">
-                                    {{myAccount['userInfo']['points'][0]}}
+                                    {{myAccount['userInfo']['points'][0]}} <span ng-if="myAccount['userInfo']['points'][0]==null">0</span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="col-sm-3 control-label">Uncleared Points</label>
                                 <div class="col-sm-9">
-                                    {{myAccount['unClearedPoints']}}
+                                    {{myAccount['unClearedPoints']}}   <span ng-if="myAccount['unClearedPoints']==null">0</span>
                                 </div>
                             </div>
 
