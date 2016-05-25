@@ -10,7 +10,7 @@ get_header();
 <section ng-controller="tourDetails">
     <!-- Page Title
             ============================================= -->
-    <section id="page-title">
+    <!--<section id="page-title">
 
         <div class="container clearfix">
 
@@ -22,7 +22,42 @@ get_header();
             </ol>
         </div>
 
-    </section><!-- #page-title end -->
+    </section>--><!-- #page-title end -->
+
+    <section>
+        <div class="background-image clearfix" style="background: url('<?= get_template_directory_uri() ?>/images/grass_bg.jpg') no-repeat;">
+           <div class="background-image-overly"></div>
+            <div class="container">
+                <div class="row">
+                <div class="widget">
+                    <div id="post-list-footer">
+                        <div class="spost clearfix">
+                            <div class="bannerheight">
+                                <div class="col-md-4">
+                                    <div class="proile_img">
+                                        <span class="nobg"><img class="profilimg" ng-src={{getDetails['details'][0].img}} alt={{getDetails['details'][0].title}}></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                <div class="profile_text">
+                                    <div class="entry-title">
+                                        <h2 class="ng-binding">{{getDetails['details'][0].title}} </h2>
+                                        <p class="ng-binding">{{getDetails['details'][0].description}}</p>
+                                        <p class="ng-binding">Time & Location: {{getDetails['details'][0].start_date}} – {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
+                                        <p>Official Website: <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a></p>
+                                        <p ng-if="getDetails['details'][0].premium > 1">Premium Value: {{getDetails['details'][0].premium}} </p>
+                                        <h4 ng-if="getDetails['totalBets'][0].total > 0">Total Points Traded So Far: {{getDetails['totalBets'][0].total}} Points</h4>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+        </div></section>
 
     <!-- Content
     ============================================= -->
@@ -32,13 +67,13 @@ get_header();
 
             <div class="container clearfix">
 
-                <div class="row">
+                <!--<div class="row">
 
                     <div class="col-md-6">		
                         <div class="entry-image">
 
                             <a href={{getDetails['details'][0].postLink}}><img ng-src={{getDetails['details'][0].img}} alt={{getDetails['details'][0].title}}></a>
-                        </div><!-- .entry-image end -->
+                        </div>
 
 
 
@@ -54,7 +89,7 @@ get_header();
                         <h5 ng-if="getDetails['details'][0].premium > 1">Premium value : {{getDetails['details'][0].premium}} </h5>
                     </div>
 
-                </div>
+                </div>-->
 
                 <h3 class="text-center mtb20">Team Participating</h3>
 

@@ -3450,7 +3450,7 @@ body.stretched .container-fullwidth .breadcrumb { right: 60px !important; }
 
 .portfolio-filter li.activeFilter a {
 	color: #FFF !important;
-	background-color: #d9534f;
+	background-color: #D4202B;
 	margin: -1px 0;
 	padding: 13px 18px;
 }
@@ -13087,4 +13087,85 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 .tabColumn{ float: left; width: 100%; margin:0px; padding:40px 20px;}
 .tabColumn p{ font-size: 16px; text-align: justify;}
 
-.matches_banner{ margin: 0 0 20px 0;}
+.matches_banner{ margin: 0 0 40px 0;}
+
+/*tournaments Details Page*/
+.background-image {
+    position: relative;
+    width: 100% !important;
+    height: auto;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    background-size: cover !important;
+    -o-background-size: cover !important;
+}
+.background-image-overly{
+    position:absolute; /* absolute position (so we can position it where we want)*/
+    bottombottom:0px; /* position will be on bottom */
+    left:0px; height: 100%;
+    width:100%;
+    /* styling bellow */
+    background-color:black;
+    font-family: 'tahoma';
+    font-size:15px;
+    color:white;
+    opacity:0.6; /* transparency */
+    filter:alpha(opacity=60); /* IE transparency */
+}
+.bannerheight {
+    width: 100%;
+    padding: 0px;
+}
+.proile_img {
+    float: left;
+    margin: 40px 0px;
+    padding: 0px;
+    border: solid 2px #fff;
+    -moz-border: solid 2px #fff;
+    -webkit-border: solid 2px #fff;
+    -o-border: solid 2px #fff;
+    border-radius: 4px !important;
+}
+.nobg {
+    background: none !important;
+}
+.profilimg {
+    /*max-width: 325px;*/
+    border-radius: 4px;
+}
+.profile_text {
+    float: left;
+    margin: 30px 0px;
+    color: #fff;
+    /* font-style: italic; */
+    text-shadow: 1px 1px 1px #000;
+    border-radius: 4px;
+}
+
+.entry-title h2 {
+    margin: 0; color: #fff;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.entry-title h4 {
+    margin: 0;
+    color: #fff;
+    font-size: 20px!important;
+}
+.entry-title a {
+    color: #FFF; text-shadow: 1px 1px 1px #000;
+}
+.entry-title a:hover {
+    color: #d4202b!important;
+}
+.widget p:not(.lead) {
+    font-size: 14px;
+}
+.profile_text p {
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
