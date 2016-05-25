@@ -6,7 +6,7 @@ wp_head();
 
 
 <?php
-$getDate=date('Y-m-d h:i a',1464027242);
+$getDate=date('Y-m-d h:i a',1464160194);
 echo $getDate;exit;
 
 echo strtotime('2016-05-23 7:00 pm');exit;

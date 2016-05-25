@@ -492,14 +492,14 @@ class API {
         $getStartTime = strtotime($getTeams[0]['start_date_original']);
         $getCurrentTime = time();
         $getDate = current_time('mysql');
-        $curTime = strtotime($getDate);
+        $curTime = strtotime($getCurrentTime);
         $getWinnerCount = count($count);/** get count of eliminated team** */
         $getTourId = isset($getTeams[0]['tournament_name']->ID) ? $getTeams[0]['tournament_name']->ID : 0;
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTourId, 'team_id' => $teamId, 'pts' => $points];
         if (!empty($tradeInfo['data']['pts'])):
             if ($points >= $getMinimumBetAmount):
                 if ($getEndTime >= $getCurrentTime && $getWinnerCount != 1):
-                    if ($getStartTime > $curTime):
+                    if ($getStartTime > $getCurrentTime):
                         if ($points <= $uPoints):
                             $remaining = $uPoints - $points;
                             update_user_meta($userId, 'points', $remaining);
