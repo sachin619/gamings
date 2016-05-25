@@ -65,7 +65,7 @@ get_header();
                             </div> -->
                         </div>
                         <div class="portfolio-desc">
-                            <h3>{{getPost['title']}}</h3>
+                            <h3>{{getPost['title']}} ({{getPost['category'][0]['name']}})</h3>
                             <span>
                                 <strong ng-if="getDetails.tradeTotal[$index].total > 0">Total Trade: {{getDetails.tradeTotal[$index].total}} Points</strong>
                                 <br>

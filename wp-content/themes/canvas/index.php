@@ -72,7 +72,7 @@ get_header();
 <!--                     {{home['upcomingMatches']['catPost']}}-->
                             <tr ng-repeat="matches in homeMatchListing['upcomingMatches']['catPost']">
                                 <td> {{matches['onlySDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue']!=''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
-                                <td><a href="{{matches['siteUrl']+'/tournaments/'+matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a></td>
+                                <td><a href="{{matches['siteUrl']+'/tournaments/'+matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a><b> ({{matches['category'][0]['name']}})</td>
                                 <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} </td>
                                 <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" style="width: 100%;" placeholder=" Add Trade" ><br>Your Trade: {{homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']}} </td>
                                 <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points,homeMatchListing['upcomingMatches']['catPost'][0]['uid'])" class="btn btn-danger">Trade</a></td>
@@ -117,7 +117,7 @@ get_header();
                                     <a href={{popular.postLink}}><img class="image_fade" ng-src={{popular.img}} alt={{popular.title}}></a>
                                 </div>
                                 <div class="fbox-desc">
-                                    <h3 class="imagetex">{{popular.title}}<span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{ popular.end_date}}</span><span>{{popular.venue}}</span></h3>
+                                    <h3 class="imagetex">{{popular.title}} <b>({{popular['category'][0]['name']}})<span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{ popular.end_date}}</span><span>{{popular.venue}}</span></h3>
                                     <h3><span class="subtitle" ng-if="popular.total_tour_bets > 0">Total Points Traded So far: {{popular.total_tour_bets}} Points</span></h3>
                                 </div>
                             </div>
@@ -135,7 +135,7 @@ get_header();
 
    <!-- Content
     ============================================= -->
-    <section id="content" >
+    <section id="content" class="hide" >
 
         <div class="content-wrap">
 
