@@ -10,7 +10,7 @@
  */
 $userInfo = wp_get_current_user();
 $userName = $userInfo->user_login;
-if (is_page('register') && is_user_logged_in()):
+if ((is_page('register') && is_user_logged_in())||(is_page('my-account') && !is_user_logged_in())):
     wp_redirect(get_site_url());
 endif;
 ?>
