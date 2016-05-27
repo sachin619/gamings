@@ -244,7 +244,10 @@ class API {
     }
 
     function popularTournaments() {
-        $currentTime = time();
+        //$currentTime = time();
+        $getDate = current_time('mysql');
+        $dateFormat = strtotime($getDate);
+        $currentTime = $dateFormat;
         $args = [
             'post_type' => 'tournaments',
             'posts_per_page' => 12,
@@ -252,9 +255,13 @@ class API {
             'orderby' => 'meta_value_num',
             'order' => 'DESC',
             'meta_query' => [
-                'key' => 'betting_allowed_till',
-                'value' => $currentTime,
-                'compare' => '>'
+                'relation' => 'AND',
+                [
+                    'key' => 'betting_allowed_till',
+                    'value' => $currentTime,
+                    'compare' => '>'
+                ],
+                [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
             ]
         ];
         return $this->getResult($args);
@@ -292,14 +299,20 @@ class API {
     }
 
     function upcomingOngoingTournaments($categorySlug, $getPageCount) {
-        $currentTime = time();
+        $getDate = current_time('mysql');
+        $dateFormat = strtotime($getDate);
+        $currentTime = $dateFormat;
         $postPerPage = $getPageCount;
         //$dateFormat = date('Ymd');
         $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => $postPerPage, 'meta_key' => 'total_tour_bets', 'orderby' => 'meta_value_num', 'order' => 'DESC',
             'meta_query' => [
-                'key' => 'betting_allowed_till',
-                'value' => $currentTime,
-                'compare' => '>'
+                'relation' => 'AND',
+                [
+                    'key' => 'betting_allowed_till',
+                    'value' => $currentTime,
+                    'compare' => '>'
+                ],
+                [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
             ]
         ];
         return $this->getResult($args);
@@ -386,7 +399,7 @@ class API {
                     [
                         'key' => 'start_date', 'value' => $sevenDaysBefore, 'compare' => '>'
                     ],
-                     [ 'key' => 'points_distributed', 'value' => 'Yes', 'compare' => '=']
+                    [ 'key' => 'points_distributed', 'value' => 'Yes', 'compare' => '=']
                 ],
             ];
         elseif ($getCatSlug['data']['type'] == 'upcomming'):
@@ -420,7 +433,7 @@ class API {
                     [
                         'key' => 'start_date', 'value' => $dateFormat, 'compare' => '<'
                     ],
-                      [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
+                    [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
                 ],
             ];
         else:
@@ -549,19 +562,19 @@ class API {
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTourId, 'team_id' => $teamId, 'pts' => $points];
         if (!empty($tradeInfo['data']['pts'])):
             if ($points >= $getMinimumBetAmount):
-               
-                    
-                        if ($points <= $uPoints):
-                            $remaining = $uPoints - $points;
-                            update_user_meta($userId, 'points', $remaining);
-                            update_user_meta($userId, 'points_used', $usedCalc);
-                            $wpdb->insert('wp_bets', $wpBets);
-                            return "Your trade has been placed successfully!";
-                        else:
-                            return "Not have enough points";
-                        endif;
-                 
-              
+
+
+                if ($points <= $uPoints):
+                    $remaining = $uPoints - $points;
+                    update_user_meta($userId, 'points', $remaining);
+                    update_user_meta($userId, 'points_used', $usedCalc);
+                    $wpdb->insert('wp_bets', $wpBets);
+                    return "Your trade has been placed successfully!";
+                else:
+                    return "Not have enough points";
+                endif;
+
+
             else:
                 return "Minimum Points should be $getMinimumBetAmount";
             endif;
@@ -582,7 +595,6 @@ class API {
         $uPoints = round($uPointsR[0]);
         $getUsedPoints = get_user_meta($userId, 'points_used');
         $usedPoints = round($getUsedPoints[0]);
-        $usedCalc = $usedPoints + $points;                 //adding bet points and current remaining points
         $slug = isset($tradeInfo['data']['slug']) ? $tradeInfo['data']['slug'] : 0;/** get count of eliminated team** */
         $args = ['post_type' => 'tournaments', 'name' => $slug];
         $getTeams = $this->getResult($args);
@@ -596,18 +608,24 @@ class API {
             endif;
         }
         $getEndTime = strtotime($getTeams[0]['betting_allowed_till']);
-        $getCurrentTime = time();
+        $getDate = current_time('mysql');
+        //$currDate = time();
+        $currDate = strtotime($getDate);
+             //   print_r($currDate);exit;
+        $getCurrentTime = $currDate;
         $getPrem = $getTeams[0]['premium']; //premium calculation
-        $premCalc = round($points / $getPrem); //premium calculation
+        //$premCalc = round($points / $getPrem); //premium calculation
+        $premCalc = $points * $getPrem; //premium calculation which will deduct from kitty
+        $usedCalc = $usedPoints + ceil($premCalc);                 //adding bet points and current remaining points
         $getCount = count($count); //get count of eliminated team
         $getNoCount = count($countNo); //get count of non eliminated team
-        $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $premCalc, 'stage' => $getCount, 'premium' => $getPrem];
+        $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $points, 'stage' => $getCount, 'premium' => $getPrem];
         if (!empty($tradeInfo['data']['pts']) && is_numeric($tradeInfo['data']['pts'])):
             if ($points >= $getMinimumBetAmount && !empty($tradeInfo['data']['pts'])):
                 if ($getEndTime >= $getCurrentTime && $getNoCount != 1):
                     if (!in_array($teamId, $elimiatedTeamId)):
-                        if ($points <= $uPoints):
-                            $remaining = $uPoints - $points;
+                        if (ceil($premCalc) <= $uPoints):
+                            $remaining = $uPoints - ceil($premCalc);
                             update_user_meta($userId, 'points', $remaining);
                             update_user_meta($userId, 'points_used', $usedCalc);
                             $wpdb->insert('wp_bets', $wpBets);
