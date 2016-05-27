@@ -202,11 +202,17 @@ class API {
         global $wpdb;
         $userId = $this->userId;
         $tourId = get_the_ID();
-        date_default_timezone_set('Asia/Calcutta');
+        //date_default_timezone_set('Asia/Calcutta');
         $dateTime = date("Y-m-d H:i:s"); // time in India
-        $dateFormat = strtotime($dateTime);
+        //$dateFormat = strtotime($dateTime);
 //        print_r($dateFormat);exit;
         //$dateFormat = time();
+        $getDate = current_time('mysql');
+        $dateFormat = strtotime($getDate);
+        //start end date time
+        $startTime = strtotime(date('Y-m-d', $dateFormat));
+        $endTimeConvert = date('Y-m-d H:i:s', $startTime + 86399);
+        $endTime = strtotime($endTimeConvert);
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'start_date',
@@ -214,11 +220,8 @@ class API {
             'order_by' => 'meta_value_num',
             'order' => 'ASC',
             'meta_query' => ['relation' => 'AND',
-                [
-                    'key' => 'end_date',
-                    'value' => $dateFormat,
-                    'compare' => '>=',
-                ], [
+                [ 'key' => 'start_date', 'value' => $dateFormat, 'compare' => '>'],
+                [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '='], [
                     'key' => 'tournament_name',
                     'value' => get_the_ID(),
                     'compare' => '='
@@ -544,8 +547,8 @@ class API {
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTourId, 'team_id' => $teamId, 'pts' => $points];
         if (!empty($tradeInfo['data']['pts'])):
             if ($points >= $getMinimumBetAmount):
-                if ($getEndTime >= $getCurrentTime && $getWinnerCount != 1):
-                    if ($getStartTime > $getCurrentTime):
+               
+                    
                         if ($points <= $uPoints):
                             $remaining = $uPoints - $points;
                             update_user_meta($userId, 'points', $remaining);
@@ -555,13 +558,8 @@ class API {
                         else:
                             return "Not have enough points";
                         endif;
-                    else:
-                        return "Match had been started";
-
-                    endif;
-                else:
-                    return "Match had been over";
-                endif;
+                 
+              
             else:
                 return "Minimum Points should be $getMinimumBetAmount";
             endif;
@@ -1040,6 +1038,7 @@ class API {
             endif;
         endif;
     }
+
     public function header() {
         
     }

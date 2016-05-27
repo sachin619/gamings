@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -26,34 +25,34 @@ get_header();
 
     <section>
         <div class="background-image clearfix" style="background: url('<?= get_template_directory_uri() ?>/images/grass_bg.jpg') no-repeat;">
-           <div class="background-image-overly"></div>
+            <div class="background-image-overly"></div>
             <div class="container">
                 <div class="row">
-                <div class="widget">
-                    <div id="post-list-footer">
-                        <div class="spost clearfix">
-                            <div class="bannerheight">
-                                <div class="col-md-4">
-                                    <div class="proile_img">
-                                        <span class="nobg"><img class="profilimg" ng-src={{getDetails['details'][0].img}} alt={{getDetails['details'][0].title}}></span>
+                    <div class="widget">
+                        <div id="post-list-footer">
+                            <div class="spost clearfix">
+                                <div class="bannerheight">
+                                    <div class="col-md-4">
+                                        <div class="proile_img">
+                                            <span class="nobg"><img class="profilimg" ng-src={{getDetails['details'][0].img}} alt={{getDetails['details'][0].title}}></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-8">
-                                <div class="profile_text">
-                                    <div class="entry-title">
-                                        <h2 class="ng-binding">{{getDetails['details'][0].title}} </h2>
-                                        <p class="ng-binding">{{getDetails['details'][0].description}}</p>
-                                        <p class="ng-binding">Time & Location: {{getDetails['details'][0].start_date}} – {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
-                                        <p>Official Website: <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a></p>
-                                        <p ng-if="getDetails['details'][0].premium > 1">Premium Value: {{getDetails['details'][0].premium}} </p>
-                                        <h4 ng-if="getDetails['totalBets'][0].total > 0">Total Points Traded So Far: {{getDetails['totalBets'][0].total}} Points</h4>
+                                    <div class="col-md-8">
+                                        <div class="profile_text">
+                                            <div class="entry-title">
+                                                <h2 class="ng-binding">{{getDetails['details'][0].title}} </h2>
+                                                <p class="ng-binding">{{getDetails['details'][0].description}}</p>
+                                                <p class="ng-binding">Time & Location: {{getDetails['details'][0].start_date}} – {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
+                                                <p>Official Website: <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a></p>
+                                                <p ng-if="getDetails['details'][0].premium > 1">Premium Value: {{getDetails['details'][0].premium}} </p>
+                                                <h4 ng-if="getDetails['totalBets'][0].total > 0">Total Points Traded So Far: {{getDetails['totalBets'][0].total}} Points</h4>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                  </div>
                 </div>
             </div>
 
@@ -119,7 +118,7 @@ get_header();
 
                                 </td>
                                 <td class="blockAction" >
-                                    <button  ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Add</button>
+                                    <button class="btn btn-danger" ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Add</button>
 
                                 </td>
 
@@ -141,7 +140,7 @@ get_header();
                 </div>
 
 
-                <h3 class="text-center mtb20">	Ongoing & Upcoming Matches</h3>
+                <h3 class="text-center mtb20">	Upcoming Matches</h3>
                 <!-- <div class="bothsidebar">
                     <div class="row events small-thumbs">
                         <div class="row">
@@ -194,19 +193,23 @@ get_header();
                             </tr>
                         </thead>
                         <tbody> 
-                            <tr>
-                                <th colspan="9" style="background: rgba(0,0,0,0.05);">Today</thToday> 
-                            </tr>
                             <tr ng-repeat="matches in getDetails.matches['details']">
                                 <td><i class="icon-time"></i>{{matches['onlySDate']}} {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <i class="icon-map-marker2"></i> {{matches['venue']}}</a></td>          
                                 <td>{{getDetails['details'][0].title}}</td>
 
 
                                 <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}}: </td>
-                                <td  ng-repeat-end> <input type="text" ng-model="$parent.points[teams['team_name']['ID']]" ><br> Your Trade : {{getDetails.matches['tradeTotal'][matches['id']][$index][0]['total']}}</td>
+                                <td  ng-repeat-end> 
+                                    <input type="text" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null" ><br>
+                                    <span ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null">  Your Trade : {{getDetails.matches['tradeTotal'][matches['id']][$index][0]['total']}}</span> 
+                                    <span ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] == null && matches['uid'] == null"> -</span>
+
+                                </td>
                                 <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
                                 <td>{{matches["total_bets"]}}</td>
-                            </tr>                            
+                            </tr>   
+                            <tr  ng-hide="getDetails.matches['details'].length"><td colspan="8" align="center">There are no open matches at the moment please check again later!</td></tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -221,6 +224,5 @@ get_header();
     ============================================= -->
 </section>
 <?php
-
 get_footer();
 ?>
