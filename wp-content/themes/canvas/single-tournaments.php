@@ -200,7 +200,7 @@ get_header();
 
                                 <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}}: </td>
                                 <td  ng-repeat-end> 
-                                    <input type="text" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null" ><br>
+                                    <input type="text" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] != null || matches['uid'] != null" ><br>
                                     <span ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null">  Your Trade : {{getDetails.matches['tradeTotal'][matches['id']][$index][0]['total']}}</span> 
                                     <span ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] == null || matches['uid'] == null"> -</span>
 
