@@ -625,7 +625,7 @@ class API {
                             return "Not have enough points";
                         endif;
                     else:
-                        return "This team had been Eliminated";
+                        return "Team Eliminated!";
                     endif;
                 else:
                     return "Tournament had been over";
@@ -896,7 +896,7 @@ class API {
         wp_update_user(['ID' => $this->userId, 'first_name' => esc_attr($info['data']['fname'])]);
         wp_update_user(['ID' => $this->userId, 'last_name' => esc_attr($info['data']['lname'])]);
         update_user_meta($this->userId, 'phone', $info['data']['phone']);
-        return "Successfully Updated";
+        return "Profile updated successfully";
     }
 
     function passwordUpdate($info) {
@@ -907,12 +907,12 @@ class API {
         if (wp_check_password($confirmPassword, $currentPassword, $this->userId)):
             if ($newPassword != ""):
                 wp_set_password($newPassword, $this->userId);
-                return "Successfully Updated";
+                return "Password changed successfully";
             else:
                 return "New Password cannot be empty";
             endif;
         else:
-            return "Old Password Doesn't Match";
+            return "Old Password doesn't Match";
         endif;
         print_r($info);
         exit;
@@ -1040,7 +1040,6 @@ class API {
             endif;
         endif;
     }
-
     public function header() {
         
     }
