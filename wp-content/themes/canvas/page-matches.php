@@ -17,7 +17,7 @@ get_header();
     <section id="page-title">
 
         <div class="container clearfix">
-            <h1>Ongoing / Upcoming Matches - {{categoryName}}</h1>
+            <h1>{{categoryName}} Matches</h1>
             <ol class="breadcrumb">
                 <li><a href="#">Home</a></li>
 

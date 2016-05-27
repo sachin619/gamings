@@ -118,7 +118,7 @@ get_header();
 
                                 </td>
                                 <td class="blockAction" >
-                                    <button class="btn btn-danger" ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Add</button>
+                                    <button class="btn btn-danger" ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Trade</button>
 
                                 </td>
 
@@ -202,7 +202,7 @@ get_header();
                                 <td  ng-repeat-end> 
                                     <input type="text" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null" ><br>
                                     <span ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null">  Your Trade : {{getDetails.matches['tradeTotal'][matches['id']][$index][0]['total']}}</span> 
-                                    <span ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] == null && matches['uid'] == null"> -</span>
+                                    <span ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] == null || matches['uid'] == null"> -</span>
 
                                 </td>
                                 <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>

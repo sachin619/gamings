@@ -6,7 +6,6 @@
 var domain = "http://localhost/gamings/api?action=";
 var base_url = "http://localhost/gamings/";
 
-
 var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
 var app = angular.module('gaming', ['simplePagination']);
 
@@ -425,13 +424,13 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                     $('.loader').hide();
                     $('.alert').show();
                 }
-                if(typeName=='contact-us'){
+                if (typeName == 'contact-us') {
                     $('.col-ch').show();
-                } 
-                if(typeName=='registration'){
+                }
+                if (typeName == 'registration') {
                     $('.loaderRegister ').hide();
-                } 
-                
+                }
+
                 ;
                 $.urlParam = function (name) {
                     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -470,6 +469,7 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
         cache: $templateCache
     }).then(function (response) {
 
+
         if (formData['type'] === 'popularMatches') {
             $http.get(domain + "home-match-listing&data[getCount]=" + sessionStorage.getItem('getCount')).then(function (response) {
                 $scope.homeMatchListing = response.data;
@@ -495,9 +495,19 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
 
         }
         $('.loader').hide();
-        swal({
-            title: response.data
-        });
+
+        if (typeName === 'password-update') {
+            if (response['data'] == "Password changed successfully") {
+                swal({
+                    title: response.data
+                });
+                window.location = domain + "logout";
+            }
+        } else {
+            swal({
+                title: response.data
+            });
+        }
     });
 }
 
