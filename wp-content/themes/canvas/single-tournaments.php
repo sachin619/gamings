@@ -115,7 +115,7 @@ get_header();
                                 <td class="blockTrade" ng-class="statusInfo"  >
                                     <input ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" type="text" name="pts" ng-model="$parent.points"   placeholder="Trade">
                                     <span ng-if="getDetails['details'][0]['points_distributed'] === 'Yes' && teamInfo.eliminated === 'No'">Winner </span>
-                                    <span  class="stage" ng-if="teamInfo.eliminated !== 'No'"><span>This Team had been Eliminated.</span></span>       
+                                    <span  class="stage" ng-if="teamInfo.eliminated !== 'No'"><span>Team Eliminated!</span></span>       
 
                                 </td>
                                 <td class="blockAction" >
