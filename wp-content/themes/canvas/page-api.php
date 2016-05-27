@@ -385,7 +385,8 @@ class API {
                     ],
                     [
                         'key' => 'start_date', 'value' => $sevenDaysBefore, 'compare' => '>'
-                    ]
+                    ],
+                     [ 'key' => 'points_distributed', 'value' => 'Yes', 'compare' => '=']
                 ],
             ];
         elseif ($getCatSlug['data']['type'] == 'upcomming'):
@@ -418,7 +419,8 @@ class API {
                     ],
                     [
                         'key' => 'start_date', 'value' => $dateFormat, 'compare' => '<'
-                    ]
+                    ],
+                      [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
                 ],
             ];
         else:
