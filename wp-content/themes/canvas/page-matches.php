@@ -44,7 +44,7 @@ get_header();
                 <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
                     <li class="" ng-class="{activeFilter: selectedIndex === $index || selectedIndex == 'home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('popular')">Popular</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('upcomming')" data-filter=".pf-{{categories['catName']}}">Upcoming</a></li>
-                    <li><a href="#" onclick="return false;"  ng-click="filter('today')" data-filter=".pf-{{categories['catName']}}">Today</a></li>
+                    <li class="hide"><a href="#" onclick="return false;"  ng-click="filter('today')" data-filter=".pf-{{categories['catName']}}">Today</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('daysBefore')" data-filter=".pf-{{categories['catName']}}">Completed</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('ongoing')" data-filter=".pf-{{categories['catName']}}">In Play</a></li>
                 </ul>
@@ -111,9 +111,10 @@ get_header();
                                 <td  ng-repeat-end> 
                                     <input type="text"   class="trade form-control" style="display: {{hideTrade}}" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" style="width: 100%;" placeholder=" Add Trade" >
                                     <span ng-if="getDetails['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null"> You've traded {{getDetails['tradeTotal'][matches['id']][$index][0]['total']}} Pts. </span>
-                                    <span ng-if="getDetails['tradeTotal'][matches['id']][$index][0]['total'] == null && matches['uid'] == null"> -</span>
+                                    <span style="display: {{hideDefault}}" ng-if="getDetails['tradeTotal'][matches['id']][$index][0]['total'] == null || matches['uid'] == null"> -</span>
                                 </td>
-                                <td><a href="#" style="display: {{hideTrade}}" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails.catPost[0]['uid'])" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'">Trade </a></td>
+                                <td><a href="#" style="display: {{hideTrade}}" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails.catPost[0]['uid'])" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'">Trade </a>
+                                </td>
                                 <td>{{matches["total_bets"]}} <span ng-if="matches['total_bets'] == ''">0</span></td>
                             </tr>    
                             <tr  ng-hide="getDetails.catPost.length"><td colspan="8" align="center">There are no open matches at the moment please check again later!</td></tr>

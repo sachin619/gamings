@@ -6,6 +6,7 @@
 var domain = "http://localhost/gamings/api?action=";
 var base_url = "http://localhost/gamings/";
 
+
 var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
 var app = angular.module('gaming', ['simplePagination']);
 
@@ -362,6 +363,12 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
         } else {
             $scope.hideTrade = "block";
         }
+
+        if (type === "daysBefore" || type === "ongoing") {
+            $scope.hideDefault = "block";
+        } else {
+            $scope.hideDefault = "none";
+        }
         ;
         $scope.selectedIndex = $index;
         $('.hide-loadMore').show();
@@ -498,6 +505,7 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
 
         if (typeName === 'password-update') {
             if (response['data'] == "Password changed successfully") {
+                console.log("hello");
                 swal({
                     title: response.data
                 });
