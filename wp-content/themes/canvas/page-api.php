@@ -216,7 +216,7 @@ class API {
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'start_date',
-            'posts_per_page' => 100,
+            'posts_per_page' => 12,
             'order_by' => 'meta_value_num',
             'order' => 'ASC',
             'meta_query' => ['relation' => 'AND',
