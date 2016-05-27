@@ -241,12 +241,18 @@ class API {
     }
 
     function popularTournaments() {
+        $currentTime = time();
         $args = [
             'post_type' => 'tournaments',
             'posts_per_page' => 12,
             'meta_key' => 'total_tour_bets',
-            'orderby' => 'meta_value',
-            'order' => 'DESC'
+            'orderby' => 'meta_value_num',
+            'order' => 'DESC',
+            'meta_query' => [
+                'key' => 'betting_allowed_till',
+                'value' => $currentTime,
+                'compare' => '>'
+            ]
         ];
         return $this->getResult($args);
     }
@@ -283,13 +289,14 @@ class API {
     }
 
     function upcomingOngoingTournaments($categorySlug, $getPageCount) {
+        $currentTime = time();
         $postPerPage = $getPageCount;
-        $dateFormat = date('Ymd');
+        //$dateFormat = date('Ymd');
         $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => $postPerPage, 'meta_key' => 'total_tour_bets', 'orderby' => 'meta_value_num', 'order' => 'DESC',
             'meta_query' => [
-                'key' => 'end_date',
-                'value' => $dateFormat,
-                'compare' => '>='
+                'key' => 'betting_allowed_till',
+                'value' => $currentTime,
+                'compare' => '>'
             ]
         ];
         return $this->getResult($args);
@@ -320,6 +327,7 @@ class API {
     }
 
     function listingMatches($getCatSlug) {
+
         global $wpdb;
         $userId = $this->userId;
         $categorySlug = $getCatSlug['data']['categoryName'];
@@ -330,30 +338,19 @@ class API {
         else:
             $getPageCount = 50;
         endif;
-        $dateFormat = time();
+        $getDate = current_time('mysql');
+        $dateFormat = strtotime($getDate);
+        //start end date time
+        $startTime = strtotime(date('Y-m-d', $dateFormat));
+        $endTimeConvert = date('Y-m-d H:i:s', $startTime + 86399);
+        $endTime = strtotime($endTimeConvert);
+        //start end date time
+        $currStartDate = date("Y-m-d H:i:s", strtotime('-13 hours')); //not in use
+        $currEndDate = date("Y-m-d H:i:s", strtotime('+11 hours')); //not in use
+        $currStartConvert = strtotime($currStartDate); //not in use
+        $currEndConvert = strtotime($currEndDate); //not in use
         $getCat = $this->getCategories(['parent' => 1]);
         if ($getCatSlug['data']['type'] == 'today'):
-            $getDate = current_time('mysql');
-            $convertDate = strtotime($getDate);
-            $dateFormatNew = date('Y-m-d', $convertDate);
-            $collectPost = [];
-            $query = "SELECT SQL_CALC_FOUND_ROWS wp_posts.ID,mt1.meta_value as startDate FROM wp_posts INNER JOIN wp_term_relationships ON (wp_posts.ID = wp_term_relationships.object_id) INNER JOIN wp_postmeta ON ( wp_posts.ID = wp_postmeta .post_id ) INNER JOIN wp_postmeta AS mt1 ON ( wp_posts.ID = mt1.post_id ) WHERE 1=1 AND ( wp_term_relationships.term_taxonomy_id IN ('" . $getCatId . "') ) AND ( wp_postmeta.meta_key = 'start_date' AND ( ( mt1.meta_key = 'start_date' AND DATE(FROM_UNIXTIME(mt1.meta_value)) LIKE '%" . $dateFormatNew . "%' ) ) ) AND wp_posts.post_type = 'matches' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'acf-disabled' OR wp_posts.post_status = 'private') GROUP BY wp_posts.ID ORDER BY wp_postmeta.meta_value ASC LIMIT $getPageCount ";
-            $getResult = $wpdb->get_results($query);
-            foreach ($getResult as $collectId):
-                array_push($collectPost, $collectId->ID);
-                if ($collectId->startDate < $convertDate):
-                    // $collectOngoing=$collectId->ID;
-                    $collectOngoing[$collectId->ID] = $collectId->ID;
-                endif;
-            endforeach;
-            // print_r($collectPost);exit;
-            if (count($getResult) != 0):
-                $args = [ 'post_type' => 'matches', 'post__in' => $collectPost];
-                $result = $this->getResult($args, $collectOngoing);
-            endif;
-        elseif ($getCatSlug['data']['type'] == 'daysBefore'):
-            $getDate = current_time('mysql');
-            $sevenDaysBefore = strtotime($getDate . "-7 days");
             $args = [
                 'post_type' => 'matches',
                 'meta_key' => 'total_bets',
@@ -361,22 +358,66 @@ class API {
                 'category_name' => $categorySlug,
                 'posts_per_page' => $getPageCount,
                 'order' => 'DESC',
-                'meta_query' => [ 'key' => 'end_date', 'value' => $sevenDaysBefore, 'compare' => '<=',],
+                'meta_query' => ['relation' => 'AND',
+                    [
+                        'key' => 'start_date', 'value' => $startTime, 'compare' => '>'
+                    ],
+                    [
+                        'key' => 'end_date', 'value' => $endTime, 'compare' => '<'
+                    ]
+                ],
+            ];
+        elseif ($getCatSlug['data']['type'] == 'daysBefore'):
+            $sevenDaysBefore = strtotime(date('Y-m-d', $dateFormat) . "-7 days");
+            $args = [
+                'post_type' => 'matches',
+                'meta_key' => 'start_date',
+                'orderby' => 'meta_value_num',
+                'category_name' => $categorySlug,
+                'posts_per_page' => $getPageCount,
+                'order' => 'DESC',
+                'meta_query' => ['relation' => 'AND',
+                    [
+                        'key' => 'start_date', 'value' => $startTime, 'compare' => '<'
+                    ],
+                    [
+                        'key' => 'start_date', 'value' => $sevenDaysBefore, 'compare' => '>'
+                    ]
+                ],
+            ];
+        elseif ($getCatSlug['data']['type'] == 'upcomming'):
+            $args = [
+                'post_type' => 'matches',
+                'meta_key' => 'start_date',
+                'orderby' => 'meta_value_num',
+                'category_name' => $categorySlug,
+                'posts_per_page' => $getPageCount,
+                'order' => 'ASC',
+                'meta_query' => ['relation' => 'AND',
+                    [ 'key' => 'start_date', 'value' => $dateFormat, 'compare' => '>',],
+                    [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
+                ],
             ];
         elseif ($getCatSlug['data']['type'] == 'ongoing'):
-            $getDate = current_time('mysql');
-            $convertDate = strtotime($getDate);
-            $dateFormatNew = date('Y-m-d', $convertDate);
-            $collectPost = [];
-            $query = "SELECT SQL_CALC_FOUND_ROWS wp_posts.ID FROM wp_posts INNER JOIN wp_term_relationships ON (wp_posts.ID = wp_term_relationships.object_id) INNER JOIN wp_postmeta ON ( wp_posts.ID = wp_postmeta .post_id ) INNER JOIN wp_postmeta AS mt1 ON ( wp_posts.ID = mt1.post_id ) WHERE 1=1 AND ( wp_term_relationships.term_taxonomy_id IN ('" . $getCatId . "') ) AND ( wp_postmeta.meta_key = 'start_date' AND ( ( mt1.meta_key = 'start_date' AND DATE_FORMAT(FROM_UNIXTIME(mt1.meta_value), '%Y-%m-%d') = '" . $dateFormatNew . "' AND mt1.meta_value < $convertDate ) ) ) AND wp_posts.post_type = 'matches' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'acf-disabled' OR wp_posts.post_status = 'private') GROUP BY wp_posts.ID ORDER BY wp_postmeta.meta_value ASC LIMIT $getPageCount ";
-            $getResult = $wpdb->get_results($query);
-            foreach ($getResult as $collectId):
-                array_push($collectPost, $collectId->ID);
-            endforeach;
-            if (count($getResult) != 0):
-                $args = [ 'post_type' => 'matches', 'post__in' => $collectPost];
-                $result = $this->getResult($args);
-            endif;
+            $args = [
+                'post_type' => 'matches',
+                'meta_key' => 'start_date',
+                'orderby' => 'meta_value_num',
+                'category_name' => $categorySlug,
+                'posts_per_page' => $getPageCount,
+                'order' => 'DESC',
+                'meta_query' => ['relation' => 'AND',
+                    [
+                        'key' => 'start_date', 'value' => $startTime, 'compare' => '>'
+                    ],
+                    [
+                        'key' => 'end_date', 'value' => $endTime, 'compare' => '<'
+                    ],
+                    [
+                        'key' => 'start_date', 'value' => $dateFormat, 'compare' => '<'
+                    ]
+                ],
+            ];
         else:
             $args = [
                 'post_type' => 'matches',
@@ -385,11 +426,13 @@ class API {
                 'category_name' => $categorySlug,
                 'posts_per_page' => $getPageCount,
                 'order' => 'DESC',
-                'meta_query' => [ 'key' => 'end_date', 'value' => $dateFormat, 'compare' => '>=',],
+                'meta_query' => ['relation' => 'AND',
+                    [ 'key' => 'start_date', 'value' => $dateFormat, 'compare' => '>'],
+                    [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
+                ],
             ];
         endif;
         $result = $this->getResult($args);
-
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
             $cat[] = ['catName' => $catName['name']];
@@ -427,7 +470,7 @@ class API {
             'orderby' => 'meta_value_num',
             'posts_per_page' => $getPageCount,
             'order' => 'DESC',
-            'meta_query' => [ 'key' => 'end_date', 'value' => $dateFormat, 'compare' => '>=',],
+            'meta_query' => [ 'key' => 'start_date', 'value' => $dateFormat, 'compare' => '>=',],
         ];
 
         $result = $this->getResult($args);
@@ -461,7 +504,7 @@ class API {
             $getTotalBetsFilter = (array) $getTotalBets[0];
             $mid = $tradeInfo['data']['mid'];
             update_post_meta($mid, 'total_bets', $getTotalBetsFilter['total']);
-            return $get_result;
+            return $get_result[0];
         else:
             return "Points should be greater than zero";
         endif;
@@ -492,9 +535,10 @@ class API {
         }
         $getEndTime = strtotime($getTeams[0]['end_date_original']);
         $getStartTime = strtotime($getTeams[0]['start_date_original']);
-        $getCurrentTime = time();
         $getDate = current_time('mysql');
-        $curTime = strtotime($getCurrentTime);
+        $curTime = strtotime($getDate);
+        //$getCurrentTime = time();
+        $getCurrentTime = $curTime;
         $getWinnerCount = count($count);/** get count of eliminated team** */
         $getTourId = isset($getTeams[0]['tournament_name']->ID) ? $getTeams[0]['tournament_name']->ID : 0;
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTourId, 'team_id' => $teamId, 'pts' => $points];
@@ -507,7 +551,7 @@ class API {
                             update_user_meta($userId, 'points', $remaining);
                             update_user_meta($userId, 'points_used', $usedCalc);
                             $wpdb->insert('wp_bets', $wpBets);
-                            return "You have traded " . $points . " Point's";
+                            return "Your trade has been placed successfully!";
                         else:
                             return "Not have enough points";
                         endif;
@@ -573,9 +617,9 @@ class API {
                             $mid = $tradeInfo['data']['tid'];
                             update_post_meta($mid, 'total_tour_bets', $getTotalBetsFilter['total']); //update total bets
                             if (!empty(trim($getPrem))):
-                                return "You have traded " . $points . " Point's";
+                                return "Your trade has been placed successfully!";
                             elseif (empty(trim($getPrem))):
-                                return "You have traded" . $points . " Point's";
+                                return "Your trade has been placed successfully!";
                             endif;
                         else:
                             return "Not have enough points";
@@ -640,6 +684,8 @@ class API {
             'user_email' => $userInfo['data']['user_email'],
             'user_pass' => $userInfo['data']['user_pass'],
         ];
+        $userName = $userInfo['data']['first_name'];
+        $userEmail = $userInfo['data']['user_email'];
         $email = email_exists($userInfo['data']['user_email']); //check if email id exist
         $username = username_exists($userInfo['data']['user_login']); //check username exists
         if ($email != ""):
@@ -650,6 +696,9 @@ class API {
             $user_id = wp_insert_user($userData);
             update_user_meta($user_id, 'phone', $userInfo['data']['phone']);
             if (!is_wp_error($user_id)):
+                $headers = 'Content-type: text/html';
+                $body = "Hi $userName, <br>Thanks for signing up. <br> Your account has been activated and you should be able to login on <a href='http://gaming-inf.cruxservers.in/register/'>http://gaming-inf.cruxservers.in/register/</a>";
+                wp_mail($userEmail, "User Registration", $body, $headers);
                 update_user_meta($user_id, 'points', get_option("token_amt"));
                 $userInfo['data']['userName'] = $userInfo['data']['user_email'];
                 $userInfo['data']['password'] = $userInfo['data']['user_pass'];
@@ -661,11 +710,12 @@ class API {
         endif;
     }
 
-    function getResult($args, $collectOngoing) {
+    function getResult($args) {
         $userId = $this->userId;
         $output = [];
         $query = new WP_Query($args);
-        while ($query->have_posts()): $query->the_post();
+        while ($query->have_posts()):
+            $query->the_post();
             $id = get_the_ID();
             $postType = get_post_type($id);
             $post = [
@@ -677,15 +727,21 @@ class API {
                 'postLink' => get_permalink($post->ID),
                 'category' => get_the_category($post->ID),
                 'siteUrl' => get_site_url(),
-                'ongoing'=>''
             ];
             foreach (get_fields($id) as $k => $v) {
+                $getDate = current_time('mysql');
+                //$currDate = time();
+                $currDate = strtotime($getDate);
                 $post[$k] = $v;
+                if ($k == "start_date"):
+                    $matchDate = strtotime($v);
+                    $post['ong'] = $matchDate < $currDate ? "Yes" : "No";
+                endif;
                 if ($k == 'start_date'):$post['matchStartDate'] = date('M', strtotime($v));
                     $post['matchStartTime'] = date('H:i', strtotime($v));
                     $post['start_date_original'] = $v;
                     if ($postType == 'matches'):
-                        $post['start_date'] = date('d M, Y H:i a', strtotime($v));
+                        $post['start_date'] = "";
                     else:
                         $post['start_date'] = date('d M, Y', strtotime($v));
 
@@ -707,10 +763,8 @@ class API {
 
             array_push($output, $post);
         endwhile;
-        //exit;
         return $output;
     }
-    
 
     function getFeaturedImg($id) {
         $image = wp_get_attachment_image_src(get_post_thumbnail_id($id), 'full'); //post image
@@ -948,6 +1002,8 @@ class API {
             $message = $userDetails['message'];
             $body = "<p>Name : $name</p><p>Email : $email</p>Phone : $phone <p>Message : $message</p>";
             wp_mail(get_option('smtp_user'), "Contact Us", $body, $headers);
+            $bodyUser = "Dear $name,<br> Thank you for contacting us. We will get back to you shortly.";
+            wp_mail($email, "Contact Us", $bodyUser, $headers);
             return ['msg' => "Thank you for getting in touch. We will respond to you shortly.", 'errorType' => 'success'];
         endif;
     }

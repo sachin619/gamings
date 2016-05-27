@@ -74,16 +74,21 @@ get_header();
                                 <td> {{matches['onlySDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue']!=''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
                                 <td><a href="{{matches['siteUrl']+'/tournaments/'+matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a><b> ({{matches['category'][0]['name']}})</td>
                                 <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} </td>
-                                <td  ng-repeat-end> <input type="text" class="form-control" ng-model="$parent.points[teams['team_name']['ID']]" style="width: 100%;" placeholder=" Add Trade" > Your Trade: {{homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']}} </td>
-                                <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points,homeMatchListing['upcomingMatches']['catPost'][0]['uid'])" class="btn btn-danger">Trade</a></td>
-                                <td>{{matches["total_bets"]}}</td>
-                            </tr>                            
+                                <td  ng-repeat-end> 
+                                    <input type="text" ng-model="$parent.$parent.points[teams['team_name']['ID']]" style="width: 100%;" placeholder=" Add Trade" ng-if="matches['uid']!=null" ><br> 
+                                    <span ng-if="homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']!=null && matches['uid']!=null">You've traded {{homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']}} Pts.</span>
+                                    <span ng-if="homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']==null && matches['uid']==null">-</span>
+                                </td>
+                                <td><a href="#" onclick="return false"  ng-click="tradeMatch(matches['postLink'], matches['id'], points,homeMatchListing['upcomingMatches']['catPost'][0]['uid'])" class="btn btn-danger">Trade</a></td>
+                                <td >{{matches["total_bets"]}}</td>
+                            </tr> 
+                            <tr  ng-hide="homeMatchListing['upcomingMatches']['catPost'].length"><td colspan="8" align="center">There are no open matches at the moment please check again later!</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="col-lg-12 loadMoreBlock" ng-if="homeMatchListing['upcomingMatches']['catPost'].length >= 5" style="text-align: center">
-                    <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, homeMatchListing['upcomingMatches']['catPost'].length + 5)">Load More </button>
+                <div class="col-lg-12 loadMoreBlock" ng-if="homeMatchListing['upcomingMatches']['catPost'].length >= 5" style="text-align: center; margin: 20px 0px;">
+                    <button type="button" class="btn btn-danger hide-loadMore" ng-click="loadMore(getCat, homeMatchListing['upcomingMatches']['catPost'].length + 5)">Load More </button>
                 </div>
 
             </div>

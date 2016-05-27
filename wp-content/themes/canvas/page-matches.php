@@ -43,12 +43,11 @@ get_header();
                 ============================================= -->
                 <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
                     <li class="" ng-class="{activeFilter: selectedIndex === $index || selectedIndex == 'home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('popular')">Popular</a></li>
-                    <li><a href="#" onclick="return false;"  ng-click="filter('all')" data-filter=".pf-{{categories['catName']}}">All Matches</a></li>
+                    <li><a href="#" onclick="return false;"  ng-click="filter('upcomming')" data-filter=".pf-{{categories['catName']}}">Upcoming</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('today')" data-filter=".pf-{{categories['catName']}}">Today</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('daysBefore')" data-filter=".pf-{{categories['catName']}}">Completed</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('ongoing')" data-filter=".pf-{{categories['catName']}}">In Play</a></li>
                 </ul>
-
                 <!-- <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
 
                     <li class="" ng-class="{activeFilter: selectedIndex===$index || selectedIndex=='home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('',$index)">Show All</a></li>
@@ -107,14 +106,18 @@ get_header();
 
                             <tr ng-repeat="matches in getDetails.catPost">
                                 <td> {{matches['onlySDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue'] != ''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
-                                <td ng-init="count=$index"><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a> <b>({{matches['category'][0]['name']}})</td>
-                                <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} </td>
-                                <td  ng-repeat-end> <input type="text"   class="trade form-control" style="display: {{hideTrade}}" ng-model="$parent.points[teams['team_name']['ID']]" style="width: 100%;" placeholder=" Add Trade" > Your Trade: {{getDetails['tradeTotal'][matches['id']][$index][0]['total']}} <span ng-if="getDetails['tradeTotal'][matches['id']][$index][0]['total'] ==null"> 0</span>
-                                    <b style="color:#d43f3a" ng-if="teams['winner'] == 'Yes'">Win</b> 
-                                    <b style="color:#d43f3a" ng-if="teams['winner'] == 'No' && matches['points_distributed'] == 'Yes'">Lose</b>  </td>
-                                <td><a href="#" style="display: {{hideTrade}}" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails.catPost[0]['uid'])" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No'">Trade</a></td>
-                                <td>{{matches["total_bets"]}} <span ng-if="matches['total_bets']=='' ">0</span></td>
-                            </tr>                            
+                                <td ng-init="count = $index"><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a> <b>({{matches['category'][0]['name']}})</td>
+                                <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} <br> <b style="color:green" ng-if="teams['winner'] == 'Yes'">Winner</b> </td>
+                                <td  ng-repeat-end> 
+                                    <input type="text"   class="trade form-control" style="display: {{hideTrade}}" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" style="width: 100%;" placeholder=" Add Trade" >
+                                    <span ng-if="getDetails['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null"> You've traded {{getDetails['tradeTotal'][matches['id']][$index][0]['total']}} Pts. </span>
+                                    <span ng-if="getDetails['tradeTotal'][matches['id']][$index][0]['total'] == null && matches['uid'] == null"> -</span>
+                                </td>
+                                <td><a href="#" style="display: {{hideTrade}}" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails.catPost[0]['uid'])" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'">Trade </a></td>
+                                <td>{{matches["total_bets"]}} <span ng-if="matches['total_bets'] == ''">0</span></td>
+                            </tr>    
+                            <tr  ng-hide="getDetails.catPost.length"><td colspan="8" align="center">There are no open matches at the moment please check again later!</td></tr>
+
                         </tbody>
                     </table>
                 </div>

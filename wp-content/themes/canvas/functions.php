@@ -47,7 +47,7 @@ if (!function_exists('twentysixteen_setup')) :
      */
     function twentysixteen_setup() {
     
-       // date_default_timezone_set( 'America/New_York');
+      // date_default_timezone_set( 'UTC');
      // date_default_timezone_set( $_COOKIE['wordpress_useclientstimezone_timezone']);
 //echo $getTimezone;
         /*
@@ -660,7 +660,7 @@ function formatNumberAbbreviation($number) {
 
     foreach ($abbrevs as $exponent => $abbrev) {
         if ($number >= pow(10, $exponent)) {
-            return number_format($number / pow(10, $exponent), 2) . $abbrev;
+            return round(number_format($number / pow(10, $exponent), 2)) . $abbrev;
         }
     }
 }

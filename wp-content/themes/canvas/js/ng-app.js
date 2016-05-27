@@ -6,6 +6,7 @@
 var domain = "http://localhost/gamings/api?action=";
 var base_url = "http://localhost/gamings/";
 
+
 var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
 var app = angular.module('gaming', ['simplePagination']);
 
@@ -163,6 +164,7 @@ app.controller('signupCtrl', function ($scope, $http, $templateCache) {
     formData = {};
     ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
     $scope.signUp = function () {
+        $('.loaderRegister').show();
         var formData = {
             'user_login': document.registerForm.username.value,
             'first_name': document.registerForm.fName.value,
@@ -423,6 +425,13 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                     $('.loader').hide();
                     $('.alert').show();
                 }
+                if(typeName=='contact-us'){
+                    $('.col-ch').show();
+                } 
+                if(typeName=='registration'){
+                    $('.loaderRegister ').hide();
+                } 
+                
                 ;
                 $.urlParam = function (name) {
                     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -523,7 +532,7 @@ app.controller('contactCtrl', function ($scope, $http, $templateCache) {
     });
     $scope.loadImg = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
     $scope.contacForm = function () {
-
+        $('.col-ch').hide();
         $('#template-contactform').valid();
         if (!$('#template-contactform').valid()) {
             return false;
