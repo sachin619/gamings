@@ -112,9 +112,10 @@ get_header();
                                 <td class="demo" width="30%"> {{teamInfo.team['post_title']}}</td>               
                                 <td > <span ng-if="getDetails['details'][0].uid != null"> {{getDetails['pts'][$index][0].total}} </span> <span ng-if="getDetails['pts'][$index][0].total == null">0</span> </td>
                                 <td class="blockTrade" ng-class="statusInfo"  >
-                                    <input ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" type="text" name="pts" ng-model="$parent.points"   placeholder="Trade">
+                                    <input ng-if="(teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No') && getDetails['details'][0].uid != null" type="text" name="pts" ng-model="$parent.points"   placeholder="Trade">
                                     <span ng-if="getDetails['details'][0]['points_distributed'] === 'Yes' && teamInfo.eliminated === 'No'">Winner </span>
-                                    <span  class="stage" ng-if="teamInfo.eliminated !== 'No'"><span>Team Eliminated!</span></span>       
+                                    <span  class="stage" ng-if="teamInfo.eliminated !== 'No'"><span>Eliminated!</span></span>  
+                                    <span ng-if="(getDetails['details'][0].uid == null && teamInfo.eliminated != 'Yes') || (teamInfo.eliminated != 'Yes' && teamInfo.eliminated != 'No')">-</span>
 
                                 </td>
                                 <td class="blockAction" >
@@ -140,7 +141,6 @@ get_header();
                 </div>
 
 
-                <h3 class="text-center mtb20">	Upcoming Matches</h3>
                 <!-- <div class="bothsidebar">
                     <div class="row events small-thumbs">
                         <div class="row">
@@ -177,6 +177,39 @@ get_header();
                 </div> -->		
 
 
+            </div>
+
+        </div>
+
+    </section><!-- #content end -->
+
+    <section id="content">
+        <h3 class="text-center mtb20">	Upcoming Matches</h3>
+
+        <div class="content-wrap">
+
+            <div class="container clearfix">
+
+                <!-- Portfolio Filter
+                ============================================= -->
+                <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
+                   
+                    <li ng-class="{activeFilter: selectedIndex === $index || selectedIndex == 'home' }"><a href="#" onclick="return false;"  ng-click="filter('upcomming')" data-filter=".pf-{{categories['catName']}}">Upcoming</a></li>
+                    <li class="hide"><a href="#" onclick="return false;"  ng-click="filter('today')" data-filter=".pf-{{categories['catName']}}">Today</a></li>
+                    <li><a href="#" onclick="return false;"  ng-click="filter('daysBefore')" data-filter=".pf-{{categories['catName']}}">Completed</a></li>
+                    <li><a href="#" onclick="return false;"  ng-click="filter('ongoing')" data-filter=".pf-{{categories['catName']}}">In Play</a></li>
+                </ul>
+                <!-- <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
+
+                    <li class="" ng-class="{activeFilter: selectedIndex===$index || selectedIndex=='home' }"><a href="#" data-filter="*" onclick="return false;" ng-click="filter('',$index)">Show All</a></li>
+                    <li ng-repeat="categories in getDetails.catName" ng-class="{activeFilter:selectedIndex===$index}"><a href="#" onclick="return false;"  ng-click="filter(categories['catName'],$index)" data-filter=".pf-{{categories['catName']}}">{{categories['catName']}}</a></li>
+                </ul> --><!-- #portfolio-filter end -->
+
+                <!-- <div id="portfolio-shuffle" class="portfolio-shuffle" data-container="#portfolio">
+                    <i class="icon-random"></i>
+                </div> -->
+
+                <div class="clear"></div>
                 <div class="table-responsive">
                     <table class="table table-bordered nobottommargin">
 
@@ -192,35 +225,36 @@ get_header();
                                 <th>Total Trade</th>
                             </tr>
                         </thead>
-                        <tbody> 
-                            <tr ng-repeat="matches in getDetails.matches['details']">
-                                <td>{{matches['onlySDate']}} {{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br>  {{matches['venue']}}</a></td>          
-                                <td>
-                                    <a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">
-                                        {{getDetails['details'][0].title}}
-                                    </a>
-                                </td>
-                                <td  ng-repeat-start="teams in matches['select_teams']">{{teams['team_name']['post_title']}} </td>
+                        <tbody > 
+
+                            <tr ng-repeat="matches in getMatchDetails.catPost">
+                                <td> {{matches['onlySDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue'] != ''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
+                                <td ng-init="count = $index"><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a></td>
+                                <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} <br> <b style="color:green" ng-if="teams['winner'] == 'Yes'">Winner</b> </td>
                                 <td  ng-repeat-end> 
-                                    <input type="text" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] != null || matches['uid'] != null" ><br>
-                                    <span ng-if="getDetails.matches['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null">You've traded {{getDetails.matches['tradeTotal'][matches['id']][$index][0]['total']}} Pts.</span> 
-                                    <span ng-if="  matches['uid'] == null">-</span>
+                                    <input type="text"   class="trade form-control" style="display: {{hideTrade}}" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" style="width: 100%;" placeholder=" Add Trade" >
+                                    <span ng-if="getMatchDetails['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null"> You've traded {{getMatchDetails['tradeTotal'][matches['id']][$index][0]['total']}} Pts. </span>
+
+                                    <span ng-if="  (matches['uid'] == null) || (getMatchDetails['tradeTotal'][matches['id']][$index][0]['total'] == null && (matches['points_distributed'] != 'No' || matches['ong'] != 'No'))">-</span>
 
                                 </td>
-                                <td><a href="#" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails['details'][0].uid)" class="btn btn-danger">Trade</a></td>
-                                <td>{{matches["total_bets"]}}</td>
-                            </tr>   
-                            <tr  ng-hide="getDetails.matches['details'].length"><td colspan="8" align="center">There are no open matches at the moment please check again later!</td></tr>
+                                <td><a href="#" style="display: {{hideTrade}}" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getMatchDetails.catPost[0]['uid'])" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'">Trade </a>
+                                </td>
+                                <td>{{matches["total_bets"]}} <span ng-if="matches['total_bets'] == ''">0</span></td>
+                            </tr>    
+                            <tr  ng-hide="getMatchDetails.catPost.length"><td colspan="8" align="center">There are no open matches at the moment please check again later!</td></tr>
 
                         </tbody>
                     </table>
                 </div>
 
+                <div class="col-lg-12 loadMoreBlock" ng-if="getMatchDetails.catPost.length >= 50" style="text-align: center">
+                    <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getMatchDetails.catPost.length + 50)">Load More </button>
+                </div>
+
             </div>
 
-        </div>
-
-    </section><!-- #content end -->
+    </section><!-- #content end -->    
 
     <!-- Footer
     ============================================= -->

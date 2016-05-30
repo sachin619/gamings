@@ -2,6 +2,13 @@
 //acf_form_head(); 
 wp_head();
 ?>
+
+
+<?php
+$wpdb;
+$id = $wpdb->get_var("SELECT ID FROM wp_posts WHERE post_name = 'tri-series'");
+print_r($id);exit;
+?>
 <script>
     var now = new Date();
     var nowUtc = new Date( now.getUTCHours(), now.getUTCMinutes());

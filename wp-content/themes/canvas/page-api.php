@@ -105,9 +105,11 @@ die();
 class API {
 
     public $userId;
+    public $getDate;
 
     function __construct() {
         global $user_ID;
+        $this->getDate = current_time('mysql');
         if (!empty($user_ID))
             $this->userId = $user_ID;
         else if (!empty($_REQUEST['userId']))
@@ -129,7 +131,6 @@ class API {
     }
 
     function homeMatchListing($info) {
-
         //$home['slider'] = $this->getSlider();
         // $home['popularTournaments'] = $this->popularTournaments();
         //$home['popularMatches'] = $this->popularMatches();
@@ -181,7 +182,7 @@ class API {
 
     function upcomingMatches() {
         //$dateFormat = strtotime('+18 hour 1 minute');
-        $dateFormat = time();
+        $dateFormat = strtotime($this->getDate);
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'start_date',
@@ -199,6 +200,7 @@ class API {
     }
 
     function tournamentsMatches($tid) {
+
         global $wpdb;
         $userId = $this->userId;
         $tourId = get_the_ID();
@@ -282,7 +284,8 @@ class API {
         $tradeInfo = ['tid' => $tId, 'user_id' => $userId];
         $getTotalBets = $this->getTotalTrade($tradeInfo, 'tid');
         $userTotalTrade = $this->getUserTotalTrade($tradeInfo, 'tid');
-        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'matches' => $this->tournamentsMatches($postId)];
+        //$detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'matches' => $this->tournamentsMatches($postId)];
+        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade];
         return $detailsData;
     }
 
@@ -343,7 +346,14 @@ class API {
     }
 
     function listingMatches($getCatSlug) {
-
+        global $wpdb;
+        if (isset($getCatSlug['data']['tourId'])):
+            $getPostSlug = $getCatSlug['data']['tourId'];
+            $id = $wpdb->get_var("SELECT ID FROM wp_posts WHERE post_name = '" . $getPostSlug . "'");
+            if (isset($id)) {
+                $queryOfTourMatch = ['key' => 'tournament_name', 'value' => $id, 'compare' => '='];
+            }
+        endif;
         global $wpdb;
         $userId = $this->userId;
         $categorySlug = $getCatSlug['data']['categoryName'];
@@ -399,7 +409,8 @@ class API {
                     [
                         'key' => 'start_date', 'value' => $sevenDaysBefore, 'compare' => '>'
                     ],
-                    [ 'key' => 'points_distributed', 'value' => 'Yes', 'compare' => '=']
+                    [ 'key' => 'points_distributed', 'value' => 'Yes', 'compare' => '='],
+                    $queryOfTourMatch
                 ],
             ];
         elseif ($getCatSlug['data']['type'] == 'upcomming'):
@@ -412,7 +423,8 @@ class API {
                 'order' => 'ASC',
                 'meta_query' => ['relation' => 'AND',
                     [ 'key' => 'start_date', 'value' => $dateFormat, 'compare' => '>',],
-                    [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
+                    [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '='],
+                    $queryOfTourMatch
                 ],
             ];
         elseif ($getCatSlug['data']['type'] == 'ongoing'):
@@ -433,7 +445,8 @@ class API {
                     [
                         'key' => 'start_date', 'value' => $dateFormat, 'compare' => '<'
                     ],
-                    [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
+                    [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '='],
+                    $queryOfTourMatch
                 ],
             ];
         else:
@@ -479,7 +492,8 @@ class API {
         else:
             $getPageCount = 5;
         endif;
-        $dateFormat = time();
+        $dateFormat = strtotime($this->getDate);
+        ;
         $getCat = $this->getCategories(['parent' => 1]);
 
         $args = [
@@ -560,26 +574,26 @@ class API {
         $getWinnerCount = count($count);/** get count of eliminated team** */
         $getTourId = isset($getTeams[0]['tournament_name']->ID) ? $getTeams[0]['tournament_name']->ID : 0;
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTourId, 'team_id' => $teamId, 'pts' => $points];
-        if (!empty($tradeInfo['data']['pts'])):
-            if ($points >= $getMinimumBetAmount):
-
-
-                if ($points <= $uPoints):
-                    $remaining = $uPoints - $points;
-                    update_user_meta($userId, 'points', $remaining);
-                    update_user_meta($userId, 'points_used', $usedCalc);
-                    $wpdb->insert('wp_bets', $wpBets);
-                    return "Your trade has been placed successfully!";
+        if ($getStartTime > $curTime):
+            if (!empty($tradeInfo['data']['pts'])):
+                if ($points >= $getMinimumBetAmount):
+                    if ($points <= $uPoints):
+                        $remaining = $uPoints - $points;
+                        update_user_meta($userId, 'points', $remaining);
+                        update_user_meta($userId, 'points_used', $usedCalc);
+                        $wpdb->insert('wp_bets', $wpBets);
+                        return "Your trade has been placed successfully!";
+                    else:
+                        return "You don't have enough points to place this trade";
+                    endif;
                 else:
-                    return "Not have enough points";
+                    return "Minimum $getMinimumBetAmount points should be trade";
                 endif;
-
-
             else:
-                return "Minimum Points should be $getMinimumBetAmount";
+                return "Minimum $getMinimumBetAmount points should be trade";
             endif;
         else:
-            return "Minimum Points should be  $getMinimumBetAmount";
+            return "Match had been started";
         endif;
     }
 
@@ -611,7 +625,7 @@ class API {
         $getDate = current_time('mysql');
         //$currDate = time();
         $currDate = strtotime($getDate);
-             //   print_r($currDate);exit;
+        //   print_r($currDate);exit;
         $getCurrentTime = $currDate;
         $getPrem = $getTeams[0]['premium']; //premium calculation
         //$premCalc = round($points / $getPrem); //premium calculation
@@ -640,7 +654,7 @@ class API {
                                 return "Your trade has been placed successfully!";
                             endif;
                         else:
-                            return "Not have enough points";
+                            return "You don't have enough points to place this trade";
                         endif;
                     else:
                         return "Team Eliminated!";
@@ -649,10 +663,10 @@ class API {
                     return "Tournament had been over";
                 endif;
             else:
-                return "Minimimum Bet point should be $getMinimumBetAmount";
+                return "Minimimum $getMinimumBetAmount points should be trade";
             endif;
         else:
-            return "Minimimum Bet point should be $getMinimumBetAmount";
+            return "Minimimum $getMinimumBetAmount points should be trade";
         endif;
     }
 
@@ -830,7 +844,7 @@ class API {
         $getDistributionDays = get_option('distributing_days');
         $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where uid =' . $userid);
         foreach ($getResults as $results):
-            $getCurrTime = time();
+            $getCurrTime = strtotime($this->getDate);
             $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
             if ($disDateAdd < $getCurrTime && $results->cleared != 1):
                 $getCurrentPoints = get_user_meta($userid, 'points');

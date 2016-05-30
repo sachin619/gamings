@@ -42,6 +42,11 @@ endif;
         ============================================= -->
         <title> Gaming </title>
         <?php wp_head(); ?>
+        <style>
+            .currentMain{
+                color:#d4202b;
+            }
+        </style>
     </head>
 
     <body class="stretched">
@@ -72,20 +77,20 @@ endif;
                         <nav id="primary-menu">
 
                             <ul>
-                                <li class=" <?= strcmp('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_site_url() . '/') == 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() ?>"><div><i class=""></i>Home</div></a>
+                                <li class=" <?= strcmp('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_site_url() . '/') == 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>"><div><i class=""></i>Home</div></a>
 
                                 </li>
                                 
-                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'about') > 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() ?>/about-us"><div><i class=""></i>About</div></a>
+                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'about') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>/about-us"><div><i class=""></i>About</div></a>
 
                                 </li>
-                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'contact') > 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() ?>/contact-us"><div><i class=""></i>Contact</div></a>								
+                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'contact') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>/contact-us"><div><i class=""></i>Contact</div></a>								
                                 </li>
                                 <?php if (empty($userName)): ?>
-                                    <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'register') > 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() . '/register' ?>"><div><i class=""></i>Login/Register</div></a>								
+                                    <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'register') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() . '/register' ?>"><div><i class=""></i>Login/Register</div></a>								
                                     </li>
                                 <?php else: ?>
-                                    <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'account') > 0 ? 'current' : ''; ?>"><a href="<?= get_site_url() . '/my-account' ?>"><div><i class=""></i>My Account</div></a>
+                                    <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'account') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() . '/my-account' ?>"><div><i class=""></i>My Account</div></a>
                                     </li>
                                     <li class="mega-menu "><a href="<?= get_site_url() . '/api?action=logout' ?>"> Logout</a></li>
                                 <?php endif ?>
