@@ -122,7 +122,8 @@ get_header();
                                     <a href={{popular.postLink}}><img class="image_fade" ng-src={{popular.img}} alt={{popular.title}}></a>
                                 </div>
                                 <div class="fbox-desc">
-                                    <h3 class="imagetex">{{popular.title}} <b>({{popular['category'][0]['name']}})<span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{ popular.end_date}}</span><span>{{popular.venue}}</span></h3>
+                                    <h3 class="imagetex">{{popular.title}} <b>({{popular['category'][0]['name']}})<span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{ popular.end_date}}</span>
+                                            <span> {{ popular['venue'] | limitTo: 20 }}{{popular['venue'].length > 20 ? '...' : ''}}</span></h3>
                                     <h3><span class="subtitle" ng-if="popular.total_tour_bets > 0">Total Points Traded So far: {{popular.total_tour_bets}} Points</span></h3>
                                 </div>
                             </div>
