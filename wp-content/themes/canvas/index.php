@@ -123,7 +123,7 @@ get_header();
                                 </div>
                                 <div class="fbox-desc">
                                     <h3 class="imagetex">{{popular.title}} <b>({{popular['category'][0]['name']}})<span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{ popular.end_date}}</span>
-                                            <span> {{ popular['venue'] | limitTo: 20 }}{{popular['venue'].length > 20 ? '...' : ''}}</span></h3>
+                                            <span> {{ popular['venue'] | limitTo: 30 }}{{popular['venue'].length > 30 ? '...' : ''}}</span></h3>
                                     <h3><span class="subtitle" ng-if="popular.total_tour_bets > 0">Total Points Traded So far: {{popular.total_tour_bets}} Points</span></h3>
                                 </div>
                             </div>
