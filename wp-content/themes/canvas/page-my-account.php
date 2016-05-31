@@ -116,8 +116,8 @@ $userEmail = $userInfo->user_email;
                                 </tbody>							
                             </table>
                             <div class="col-lg-12">
-                                <button ng-click="pagination.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
-                                <button ng-click="pagination.nextPage()" class="button button-mini button-dark button-rounded pull-right">Next</button>
+                                <button ng-hide="pagination.page === 0" ng-click="pagination.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
+                                <button ng-hide="pagination.page + 1 >= pagination.numPages" ng-click="pagination.nextPage()" class="button button-mini button-dark button-rounded pull-right">Next</button>
                             </div>
                         </div>
                     </div>   <!-- My bets-->
@@ -147,8 +147,8 @@ $userEmail = $userInfo->user_email;
                                     </tr>                                
                             </table>
                             <div class="col-lg-12">
-                                <button ng-click="paginationWin.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
-                                <button ng-click="paginationWin.nextPage()" class="button button-mini button-dark button-rounded pull-right">Next</button>
+                                <button ng-hide="paginationWin.page === 0" ng-click="paginationWin.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
+                                <button ng-hide="paginationWin.page + 1 >= paginationWin.numPages" ng-click="paginationWin.nextPage()" class="button button-mini button-dark button-rounded pull-right">Next</button>
                             </div>
                         </div>
                     </div>   <!--  My Win Loss points-->
