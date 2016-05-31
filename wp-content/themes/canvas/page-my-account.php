@@ -261,7 +261,7 @@ $userEmail = $userInfo->user_email;
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" value="" ng-model="oldPassword" id="oldPassword" name="oldPassword" placeholder="Old Password" required="">
                                     <div ng-show="changePassword.oldPassword.$dirty">
-                                        <span ng-show="changePassword.oldPassword.$error.required">Required</span>
+                                        <span class="errorColor" ng-show="changePassword.oldPassword.$error.required">Required</span>
                                     </div>
                                 </div>
                             </div>
@@ -270,8 +270,8 @@ $userEmail = $userInfo->user_email;
                                 <div class="col-sm-9"><!-- ID and NAME should be same -->
                                     <input type="password" ng-model="newPassword" value="" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" required="" ng-minlength="5">
                                     <div ng-show="changePassword.newPassword.$dirty">
-                                        <span ng-show="changePassword.newPassword.$error.required">Required</span>
-                                        <span ng-show="changePassword.newPassword.$error.minlength">Minimum length should be 5</span>
+                                        <span class="errorColor" ng-show="changePassword.newPassword.$error.required">Required</span>
+                                        <span class="errorColor" ng-show="changePassword.newPassword.$error.minlength">Minimum length should be 5</span>
                                     </div>
                                 </div>
                             </div>
@@ -281,8 +281,8 @@ $userEmail = $userInfo->user_email;
                                 <div class="col-sm-9">
                                     <input type="password" value="" class="form-control" ng-model="confirmPassword" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required="" ng-pattern={{newPassword}} >
                                     <div ng-show="changePassword.confirmPassword.$dirty">
-                                        <span ng-show="changePassword.confirmPassword.$error.required" >Required</span>
-                                        <span ng-show="changePassword.confirmPassword.$error.pattern">Password does not match</span>
+                                        <span class="errorColor" ng-show="changePassword.confirmPassword.$error.required" >Required</span>
+                                        <span class="errorColor" ng-show="changePassword.confirmPassword.$error.pattern">Password does not match</span>
                                     </div>
                                 </div>
                             </div>
@@ -331,5 +331,7 @@ get_footer();
     #fname-error{ display:block !important}
     #email-error{ display:block !important}
     #lname-error{ display:block !important}
-
+    .errorColor{
+        color:red;
+    }
 </style>
