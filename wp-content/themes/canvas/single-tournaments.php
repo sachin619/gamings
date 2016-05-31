@@ -249,7 +249,8 @@ get_header();
                 </div>
 
                 <div class="col-lg-12 loadMoreBlock" ng-if="getMatchDetails.catPost.length >= 50" style="text-align: center">
-                    <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getMatchDetails.catPost.length + 50)">Load More </button>
+                    <br>
+                    <button type="button" class="btn btn-danger hide-loadMore" ng-click="loadMore(getCat, getMatchDetails.catPost.length + 50)">Load More </button>
                 </div>
 
             </div>
