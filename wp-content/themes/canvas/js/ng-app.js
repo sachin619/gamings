@@ -6,7 +6,6 @@
 var domain = "http://localhost/gamings/api?action=";
 var base_url = "http://localhost/gamings/";
 
-
 var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
 var app = angular.module('gaming', ['simplePagination']);
 
@@ -195,25 +194,28 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
         'postId': slug
     };
     $scope.tradeMatch = function (link, tid, points, uid) {
-        if (uid != null) {  //for login redirect
+
+        if (uid != null) {
             var slug = link.split("/");
             slug = slug[slug.length - 2];
             var formDataNew = {
                 'mid': tid,
                 'pts': points,
                 'slug': slug,
-                'mainSlug': slugCopy,
-                'type': 'tournamentsMatches'
+                'mainSlug': $.urlParam('category'),
+                'mainSlugTour': slugCopy,
+                'type': 'tournamentMatcheList',
+                'catType': sessionStorage.getItem('type')
             };
-            //console.log(slugCopy);
-
             tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
         } else {
             sessionStorage.setItem('url', document.URL);
             window.location = base_url + "register?url=redirect";
         }
-    }; //for login redirect
+    };
     ngPost('tournaments-detail', formData, $scope, $http, $templateCache, 'getDetails');
+    var formDataMatch = {'tourId': slug, 'type': 'upcomming'};
+    ngPost('listing-matches', formDataMatch, $scope, $http, $templateCache, 'getMatchDetails');
     $scope.trade = function (tid, teamId, pts, uid) {
         if (uid != null) {
             var formData = {
@@ -233,11 +235,47 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
 
     };
 
+
+    $scope.filter = function (type, $index) {
+        //console.log($.urlParam('category'));
+        //console.log(type);
+        if (type === "daysBefore" || type === "ongoing") {
+            $scope.hideTrade = "none";
+        } else {
+            $scope.hideTrade = "block";
+        }
+
+        if (type === "daysBefore" || type === "ongoing") {
+            $scope.hideDefault = "block";
+        } else {
+            $scope.hideDefault = "none";
+        }
+        ;
+        $scope.selectedIndex = $index;
+        $('.hide-loadMore').show();
+        $scope.getCat = type;
+        sessionStorage.setItem('type', type);
+        var formInfo = {'categoryName': $.urlParam('category'), 'type': type, 'tourId': slug};
+        ngPost('listing-matches', formInfo, $scope, $http, $templateCache, 'getMatchDetails');
+    };
     $scope.getTrade = function (teamId) {
         console.log(teamId);
     };
 
-
+    $scope.loadMore = function (catName, getCount) {
+        var type="";
+        console.log(sessionStorage.getItem('type'));
+        if (sessionStorage.getItem('type') != '' && sessionStorage.getItem('type') != null) {
+            type = sessionStorage.getItem('type');
+        } else {
+          type = 'upcomming';
+        }
+        //console.log($.urlParam('category'));
+        // console.log(getCount);
+        sessionStorage.setItem('getCount', getCount);
+        var formInfo = {'categoryName': $.urlParam('category'), 'tourId': slug, 'type': type, 'getCount': getCount, 'loadMore': 'true'};
+        ngPost('listing-matches', formInfo, $scope, $http, $templateCache, 'getMatchDetails');
+    };
 });
 
 
@@ -495,6 +533,11 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
             var formDataReload = {'categoryName': formData['mainSlug'], 'type': formData['catType'], 'getCount': sessionStorage.getItem('getCount')};
             console.log(formDataReload);
             ngPost('listing-matches', formDataReload, $scope, $http, $templateCache, 'getDetails');
+        }
+        else if (formData['type'] === 'tournamentMatcheList') {
+            var formDataReload = {'categoryName': formData['mainSlug'], 'type': 'upcomming', 'tourId': formData['mainSlugTour'], 'getCount': sessionStorage.getItem('getCount')};
+            console.log(formDataReload);
+            ngPost('listing-matches', formDataReload, $scope, $http, $templateCache, 'getMatchDetails');
         }
         else if (formData['type'] === 'tournamentsMatches') {
             var formDataReload = {'postId': formData['mainSlug']};

@@ -65,6 +65,9 @@ switch ($action) {
     case 'admin-distribution':
         $output = $api->adminDistribution();
         break;
+    case 'cron-admin-distribution':
+        $output=$api->cronAdminDistribution();
+        break;
     case 'my-account':
         $output = $api->myAccount($_REQUEST);
         break;
@@ -844,6 +847,23 @@ class API {
         $getDistributionDays = get_option('distributing_days');
         $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where uid =' . $userid);
         foreach ($getResults as $results):
+            $getCurrTime = strtotime($this->getDate);
+            $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
+            if ($disDateAdd < $getCurrTime && $results->cleared != 1):
+                $getCurrentPoints = get_user_meta($userid, 'points');
+                $wpdb->update('wp_distribution', ['cleared' => '1'], ['uid' => $userid]);
+                update_user_meta($userid, 'points', $getCurrentPoints[0] + $results->gain_points);
+            endif;
+        endforeach;
+    }
+
+    function cronAdminDistribution() {
+
+        global $wpdb;
+        $getDistributionDays = get_option('distributing_days');
+        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where cleared =0');
+        foreach ($getResults as $results):
+            $userid = $results->uid;
             $getCurrTime = strtotime($this->getDate);
             $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
             if ($disDateAdd < $getCurrTime && $results->cleared != 1):
