@@ -212,7 +212,7 @@ $userEmail = $userInfo->user_email;
                     </div>   <!--  Encash My Points -->
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
-                            <form class="form-horizontal">
+                            <form class="form-horizontal userInfoForm">
                                 <div class="form-group">
                                     <label for="name" class="col-sm-4 control-label">First Name</label>
                                     <div class="col-sm-8">
@@ -327,4 +327,9 @@ get_footer();
     .loss{
         background-color: #ff6666;
     }
+    #mobile-error{ display:block !important}
+    #fname-error{ display:block !important}
+    #email-error{ display:block !important}
+    #lname-error{ display:block !important}
+
 </style>

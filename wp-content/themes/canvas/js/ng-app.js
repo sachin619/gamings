@@ -82,6 +82,20 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
             }]);
 
 app.controller('myAccount', function ($scope, Pagination, $http, $templateCache) {
+    $('.userInfoForm').validate({
+        rules: {
+            fname: {minlength: 5, required: true},
+            email: {required: true, email: true},
+            mobile: {required: true, minlength: 10, maxlength: 10, number: true},
+
+        },
+        messages: {
+            fname: "Minimum length should be 5",
+            email: "Not a valid Email Id",
+            phone: "Enter a valid mobile number",
+        }
+    });
+
     formData = {'pagination': Pagination, 'type': 'myAccount'};
     ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
     $scope.searchByDate = function () {
@@ -93,6 +107,10 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
         ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
     };
     $scope.userUpdate = function () {
+        $('.userInfoForm').valid();
+        if (!$('.userInfoForm').valid()) {
+            return false;
+        }
         $('.loader').show();
         var password = $('#password').val();
         var fname = $('#fname').val();
@@ -263,12 +281,12 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
     };
 
     $scope.loadMore = function (catName, getCount) {
-        var type="";
+        var type = "";
         console.log(sessionStorage.getItem('type'));
         if (sessionStorage.getItem('type') != '' && sessionStorage.getItem('type') != null) {
             type = sessionStorage.getItem('type');
         } else {
-          type = 'upcomming';
+            type = 'upcomming';
         }
         //console.log($.urlParam('category'));
         // console.log(getCount);
