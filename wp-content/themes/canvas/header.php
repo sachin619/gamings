@@ -107,9 +107,8 @@ endif;
                                 $getFilterPoints = formatNumberAbbreviation($getUserPoints[0]);
                                 ?>
                                 <div id="top-cart">
-                                    <?php if($getFilterPoints!="" || $getFilterPoints!=0): ?>
-                                    <a href="<?= get_site_url() . '/my-account' ?>" id="top-cart-trigger"><i class="fa fa-money fa-lg" style="font-size:36px;"></i><span><?= $getFilterPoints ?></span></a>
-                                    <?php endif; ?>
+                                    <a href="<?= get_site_url() . '/my-account' ?>" id="top-cart-trigger"><i class="fa fa-money fa-lg" style="font-size:36px;"></i><span><?= isset($getFilterPoints)?$getFilterPoints:0;  ?></span></a>
+                                    
                                 </div><!-- #top-cart end -->
                             <?php endif; ?>
                             <?php if (empty($userName)): ?>

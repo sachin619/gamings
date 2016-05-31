@@ -523,7 +523,7 @@ function updateMatchPremium($postId) {
         $args = ['post_type' => $type, 'p' => $postId];
         $getTeams = getResult($args);
         foreach ($getTeams[0]['select_teams'] as $team) {
-            if ($team['winner'] == 'No') {
+            if ($team['winner'] == 'Yes') {
                 $countElimntd[] = $team['winner'];
                 $teams = (array) $team['team_name'];
                 $resultBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teams['ID'] . "'  ");

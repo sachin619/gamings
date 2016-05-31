@@ -66,7 +66,7 @@ switch ($action) {
         $output = $api->adminDistribution();
         break;
     case 'cron-admin-distribution':
-        $output=$api->cronAdminDistribution();
+        $output = $api->cronAdminDistribution();
         break;
     case 'my-account':
         $output = $api->myAccount($_REQUEST);
@@ -870,7 +870,7 @@ class API {
                 $getCurrentPoints = get_user_meta($userid, 'points');
                 $wpdb->update('wp_distribution', ['cleared' => '1'], ['uid' => $userid]);
                 update_user_meta($userid, 'points', $getCurrentPoints[0] + $results->gain_points);
-                
+
             endif;
         endforeach;
     }
@@ -912,11 +912,12 @@ class API {
         endif;
         global $wpdb;
         $getAccount = [];
-        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets where uid= $this->userId group by tid,team_id  order by bet_at DESC");
+        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets where uid= $this->userId group by tid,team_id,mid  order by bet_at DESC");
 //$this->getCsv($result);
         $i = 1;
         foreach ($result as $getBetDetails):
-            $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE tid=$getBetDetails->tid AND team_id=$getBetDetails->team_id");
+
+            $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
             $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
             $tourDetails['id'] = $i++;
             $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
