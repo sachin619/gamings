@@ -49,7 +49,7 @@ $userEmail = $userInfo->user_email;
                         <a href="#" class="list-group-item  text-center">
                             <h4 class="fa fa-user fa-lg"></h4><br/>EDIT PROFILE
                         </a>   <!-- edit profile-->
-                        <a href="#" class="list-group-item text-center">
+                        <a ng-if="myAccount['userInfo']['userDetails']['data']['user_url']==='' " href="#" class="list-group-item text-center">
                             <h4 class="fa fa-user fa-lg"></h4><br/>CHANGE PASSWORD
                         </a>   <!-- Change Password -->
 
