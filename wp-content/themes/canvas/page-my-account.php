@@ -49,7 +49,7 @@ $userEmail = $userInfo->user_email;
                         <a href="#" class="list-group-item  text-center">
                             <h4 class="fa fa-user fa-lg"></h4><br/>EDIT PROFILE
                         </a>   <!-- edit profile-->
-                        <a ng-if="myAccount['userInfo']['userDetails']['data']['user_url']==='' " href="#" class="list-group-item text-center">
+                        <a ng-hide="myAccount['userInfo']['userDetails']['data']['user_url'] != ''" href="#" class="list-group-item text-center">
                             <h4 class="fa fa-user fa-lg"></h4><br/>CHANGE PASSWORD
                         </a>   <!-- Change Password -->
 
@@ -63,13 +63,13 @@ $userEmail = $userInfo->user_email;
                             <div class="form-group">
                                 <label for="oPass" class="col-sm-3 control-label">Cleared Points</label>
                                 <div class="col-sm-9">
-                                    {{myAccount['userInfo']['points'][0]}} <span ng-if="myAccount['userInfo']['points'][0]==null">0</span>
+                                    {{myAccount['userInfo']['points'][0]}} <span ng-if="myAccount['userInfo']['points'][0] == null">0</span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="col-sm-3 control-label">Uncleared Points</label>
                                 <div class="col-sm-9">
-                                    {{myAccount['unClearedPoints']}}   <span ng-if="myAccount['unClearedPoints']==null">0</span>
+                                    {{myAccount['unClearedPoints']}}   <span ng-if="myAccount['unClearedPoints'] == null">0</span>
                                 </div>
                             </div>
 
@@ -98,6 +98,9 @@ $userEmail = $userInfo->user_email;
                                         <td>{{myInfo['tourDetails']['teamTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
+                                    </tr>
+                                    <tr>   
+                                        <td align="center" colspan="6" ng-if="posts.length <= 0">No results found</td>
                                     </tr>
                                 <div class="col-lg-12" style="margin: 0 0 20px 0;">                                    
                                     <div class="col-md-8">
@@ -144,7 +147,10 @@ $userEmail = $userInfo->user_email;
                                         <td>{{myInfo['tourDetails']['teamTitle']}}</td>
                                         <td ng-class="myInfo['tourDetails']['win']=='Yes'?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
-                                    </tr>                                
+                                    </tr>   
+                                    <tr>   
+                                        <td align="center" colspan="6" ng-if="winList.length <= 0">No results found</td>
+                                    </tr>
                             </table>
                             <div class="col-lg-12">
                                 <button ng-hide="paginationWin.page === 0" ng-click="paginationWin.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
