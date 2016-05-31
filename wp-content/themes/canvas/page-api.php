@@ -858,7 +858,6 @@ class API {
     }
 
     function cronAdminDistribution() {
-
         global $wpdb;
         $getDistributionDays = get_option('distributing_days');
         $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where cleared =0');
