@@ -866,9 +866,11 @@ class API {
             $getCurrTime = strtotime($this->getDate);
             $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
             if ($disDateAdd < $getCurrTime && $results->cleared != 1):
+                sleep(5);
                 $getCurrentPoints = get_user_meta($userid, 'points');
                 $wpdb->update('wp_distribution', ['cleared' => '1'], ['uid' => $userid]);
                 update_user_meta($userid, 'points', $getCurrentPoints[0] + $results->gain_points);
+                
             endif;
         endforeach;
     }

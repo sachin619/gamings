@@ -2,7 +2,12 @@
 //acf_form_head(); 
 wp_head();
 ?>
-
+<?php
+for($i=1;$i<=20;$i++):
+    echo $i;
+ sleep(10);
+endfor;
+?>
 
 <?php
 $wpdb;
