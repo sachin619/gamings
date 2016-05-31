@@ -126,7 +126,8 @@ get_header();
                 </div>
 
                 <div class="col-lg-12 loadMoreBlock" ng-if="getDetails.catPost.length >= 50" style="text-align: center">
-                    <button type="button" class="btn btn-primary hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 50)">Load More </button>
+                    <br>
+                    <button type="button" class="btn btn-danger loadMoreBtn hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 50)">Load More </button>
                 </div>
 
             </div>
@@ -136,6 +137,10 @@ get_header();
 <style>
     .loadMoreBlock{
         padding-top:6px;
+    }
+    .loadMoreBtn{
+   background-color:#d9534f;
+   border-color: #d9534f;
     }
 </style>
 <?php
