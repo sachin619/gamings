@@ -87,7 +87,6 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
             fname: {minlength: 5, required: true},
             email: {required: true, email: true},
             mobile: {required: true, minlength: 10, maxlength: 10, number: true},
-
         },
         messages: {
             fname: "Minimum length should be 5",
@@ -571,6 +570,11 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
                     title: response.data
                 });
                 window.location = domain + "logout";
+            }
+            else if (response['data'] == "Old Password doesn't Match") {
+                swal({
+                    title: response.data
+                });
             }
         } else {
             swal({
