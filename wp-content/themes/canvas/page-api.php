@@ -9,6 +9,9 @@ switch ($action) {
     case 'home':
         $output = $api->home();
         break;
+    case 'header':
+        $output=$api->header();
+        break;
     case 'home-match-listing':
         $output = $api->homeMatchListing($_REQUEST);
         break;
@@ -1096,7 +1099,9 @@ class API {
     }
 
     public function header() {
-        
+        $args = ['parent' => 1];
+        $getCategoires = get_categories($args);
+        return ['categories'=>$getCategoires];
     }
 
 }
