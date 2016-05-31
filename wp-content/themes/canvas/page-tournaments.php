@@ -69,7 +69,7 @@ get_header();
                             <span>
                                 <strong ng-if="getDetails.tradeTotal[$index].total > 0">Total Trade: {{getDetails.tradeTotal[$index].total}} Points</strong>
                                 <br>
-                                {{getPost['start_date']}} - {{getPost['end_date']}}, {{getPost['venue']}}
+                                {{getPost['start_date']}} - {{getPost['end_date']}},  {{ getPost['venue'] | limitTo: 20 }}{{getPost['venue'].length > 20 ? '...' : ''}}
                             </span>
                         </div>
                          </a>
