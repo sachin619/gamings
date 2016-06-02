@@ -10,7 +10,7 @@ switch ($action) {
         $output = $api->home();
         break;
     case 'header':
-        $output=$api->header();
+        $output = $api->header();
         break;
     case 'home-match-listing':
         $output = $api->homeMatchListing($_REQUEST);
@@ -678,19 +678,28 @@ class API {
 
     function getUserTrade($tradeInfo, $Tradetype) {
         global $wpdb;
-        $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' AND team_id='" . $tradeInfo['team_id'] . "' AND uid='" . $tradeInfo['user_id'] . "' ");
+        if (isset($Tradetype) && $Tradetype == 'tid'):
+            $where = "mid=0 AND";
+        endif;
+        $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' AND $where team_id='" . $tradeInfo['team_id'] . "' AND uid='" . $tradeInfo['user_id'] . "' ");
         return $result;
     }
 
     function getTotalTrade($tradeInfo, $Tradetype) {
         global $wpdb;
-        $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE $Tradetype='" . $tradeInfo["tid"] . "' ");
+        if (isset($Tradetype) && $Tradetype == 'tid'):
+            $where = " mid=0 AND";
+        endif;
+        $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE $where $Tradetype='" . $tradeInfo["tid"] . "'  ");
         return $result;
     }
 
     function getUserTotalTrade($tradeInfo, $Tradetype) {
         global $wpdb;
-        $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE $Tradetype='" . $tradeInfo["tid"] . "' AND uid='" . $tradeInfo["user_id"] . "' GROUP BY uid ");
+        if (isset($Tradetype) && $Tradetype == 'tid'):
+            $where = " mid=0 AND";
+        endif;
+        $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE $where $Tradetype='" . $tradeInfo["tid"] . "' AND uid='" . $tradeInfo["user_id"] . "' GROUP BY uid ");
         $getResult = (array) $result[0];
         return $getResult['total'];
     }
@@ -704,7 +713,7 @@ class API {
             $getId = (array) $userid->data;
             return ['msg' => "success_login", 'userData' => get_userdata($getId['ID'])];
         else:
-            return ['msg' => "Not a valid username or password", 'errorType' => 'danger'];
+            return ['msg' => "Sorry! Please enter valid credential", 'errorType' => 'danger'];
 
         endif;
     }
@@ -727,9 +736,9 @@ class API {
         $email = email_exists($userInfo['data']['user_email']); //check if email id exist
         $username = username_exists($userInfo['data']['user_login']); //check username exists
         if ($email != ""):
-            return ['msg' => "Email Id already exist", 'errorType' => 'danger'];
+            return ['msg' => "Sorry! Email Id already exist", 'errorType' => 'danger'];
         elseif ($username != ""):
-            return ['msg' => "Username already exist", 'errorType' => 'danger'];
+            return ['msg' => "Sorry! Username already taken", 'errorType' => 'danger'];
         else:
             $user_id = wp_insert_user($userData);
             update_user_meta($user_id, 'phone', $userInfo['data']['phone']);
@@ -743,7 +752,7 @@ class API {
                 return $this->login($userInfo);
             // return ['msg' => 'Registered Successfully & You have got 500 points', 'errorType' => 'success'];
             else:
-                return ['msg' => "Something goes wrong try again later", 'errorType' => 'danger'];
+                return ['msg' => "Sorry! Something goes wrong, try again later", 'errorType' => 'danger'];
             endif;
         endif;
     }
@@ -1100,7 +1109,7 @@ class API {
     public function header() {
         $args = ['parent' => 1];
         $getCategoires = get_categories($args);
-        return ['categories'=>$getCategoires];
+        return ['categories' => $getCategoires];
     }
 
 }
