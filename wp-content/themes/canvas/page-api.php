@@ -927,20 +927,24 @@ class API {
 //$this->getCsv($result);
         $i = 1;
         foreach ($result as $getBetDetails):
-            $field = get_field('points_distributed', $getBetDetails->tid);
-        print_r($field);
-            $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
-            $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
-            $tourDetails['id'] = $i++;
-            $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
-            $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
-            $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
-            $tourDetails['pts'] = $getBetDetails->pts;
-            $tourDetails['bet_at'] = $getBetDetails->bet_at;
-            array_push($getAccount, ['tourDetails' => $tourDetails]);
+            $getTourStatus = get_field('points_distributed', $getBetDetails->tid);
+            $getMatchStatus = get_field('points_distributed', $getBetDetails->mid);
 
+            if ($getMatchStatus == "Yes" || $getTourStatus=='Yes' ):
+
+                $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+                $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
+                $tourDetails['id'] = $i++;
+                $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
+                $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
+                $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
+                $tourDetails['pts'] = $getBetDetails->pts;
+                $tourDetails['bet_at'] = $getBetDetails->bet_at;
+
+                array_push($getAccount, ['tourDetails' => $tourDetails]);
+            endif;
         endforeach;
-exit;
+
         return $getAccount;
     }
 
