@@ -927,7 +927,8 @@ class API {
 //$this->getCsv($result);
         $i = 1;
         foreach ($result as $getBetDetails):
-
+            $field = get_field('points_distributed', $getBetDetails->tid);
+        print_r($field);
             $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
             $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
             $tourDetails['id'] = $i++;
@@ -939,7 +940,7 @@ class API {
             array_push($getAccount, ['tourDetails' => $tourDetails]);
 
         endforeach;
-
+exit;
         return $getAccount;
     }
 
