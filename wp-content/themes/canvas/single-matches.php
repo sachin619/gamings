@@ -7,7 +7,7 @@
  */
 get_header();
 ?>
-<section ng-controller="matchesDetails">
+<section ng-controller="matchesDetails" class="bg-img-container">
     <!-- Page Title
             ============================================= -->
     <section id="page-title">
@@ -85,7 +85,7 @@ get_header();
                             </tr>
                             <tr>
                                 <th>Total</th>
-                                <th>{{ getDetails['userTotalTrade']}}</th>
+                                <th>{{ getDetails['userTotalTrade']}}</th> 
                                 <th> </th>
                                 <th></th>
                             </tr>

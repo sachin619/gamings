@@ -432,15 +432,8 @@ function twentysixteen_widget_tag_cloud_args($args) {
 
 add_filter('widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args');
 
-function tournaments() {
-    $args = array(
-        'labels' => array('name' => 'Tournaments', 'singular_name' => 'Tournament'),
-        'public' => true,
-        'supports' => array('title', 'thumbnail', 'page-attributes'),
-        'taxonomies' => array('category')
-    );
-    register_post_type('tournaments', $args);
-}
+
+
 
 function updatePremium($postId) {
     $tradeInfo["tid"] = $postId;
@@ -485,31 +478,11 @@ function updatePremium($postId) {
     endif;
 }
 
-add_action('init', 'tournaments');
 add_action('save_post', 'updatePremium'); //for tournaments
 add_action('save_post', 'updateMatchPremium'); //for matches
 
-function teams() {
-    $args = array(
-        'labels' => array('name' => 'Teams', 'singular-name' => 'Teams'),
-        'public' => true,
-        'supports' => array('title', 'thumbnail', 'page-attributes'),
-    );
-    register_post_type('teams', $args);
-}
 
-add_action('init', 'teams');
 
-function matches() {
-    //wp_enqueue_script('custom',get_template_directory_uri()."/custom_js/custom.js");
-    $args = array(
-        'labels' => array('name' => 'Matches', 'singular_name' => 'Match'),
-        'public' => true,
-        'supports' => array('title', 'thumbnail', 'page-attributes'),
-        'taxonomies' => array('category')
-    );
-    register_post_type('matches', $args);
-}
 
 function updateMatchPremium($postId) {
     $tradeInfo["tid"] = $postId;
@@ -549,19 +522,8 @@ function updateMatchPremium($postId) {
     endif;
 }
 
-add_action('init', 'matches');
 
-//add_action('save_post','updateMPremium');
-function slider() {
-    $args = array(
-        'labels' => array('name' => 'Slider', 'singular_name' => 'Slider'),
-        'public' => true,
-        'supports' => array('title', 'page-attributes', 'thumbnail'),
-    );
-    register_post_type('slider', $args);
-}
 
-add_action('init', 'slider');
 
 show_admin_bar(false);
 
@@ -679,6 +641,7 @@ function adminDistribution($userid) {
         endif;
     endforeach;
 }
+
 function remove_menus() {
     if (get_current_user_id() != 1) {
         remove_menu_page('edit.php');
@@ -692,4 +655,58 @@ function remove_menus() {
     }
 }
 
-add_action('admin_menu', 'remove_menus');
+add_action('admin_menu', 'remove_menus'); 
+
+
+
+function teams() {
+    $args = array(
+        'labels' => array('name' => 'Teams', 'singular-name' => 'Teams'),
+        'public' => true,
+        'supports' => array('title', 'thumbnail', 'page-attributes'),
+        'menu_icon' => 'dashicons-groups'
+    );
+    register_post_type('teams', $args);
+}
+
+add_action('init', 'teams');
+
+
+function tournaments() {
+    $args = array(
+        'labels' => array('name' => 'Tournaments', 'singular_name' => 'Tournament'),
+        'public' => true,
+        'supports' => array('title', 'thumbnail', 'page-attributes'),
+        'taxonomies' => array('category'),
+        'menu_icon' => 'dashicons-admin-site'
+    );
+    register_post_type('tournaments', $args);
+}
+
+add_action('init', 'tournaments');
+
+
+function matches() {
+    $args = array(
+        'labels' => array('name' => 'Matches', 'singular_name' => 'Match'),
+        'public' => true,
+        'supports' => array('title', 'thumbnail', 'page-attributes'),
+        'taxonomies' => array('category'),
+        'menu_icon' => 'dashicons-carrot'
+    );
+    register_post_type('matches', $args);
+}
+
+add_action('init', 'matches');
+
+function slider() {
+    $args = array(
+        'labels' => array('name' => 'Sliders', 'singular_name' => 'Slider'),
+        'public' => true,
+        'supports' => array('title', 'page-attributes', 'thumbnail'),
+        'menu_icon' => 'dashicons-images-alt2'
+    );
+    register_post_type('slider', $args);
+}
+
+add_action('init', 'slider');

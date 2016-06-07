@@ -19,7 +19,7 @@ get_header();
 
 </section>
 
-<section ng-controller="forgotPasswordCtrl" id="content" class="ng-scope" style="margin-bottom: 0px;">
+<section ng-controller="forgotPasswordCtrl" id="content" class="ng-scope bg-img-container" style="margin-bottom: 0px;">
     <div class="content-wrap">
 
         <div class="container clearfix">

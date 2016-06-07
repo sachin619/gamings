@@ -7,7 +7,7 @@
  */
 get_header();
 ?>
-<section ng-controller="listingTour"> 
+<section ng-controller="listingTour" class="bg-img-container"> 
     <!-- Page Title
             ============================================= -->
     <!-- #page-menu end -->

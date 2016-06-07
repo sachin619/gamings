@@ -18,9 +18,9 @@ get_header();
 <style>
 
 </style>
-<section ng-controller="homeCtrl">
-
-    <section  id="slider" class="slider-parallax" style="background-color: #222;">
+<section ng-controller="homeCtrl" class="bg-img-container">
+    
+	<section  id="slider" class="slider-parallax clearfix" style="background-color: #222;">
         <div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-pagi="false" data-loop="true" data-speed="450" data-autoplay="5000">
 
             <?php
@@ -33,9 +33,24 @@ get_header();
         </div>
 
     </section>
+	
+	
+
+
+
+   
+
+		<div class="clearfix"></div>
+	<section  id="slider" class="slider-parallax clearfix" style="background-color: #222;">
+      <img src="<?= get_template_directory_uri() ?>/images/cricket-stadium-1920x1080-image-1.jpg" class="img-responsive" alt="Banner">
+
+    </section>
+		<div class="clearfix"></div>
+	
+
    <!-- Content
     ============================================= -->
-    <section id="content" class="">
+    <section id="content">
 
         <div class="content-wrap">
 
@@ -54,11 +69,11 @@ get_header();
                 <div class="clear"></div>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered nobottommargin">
+                    <table class="table table-bordered table-striped nobottommargin">
 
                         <thead>
                             <tr>
-                                <th width="18%">Time and Location</th>
+                                <th width="18%">Time &amp; Location</th>
                                 <th>Tournament</th>
                                 <th>Team 1</th>
                                 <th>Trade</th>
@@ -75,7 +90,7 @@ get_header();
                                 <td><a href="{{matches['siteUrl']+'/tournaments/'+matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a><b> ({{matches['category'][0]['name']}})</td>
                                 <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} </td>
                                 <td  ng-repeat-end> 
-                                    <input type="text" ng-model="$parent.$parent.points[teams['team_name']['ID']]" style="width: 100%;" placeholder=" Add Trade" ng-if="matches['uid']!=null" ><br> 
+                                    <input type="text" ng-model="$parent.$parent.points[teams['team_name']['ID']]" style="width: 100%;" placeholder=" Add Trade" ng-if="matches['uid']!=null" > 
                                     <span ng-if="homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']!=null && matches['uid']!=null">You've traded {{homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']}} Pts.</span>
                                     <span ng-if="homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']==null && matches['uid']==null">-</span>
                                 </td>
@@ -101,12 +116,12 @@ get_header();
 
     </section><!-- #content end -->
 
-  
+
     <!-- Content
     ============================================= -->
     <section id="content" >
 
-        <div class="content-wrap">
+        <div class="content-wrap padd-top0">
 
             <div class="container clearfix">
                 <div class="center">
@@ -255,7 +270,7 @@ get_header();
     ============================================= -->
     <section id="content">
 
-        <div class="content-wrap">
+        <div class="content-wrap padd-top0">
 
             <div class="container clearfix">
                 <div class="">
@@ -264,8 +279,8 @@ get_header();
 
                             <div class="col-md-12">
                                 <div class="center">
-                                    <h2>ABOUT LAGAYEGA.COM</h2>
-                                    <div class="divider divider-short divider-center"><i class="icon-bookmark"></i></div>
+                                    <h2>ABOUT EVENT EXCHANGE</h2>
+                                    <div class="divider divider-short divider-center"><i class="icon-circle-blank"></i></div>
                                 </div>
                                 <p class="nobottommargin">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

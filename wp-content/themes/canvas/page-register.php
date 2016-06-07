@@ -23,7 +23,7 @@ get_header();
 
 <!-- Content
 ============================================= -->
-<section id="content" ng-controller="signupCtrl">
+<section id="content" ng-controller="signupCtrl" class="bg-img-container">
 
     <div class="content-wrap">
 
@@ -43,7 +43,15 @@ get_header();
                             <div class="panel-body" style="padding: 40px;">
                                 <form id="login-form" name="loginForm" class="nobottommargin" action="#" method="post">
 
-                                    <h3>Login to your Account</h3>
+                    <div class="col-md-12 col-lg-12" style="text-align:center;">
+					
+					<!--Notifications Start-->
+          					<!--Notifications End-->
+					
+                      <h3>Powered By <img src="<?= get_template_directory_uri() ?>/images/login-logos.jpg" alt="Logo"></h3>
+                      <!-- <p>Powered By</p> -->
+                    </div>
+                                    <!--<h3>Login to your Account</h3>-->
 
                                     <div class="col_full">
                                         <label for="login-form-username">Username/Email:</label>
@@ -66,7 +74,12 @@ get_header();
                                             {{errorLog['msg']}}
                                         </div>
                                     </div>
-                                    <div class="col_full"><br>
+				<div class="clearfix"></div>
+									<div class="col_full" style="margin-bottom: 0px !important; padding: 0px !important;">
+<div class="line line-sm" style="margin: 30px 0px 0px 0px;"></div>
+  <h4 style="margin-bottom: 15px;text-align: center;position: relative;top: -16px;"><div class="or-bg">or</div></h4>
+</div>
+                                    <div class="col_full">
                                         <?php do_action('facebook_login_button'); ?>
                                     </div>
                                 </form>
@@ -77,7 +90,7 @@ get_header();
                     <div class="tab-content clearfix" id="tab-register">
                         <div class="panel panel-default nobottommargin">
                             <div class="panel-body" style="padding: 40px;">
-                                <h3>Register for an Account</h3>
+                                <!--<h3>Register for an Account</h3>-->
 
                                 <form id="register-form" name="registerForm" class="nobottommargin" >
 
@@ -90,7 +103,7 @@ get_header();
                                             <span class="errortype" ng-show="registerForm.fName.$error.pattern">Only Alphabets are allowed</span>
                                             <span class="errortype" ng-show="registerForm.fName.$error.minlength">Minimum 3 Characters</span>
                                         </div>
-
+</div>
                                         <div class="col_full">
                                             <label for="register-form-name">Last Name:</label>
                                             <input type="text" ng-pattern="/^[a-zA-Z]+$/" id="register-form-name" ng-model="user.lName" name="lName" value=""  ng-minlength="3" class="form-control"  />

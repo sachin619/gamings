@@ -5,5 +5,5 @@
  */
 function getTimezoneName() {
     timezone = jstz.determine();
-    document.write(timezone.name());
+    return timezone.name();
 }

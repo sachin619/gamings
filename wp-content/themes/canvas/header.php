@@ -18,7 +18,7 @@ endif;
 <html <?php language_attributes(); ?> class="no-js" ng-app="gaming" >
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta name="author" content="SemiColonWeb" />
+        <meta name="author" content="Infini System" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" type="image/x-icon" href="<?= get_template_directory_uri() ?>/images/favicon.ico">
         <!-- Stylesheets
@@ -38,9 +38,7 @@ endif;
                 <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
         <![endif]-->
 
-        <!-- Document Title
-        ============================================= -->
-        <title> Gaming </title>
+    
         <?php wp_head(); ?>
         <style>
             .currentMain{
@@ -71,12 +69,18 @@ endif;
                             <a href="<?= get_site_url() ?>" class="standard-logo" data-dark-logo="<?= get_template_directory_uri() ?>/images/logos.png"><img src="<?= get_template_directory_uri() ?>/images/logos.png" alt="Canvas Logo"></a>
                             <a href="<?= get_site_url() ?>" class="retina-logo" data-dark-logo="<?= get_template_directory_uri() ?>/images/logos.png"><img src="<?= get_template_directory_uri() ?>/images/logos.png" alt="Canvas Logo"></a>
                         </div><!-- #logo end -->
+						
+						<div id="logo" class="ad-banner">
+					<div class="ad-ban-hold">
+						<img src="<?= get_template_directory_uri() ?>/images/header-ad.gif" class="imgaddbanner" alt="Banner" style="height:60px !important; display:block;">
+                       </div>
+						</div>
 
                         <!-- Primary Navigation
                         ============================================= -->
                         <nav id="primary-menu">
 
-                            <ul>
+                            <ul> 
                                 <li class=" <?= strcmp('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_site_url() . '/') == 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>"><div><i class=""></i>Home</div></a>
 
                                 </li>
@@ -119,14 +123,45 @@ endif;
                         </nav><!-- #primary-menu end -->
 
                     </div>
+					
+					<div class="container clearfix cricket-box">
+<div id="page-menu">
 
+            <div id="page-menu-wrap">
+
+                <div class="container clearfix">
+
+                    <nav>
+                        <ul>
+                        <?php
+                            $args = ['parent' => 1];
+                            $getCategoires = get_categories($args);
+                            foreach ($getCategoires as $catName):
+                                ?>
+                                <li class="current"><a href=""><div><?= $catName->name ?></div></a>
+                                    <ul>
+                                        <li><a href="<?= get_site_url().'/tournaments/?category='.$catName->name ?>"><div>Tournaments</div> </a> </li>
+                                        <li><a href="<?= get_site_url().'/matches/?category='.$catName->name ?>"><div>Matches </div> </a> </li>
+                                    </ul>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </nav>
+
+                <div id="page-submenu-trigger"><i class="icon-reorder"></i></div>
+
+                </div>
+
+            </div>
+
+        </div>
                 </div>
 
             </header><!-- #header end -->
 
             <!-- Page Sub Menu
         ============================================= -->
-        <div id="page-menu">
+        <!--<div id="page-menu">
 
             <div id="page-menu-wrap">
 
@@ -155,5 +190,5 @@ endif;
 
             </div>
 
-        </div><!-- #page-menu end -->
+        </div>--><!-- #page-menu end -->
 

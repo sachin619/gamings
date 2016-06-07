@@ -35,7 +35,7 @@ get_header();
 
 <!-- Content
 ============================================= -->
-<section id="content" ng-controller="contactCtrl">
+<section id="content" ng-controller="contactCtrl" class="bg-img-container">
 
     <div class="content-wrap">
 
@@ -43,7 +43,7 @@ get_header();
 
             <!-- Contact Form
             ============================================= -->
-            <div class="col-md-6">
+            <div class="col-md-6 padd-left">
 
                 <div class="fancy-title title-dotted-border">
                     <h3>Send us an Email</h3>
@@ -57,23 +57,23 @@ get_header();
 
                         <div class="form-process"></div>
 
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-12 form-group padd-left">
                             <input type="text" id="fname" placeholder="Name*" name="fname" value="" class="sm-form-control required" />
                         </div>
 
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-12 form-group padd-left">
                             <input type="email" id="email" placeholder="Email*" name="email" value="" class="required email sm-form-control" />
                         </div>
 
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-12 form-group padd-left">
                             <input type="text" id="phone" placeholder="Phone No.*" name="phone" value="" class="required sm-form-control" />
                         </div>
 
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-12 form-group padd-left">
                             <textarea class="required sm-form-control" id="message" name="message" rows="6" cols="30" placeholder="Message"></textarea>
                         </div>
                         <br>
-                        <div class="col-md-12">
+                        <div class="col-md-12 padd-left">
                             <button name="submit" type="button" id="submit-button" onclick=""  placeholder="Name" ng-click="contacForm()" tabindex="5" value="Submit" class="button btn-danger button-3d nomargin">Submit</button>
                             <img ng-src="{{loadImg}}" class="loader" />
                         </div><br>

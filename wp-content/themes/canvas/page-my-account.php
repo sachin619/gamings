@@ -8,7 +8,7 @@ get_header();
 $userInfo = wp_get_current_user();
 $userEmail = $userInfo->user_email;
 ?>
-<section ng-controller="myAccount">
+<section ng-controller="myAccount" class="bg-img-container">
     <section id="page-title">
 
         <div class="container clearfix">
@@ -32,16 +32,16 @@ $userEmail = $userInfo->user_email;
                             <h4 class="fa fa-money fa-lg"></h4><br/>MY POINTS
                         </a>   <!--My points -->
                         <a href="#" class="list-group-item text-center">
-                            <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>MY BETS
+                            <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>Traded Points
                         </a>    <!-- My bets--> 
                         <a href="#" class="list-group-item text-center">
-                            <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>MY WIN/LOSS POINTS
+                            <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>Trade Diffusion
                         </a>    <!-- My Win Loss points -->    
                         <a href="#" class="list-group-item text-center hide">
                             <h4 class="fa fa-shopping-cart fa-lg "></h4><br/>PURCHASE HISTORY
                         </a>   <!-- Purchase History -->
-                        <a href="#" class="list-group-item text-center hide">
-                            <h4 class="fa fa-database fa-lg"></h4><br/>BUY MORE POINTS
+                        <a href="#" class="list-group-item text-center">
+                            <h4 class="fa fa-database fa-lg"></h4><br/>GET MORE POINTS
                         </a>   <!-- Buy More Points -->
                         <a href="#" class="list-group-item text-center hide">
                             <h4 class="fa fa-money fa-lg"></h4><br/>ENCASH MY POINTS
@@ -176,8 +176,8 @@ $userEmail = $userInfo->user_email;
                     </div>   <!-- Purchase History -->
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                            <form class="form-horizontal">
+                            <p>To get more points please mail <b>support@eventexchange.co.in</b> with the subject "<b>Request for more points</b>" . Kindly email from the registered Email Id or mentioned the same in the mail.</p>
+<!--                            <form class="form-horizontal">
                                 <div class="form-group">
                                     <label for="name" class="col-sm-3 control-label">Buy Points</label>
                                     <div class="col-sm-9">
@@ -189,13 +189,13 @@ $userEmail = $userInfo->user_email;
                                         <button type="submit" class="btn btn-danger">Pay Now</button>
                                     </div>
                                 </div>
-                            </form>
+                            </form>-->
                         </div>
                     </div>   <!-- Buy More Points -->
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                            <form class="form-horizontal">
+                            <p>To get more points please mail support@eventexchange.co.in with the Subject "Request for more points" . Kindly email from the registered Email Id or mentioned the same in the mail.</p>
+<!--                            <form class="form-horizontal">
                                 <div class="form-group">
                                     <label for="name" class="col-sm-3 control-label">Encash Points</label>
                                     <div class="col-sm-9">
@@ -207,7 +207,7 @@ $userEmail = $userInfo->user_email;
                                         <button type="submit" class="btn btn-danger">Pay Now</button>
                                     </div>
                                 </div>
-                            </form>
+                            </form>-->
                         </div>
                     </div>   <!--  Encash My Points -->
                     <div class="bhoechie-tab-content">

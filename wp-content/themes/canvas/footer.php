@@ -8,7 +8,7 @@
 
         <div class="container center clearfix">
 
-            &copy; 2016 by<a href="#"> Lagayega </a>. All Rights Reserved Developed by <a href="http://infinisystem.com/" target="_blank"> Infini Systems </a>.
+            &copy; 2016 by<a href="#"> Event Exchange </a>. All Rights Reserved Developed by <a href="http://infinisystem.com/" target="_blank"> Infini Systems </a>.
 
         </div>
 

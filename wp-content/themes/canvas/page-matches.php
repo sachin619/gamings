@@ -7,7 +7,7 @@
 get_header();
 ?>
 
-<section ng-controller="listingMatch"> 
+<section ng-controller="listingMatch" class="bg-img-container"> 
     <!-- Page Title
             ============================================= -->
     <!-- #page-menu end -->
@@ -34,11 +34,7 @@ get_header();
         <div class="content-wrap">
 
             <div class="container clearfix">
-                <div class="row">
-                    <div class="col-lg-12 matches_banner">
-                        <a href="#"> <img src="<?= get_template_directory_uri() ?>/images/matches_banner.jpg"></a>
-                    </div>
-                </div>
+
                 <!-- Portfolio Filter
                 ============================================= -->
                 <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
@@ -88,11 +84,11 @@ get_header();
 
 
                 <div class="table-responsive">
-                    <table class="table table-bordered nobottommargin">
+                    <table class="table table-bordered table-striped nobottommargin">
 
                         <thead>
                             <tr>
-                                <th width="18%">Time and Location</th>
+                                <th width="18%">Time &amp; Location</th>
                                 <th>Tournament</th>
                                 <th>Team 1</th>
                                 <th>Trade</th>
@@ -112,7 +108,7 @@ get_header();
                                     <input type="text"   class="trade form-control" style="display: {{hideTrade}}" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" style="width: 100%;" placeholder=" Add Trade" >
                                     <span ng-if="getDetails['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null"> You've traded {{getDetails['tradeTotal'][matches['id']][$index][0]['total']}} Pts. </span>
 
-                                    <span ng-if="  (matches['uid'] == null) ||( getDetails['tradeTotal'][matches['id']][$index][0]['total'] == null && (matches['points_distributed'] != 'No' || matches['ong'] != 'No'))">-</span>
+                                    <span ng-if="  (matches['uid'] == null) || (getDetails['tradeTotal'][matches['id']][$index][0]['total'] == null && (matches['points_distributed'] != 'No' || matches['ong'] != 'No'))">-</span>
 
                                 </td>
                                 <td><a href="#" style="display: {{hideTrade}}" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails.catPost[0]['uid'])" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'">Trade </a>
@@ -130,6 +126,12 @@ get_header();
                     <button type="button" class="btn btn-danger loadMoreBtn hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 50)">Load More </button>
                 </div>
 
+
+                <div class="row banner-match">
+                    <div class="col-lg-12 matches_banner">
+                        <a href="#"> <img src="<?= get_template_directory_uri() ?>/images/matches_banner.jpg"></a>
+                    </div>
+                </div>
             </div>
 
     </section><!-- #content end -->
@@ -139,8 +141,8 @@ get_header();
         padding-top:6px;
     }
     .loadMoreBtn{
-   background-color:#d9534f;
-   border-color: #d9534f;
+        background-color:#d9534f;
+        border-color: #d9534f;
     }
 </style>
 <?php

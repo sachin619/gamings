@@ -6,7 +6,7 @@
  */
 get_header();
 ?>
-<section ng-controller="tourDetails">
+<section ng-controller="tourDetails" class="bg-img-container">
     <!-- Page Title
             ============================================= -->
     <!--<section id="page-title">
@@ -184,7 +184,7 @@ get_header();
     </section><!-- #content end -->
 
     <section id="content">
-        <h3 class="text-center mtb20">	Upcoming Matches</h3>
+        <h3 class="text-center mtb20">Upcoming Matches</h3>
 
         <div class="content-wrap">
 
@@ -211,7 +211,7 @@ get_header();
 
                 <div class="clear"></div>
                 <div class="table-responsive">
-                    <table class="table table-bordered nobottommargin">
+                    <table class="table table-bordered table-striped nobottommargin">
 
                         <thead>
                             <tr>
@@ -255,7 +255,7 @@ get_header();
 
             </div>
 
-    </section><!-- #content end -->    
+    </section><!-- #content end -->     
 
     <!-- Footer
     ============================================= -->
