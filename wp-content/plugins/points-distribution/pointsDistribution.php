@@ -24,7 +24,7 @@ class Distribution_Wp_List_Table {
      * Menu item will allow us to load the page to display the table
      */
     public function add_menu_example_dlist_table_page() {
-        add_menu_page('Distribution', 'Points Distribution', 'manage_options', 'pointsDistribution.php', array($this, 'distribution_dlist_table_page'));
+        add_menu_page('Distribution', 'Points Diffusion', 'manage_options', 'pointsDistribution.php', array($this, 'distribution_dlist_table_page'),'dashicons-clipboard',45);
     }
 
     /**

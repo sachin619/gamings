@@ -222,10 +222,10 @@ class Facebook_Login_Public {
 	 * @return int user id
 	 */
 	private function register_user( $user ) {
-		do_action( 'fbl/register_user', $user );
-                $getId=wp_insert_user( $user );
-                update_user_meta($getId, 'points', get_option("token_amt"));
-		return $getId;
+			do_action( 'fbl/register_user', $user );
+			$getId=wp_insert_user( $user );
+			update_user_meta($getId, 'points', get_option("token_amt"));
+			return $getId;
 	}
 
 	/**

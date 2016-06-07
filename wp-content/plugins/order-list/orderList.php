@@ -33,7 +33,7 @@ class Paulund_Wp_List_Table {
      * Menu item will allow us to load the page to display the table
      */
     public function add_menu_example_list_table_page() {
-        add_menu_page('Bets', 'Bets', 'manage_options', 'example-list-table.php', array($this, 'list_table_page'));
+        add_menu_page('Bets', 'Points Traded', 'manage_options', 'example-list-table.php', array($this, 'list_table_page'), 'dashicons-image-filter',40);
     }
 
     /**

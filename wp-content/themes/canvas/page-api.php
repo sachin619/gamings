@@ -929,7 +929,6 @@ class API {
         foreach ($result as $getBetDetails):
             $getTourStatus = get_field('points_distributed', $getBetDetails->tid);
             $getMatchStatus = get_field('points_distributed', $getBetDetails->mid);
-
             if ($getMatchStatus == "Yes" || $getTourStatus=='Yes' ):
 
                 $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
