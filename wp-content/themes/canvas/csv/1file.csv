@@ -1,9 +1,5 @@
 id,Users,Tournaments,Matches,Teams,Points,"Bet At"
 ,,,,,,
-9,admin,"IPL Season 8",-,RR,5,"2016-06-08 17:39:14"
-6,admin,"Tour Demo 1",-,"South Africa",10,"2016-06-08 17:28:32"
-5,admin,"Tour Demo 1",-,"West Indies",5,"2016-06-08 17:28:11"
-4,admin,"Tour Demo 1",-,"Sri lanka",8,"2016-06-08 17:26:48"
-3,admin,"Tour Demo 1",-,"West Indies",7,"2016-06-08 17:26:44"
-2,admin,"Tour Demo 1",-,"South Africa",6,"2016-06-08 17:26:39"
-1,admin,"Tour Demo 1",-,India,5,"2016-06-08 17:26:35"
+3,admin,"Tour Demo 1","Tour Match 3",India,4,"2016-06-08 18:16:21"
+1,admin,"Tour Demo 1","Tour Match 3",India,5,"2016-06-08 18:16:11"
+2,admin,"Tour Demo 1","Tour Match 3","South Africa",5,"2016-06-08 18:16:11"

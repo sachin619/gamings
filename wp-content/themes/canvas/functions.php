@@ -519,19 +519,18 @@ function updateMatchPremium($postId) {
                 // update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
             }
             update_post_meta($postId, 'points_distributed', 'Yes');
-        } else if (count($countElimntdLoss) == 2 && $getTeams[0]['match_abandoned'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes') {
-            $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "'   "); //for match abondoned
-            $totBetsAbandoned = $totalWinBetsLoss;
-            foreach ($resultDisLoss as $distribution) {
-                $disFilter = (array) $distribution;
-                $data = ['uid' => $disFilter['uid'], 'tid' => $getTeams[0]['tournament_name']->ID, 'mid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $totBetsAbandoned];
-                $wpdb->insert('wp_distribution', $data);
-                $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
-                $calOverallPoints = (int) $getCurrentPoints[0] + $totBetsAbandoned;
-                update_post_meta($postId, 'points_distributed', 'Yes'); //for match abondoned
-            }
+        } else if (count($countElimntdLoss) == 2 && $getTeams[0]['match_abandoned'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes') {  //for match abondoned
+            $getActualBet = $wpdb->get_results("SELECT sum(pts) as bet,uid FROM wp_bets WHERE mid='" . $postId . "' group by uid   "); 
+            foreach ($getActualBet as $getBetInfo):
+                //  print_r($getBetInfo->bet);
+                $getCurrentPoints = get_user_meta($getBetInfo->uid, 'points');
+                $getUsedPoints = get_user_meta($getBetInfo->uid, 'points_used');
+                update_user_meta($getBetInfo->uid, 'points', $getCurrentPoints[0] + $getBetInfo->bet);
+                update_user_meta($getBetInfo->uid, 'points_used', $getUsedPoints[0] - $getBetInfo->bet);
+            endforeach;
+            update_post_meta($postId, 'points_distributed', 'Yes');
         }
-    endif;
+    endif;  //for match abondoned
 }
 
 show_admin_bar(false);
