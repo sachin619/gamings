@@ -87,7 +87,6 @@ $userEmail = $userInfo->user_email;
                                         <th>Team</th>
                                         <th>Points</th>
                                         <th>Bet Placed On</th>
-
                                     </tr>
                                 </thead>						   
                                 <tbody >
@@ -95,7 +94,8 @@ $userEmail = $userInfo->user_email;
                                         <td>{{myInfo['tourDetails']['id']}}</td>
                                         <td >{{myInfo['tourDetails']['tourTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['matchTitle']}}</td>
-                                        <td>{{myInfo['tourDetails']['teamTitle']}}</td>
+                                        <td style="background-color:#F8E0EC" ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
+                                        <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
                                     </tr>
@@ -144,7 +144,8 @@ $userEmail = $userInfo->user_email;
                                         <td>{{myInfo['tourDetails']['id']}}</td>
                                         <td >{{myInfo['tourDetails']['tourTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['matchTitle']}}</td>
-                                        <td>{{myInfo['tourDetails']['teamTitle']}}</td>
+                                        <td ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" style="background-color:#F8E0EC">Tie</td>
+                                        <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
                                         <td ng-class="myInfo['tourDetails']['win']=='Yes'?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
                                     </tr>   
@@ -177,37 +178,37 @@ $userEmail = $userInfo->user_email;
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
                             <p>To get more points please mail <b>support@eventexchange.co.in</b> with the subject "<b>Request for more points</b>" . Kindly email from the registered Email Id or mentioned the same in the mail.</p>
-<!--                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-3 control-label">Buy Points</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="name" placeholder="Buy Points">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-3 col-sm-9">
-                                        <button type="submit" class="btn btn-danger">Pay Now</button>
-                                    </div>
-                                </div>
-                            </form>-->
+                            <!--                            <form class="form-horizontal">
+                                                            <div class="form-group">
+                                                                <label for="name" class="col-sm-3 control-label">Buy Points</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="text" class="form-control" id="name" placeholder="Buy Points">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-sm-offset-3 col-sm-9">
+                                                                    <button type="submit" class="btn btn-danger">Pay Now</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>-->
                         </div>
                     </div>   <!-- Buy More Points -->
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
                             <p>To get more points please mail support@eventexchange.co.in with the Subject "Request for more points" . Kindly email from the registered Email Id or mentioned the same in the mail.</p>
-<!--                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="name" class="col-sm-3 control-label">Encash Points</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="name" placeholder="Encash Points">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-3 col-sm-9">
-                                        <button type="submit" class="btn btn-danger">Pay Now</button>
-                                    </div>
-                                </div>
-                            </form>-->
+                            <!--                            <form class="form-horizontal">
+                                                            <div class="form-group">
+                                                                <label for="name" class="col-sm-3 control-label">Encash Points</label>
+                                                                <div class="col-sm-9">
+                                                                    <input type="text" class="form-control" id="name" placeholder="Encash Points">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="col-sm-offset-3 col-sm-9">
+                                                                    <button type="submit" class="btn btn-danger">Pay Now</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>-->
                         </div>
                     </div>   <!--  Encash My Points -->
                     <div class="bhoechie-tab-content">

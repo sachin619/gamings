@@ -24,7 +24,7 @@ class Distribution_Wp_List_Table {
      * Menu item will allow us to load the page to display the table
      */
     public function add_menu_example_dlist_table_page() {
-        add_menu_page('Distribution', 'Points Diffusion', 'manage_options', 'pointsDistribution.php', array($this, 'distribution_dlist_table_page'),'dashicons-clipboard',45);
+        add_menu_page('Distribution', 'Points Diffusion', 'manage_options', 'pointsDistribution.php', array($this, 'distribution_dlist_table_page'), 'dashicons-clipboard', 45);
     }
 
     /**
@@ -178,7 +178,7 @@ class Distribution_Table extends WP_List_Table {
                 return get_the_title($item[$column_name]);
                 break;
             case 'team_id':
-                return get_the_title($item[$column_name]);
+                return $item[$column_name] != 0 ? get_the_title($item[$column_name]) : 'Tie';
                 break;
             case 'gain_points':
                 return $item[$column_name];

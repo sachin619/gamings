@@ -191,7 +191,7 @@ class Example_List_Table extends WP_List_Table {
                 return get_the_title($item[$column_name]);
                 break;
             case 'team_id':
-                return get_the_title($item[$column_name]);
+                return $item[$column_name]!=0 ? get_the_title($item[$column_name]):'Tie';
                 break;
             case 'pts':
                 return $item[$column_name];

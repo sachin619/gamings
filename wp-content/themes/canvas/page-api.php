@@ -483,9 +483,11 @@ class API {
                 $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId,];
                 $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
             }
+            $tradeInfoTie = ['tid' => $tId, 'user_id' => $userId,];
+            $userTotalTradeTie[] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
         }
 
-        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'getOngoing' => $collectOngoing];
+        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'getOngoing' => $collectOngoing, 'tradeTie' => $userTotalTradeTie];
         return $output;
     }
 
@@ -524,9 +526,11 @@ class API {
                 $teamId = $teamInfo['ID'];
                 $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId,];
                 $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
+                $tradeInfoTie = ['tid' => $tId, 'user_id' => $userId,];
+                $userTotalTradeTie[] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
             }
         }
-        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var];
+        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var,'tradeTie'=>$userTotalTradeTie];
         return $output;
     }
 
@@ -557,6 +561,7 @@ class API {
         $teamId = $tradeInfo['data']['team_id'];
         $points = $tradeInfo['data']['pts'];
         $uPointsR = get_user_meta($userId, 'points');
+        $getMatchStatus = get_field('points_distributed', $tradeInfo['data']['mid']);
         $uPoints = round($uPointsR[0]);
         $getUsedPoints = get_user_meta($userId, 'points_used');
         $usedPoints = round($getUsedPoints[0]);
@@ -581,22 +586,26 @@ class API {
         $getTourId = isset($getTeams[0]['tournament_name']->ID) ? $getTeams[0]['tournament_name']->ID : 0;
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTourId, 'team_id' => $teamId, 'pts' => $points];
         if ($getStartTime > $curTime):
-            if (!empty($tradeInfo['data']['pts'])):
-                if ($points >= $getMinimumBetAmount):
-                    if ($points <= $uPoints):
-                        $remaining = $uPoints - $points;
-                        update_user_meta($userId, 'points', $remaining);
-                        update_user_meta($userId, 'points_used', $usedCalc);
-                        $wpdb->insert('wp_bets', $wpBets);
-                        return "Your trade has been placed successfully!";
+            if ($getMatchStatus == 'No'):
+                if (!empty($tradeInfo['data']['pts'])):
+                    if ($points >= $getMinimumBetAmount):
+                        if ($points <= $uPoints):
+                            $remaining = $uPoints - $points;
+                            update_user_meta($userId, 'points', $remaining);
+                            update_user_meta($userId, 'points_used', $usedCalc);
+                            $wpdb->insert('wp_bets', $wpBets);
+                            return "Your trade has been placed successfully!";
+                        else:
+                            return "You don't have enough points to place this trade";
+                        endif;
                     else:
-                        return "You don't have enough points to place this trade";
+                        return "Minimum $getMinimumBetAmount points should be trade";
                     endif;
                 else:
                     return "Minimum $getMinimumBetAmount points should be trade";
                 endif;
             else:
-                return "Minimum $getMinimumBetAmount points should be trade";
+                return "Match had been over";
             endif;
         else:
             return "Match had been started";
@@ -700,6 +709,16 @@ class API {
             $where = " mid=0 AND";
         endif;
         $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE $where $Tradetype='" . $tradeInfo["tid"] . "' AND uid='" . $tradeInfo["user_id"] . "' GROUP BY uid ");
+        $getResult = (array) $result[0];
+        return $getResult['total'];
+    }
+
+    function getUserTotalTradeTie($tradeInfo, $Tradetype) {
+        global $wpdb;
+        if (isset($Tradetype) && $Tradetype == 'tid'):
+            $where = " mid=0 AND";
+        endif;
+        $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE $where $Tradetype='" . $tradeInfo["tid"] . "' AND uid='" . $tradeInfo["user_id"] . "' AND team_id=0 GROUP BY uid,mid ");
         $getResult = (array) $result[0];
         return $getResult['total'];
     }
@@ -923,18 +942,20 @@ class API {
         endif;
         global $wpdb;
         $getAccount = [];
-        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets where uid= $this->userId group by tid,team_id,mid  order by bet_at DESC");
+        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets where uid= $this->userId   group by tid,team_id,mid  order by bet_at DESC");
 //$this->getCsv($result);
         $i = 1;
         foreach ($result as $getBetDetails):
             $getTourStatus = get_field('points_distributed', $getBetDetails->tid);
             $getMatchStatus = get_field('points_distributed', $getBetDetails->mid);
-            $getTourDraw = get_field('tournament_abandoned', $getBetDetails->tid);
-            $getMatchDraw = get_field('match_abandoned', $getBetDetails->mid);
+            $getTourCancel = get_field('tournament_abandoned', $getBetDetails->tid);
+            $getMatchCancel = get_field('match_abandoned', $getBetDetails->mid);
+            $getMatchDraw = get_field('match_draw', $getBetDetails->mid);
             $getWinStatus = get_field('select_teams', $getBetDetails->mid);
             if ($getWinStatus[0]['winner'] == 'No' && $getWinStatus[1]['winner'] == 'No'):
+                $getAccount = $this->getDrawMatch($getMatchDraw, $getBetDetails, $wpdb, $getAccount, $i);
             else:
-                if (($getMatchStatus == "Yes" && $getMatchDraw == 'No' ) || ($getTourStatus == 'Yes' && $getTourDraw == 'No' )):
+                if (($getMatchStatus == "Yes" && $getMatchCancel == 'No' && $getBetDetails->team_id != 0 ) || ($getTourStatus == 'Yes' && $getTourCancel == 'No' )):
                     $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
                     $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
                     $tourDetails['id'] = $i++;
@@ -949,6 +970,22 @@ class API {
             endif;
         endforeach;
 
+        return $getAccount;
+    }
+
+    function getDrawMatch($getMatchDraw, $getBetDetails, $wpdb, $getAccount, $i) {
+        if ($getMatchDraw == 'Yes' && $getBetDetails->team_id == 0):
+
+            $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+            $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
+            $tourDetails['id'] = $i++;
+            $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
+            $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
+            $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
+            $tourDetails['pts'] = $getBetDetails->pts;
+            $tourDetails['bet_at'] = $getBetDetails->bet_at;
+            array_push($getAccount, ['tourDetails' => $tourDetails]);
+        endif;
         return $getAccount;
     }
 
