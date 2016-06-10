@@ -287,11 +287,13 @@ class API {
             $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId];
             $var[] = $this->getUserTrade($tradeInfo, 'tid');
         }
+        $tradeInfoTie = ['tid' => $tId, 'user_id' => $userId,];
+        $userTotalTradeTie = $this->getUserTotalTradeTie($tradeInfoTie, 'tid');
         $tradeInfo = ['tid' => $tId, 'user_id' => $userId];
         $getTotalBets = $this->getTotalTrade($tradeInfo, 'tid');
         $userTotalTrade = $this->getUserTotalTrade($tradeInfo, 'tid');
         //$detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'matches' => $this->tournamentsMatches($postId)];
-        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade];
+        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade,'tradeTie'=>$userTotalTradeTie];
         return $detailsData;
     }
 
@@ -530,7 +532,7 @@ class API {
                 $userTotalTradeTie[] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
             }
         }
-        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var,'tradeTie'=>$userTotalTradeTie];
+        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'tradeTie' => $userTotalTradeTie];
         return $output;
     }
 
@@ -642,6 +644,7 @@ class API {
         $currDate = strtotime($getDate);
         //   print_r($currDate);exit;
         $getCurrentTime = $currDate;
+        $getDistPoints=$getTeams[0]['points_distributed'];
         $getPrem = $getTeams[0]['premium']; //premium calculation
         //$premCalc = round($points / $getPrem); //premium calculation
         $premCalc = $points * $getPrem; //premium calculation which will deduct from kitty
@@ -651,7 +654,7 @@ class API {
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $points, 'stage' => $getCount, 'premium' => $getPrem];
         if (!empty($tradeInfo['data']['pts']) && is_numeric($tradeInfo['data']['pts'])):
             if ($points >= $getMinimumBetAmount && !empty($tradeInfo['data']['pts'])):
-                if ($getEndTime >= $getCurrentTime && $getNoCount != 1):
+                if ($getEndTime >= $getCurrentTime && $getNoCount != 1 && $getDistPoints!='Yes'):
                     if (!in_array($teamId, $elimiatedTeamId)):
                         if (ceil($premCalc) <= $uPoints):
                             $remaining = $uPoints - ceil($premCalc);

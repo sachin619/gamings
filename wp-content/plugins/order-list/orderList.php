@@ -185,7 +185,7 @@ class Example_List_Table extends WP_List_Table {
                 return $getUsername->data->display_name;
                 break;
             case 'mid':
-                return get_the_title($item[$column_name]);
+                return  $item[$column_name]==0?'-':get_the_title($item[$column_name]);
                 break;
             case 'tid':
                 return get_the_title($item[$column_name]);

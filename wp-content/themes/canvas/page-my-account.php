@@ -146,7 +146,7 @@ $userEmail = $userInfo->user_email;
                                         <td>{{myInfo['tourDetails']['matchTitle']}}</td>
                                         <td ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" style="background-color:#F8E0EC">Tie</td>
                                         <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
-                                        <td ng-class="myInfo['tourDetails']['win']=='Yes'?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
+                                        <td ng-class="myInfo['tourDetails']['win']=='Yes' || myInfo['tourDetails']['teamTitle'] == 'Api'?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
                                     </tr>   
                                     <tr>   

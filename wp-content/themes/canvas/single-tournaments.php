@@ -108,21 +108,28 @@ get_header();
                         <tbody> 
 
                             <tr   ng-repeat="teamInfo in getDetails['details'][0].participating_team">
-
                                 <td class="demo" width="30%"> {{teamInfo.team['post_title']}}</td>               
                                 <td > <span ng-if="getDetails['details'][0].uid != null"> {{getDetails['pts'][$index][0].total}} </span> <span ng-if="getDetails['pts'][$index][0].total == null">0</span> </td>
                                 <td class="blockTrade" ng-class="statusInfo"  >
                                     <input ng-if="(teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No') && getDetails['details'][0].uid != null" type="text" name="pts" ng-model="$parent.points"   placeholder="Trade">
-                                    <span ng-if="getDetails['details'][0]['points_distributed'] === 'Yes' && teamInfo.eliminated === 'No'">Winner </span>
+                                    <span ng-if="getDetails['details'][0]['points_distributed'] === 'Yes' && teamInfo.eliminated === 'No' && getDetails['details'][0]['tournament_draw']!='Yes' &&  getDetails['details'][0]['tournament_abandoned']!='Yes' ">Winner </span>
                                     <span  class="stage" ng-if="teamInfo.eliminated !== 'No'"><span>Eliminated!</span></span>  
-                                    <span ng-if="(getDetails['details'][0].uid == null && teamInfo.eliminated != 'Yes') || (teamInfo.eliminated != 'Yes' && teamInfo.eliminated != 'No')">-</span>
-
+                                    <span ng-if="(getDetails['details'][0].uid == null && teamInfo.eliminated != 'Yes' && getDetails['details'][0]['points_distributed']=='No' ) ">-</span>
+                                    <span  class="stage" ng-if="getDetails['details'][0]['tournament_draw']!= 'No' && teamInfo.eliminated== 'No'"><span>Tie</span></span> 
+                                    <span  class="stage" ng-if="getDetails['details'][0]['tournament_abandoned']!= 'No' && teamInfo.eliminated== 'No'"><span>Canceled</span></span> 
                                 </td>
                                 <td class="blockAction" >
-                                    <button class="btn btn-danger" ng-if="teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No'" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Trade</button>
-
+                                    <button class="btn btn-danger" ng-if=" (getDetails['details'][0].uid==null) ||( teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No')" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Trade</button>
                                 </td>
+                            </tr>
 
+                            <tr>
+                                <td>Trade For Tie </td>
+                                <td>{{getDetails['tradeTie']!=null?getDetails['tradeTie']:0}} </td>
+                                <td>
+                                    <input ng-if="getDetails['details'][0].uid!=null && getDetails['details'][0]['points_distributed'] != 'Yes' " type="text" name="pts" ng-model="$parent.pointsTie"   placeholder="Trade"> 
+                                    <span ng-if="(getDetails['details'][0].uid==null) || (getDetails['details'][0]['points_distributed'] == 'Yes' )">-</span></td>
+                                <td><button class="btn btn-danger" ng-if="(getDetails['details'][0].uid==null) || (getDetails['details'][0]['points_distributed'] != 'Yes' )"  ng-click="trade(getDetails['details'][0].id, '0', pointsTie, getDetails['details'][0].uid)" >Trade</button> </td>
                             </tr>
 
 
@@ -226,7 +233,7 @@ get_header();
                             </tr>
                         </thead>
                         <tbody > 
-      
+
                             <tr ng-repeat="matches in getMatchDetails.catPost">
                                 <td> {{matches['onlySDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue'] != ''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
                                 <td ng-init="count = $index"><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a></td>
