@@ -115,8 +115,8 @@ get_header();
                                     <span ng-if="getDetails['details'][0]['points_distributed'] === 'Yes' && teamInfo.eliminated === 'No' && getDetails['details'][0]['tournament_draw']!='Yes' &&  getDetails['details'][0]['tournament_abandoned']!='Yes' ">Winner </span>
                                     <span  class="stage" ng-if="teamInfo.eliminated !== 'No'"><span>Eliminated!</span></span>  
                                     <span ng-if="(getDetails['details'][0].uid == null && teamInfo.eliminated != 'Yes' && getDetails['details'][0]['points_distributed']=='No' ) ">-</span>
-                                    <span  class="stage" ng-if="getDetails['details'][0]['tournament_draw']!= 'No' && teamInfo.eliminated== 'No'"><span>Tie</span></span> 
-                                    <span  class="stage" ng-if="getDetails['details'][0]['tournament_abandoned']!= 'No' && teamInfo.eliminated== 'No'"><span>Canceled</span></span> 
+                                    <span  class="stage" ng-if="getDetails['details'][0]['tournament_draw']!= 'No' && teamInfo.eliminated== 'No' && getDetails['details'][0]['points_distributed']=='Yes'"><span>Tie</span></span> 
+                                    <span  class="stage" ng-if="getDetails['details'][0]['tournament_abandoned']!= 'No' && teamInfo.eliminated== 'No' && getDetails['details'][0]['points_distributed']=='Yes'"><span>Canceled</span></span> 
                                 </td>
                                 <td class="blockAction" >
                                     <button class="btn btn-danger" ng-if=" (getDetails['details'][0].uid==null) ||( teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No')" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Trade</button>
