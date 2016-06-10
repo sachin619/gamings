@@ -654,7 +654,6 @@ function ngPostForgotPassword(url, formData, $scope, $http, $templateCache, erro
     });
 }
 
-
 app.controller('forgotPasswordCtrl', function ($scope, $http, $templateCache) {
 
     $scope.loaderSrc = loaderLocation;
@@ -678,6 +677,11 @@ app.controller('forgotPasswordCtrl', function ($scope, $http, $templateCache) {
     };
 });
 
+app.controller('leaderBoardCtrl', function ($scope, $http, $templateCache) {
+    var formInfo={};
+    ngPost('leader-board', formInfo, $scope, $http, $templateCache, 'userDetails');
+
+});
 function getUrlParameter() {
     $.urlParam = function (name) {
         var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);

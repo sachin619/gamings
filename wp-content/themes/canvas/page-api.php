@@ -1,16 +1,18 @@
 <?php
-
+include get_template_directory() . "/inc/page-api-class.php";
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 $uid = isset($_REQUEST['userId']) ? $_REQUEST['userId'] : '';
 $output = null;
-$api = new API();
-
+$api = new ApiClass();
 switch ($action) {
     case 'home':
         $output = $api->home();
         break;
     case 'header':
         $output = $api->header();
+        break;
+    case 'leader-board':
+        $output = $api->leaderBoard();
         break;
     case 'home-match-listing':
         $output = $api->homeMatchListing($_REQUEST);
@@ -108,13 +110,15 @@ if ($output) {
 }
 die();
 
-class API {
+class API  {
 
     public $userId;
     public $getDate;
-
+    public $wpdb;
     function __construct() {
         global $user_ID;
+        global $wpdb;
+        $this->wpdb=$wpdb;
         $this->getDate = current_time('mysql');
         if (!empty($user_ID))
             $this->userId = $user_ID;
@@ -293,7 +297,7 @@ class API {
         $getTotalBets = $this->getTotalTrade($tradeInfo, 'tid');
         $userTotalTrade = $this->getUserTotalTrade($tradeInfo, 'tid');
         //$detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'matches' => $this->tournamentsMatches($postId)];
-        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade,'tradeTie'=>$userTotalTradeTie];
+        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'tradeTie' => $userTotalTradeTie];
         return $detailsData;
     }
 
@@ -644,7 +648,7 @@ class API {
         $currDate = strtotime($getDate);
         //   print_r($currDate);exit;
         $getCurrentTime = $currDate;
-        $getDistPoints=$getTeams[0]['points_distributed'];
+        $getDistPoints = $getTeams[0]['points_distributed'];
         $getPrem = $getTeams[0]['premium']; //premium calculation
         //$premCalc = round($points / $getPrem); //premium calculation
         $premCalc = $points * $getPrem; //premium calculation which will deduct from kitty
@@ -654,7 +658,7 @@ class API {
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $points, 'stage' => $getCount, 'premium' => $getPrem];
         if (!empty($tradeInfo['data']['pts']) && is_numeric($tradeInfo['data']['pts'])):
             if ($points >= $getMinimumBetAmount && !empty($tradeInfo['data']['pts'])):
-                if ($getEndTime >= $getCurrentTime && $getNoCount != 1 && $getDistPoints!='Yes'):
+                if ($getEndTime >= $getCurrentTime && $getNoCount != 1 && $getDistPoints != 'Yes'):
                     if (!in_array($teamId, $elimiatedTeamId)):
                         if (ceil($premCalc) <= $uPoints):
                             $remaining = $uPoints - ceil($premCalc);
@@ -1073,6 +1077,11 @@ class API {
         $attach_id = wp_insert_attachment($attachment, $filename, $parent_post_id);
         return $attach_id;
     }
+    
+    function getProfileImg($getImgId){
+       $getImg= $this->wpdb->get_results("SELECT meta_value FROM wp_postmeta where post_id=$getImgId");
+       return get_site_url().'/wp-content/uploads/'.$getImg[0]->meta_value;
+    }
 
     function getUnclearedPoints() {
         global $wpdb;
@@ -1162,3 +1171,5 @@ class API {
     }
 
 }
+
+
