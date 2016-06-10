@@ -10,7 +10,7 @@
  */
 $userInfo = wp_get_current_user();
 $userName = $userInfo->user_login;
-if ((is_page('register') && is_user_logged_in())||(is_page('my-account') && !is_user_logged_in())):
+if ((is_page('register') && is_user_logged_in()) || (is_page('my-account') && !is_user_logged_in())):
     wp_redirect(get_site_url());
 endif;
 ?>
@@ -38,7 +38,7 @@ endif;
                 <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
         <![endif]-->
 
-    
+
         <?php wp_head(); ?>
         <style>
             .currentMain{
@@ -69,12 +69,12 @@ endif;
                             <a href="<?= get_site_url() ?>" class="standard-logo" data-dark-logo="<?= get_template_directory_uri() ?>/images/logos.png"><img src="<?= get_template_directory_uri() ?>/images/logos.png" alt="Canvas Logo"></a>
                             <a href="<?= get_site_url() ?>" class="retina-logo" data-dark-logo="<?= get_template_directory_uri() ?>/images/logos.png"><img src="<?= get_template_directory_uri() ?>/images/logos.png" alt="Canvas Logo"></a>
                         </div><!-- #logo end -->
-						
-						<div id="logo" class="ad-banner">
-					<div class="ad-ban-hold">
-						<img src="<?= get_template_directory_uri() ?>/images/header-ad.gif" class="imgaddbanner" alt="Banner" style="height:60px !important; display:block;">
-                       </div>
-						</div>
+
+                        <div id="logo" class="ad-banner">
+                            <div class="ad-ban-hold">
+                                <img src="<?= get_template_directory_uri() ?>/images/header-ad.gif" class="imgaddbanner" alt="Banner" style="height:60px !important; display:block;">
+                            </div>
+                        </div>
 
                         <!-- Primary Navigation
                         ============================================= -->
@@ -84,11 +84,13 @@ endif;
                                 <li class=" <?= strcmp('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_site_url() . '/') == 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>"><div><i class=""></i>Home</div></a>
 
                                 </li>
-                                
+
                                 <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'about') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>/about-us"><div><i class=""></i>About</div></a>
 
                                 </li>
                                 <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'contact') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>/contact-us"><div><i class=""></i>Contact</div></a>								
+                                </li>
+                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'leader') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>/leader-board"><div><i class=""></i>Leader Board</div></a>								
                                 </li>
                                 <?php if (empty($userName)): ?>
                                     <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'register') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() . '/register' ?>"><div><i class=""></i>Login/Register</div></a>								
@@ -111,8 +113,8 @@ endif;
                                 $getFilterPoints = formatNumberAbbreviation($getUserPoints[0]);
                                 ?>
                                 <div id="top-cart">
-                                    <a href="<?= get_site_url() . '/my-account' ?>" id="top-cart-trigger"><i class="fa fa-money fa-lg" style="font-size:36px;"></i><span><?= isset($getFilterPoints)?$getFilterPoints:0;  ?></span></a>
-                                    
+                                    <a href="<?= get_site_url() . '/my-account' ?>" id="top-cart-trigger"><i class="fa fa-money fa-lg" style="font-size:36px;"></i><span><?= isset($getFilterPoints) ? $getFilterPoints : 0; ?></span></a>
+
                                 </div><!-- #top-cart end -->
                             <?php endif; ?>
                             <?php if (empty($userName)): ?>
@@ -123,72 +125,72 @@ endif;
                         </nav><!-- #primary-menu end -->
 
                     </div>
-					
-					<div class="container clearfix cricket-box">
-<div id="page-menu">
 
-            <div id="page-menu-wrap">
+                    <div class="container clearfix cricket-box">
+                        <div id="page-menu">
 
-                <div class="container clearfix">
+                            <div id="page-menu-wrap">
 
-                    <nav>
-                        <ul>
-                        <?php
-                            $args = ['parent' => 1];
-                            $getCategoires = get_categories($args);
-                            foreach ($getCategoires as $catName):
-                                ?>
-                                <li class="current"><a href=""><div><?= $catName->name ?></div></a>
-                                    <ul>
-                                        <li><a href="<?= get_site_url().'/tournaments/?category='.$catName->name ?>"><div>Tournaments</div> </a> </li>
-                                        <li><a href="<?= get_site_url().'/matches/?category='.$catName->name ?>"><div>Matches </div> </a> </li>
-                                    </ul>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </nav>
+                                <div class="container clearfix">
 
-                <div id="page-submenu-trigger"><i class="icon-reorder"></i></div>
+                                    <nav>
+                                        <ul>
+                                            <?php
+                                            $args = ['parent' => 1];
+                                            $getCategoires = get_categories($args);
+                                            foreach ($getCategoires as $catName):
+                                                ?>
+                                                <li class="current"><a href=""><div><?= $catName->name ?></div></a>
+                                                    <ul>
+                                                        <li><a href="<?= get_site_url() . '/tournaments/?category=' . $catName->name ?>"><div>Tournaments</div> </a> </li>
+                                                        <li><a href="<?= get_site_url() . '/matches/?category=' . $catName->name ?>"><div>Matches </div> </a> </li>
+                                                    </ul>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </nav>
 
-                </div>
+                                    <div id="page-submenu-trigger"><i class="icon-reorder"></i></div>
 
-            </div>
+                                </div>
 
-        </div>
-                </div>
+                            </div>
+
+                        </div>
+                    </div>
 
             </header><!-- #header end -->
 
             <!-- Page Sub Menu
         ============================================= -->
-        <!--<div id="page-menu">
-
-            <div id="page-menu-wrap">
-
-                <div class="container clearfix">
-
-                    <nav>
-                        <ul>
-                        <?php
-                            $args = ['parent' => 1];
-                            $getCategoires = get_categories($args);
-                            foreach ($getCategoires as $catName):
-                                ?>
-                                <li class="current"><a href=""><div><?= $catName->name ?></div></a>
-                                    <ul>
-                                        <li><a href="<?= get_site_url().'/tournaments/?category='.$catName->name ?>"><div>Tournaments </div> </a> </li>
-                                        <li><a href="<?= get_site_url().'/matches/?category='.$catName->name ?>"><div>Matches </div> </a> </li>
-                                    </ul>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </nav>
-
-                <div id="page-submenu-trigger"><i class="icon-reorder"></i></div>
-
+            <!--<div id="page-menu">
+    
+                <div id="page-menu-wrap">
+    
+                    <div class="container clearfix">
+    
+                        <nav>
+                            <ul>
+            <?php
+            $args = ['parent' => 1];
+            $getCategoires = get_categories($args);
+            foreach ($getCategoires as $catName):
+                ?>
+                                        <li class="current"><a href=""><div><?= $catName->name ?></div></a>
+                                            <ul>
+                                                <li><a href="<?= get_site_url() . '/tournaments/?category=' . $catName->name ?>"><div>Tournaments </div> </a> </li>
+                                                <li><a href="<?= get_site_url() . '/matches/?category=' . $catName->name ?>"><div>Matches </div> </a> </li>
+                                            </ul>
+                                        </li>
+            <?php endforeach; ?>
+                            </ul>
+                        </nav>
+    
+                    <div id="page-submenu-trigger"><i class="icon-reorder"></i></div>
+    
+                    </div>
+    
                 </div>
-
-            </div>
-
-        </div>--><!-- #page-menu end -->
+    
+            </div>--><!-- #page-menu end -->
 
