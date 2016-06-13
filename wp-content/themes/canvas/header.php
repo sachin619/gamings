@@ -90,8 +90,7 @@ endif;
                                 </li>
                                 <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'contact') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>/contact-us"><div><i class=""></i>Contact</div></a>								
                                 </li>
-                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'leader') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>/leader-board"><div><i class=""></i>Leader Board</div></a>								
-                                </li>
+                            
                                 <?php if (empty($userName)): ?>
                                     <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'register') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() . '/register' ?>"><div><i class=""></i>Login/Register</div></a>								
                                     </li>
