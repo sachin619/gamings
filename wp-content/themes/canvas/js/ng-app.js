@@ -29,7 +29,8 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
         ngPost('home-match-listing', formInfo, $scope, $http, $templateCache, 'homeMatchListing');
 
     };
-    $scope.tradeMatch = function (link, tid, points, uid) {
+    $scope.tradeMatch = function (link, tid, points, uid,pointsTie) {
+       
         if (uid != null) {
             var slug = link.split("/");
             slug = slug[slug.length - 2];
@@ -390,14 +391,15 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
         var formData = {};
     }
 
-    $scope.tradeMatch = function (link, tid, points, uid) {
-
+    $scope.tradeMatch = function (link, tid, points, uid,pointsTie) {
+      //  $scope.pointsTie="";
         if (uid != null) {
             var slug = link.split("/");
             slug = slug[slug.length - 2];
             var formDataNew = {
                 'mid': tid,
                 'pts': points,
+                'tie':pointsTie,
                 'slug': slug,
                 'mainSlug': $.urlParam('category'),
                 'type': 'matchesList',
@@ -548,8 +550,9 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
             ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         }
         else if (formData['type'] === 'matchesList') {
+            $scope.pointsTie="";
             var formDataReload = {'categoryName': formData['mainSlug'], 'type': formData['catType'], 'getCount': sessionStorage.getItem('getCount')};
-            console.log(formDataReload);
+            //console.log(formDataReload);
             ngPost('listing-matches', formDataReload, $scope, $http, $templateCache, 'getDetails');
         }
         else if (formData['type'] === 'tournamentMatcheList') {

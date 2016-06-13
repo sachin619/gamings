@@ -1,4 +1,5 @@
 <?php
+
 include get_template_directory() . "/inc/page-api-class.php";
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 $uid = isset($_REQUEST['userId']) ? $_REQUEST['userId'] : '';
@@ -110,15 +111,16 @@ if ($output) {
 }
 die();
 
-class API  {
+class API {
 
     public $userId;
     public $getDate;
     public $wpdb;
+
     function __construct() {
         global $user_ID;
         global $wpdb;
-        $this->wpdb=$wpdb;
+        $this->wpdb = $wpdb;
         $this->getDate = current_time('mysql');
         if (!empty($user_ID))
             $this->userId = $user_ID;
@@ -541,6 +543,8 @@ class API  {
     }
 
     function multiTradeMatch($tradeInfo) {
+
+        $tradeInfo['data']['pts']+=$tradeInfo['data']['tie'];
         if (!empty($tradeInfo['data']['pts'])):
             foreach ($tradeInfo['data']['pts'] as $teamId => $points) {
                 $tradeInfo['data']['team_id'] = $teamId;
@@ -1077,10 +1081,10 @@ class API  {
         $attach_id = wp_insert_attachment($attachment, $filename, $parent_post_id);
         return $attach_id;
     }
-    
-    function getProfileImg($getImgId){
-       $getImg= $this->wpdb->get_results("SELECT meta_value FROM wp_postmeta where post_id=$getImgId");
-       return get_site_url().'/wp-content/uploads/'.$getImg[0]->meta_value;
+
+    function getProfileImg($getImgId) {
+        $getImg = $this->wpdb->get_results("SELECT meta_value FROM wp_postmeta where post_id=$getImgId");
+        return get_site_url() . '/wp-content/uploads/' . $getImg[0]->meta_value;
     }
 
     function getUnclearedPoints() {
@@ -1171,5 +1175,3 @@ class API  {
     }
 
 }
-
-
