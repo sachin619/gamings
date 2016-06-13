@@ -543,10 +543,14 @@ class API {
     }
 
     function multiTradeMatch($tradeInfo) {
-
-        $tradeInfo['data']['pts']+=$tradeInfo['data']['tie'];
+//echo count($tradeInfo['data']['pts']);exit;
+        //array_push($tradeInfo['data']['pts'], $tradeInfo['data']['tie']);
+        $tradeInfo['data']['pts'][0]=$tradeInfo['data']['tie'];
+       // print_r($tradeInfo['data']['pts']);exit;
         if (!empty($tradeInfo['data']['pts'])):
+            
             foreach ($tradeInfo['data']['pts'] as $teamId => $points) {
+             
                 $tradeInfo['data']['team_id'] = $teamId;
                 $tradeInfo['data']['pts'] = $points;
                 $get_result[] = $this->tradeMatch($tradeInfo);

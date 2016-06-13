@@ -116,12 +116,12 @@ get_header();
                                     <span ng-if=" hideTrade != 'block' && hideTrade != null && getDetails['tradeTotal'][matches['id']][$index][0]['total'] == null">-</span>
                                 </td>
                                 <td>
-                                    <input type="text"   class="trade form-control" style="display: {{hideTrade}} ;width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.pointsTie[0]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null"  placeholder=" Add Trade" >
+                                    <input type="text"   class="trade form-control" style="display: {{hideTrade}} ;width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.pointsTie[$index]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null"  placeholder=" Add Trade" >
                                     <span ng-if="getDetails['tradeTie'][$index] != null"> You've traded {{getDetails["tradeTie"][$index]}} Pts </span>
                                     <span ng-if="getDetails['tradeTie'][$index] == null && hideTrade != 'block' && hideTrade != null"> - </span>
                                 </td>
                                 <td> 
-                                 <a href="#" style="display: {{hideTrade}}" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails.catPost[0]['uid'],pointsTie)" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'">Trade </a>
+                                 <a href="#" style="display: {{hideTrade}}" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails.catPost[0]['uid'],pointsTie[$index])" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'">Trade </a>
                                 </td>
                                 <td>{{matches["total_bets"]}} <span ng-if="matches['total_bets'] == ''">0</span></td>
                             </tr>    
