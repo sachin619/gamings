@@ -38,6 +38,7 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
                 'mid': tid,
                 'pts': points,
                 'slug': slug,
+                'tie':pointsTie,
                 'mainSlug': $.urlParam('category'),
                 'type': 'popularMatches',
                 'catType': sessionStorage.getItem('type')
@@ -212,7 +213,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
     var formData = {
         'postId': slug
     };
-    $scope.tradeMatch = function (link, tid, points, uid) {
+    $scope.tradeMatch = function (link, tid, points, uid,pointsTie) {
 
         if (uid != null) {
             var slug = link.split("/");
@@ -221,6 +222,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
                 'mid': tid,
                 'pts': points,
                 'slug': slug,
+                'tie':pointsTie,
                 'mainSlug': $.urlParam('category'),
                 'mainSlugTour': slugCopy,
                 'type': 'tournamentMatcheList',
@@ -556,6 +558,7 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
             ngPost('listing-matches', formDataReload, $scope, $http, $templateCache, 'getDetails');
         }
         else if (formData['type'] === 'tournamentMatcheList') {
+                $scope.pointsTieM="";
             var formDataReload = {'categoryName': formData['mainSlug'], 'type': 'upcomming', 'tourId': formData['mainSlugTour'], 'getCount': sessionStorage.getItem('getCount')};
             console.log(formDataReload);
             ngPost('listing-matches', formDataReload, $scope, $http, $templateCache, 'getMatchDetails');
