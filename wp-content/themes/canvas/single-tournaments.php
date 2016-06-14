@@ -284,7 +284,7 @@ get_header();
                                 <td>{{matches["total_bets"]}} <span ng-if="matches['total_bets'] == ''">0</span></td>
                             </tr>    
 
-                            <tr  ng-hide="getMatchDetails.catPost.length"><td colspan="8" align="center">There are no open matches at the moment please check again later!</td></tr>
+                            <tr  ng-hide="getMatchDetails.catPost.length"><td colspan="9" align="center">There are no open matches at the moment please check again later!</td></tr>
 
                         </tbody>
                     </table>

@@ -49,7 +49,7 @@ get_header();
                 </div> -->
 
                 <div class="clear"></div>
-
+                <h2 ng-hide="getDetails.catPost.length">There are no open tournaments at the moment please check again later!</h2>
                 <!-- Portfolio Items
                 ============================================= -->
                 <div  ng-init="i = 1" class="portfolio grid-container portfolio-2 clearfix main-container">
