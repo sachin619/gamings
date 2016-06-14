@@ -23,10 +23,11 @@ class Paulund_Wp_List_Table {
      */
     public function __construct() {
         add_action('admin_menu', array($this, 'add_menu_example_list_table_page'));
+        wp_enqueue_style('bootstrap', get_template_directory_uri() . '/css/bootstrap.css');
         wp_enqueue_style('datepicker', get_template_directory_uri() . '/css/datepicker.css');
         wp_enqueue_script('jquery10', get_template_directory_uri() . '/js/jquery10.js');
         wp_enqueue_script('jquery-ui', get_template_directory_uri() . '/js/jquery-ui.js');
-        wp_enqueue_script('custom', get_template_directory_uri() . '/js/custom.js');
+        wp_enqueue_script('custom', get_template_directory_uri() . '/js/custom.js'); 
     }
 
     /**
@@ -206,3 +207,7 @@ class Example_List_Table extends WP_List_Table {
 
 }
 ?>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
