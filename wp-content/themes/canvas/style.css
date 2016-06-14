@@ -2185,7 +2185,7 @@ body.top-search-open #side-panel-trigger { opacity: 0; }
 	position: relative;
 	float: left;
 	list-style: none;
-	margin-left: 40px;
+/*   margin-left: 40px;*/
 }
 
 #page-menu nav li a {
