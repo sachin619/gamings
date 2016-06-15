@@ -62,12 +62,13 @@ class ApiClass extends API {
                 $getTotal = array_sum($collectWinpoints[$getUserId]) - array_sum($getLossPts);
                 if ($getTotal > 0):
                     $userName = get_user_by('id', $getUserId);
-                    $getInfo[] = ['userId' => $getUserId, 'userName' => $userName->data->display_name, 'pts' => $getTotal, 'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate, 'mid' => count(array_unique($getMid[$getUserId]))];
+                    $getInfo[] = ['userId' => $getUserId, 'userName' => $userName->data->display_name, 'pts' => $getTotal,  'mid' => count(array_unique($getMid[$getUserId]))];
                 endif;
             endif;
         endforeach;
 
-        return $getInfo;
+        return ['info'=>$getInfo,  'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate] ;
+   
     }
 
 }

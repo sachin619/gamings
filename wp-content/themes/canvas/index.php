@@ -271,16 +271,16 @@ get_header();
     </section><!-- #content end -->
 
    
-    <div class="container clearfix">
+    <div class="container clearfix hidden-lg hidden-md">
 
                 <div class="row topmargin-sm">
 
                         <div class="heading-block center">
                                 <h3>Leadeboard</h3>
-                                <span class="divcenter">{{home.leaderBoard[0]['startDate']}} - {{home.leaderBoard[0]['endDate']}}</span>
+                                <span class="divcenter">{{home.leaderBoard['startDate']}} - {{home.leaderBoard['endDate']}}</span>
                         </div>
 
-                        <div class="col-md-3 col-sm-6 bottommargin" ng-repeat="leaderBoard in home.leaderBoard">
+                        <div class="col-md-3 col-sm-6 bottommargin" ng-repeat="leaderBoard in home.leaderBoard['info']">
                             <div class="team">
                                 <div class="team-image">
                                         <img src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
@@ -343,10 +343,10 @@ get_header();
         <div class="sticy_foot row">
             <div class="col-md-2 foot-col">
                 <h6>Leadeboard</h6>
-                <p class="crly_brk"> {{home.leaderBoard[0]['startDate']}} - {{home.leaderBoard[0]['endDate']}}</p>
+                <p class="crly_brk"> {{home.leaderBoard['startDate']}} - {{home.leaderBoard['endDate']}}</p>
                 <img src="<?= get_template_directory_uri() ?>/images/curly_brk.png" alt="img" style="margin:0 0 0 15px;">
             </div>
-            <div class="col-md-2 foot-col" ng-repeat="leaderBoard in home.leaderBoard" >
+            <div class="col-md-2 foot-col" ng-repeat="leaderBoard in home.leaderBoard['info']" >
                 <div class="testi-image">
                     <a href="#"><img src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img"></a>
                 </div>
