@@ -9,7 +9,6 @@
 class ApiClass extends API {
 
     function leaderBoard() {
-
         $args = ['post_type' => 'scheme', 'meta_query' => [[
             'key' => 'status',
             'value' => 'Active',
@@ -21,12 +20,9 @@ class ApiClass extends API {
         $getStartDate = $collectSchemeInfo[0]['from_date'] . " 00:00:00";
         $getEndDate = $collectSchemeInfo[0]['to_date'] . " 23:59:00";
         $getMinMatch = $collectSchemeInfo[0]['min_no_of_matches'];
-        //echo $getEndDate;
         global $wpdb;
         $getAccount = [];
         $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets WHERE bet_at >= '" . $getStartDate . "' AND  bet_at <= '" . $getEndDate . "'  group by tid,team_id,mid,uid  order by pts ");
-
-//$this->getCsv($result);
         $i = 1;
         foreach ($result as $getBetDetails):
             $getTourStatus = get_field('points_distributed', $getBetDetails->tid);
@@ -50,24 +46,21 @@ class ApiClass extends API {
                     $tourDetails['id'] = $i++;
                     $getMid[$getBetDetails->uid][] = $getBetDetails->mid;
                 endif;
-
             endif;
-
         endforeach;
-        $limitUser=0;
+        $limitUser = 0;
         foreach ($collectLosspoints as $getUserId => $getLossPts):
             if (count(array_unique($getMid[$getUserId])) >= $getMinMatch):
                 $getTotal = array_sum($collectWinpoints[$getUserId]) - array_sum($getLossPts); //substract win - loss
-                if ($getTotal > 0 && $limitUser<=2):          //only top 3 results (0,1,2)
+                if ($getTotal > 0 && $limitUser <= 2):          //only top 3 results (0,1,2)
                     $userName = get_user_by('id', $getUserId);
-                    $getInfo[] = ['userId' => $getUserId, 'userName' => $userName->data->display_name, 'pts' => $getTotal,  'mid' => count(array_unique($getMid[$getUserId]))];
+                    $getInfo[] = ['userId' => $getUserId, 'userName' => $userName->data->display_name, 'pts' => $getTotal, 'mid' => count(array_unique($getMid[$getUserId]))];
+                    update_field('winner_' . $limitUser, $userName->data->display_name, $collectSchemeInfo[0]['id']);
                 endif;
             endif;
             $limitUser++;
         endforeach;
-
-        return ['info'=>$getInfo,  'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate] ;
-   
+        return ['info' => $getInfo, 'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate];
     }
 
 }
