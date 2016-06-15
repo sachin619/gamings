@@ -38,12 +38,7 @@ endif;
         <![endif]-->
 
 
-        <?php wp_head(); ?>
-        <style>
-            .currentMain{
-                color:#d4202b;
-            }
-        </style>
+        <?php wp_head(); ?>        
     </head>
 
     <body class="stretched">
@@ -54,7 +49,7 @@ endif;
 
             <!-- Header
             ============================================= -->
-            <header id="header" class="full-header" >
+            <header id="header" class="full-header">
 
                 <div id="header-wrap">
 
@@ -80,23 +75,17 @@ endif;
                         <nav id="primary-menu">
 
                             <ul> 
-                                <li class=" <?= strcmp('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_site_url() . '/') == 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>"><div><i class=""></i>Home</div></a>
+                                <li><a class="<?= strcmp('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], get_site_url() . '/') == 0 ? 'currentMain' : ''; ?>" href="<?= get_site_url() ?>"> Home </a></li>
 
-                                </li>
-
-                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'about') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>/about-us"><div><i class=""></i>About</div></a>
-
-                                </li>
-                                <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'contact') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() ?>/contact-us"><div><i class=""></i>Contact</div></a>								
-                                </li>
+                                <li><a class="<?= strpos($_SERVER['REQUEST_URI'], 'about') > 0 ? 'currentMain' : ''; ?>" href="<?= get_site_url() ?>/about-us"> About </a></li>
+                                
+                                <li><a class="<?= strpos($_SERVER['REQUEST_URI'], 'contact') > 0 ? 'currentMain' : ''; ?>" href="<?= get_site_url() ?>/contact-us"> Contact </a></li>
                             
                                 <?php if (empty($userName)): ?>
-                                    <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'register') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() . '/register' ?>"><div><i class=""></i>Login/Register</div></a>								
-                                    </li>
+                                    <li><a class="<?= strpos($_SERVER['REQUEST_URI'], 'register') > 0 ? 'currentMain' : ''; ?>" href="<?= get_site_url() . '/register' ?>"> Login/Register </a></li>
                                 <?php else: ?>
-                                    <li class="mega-menu <?= strpos($_SERVER['REQUEST_URI'], 'account') > 0 ? 'currentMain' : ''; ?>"><a href="<?= get_site_url() . '/my-account' ?>"><div><i class=""></i>My Account</div></a>
-                                    </li>
-                                    <li class="mega-menu "><a href="<?= get_site_url() . '/api?action=logout' ?>"> Logout</a></li>
+                                    <li><a class="<?= strpos($_SERVER['REQUEST_URI'], 'account') > 0 ? 'currentMain' : ''; ?>" href="<?= get_site_url() . '/my-account' ?>"> My Account</a></li>
+                                    <li><a href="<?= get_site_url() . '/api?action=logout' ?>"> Logout</a></li>
                                 <?php endif ?>
                                 </li>
                             </ul>
@@ -111,7 +100,7 @@ endif;
                                 $getFilterPoints = formatNumberAbbreviation($getUserPoints[0]);
                                 ?>
                                 <div id="top-cart">
-                                    <a href="<?= get_site_url() . '/my-account' ?>" id="top-cart-trigger"><i class="fa fa-money fa-lg" style="font-size:36px;"></i><span><?= isset($getFilterPoints) ? $getFilterPoints : 0; ?></span></a>
+                                    <a href="<?= get_site_url() . '/my-account' ?>" id="top-cart-trigger"><i class="fa fa-money fa-lg" style="font-size:36px;"></i><span class="updateUserKit"><?= isset($getFilterPoints) ? $getFilterPoints : 0; ?></span></a>
 
                                 </div><!-- #top-cart end -->
                             <?php endif; ?>

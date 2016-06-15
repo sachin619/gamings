@@ -29,7 +29,7 @@ $userEmail = $userInfo->user_email;
                     <div class="list-group">
 
                         <a href="#" class="list-group-item active text-center">
-                            <h4 class="fa fa-money fa-lg"></h4><br/>MY POINTS
+                            <h4 class="fa fa-money fa-lg"></h4><br/> My Points
                         </a>   <!--My points -->
                         <a href="#" class="list-group-item text-center">
                             <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>Traded Points
@@ -38,19 +38,19 @@ $userEmail = $userInfo->user_email;
                             <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>Trade Diffusion
                         </a>    <!-- My Win Loss points -->    
                         <a href="#" class="list-group-item text-center hide">
-                            <h4 class="fa fa-shopping-cart fa-lg "></h4><br/>PURCHASE HISTORY
+                            <h4 class="fa fa-shopping-cart fa-lg "></h4><br/> Purchase History
                         </a>   <!-- Purchase History -->
                         <a href="#" class="list-group-item text-center">
-                            <h4 class="fa fa-database fa-lg"></h4><br/>GET MORE POINTS
+                            <h4 class="fa fa-database fa-lg"></h4><br/>Get More Points
                         </a>   <!-- Buy More Points -->
                         <a href="#" class="list-group-item text-center hide">
-                            <h4 class="fa fa-money fa-lg"></h4><br/>ENCASH MY POINTS
+                            <h4 class="fa fa-money fa-lg"></h4><br/> Encash My Points
                         </a>   <!-- Encash My Points -->
                         <a href="#" class="list-group-item  text-center">
-                            <h4 class="fa fa-user fa-lg"></h4><br/>EDIT PROFILE
+                            <h4 class="fa fa-user fa-lg"></h4><br/> Edit Profile
                         </a>   <!-- edit profile-->
                         <a ng-hide="myAccount['userInfo']['userDetails']['data']['user_url'] != ''" href="#" class="list-group-item text-center">
-                            <h4 class="fa fa-user fa-lg"></h4><br/>CHANGE PASSWORD
+                            <h4 class="fa fa-user fa-lg"></h4><br/> Change Password
                         </a>   <!-- Change Password -->
 
                     </div>
@@ -61,13 +61,14 @@ $userEmail = $userInfo->user_email;
                         <form class="form-horizontal">
 
                             <div class="form-group">
-                                <label for="oPass" class="col-sm-3 control-label">Cleared Points</label>
+                                <label for="oPass" class="col-sm-3">Cleared Points</label>
+                                
                                 <div class="col-sm-9">
                                     {{myAccount['userInfo']['points'][0]}} <span ng-if="myAccount['userInfo']['points'][0] == null">0</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="password" class="col-sm-3 control-label">Uncleared Points</label>
+                                <label for="password" class="col-sm-3">Uncleared Points <span class='toolMsg'><a href="#"  data-toggle="tooltip" title="These points will be credited to your 'Cleared Points' after {{myAccount['bufferDay']}} days of winning Tournament/Match result. "><i class="fa fa-info-circle"></i></a></span></label>
                                 <div class="col-sm-9">
                                     {{myAccount['unClearedPoints']}}   <span ng-if="myAccount['unClearedPoints'] == null">0</span>
                                 </div>
@@ -227,7 +228,7 @@ $userEmail = $userInfo->user_email;
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group hide">
                                     <label for="email" class="col-sm-4 control-label">Email</label>
                                     <div class="col-sm-8">
                                         <input type="email" class="form-control" value={{myAccount['userInfo']['userDetails']['data']['user_email']}} id="email" name="email" placeholder="Email">
@@ -309,6 +310,7 @@ $userEmail = $userInfo->user_email;
 <?php
 get_footer();
 ?>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $("div.bhoechie-tab-menu>div.list-group>a").click(function (e) {
@@ -321,6 +323,8 @@ get_footer();
         });
     });
 </script>
+
+
 <style>
     .win{
         background-color: #adebad;

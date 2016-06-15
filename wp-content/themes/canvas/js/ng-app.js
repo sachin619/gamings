@@ -10,11 +10,6 @@ var base_url = "http://localhost/gamings/";
 var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
 var app = angular.module('gaming', ['simplePagination']);
 
-app.controller('headerCtrl',function($scope,$http,$templateCache){
-    
-    
-});
-
 app.controller('homeCtrl', function ($scope, $http, $templateCache) {
     sessionStorage.setItem('getCount', '');
     $http.get(domain + "home").then(function (response) {
@@ -49,7 +44,6 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
                 'type': 'popularMatches',
                 'catType': sessionStorage.getItem('type')
             };
-            console.log(sessionStorage.getItem('type'));
             tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName');
 
         } else {
@@ -93,12 +87,12 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
 app.controller('myAccount', function ($scope, Pagination, $http, $templateCache) {
     $('.userInfoForm').validate({
         rules: {
-            fname: {minlength: 5, required: true},
+            fname: {minlength: 3, required: true},
             email: {required: true, email: true},
             mobile: {required: true, minlength: 10, maxlength: 10, number: true},
         },
         messages: {
-            fname: "Minimum length should be 5",
+            fname: "Minimum length should be 3",
             email: "Not a valid Email Id",
             phone: "Enter a valid mobile number",
         }
@@ -466,6 +460,21 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
 
                 }
 
+                if (typeName == 'listing-matches') {
+                    $('.updateUserKit').html(response['userTotalPts']);
+                }
+                if (typeName == 'tournaments-detail') {
+                    $('.updateUserKit').html(response['userTotalPts']);
+
+                }
+                if(typeName=='my-account'){
+                    angular.element(document).ready(function(){
+                              $('.toolMsg a').attr('data-original-title',"These points will be credited to your 'Cleared Points' after "+response['bufferDay']+" days of winning Tournament/Match result");
+               
+                    });
+              
+                }
+
                 $('.loader').hide();
                 //for pagination of matches
                 if (typeof formData['loadMore'] !== 'undefined')
@@ -547,8 +556,11 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
 
             $http.get(domain + "home-match-listing&data[getCount]=" + sessionStorage.getItem('getCount')).then(function (response) {
                 $scope.homeMatchListing = response.data;
+                $('.updateUserKit').html(response.data['upcomingMatches']['userTotalPts']);
             });
             $scope.pointsTie = '';
+
+
         }
         if (formData['type'] === 'tournaments') {
             var formDataReload = {'postId': formData['slug']};
@@ -615,13 +627,13 @@ app.controller('contactCtrl', function ($scope, $http, $templateCache) {
     $('.loader').hide();
     $('#template-contactform').validate({
         rules: {
-            fname: {minlength: 5, required: true},
+            fname: {minlength: 3, required: true},
             email: {required: true, email: true},
             phone: {required: true, minlength: 10, maxlength: 10, number: true},
             message: {required: true, minlength: 10}
 
         },
-        messages: {fname: "Minimum length should be 5",
+        messages: {fname: "Minimum length should be 3",
             email: "Not a valid Email Id",
             phone: "Enter a valid mobile number",
             message: "Minimum length should be 10"
@@ -675,10 +687,10 @@ app.controller('forgotPasswordCtrl', function ($scope, $http, $templateCache) {
     $scope.resetPassword = function () {
         $('#forgotPassword').validate({
             rules: {
-                password: {minlength: 5}
+                password: {minlength: 3}
             },
             messages: {
-                password: "Minimum lenght should be 5"
+                password: "Minimum lenght should be 3"
             }
         });
         if (!$('#forgotPassword').valid()) {
