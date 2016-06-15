@@ -23,7 +23,7 @@ class Paulund_Wp_List_Table {
      */
     public function __construct() {
         add_action('admin_menu', array($this, 'add_menu_example_list_table_page'));
-
+        wp_enqueue_style('datepicker', get_template_directory_uri() . '/css/datepicker.css');
         wp_enqueue_script('jquery10', get_template_directory_uri() . '/js/jquery10.js');
         wp_enqueue_script('jquery-ui', get_template_directory_uri() . '/js/jquery-ui.js');
         wp_enqueue_script('custom', get_template_directory_uri() . '/js/custom.js');
@@ -33,7 +33,7 @@ class Paulund_Wp_List_Table {
      * Menu item will allow us to load the page to display the table
      */
     public function add_menu_example_list_table_page() {
-        add_menu_page('Bets', 'Points Traded', 'manage_options', 'example-list-table.php', array($this, 'list_table_page'), 'dashicons-image-filter', 40);
+        add_menu_page('Bets', 'Points Traded', 'manage_options', 'example-list-table.php', array($this, 'list_table_page'), 'dashicons-image-filter',40);
     }
 
     /**
@@ -45,6 +45,7 @@ class Paulund_Wp_List_Table {
         $exampleListTable = new Example_List_Table();
         $exampleListTable->prepare_items();
         // echo "<pre>"; print_r($exampleListTable);
+        
         ?>
 
         <input type="hidden" id="basePluginUrl" value="<?= get_site_url(); ?>" />
@@ -184,13 +185,13 @@ class Example_List_Table extends WP_List_Table {
                 return $getUsername->data->display_name;
                 break;
             case 'mid':
-                return $item[$column_name] == 0 ? '-' : get_the_title($item[$column_name]);
+                return get_the_title($item[$column_name]);
                 break;
             case 'tid':
                 return get_the_title($item[$column_name]);
                 break;
             case 'team_id':
-                return $item[$column_name] != 0 ? get_the_title($item[$column_name]) : 'Tie';
+                return get_the_title($item[$column_name]);
                 break;
             case 'pts':
                 return $item[$column_name];
@@ -204,14 +205,4 @@ class Example_List_Table extends WP_List_Table {
     }
 
 }
-?>
-<?php
-if (strpos($_SERVER['REQUEST_URI'], 'wp-admin') > 0):
-    ?>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <?php
-endif;
 ?>
