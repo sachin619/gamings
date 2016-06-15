@@ -769,3 +769,13 @@ function slider() {
 }
 
 add_action('init', 'slider');
+
+function scheme() {
+    $args = ['labels' => ['name' => 'Scheme', 'singular_name' => 'Scheme'],
+    'public' => true,
+    'supports' => ['title','page_attributes','thumbnail']
+    ];
+    register_post_type('scheme',$args);
+};
+
+add_action('init','scheme');

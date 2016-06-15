@@ -172,7 +172,7 @@ class Distribution_Table extends WP_List_Table {
                 return $getUserData->data->display_name;
                 break;
             case 'mid':
-                return $item[$column_name]==0?'-':get_the_title($item[$column_name]);
+                return $item[$column_name] == 0 ? '-' : get_the_title($item[$column_name]);
                 break;
             case 'tid':
                 return get_the_title($item[$column_name]);
@@ -193,7 +193,9 @@ class Distribution_Table extends WP_List_Table {
 
 }
 ?>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  <link rel="stylesheet" href="/resources/demos/style.css">
+<?php if (strpos($_SERVER['REQUEST_URI'], 'wp-admin') > 0): ?>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css">
+<?php endif; ?>

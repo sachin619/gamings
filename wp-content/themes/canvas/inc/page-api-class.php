@@ -10,20 +10,64 @@ class ApiClass extends API {
 
     function leaderBoard() {
 
-        $getCurrentDate = $this->getDate;
-        $getDate = strtotime(date('Y-m-d '), $getCurrentDate);
-        $createDate = date('Y-m-d h:i:s', $getDate - 259197);
-        $getUsers = $this->wpdb->get_results("SELECT uid,mid,tid,sum(pts) as total,bet_at,count(distinct mid) as get_count FROM wp_bets WHERE bet_at < '" . $getCurrentDate . "' AND  bet_at>'" . $createDate . "' group by uid having count(distinct mid)>=2 order by total DESC ");
-        foreach ($getUsers as $getUsersFilter):
-            $userId = $getUsersFilter->uid;
-            $geImgId = get_user_meta($userId, 'profile_pic');
-            $userDetails[] = get_userdata($userId);
-            $getTour[]=  get_the_title($getUsersFilter->tid);
-            $getMatch[]=  get_the_title($getUsersFilter->mid);
-            $userImg[] = $this->getProfileImg($geImgId[0]);
-            $getPts[]=$getUsersFilter->total;
+        $args = ['post_type' => 'scheme', 'meta_query' => [[
+            'key' => 'status',
+            'value' => 'Active',
+            'compare' => '=']
+        ]];
+        $collectSchemeInfo = $this->getResult($args);
+        $getFormatStartDate = date('d M Y', strtotime($collectSchemeInfo[0]['from_date']));
+        $getFormatEndDate = date('d M Y', strtotime($collectSchemeInfo[0]['to_date']));
+        $getStartDate = $collectSchemeInfo[0]['from_date'] . " 00:00:00";
+        $getEndDate = $collectSchemeInfo[0]['to_date'] . " 23:59:00";
+        $getMinMatch = $collectSchemeInfo[0]['min_no_of_matches'];
+        //echo $getEndDate;
+        global $wpdb;
+        $getAccount = [];
+        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets WHERE bet_at >= '" . $getStartDate . "' AND  bet_at <= '" . $getEndDate . "'  group by tid,team_id,mid,uid  order by pts ");
+
+//$this->getCsv($result);
+        $i = 1;
+        foreach ($result as $getBetDetails):
+            $getTourStatus = get_field('points_distributed', $getBetDetails->tid);
+            $getMatchStatus = get_field('points_distributed', $getBetDetails->mid);
+            $getTourCancel = get_field('tournament_abandoned', $getBetDetails->tid);
+            $getMatchCancel = get_field('match_abandoned', $getBetDetails->mid);
+            $getMatchDraw = get_field('match_draw', $getBetDetails->mid);
+            $getTourDraw = get_field('tournament_draw', $getBetDetails->mid);
+            $getWinStatus = get_field('select_teams', $getBetDetails->mid);
+            if ($getWinStatus[0]['winner'] == 'No' && $getWinStatus[1]['winner'] == 'No'):
+                $getAccount = $this->getDrawMatch($getMatchDraw, $getBetDetails, $wpdb, $getAccount, $i);
+            else:
+                if (($getMatchStatus == "Yes" && $getMatchCancel == 'No' && $getBetDetails->team_id != 0 && $getMatchDraw == 'No' ) || ($getTourStatus == 'Yes' && $getTourCancel == 'No' && $getMatchDraw == 'No' && $getTourDraw == 'No' )):
+                    $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $getBetDetails->uid AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id ");
+                    $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
+                    if (!empty($getWin)):
+                        $collectWinpoints[$getBetDetails->uid][] = $getBetDetails->pts; //get win points
+                    else:
+                        $collectLosspoints[$getBetDetails->uid][] = $getBetDetails->pts;   //get loss points
+                    endif;
+                    $tourDetails['id'] = $i++;
+                    $getMid[$getBetDetails->uid][] = $getBetDetails->mid;
+                    $tourDetails['pts'] = $getBetDetails->pts;
+                    $tourDetails['bet_at'] = $getBetDetails->bet_at;
+                    array_push($getAccount, ['tourDetails' => $tourDetails]);
+                endif;
+
+            endif;
+
         endforeach;
-        return ['userDetails'=>$userDetails,'userImg'=>$userImg,'tid'=>$getTour,'mid'=>$getMatch,'pts'=>$getPts];
+        foreach ($collectLosspoints as $getUserId => $getLossPts):
+            if (count(array_unique($getMid[$getUserId])) >= $getMinMatch):
+                $getTotal = array_sum($collectWinpoints[$getUserId]) - array_sum($getLossPts);
+                if ($getTotal > 0):
+                    $userName = get_user_by('id', $getUserId);
+                    $getInfo[] = ['userId' => $getUserId, 'userName' => $userName->data->display_name, 'pts' => $getTotal, 'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate, 'mid' => count(array_unique($getMid[$getUserId]))];
+                endif;
+            endif;
+        endforeach;
+
+        return $getInfo;
     }
 
 }

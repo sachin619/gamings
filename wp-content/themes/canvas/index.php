@@ -270,6 +270,36 @@ get_header();
 
     </section><!-- #content end -->
 
+   
+    <div class="container clearfix">
+
+                <div class="row topmargin-sm">
+
+                        <div class="heading-block center">
+                                <h3>Leadeboard</h3>
+                                <span class="divcenter">{{home.leaderBoard[0]['startDate']}} - {{home.leaderBoard[0]['endDate']}}</span>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6 bottommargin" ng-repeat="leaderBoard in home.leaderBoard">
+                            <div class="team">
+                                <div class="team-image">
+                                        <img src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
+                                </div>                               
+                                    <div class="team-desc team-desc-bg" style="height:auto; background:#eee;">
+                                        <div class="team-title" style="padding-top: 15px;">
+                                            <h4>{{leaderBoard['userName']}}</h4>
+                                            <span>Points : {{leaderBoard['pts']}}</span>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>    
+
+              
+                    <div class="col-md-6 col-md-offset-5" style="margin-bottom: 40px;">    
+                        <a href="#" data-toggle="modal" data-target="#leadeBoard" class="button button-border button-dark button-rounded">View Prize & Other Details</a>
+                     </div>
+                </div>
+        </div>
 
 
     <!-- Content
@@ -305,5 +335,59 @@ get_header();
         </div>
 
     </section><!-- #content end -->
+
+
+
+<section class="foot-fix hidden-sm hidden-xs">
+    <div class="container">
+        <div class="sticy_foot row">
+            <div class="col-md-2 foot-col">
+                <h6>Leadeboard</h6>
+                <p class="crly_brk"> {{home.leaderBoard[0]['startDate']}} - {{home.leaderBoard[0]['endDate']}}</p>
+                <img src="<?= get_template_directory_uri() ?>/images/curly_brk.png" alt="img" style="margin:0 0 0 15px;">
+            </div>
+            <div class="col-md-2 foot-col" ng-repeat="leaderBoard in home.leaderBoard" >
+                <div class="testi-image">
+                    <a href="#"><img src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img"></a>
+                </div>
+                <h6>{{leaderBoard['userName']}}</h6>
+                <p>Points : {{leaderBoard['pts']}}</p>
+            </div>
+      
+            <div class="col-md-4 foot-col">
+                <button class="btn_leadBorad" data-toggle="modal" data-target="#leadeBoard">View Prize & Other Details</button>
+            </div>
+        </div>
+    </div>
 </section>
+
+<!-- Modal -->
+  <div class="modal fade" id="leadeBoard" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Leaderboard Prizes & Other Details</h4>
+        </div>
+        <div class="modal-body leadeBoard_cont">
+            <img src="<?= get_template_directory_uri() ?>/images/prize.jpg" class="img-responsive" alt="Banner"><br>
+            <h3>Apple iPad - 64 GB</h3>
+
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br>
+
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+            <p><b>For more information, write to us at</b> <a href="mailto:info@eventexchange.co.in">info@eventexchange.co.in</a></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
 <?php get_footer(); ?>

@@ -139,6 +139,7 @@ class API {
         // $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
+        $home['leaderBoard']=  $this->leaderBoard();
         return $home;
     }
 
