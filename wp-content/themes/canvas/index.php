@@ -375,7 +375,7 @@ get_header();
                     <h4 class="modal-title">Leaderboard Prizes & Other Details {{home.leaderBoard['startDate']}} - {{home.leaderBoard['endDate']}}</h4>
                 </div>
                 <div class="modal-body leadeBoard_cont">
-                    <img src="{{home.leaderBoard['img']}}" class="img-responsive" alt="Banner"><br>
+                    <img ng-src="{{home.leaderBoard['img']}}" class="img-responsive" alt="Banner"><br>
                     <div class="awardContent"></div>
                 </div>
                 <div class="modal-footer">
