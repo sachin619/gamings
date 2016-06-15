@@ -159,7 +159,7 @@ class API {
         $myAccount['userBets'] = $this->getUserBets($info);
         $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
         $myAccount['winLoss'] = $this->getWinLossBets($info);
-        $myAccount['bufferDay']=get_option('distributing_days');
+        $myAccount['bufferDay'] = get_option('distributing_days');
         return $myAccount;
     }
 
@@ -498,7 +498,7 @@ class API {
             $userTotalTradeTie[] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
         }
         $userTotalPts = $this->formatNumberAbbreviation();
-        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'getOngoing' => $collectOngoing, 'tradeTie' => $userTotalTradeTie,'userTotalPts'=>$userTotalPts];
+        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'getOngoing' => $collectOngoing, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $userTotalPts];
         return $output;
     }
 
@@ -537,9 +537,9 @@ class API {
                 $teamId = $teamInfo['ID'];
                 $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId,];
                 $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
-                $tradeInfoTie = ['tid' => $tId, 'user_id' => $userId,];
-                $userTotalTradeTie[] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
             }
+            $tradeInfoTie = ['tid' => $tId, 'user_id' => $userId,];
+            $userTotalTradeTie[] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
         }
         $getTotalPointsUser = $this->formatNumberAbbreviation();
         $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $getTotalPointsUser];
@@ -929,10 +929,10 @@ class API {
 // exit;
         $startDate = $info['data']['startDate'];
         $endDate = $info['data']['endDate'];
-        if($info['data']['reset']!='yes'):
-        if (isset($startDate) && isset($endDate)): //start and end date
-            $whereM.=" AND bet_at BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
-        endif;
+        if ($info['data']['reset'] != 'yes'):
+            if (isset($startDate) && isset($endDate)): //start and end date
+                $whereM.=" AND bet_at BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
+            endif;
         endif;
         global $wpdb;
         $getAccount = [];
