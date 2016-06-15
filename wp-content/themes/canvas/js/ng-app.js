@@ -10,6 +10,11 @@ var base_url = "http://localhost/gamings/";
 var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
 var app = angular.module('gaming', ['simplePagination']);
 
+app.controller('headerCtrl',function($scope,$http,$templateCache){
+    
+    
+});
+
 app.controller('homeCtrl', function ($scope, $http, $templateCache) {
     sessionStorage.setItem('getCount', '');
     $http.get(domain + "home").then(function (response) {

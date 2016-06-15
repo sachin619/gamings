@@ -358,21 +358,21 @@ get_header();
                 </div>
 
                 <div class="col-md-4 foot-col">
-                    <button class="btn_leadBorad" data-toggle="modal" data-target="#leadeBoard">View Prize & Other Details</button>
+                    <button class="btn_leadBorad" id="leadeBoard_btn">View Prize & Other Details</button>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Modal -->
-    <div class="modal fade" id="leadeBoard" role="dialog">
+    <div class="modal fade" id="leadeBoard" tabindex="-1" role="dialog" aria-labelledby="leadeBoard" aria-hidden="true">
         <div class="modal-dialog">
 
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Leaderboard Prizes & Other Details</h4>
+                    <h4 class="modal-title">Leaderboard Prizes & Other Details {{home.leaderBoard['startDate']}} - {{home.leaderBoard['endDate']}}</h4>
                 </div>
                 <div class="modal-body leadeBoard_cont">
                     <img src="{{home.leaderBoard['img']}}" class="img-responsive" alt="Banner"><br>
@@ -388,3 +388,10 @@ get_header();
 </section>
 
 <?php get_footer(); ?>
+
+<script>
+    $('#leadeBoard_btn').click(function(){
+       $('#leadeBoard').modal("show");  
+    });
+   
+</script>
