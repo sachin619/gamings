@@ -14,6 +14,7 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
     sessionStorage.setItem('getCount', '');
     $http.get(domain + "home").then(function (response) {
         $scope.home = response.data;
+        $('.awardContent').html(response.data.leaderBoard['award']);
     });
     $http.get(domain + "home-match-listing").then(function (response) {
         $scope.homeMatchListing = response.data;

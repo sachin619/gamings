@@ -20,6 +20,8 @@ class ApiClass extends API {
         $getStartDate = $collectSchemeInfo[0]['from_date'] . " 00:00:00";
         $getEndDate = $collectSchemeInfo[0]['to_date'] . " 23:59:00";
         $getMinMatch = $collectSchemeInfo[0]['min_no_of_matches'];
+        $getImg= $collectSchemeInfo[0]['img'];
+        $getContent=$collectSchemeInfo[0]['award'];
         global $wpdb;
         $getAccount = [];
         $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets WHERE bet_at >= '" . $getStartDate . "' AND  bet_at <= '" . $getEndDate . "'  group by tid,team_id,mid,uid  order by pts ");
@@ -60,7 +62,7 @@ class ApiClass extends API {
             endif;
             $limitUser++;
         endforeach;
-        return ['info' => $getInfo, 'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate];
+        return ['info' => $getInfo, 'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate,'img'=>$getImg,'award'=>$getContent];
     }
 
 }
