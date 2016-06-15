@@ -125,8 +125,7 @@
 	padding-left: 0px !important;
 }
 .ad-banner {
-   border-right: 0px !important;
-   max-width:460px !important; 
+   border-right: 0px !important; 
       
 }
 .ad-ban-hold{
@@ -11555,7 +11554,7 @@ button.toast-close-button {
 	border-top: 1px solid #EEE;
 }
 
-.widget:first-child { margin-top: 0; }
+/*.widget:first-child { margin-top: 0; }*/
 
 .sidebar-widgets-wrap .widget:first-child {
 	padding-top: 0;

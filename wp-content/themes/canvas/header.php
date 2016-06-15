@@ -23,7 +23,6 @@ endif;
         <link rel="shortcut icon" type="image/x-icon" href="<?= get_template_directory_uri() ?>/images/favicon.ico">
         <!-- Stylesheets
         ============================================= -->
-        <link href="<?= get_template_directory_uri() ?>/css/google_fonts.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/font-awesome.min.css">
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/css/bootstrap.css" type="text/css" />
         <link rel="stylesheet" href="<?= get_template_directory_uri() ?>/style.css" type="text/css" />
@@ -55,7 +54,7 @@ endif;
 
             <!-- Header
             ============================================= -->
-            <header id="header" class="full-header">
+            <header id="header" class="full-header" ng-controller="headerCtrl">
 
                 <div id="header-wrap">
 
@@ -70,7 +69,7 @@ endif;
                             <a href="<?= get_site_url() ?>" class="retina-logo" data-dark-logo="<?= get_template_directory_uri() ?>/images/logos.png"><img src="<?= get_template_directory_uri() ?>/images/logos.png" alt="Canvas Logo"></a>
                         </div><!-- #logo end -->
 
-                        <div id="logo" class="ad-banner">
+                        <div class="ad-banner col-md-3">
                             <div class="ad-ban-hold">
                                 <img src="<?= get_template_directory_uri() ?>/images/header-ad.gif" class="imgaddbanner" alt="Banner" style="height:60px !important; display:block;">
                             </div>
