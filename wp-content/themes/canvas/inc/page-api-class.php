@@ -49,22 +49,21 @@ class ApiClass extends API {
                     endif;
                     $tourDetails['id'] = $i++;
                     $getMid[$getBetDetails->uid][] = $getBetDetails->mid;
-                    $tourDetails['pts'] = $getBetDetails->pts;
-                    $tourDetails['bet_at'] = $getBetDetails->bet_at;
-                    array_push($getAccount, ['tourDetails' => $tourDetails]);
                 endif;
 
             endif;
 
         endforeach;
+        $limitUser=0;
         foreach ($collectLosspoints as $getUserId => $getLossPts):
             if (count(array_unique($getMid[$getUserId])) >= $getMinMatch):
-                $getTotal = array_sum($collectWinpoints[$getUserId]) - array_sum($getLossPts);
-                if ($getTotal > 0):
+                $getTotal = array_sum($collectWinpoints[$getUserId]) - array_sum($getLossPts); //substract win - loss
+                if ($getTotal > 0 && $limitUser<=2):          //only top 3 results (0,1,2)
                     $userName = get_user_by('id', $getUserId);
                     $getInfo[] = ['userId' => $getUserId, 'userName' => $userName->data->display_name, 'pts' => $getTotal,  'mid' => count(array_unique($getMid[$getUserId]))];
                 endif;
             endif;
+            $limitUser++;
         endforeach;
 
         return ['info'=>$getInfo,  'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate] ;
