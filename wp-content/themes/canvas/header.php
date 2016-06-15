@@ -54,7 +54,7 @@ endif;
 
             <!-- Header
             ============================================= -->
-            <header id="header" class="full-header" ng-controller="headerCtrl">
+            <header id="header" class="full-header" >
 
                 <div id="header-wrap">
 
