@@ -29,8 +29,8 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
         ngPost('home-match-listing', formInfo, $scope, $http, $templateCache, 'homeMatchListing');
 
     };
-    $scope.tradeMatch = function (link, tid, points, uid,pointsTie) {
-       
+    $scope.tradeMatch = function (link, tid, points, uid, pointsTie) {
+
         if (uid != null) {
             var slug = link.split("/");
             slug = slug[slug.length - 2];
@@ -38,7 +38,7 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
                 'mid': tid,
                 'pts': points,
                 'slug': slug,
-                'tie':pointsTie,
+                'tie': pointsTie,
                 'mainSlug': $.urlParam('category'),
                 'type': 'popularMatches',
                 'catType': sessionStorage.getItem('type')
@@ -213,7 +213,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
     var formData = {
         'postId': slug
     };
-    $scope.tradeMatch = function (link, tid, points, uid,pointsTie) {
+    $scope.tradeMatch = function (link, tid, points, uid, pointsTie) {
 
         if (uid != null) {
             var slug = link.split("/");
@@ -222,7 +222,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
                 'mid': tid,
                 'pts': points,
                 'slug': slug,
-                'tie':pointsTie,
+                'tie': pointsTie,
                 'mainSlug': $.urlParam('category'),
                 'mainSlugTour': slugCopy,
                 'type': 'tournamentMatcheList',
@@ -393,15 +393,15 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
         var formData = {};
     }
 
-    $scope.tradeMatch = function (link, tid, points, uid,pointsTie) {
-      //  $scope.pointsTie="";
+    $scope.tradeMatch = function (link, tid, points, uid, pointsTie) {
+        //  $scope.pointsTie="";
         if (uid != null) {
             var slug = link.split("/");
             slug = slug[slug.length - 2];
             var formDataNew = {
                 'mid': tid,
                 'pts': points,
-                'tie':pointsTie,
+                'tie': pointsTie,
                 'slug': slug,
                 'mainSlug': $.urlParam('category'),
                 'type': 'matchesList',
@@ -538,10 +538,11 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
 
 
         if (formData['type'] === 'popularMatches') {
+
             $http.get(domain + "home-match-listing&data[getCount]=" + sessionStorage.getItem('getCount')).then(function (response) {
                 $scope.homeMatchListing = response.data;
             });
-
+            $scope.pointsTie = '';
         }
         if (formData['type'] === 'tournaments') {
             var formDataReload = {'postId': formData['slug']};
@@ -552,13 +553,13 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
             ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         }
         else if (formData['type'] === 'matchesList') {
-            $scope.pointsTie="";
+            $scope.pointsTie = "";
             var formDataReload = {'categoryName': formData['mainSlug'], 'type': formData['catType'], 'getCount': sessionStorage.getItem('getCount')};
             //console.log(formDataReload);
             ngPost('listing-matches', formDataReload, $scope, $http, $templateCache, 'getDetails');
         }
         else if (formData['type'] === 'tournamentMatcheList') {
-                $scope.pointsTieM="";
+            $scope.pointsTieM = "";
             var formDataReload = {'categoryName': formData['mainSlug'], 'type': 'upcomming', 'tourId': formData['mainSlugTour'], 'getCount': sessionStorage.getItem('getCount')};
             console.log(formDataReload);
             ngPost('listing-matches', formDataReload, $scope, $http, $templateCache, 'getMatchDetails');
@@ -684,7 +685,7 @@ app.controller('forgotPasswordCtrl', function ($scope, $http, $templateCache) {
 });
 
 app.controller('leaderBoardCtrl', function ($scope, $http, $templateCache) {
-    var formInfo={};
+    var formInfo = {};
     ngPost('leader-board', formInfo, $scope, $http, $templateCache, 'userDetails');
 
 });
