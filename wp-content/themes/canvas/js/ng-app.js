@@ -100,12 +100,14 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
 
     formData = {'pagination': Pagination, 'type': 'myAccount'};
     ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
-    $scope.searchByDate = function () {
-        console.log($('.startDate').val());
-        console.log($('.endDate').val());
+    $scope.searchByDate = function (reset) {
+        if(reset=='yes'){
+             $('.startDate').val('');
+             $('.endDate').val('');
+        }
         var startDate = $('.startDate').val();
         var endDate = $('.endDate').val();
-        formData = {'pagination': Pagination, 'type': 'myAccount', 'startDate': startDate, 'endDate': endDate};
+        formData = {'pagination': Pagination, 'type': 'myAccount', 'startDate': startDate, 'endDate': endDate,'reset':reset};
         ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
     };
     $scope.userUpdate = function () {

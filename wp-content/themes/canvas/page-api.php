@@ -139,7 +139,7 @@ class API {
         // $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
-        $home['leaderBoard']=  $this->leaderBoard();
+        $home['leaderBoard'] = $this->leaderBoard();
         return $home;
     }
 
@@ -159,6 +159,7 @@ class API {
         $myAccount['userBets'] = $this->getUserBets($info);
         $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
         $myAccount['winLoss'] = $this->getWinLossBets($info);
+        $myAccount['bufferDay']=get_option('distributing_days');
         return $myAccount;
     }
 
@@ -299,8 +300,9 @@ class API {
         $tradeInfo = ['tid' => $tId, 'user_id' => $userId];
         $getTotalBets = $this->getTotalTrade($tradeInfo, 'tid');
         $userTotalTrade = $this->getUserTotalTrade($tradeInfo, 'tid');
+        $userTotalPts = $this->formatNumberAbbreviation();
         //$detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'matches' => $this->tournamentsMatches($postId)];
-        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'tradeTie' => $userTotalTradeTie];
+        $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $userTotalPts];
         return $detailsData;
     }
 
@@ -495,8 +497,8 @@ class API {
             $tradeInfoTie = ['tid' => $tId, 'user_id' => $userId,];
             $userTotalTradeTie[] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
         }
-
-        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'getOngoing' => $collectOngoing, 'tradeTie' => $userTotalTradeTie];
+        $userTotalPts = $this->formatNumberAbbreviation();
+        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'getOngoing' => $collectOngoing, 'tradeTie' => $userTotalTradeTie,'userTotalPts'=>$userTotalPts];
         return $output;
     }
 
@@ -510,16 +512,16 @@ class API {
             $getPageCount = 5;
         endif;
         $dateFormat = strtotime($this->getDate);
-        ;
         $getCat = $this->getCategories(['parent' => 1]);
-
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'total_bets',
             'orderby' => 'meta_value_num',
             'posts_per_page' => $getPageCount,
             'order' => 'DESC',
-            'meta_query' => [ 'key' => 'start_date', 'value' => $dateFormat, 'compare' => '>=',],
+            'meta_query' => ['relation' => 'AND', ['key' => 'start_date', 'value' => $dateFormat, 'compare' => '>='],
+                [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
+            ],
         ];
 
         $result = $this->getResult($args);
@@ -539,19 +541,20 @@ class API {
                 $userTotalTradeTie[] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
             }
         }
-        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'tradeTie' => $userTotalTradeTie];
+        $getTotalPointsUser = $this->formatNumberAbbreviation();
+        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $getTotalPointsUser];
         return $output;
     }
 
     function multiTradeMatch($tradeInfo) {
 //echo count($tradeInfo['data']['pts']);exit;
         //array_push($tradeInfo['data']['pts'], $tradeInfo['data']['tie']);
-        $tradeInfo['data']['pts'][0]=$tradeInfo['data']['tie'];
-       // print_r($tradeInfo['data']['pts']);exit;
+        $tradeInfo['data']['pts'][0] = $tradeInfo['data']['tie'];
+        // print_r($tradeInfo['data']['pts']);exit;
         if (!empty($tradeInfo['data']['pts'])):
-            
+
             foreach ($tradeInfo['data']['pts'] as $teamId => $points) {
-             
+
                 $tradeInfo['data']['team_id'] = $teamId;
                 $tradeInfo['data']['pts'] = $points;
                 $get_result[] = $this->tradeMatch($tradeInfo);
@@ -926,12 +929,14 @@ class API {
 // exit;
         $startDate = $info['data']['startDate'];
         $endDate = $info['data']['endDate'];
+        if($info['data']['reset']!='yes'):
         if (isset($startDate) && isset($endDate)): //start and end date
             $whereM.=" AND bet_at BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
         endif;
+        endif;
         global $wpdb;
         $getAccount = [];
-        $result = $wpdb->get_results("SELECT * FROM wp_bets where uid= $this->userId  $whereM order by bet_at DESC");
+        $result = $wpdb->get_results("SELECT * FROM wp_bets where uid= $this->userId  $whereM order by bet_at DESC limit 200");
         $this->getCsv($result);
         $i = 1;
         foreach ($result as $getBetDetails):
