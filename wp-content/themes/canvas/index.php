@@ -128,7 +128,7 @@ get_header();
 
     <!-- Content
     ============================================= -->
-    <section id="content" >
+<!--    <section id="content" >
 
         <div class="content-wrap padd-top0">
 
@@ -155,13 +155,13 @@ get_header();
                     </div>
                 </data-owl-carousel>
 
-                <div class="clear"></div><!-- <div class="line"></div> -->
+                <div class="clear"></div> <div class="line"></div> 
 
             </div>
 
         </div>
 
-    </section><!-- #content end -->
+    </section> #content end -->
 
     <!-- Content
      ============================================= -->
