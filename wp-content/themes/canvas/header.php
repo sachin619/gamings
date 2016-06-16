@@ -112,9 +112,11 @@ endif;
                         </nav><!-- #primary-menu end -->
 
                     </div>
+            </header><!-- #header end -->
 
-                    <div class="container clearfix cricket-box">
-                        <div id="page-menu">
+            <!-- Page Sub Menu
+        ============================================= -->
+            <div id="page-menu">
 
                             <div id="page-menu-wrap">
 
@@ -143,41 +145,5 @@ endif;
 
                             </div>
 
-                        </div>
-                    </div>
-
-            </header><!-- #header end -->
-
-            <!-- Page Sub Menu
-        ============================================= -->
-            <!--<div id="page-menu">
-    
-                <div id="page-menu-wrap">
-    
-                    <div class="container clearfix">
-    
-                        <nav>
-                            <ul>
-            <?php
-            $args = ['parent' => 1];
-            $getCategoires = get_categories($args);
-            foreach ($getCategoires as $catName):
-                ?>
-                                        <li class="current"><a href=""><div><?= $catName->name ?></div></a>
-                                            <ul>
-                                                <li><a href="<?= get_site_url() . '/tournaments/?category=' . $catName->name ?>"><div>Tournaments </div> </a> </li>
-                                                <li><a href="<?= get_site_url() . '/matches/?category=' . $catName->name ?>"><div>Matches </div> </a> </li>
-                                            </ul>
-                                        </li>
-            <?php endforeach; ?>
-                            </ul>
-                        </nav>
-    
-                    <div id="page-submenu-trigger"><i class="icon-reorder"></i></div>
-    
-                    </div>
-    
-                </div>
-    
-            </div>--><!-- #page-menu end -->
+                        </div><!-- #page-menu end -->
 
