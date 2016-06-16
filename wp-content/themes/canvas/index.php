@@ -128,7 +128,7 @@ get_header();
 
     <!-- Content
     ============================================= -->
-<!--    <section id="content" >
+    <section id="content" >
 
         <div class="content-wrap padd-top0">
 
@@ -155,48 +155,16 @@ get_header();
                     </div>
                 </data-owl-carousel>
 
-                <div class="clear"></div> <div class="line"></div> 
+                <div class="clear"></div><!-- <div class="line"></div> -->
 
             </div>
 
         </div>
 
-    </section> #content end -->
+    </section><!-- #content end -->
 
     <!-- Content
      ============================================= -->
-    <section id="content">
-        <div class="content-wrap">
-            <div class="container clearfix">
-                <div id="oc-posts" class="owl-carousel posts-carousel carousel-widget" data-margin="20" data-nav="true" data-pagi="false" data-items-xxs="1" data-items-xs="2" data-items-sm="3" data-items-md="4">
-                   <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">     
-                    <div owl-carousel-item="" ng-repeat="popular in home.popularTournaments" >
-                       <div class="oc-item">
-                                <div class="ipost clearfix">
-                                        <div class="entry-image">
-                                                <a href="images/portfolio/full/1.jpg" data-lightbox="image"><img class="image_fade" src="images/blog/grid/1.jpg" alt="Standard Post with Image"></a>
-                                        </div>
-                                        <div class="entry-title">
-                                                <h3><a href="blog-single.html">This is a Standard post with another Preview Image</a></h3>
-                                        </div>
-                                        <ul class="entry-meta clearfix">
-                                                <li><i class="icon-calendar3"></i> 5th May 2014</li>
-                                                <li><a href="blog-single.html#comments"><i class="icon-comments"></i> 6</a></li>
-                                                <li><a href="#"><i class="icon-camera-retro"></i></a></li>
-                                        </ul>
-                                        <div class="entry-content">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, asperiores quod est tenetur in.</p>
-                                        </div>
-                                </div>
-                        </div>
-                    </div>    
-                    </data-owl-carousel>                  
-
-
-                </div>
-            </div>
-        </div>
-    </section>
     
     <section id="content" class="hide" >
 
