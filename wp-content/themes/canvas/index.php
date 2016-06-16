@@ -167,6 +167,7 @@ get_header();
      ============================================= -->
     <section id="content">
         <div class="content-wrap">
+            <div class="container clearfix">
     <div id="oc-posts" class="owl-carousel posts-carousel carousel-widget" data-margin="20" data-nav="true" data-pagi="false" data-items-xxs="1" data-items-xs="2" data-items-sm="3" data-items-md="4">
 
 						<div class="oc-item">
@@ -311,6 +312,7 @@ get_header();
 						</div>
 
 					</div>
+            </div>
         </div>
     </section>
     
