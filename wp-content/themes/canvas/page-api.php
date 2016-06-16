@@ -136,7 +136,7 @@ class API {
         $home['popularTournaments'] = $this->popularTournaments();
         //$home['popularMatches'] = $this->popularMatches();
         // $home['upcomingTournaments'] = $this->upcomingTournaments();
-        // $home['upcomingMatches'] = $this->listingPopularMatches();
+        $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
         $home['leaderBoard'] = $this->leaderBoard();
