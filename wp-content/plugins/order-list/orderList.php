@@ -23,10 +23,13 @@ class Paulund_Wp_List_Table {
      */
     public function __construct() {
         add_action('admin_menu', array($this, 'add_menu_example_list_table_page'));
+        if(strpos($_SERVER['REQUEST_URI'], 'example-list-table') > 0 || strpos($_SERVER['REQUEST_URI'], 'pointsDistribution') > 0 ):
         wp_enqueue_style('datepicker', get_template_directory_uri() . '/css/datepicker.css');
         wp_enqueue_script('jquery10', get_template_directory_uri() . '/js/jquery10.js');
         wp_enqueue_script('jquery-ui', get_template_directory_uri() . '/js/jquery-ui.js');
+        wp_enqueue_style('jquery-ui-min', get_template_directory_uri() . '/css/jquery-ui.min.css');
         wp_enqueue_script('custom', get_template_directory_uri() . '/js/custom.js');
+        endif;
     }
 
     /**
