@@ -168,7 +168,7 @@ get_header();
     
     
     
-    <section id="content">
+    <section id="content" class="hide">
 
         <div class="content-wrap">
 
