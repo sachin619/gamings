@@ -311,7 +311,7 @@ $userEmail = $userInfo->user_email;
 <?php
 get_footer();
 ?>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("div.bhoechie-tab-menu>div.list-group>a").click(function (e) {
