@@ -91,7 +91,7 @@ $userEmail = $userInfo->user_email;
                                     </tr>
                                 </thead>						   
                                 <tbody >
-                                    <tr ng-repeat="myInfo in posts| startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+                                    <tr ng-repeat="myInfo in posts">
                                         <td>{{myInfo['tourDetails']['id']}}</td>
                                         <td >{{myInfo['tourDetails']['tourTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['matchTitle']}}</td>
@@ -112,8 +112,8 @@ $userEmail = $userInfo->user_email;
                                         </span>
                                     </div>
                                     <div class="col-md-6">
-                                         <button ng-click="searchByDate('yes')" class="button button-mini button-dark button-rounded">Reset</button>
-                                        <button ng-click="searchByDate()" class="button button-mini button-dark button-rounded">Search</button>
+                                        <button  ng-click="searchByDate('yes')" class="button button-mini button-dark button-rounded">Reset</button>
+                                        <button  ng-click="searchByDate()" class="button button-mini button-dark button-rounded">Search</button>
                                         <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button class="button button-mini button-dark button-rounded">Download</button>
                                         </a>
                                     </div>  
@@ -121,8 +121,8 @@ $userEmail = $userInfo->user_email;
                                 </tbody>							
                             </table>
                             <div class="col-lg-12">
-                                <button ng-hide="pagination.page === 0" ng-click="pagination.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
-                                <button ng-hide="pagination.page + 1 >= pagination.numPages" ng-click="pagination.nextPage()" class="button button-mini button-dark button-rounded pull-right">Next</button>
+                                <button  class="button button-mini button-dark button-rounded paginatePrev">Previous</button>
+                                <button ng-hide="posts.length<10" class="button paginateNext button-mini button-dark button-rounded pull-right">Next</button>
                             </div>
                         </div>
                     </div>   <!-- My bets-->

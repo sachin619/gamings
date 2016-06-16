@@ -155,11 +155,16 @@ class API {
     }
 
     function myAccount($info) {
-        $myAccount['userInfo'] = $this->getUserDetails();
-        $myAccount['userBets'] = $this->getUserBets($info);
-        $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
-        $myAccount['winLoss'] = $this->getWinLossBets($info);
-        $myAccount['bufferDay'] = get_option('distributing_days');
+        if (isset($info['data']['getCount'])):
+            $myAccount['userBets'] = $this->getUserBets($info);
+        else:
+            $myAccount['userInfo'] = $this->getUserDetails();
+            $myAccount['userBets'] = $this->getUserBets($info);
+            $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
+            $myAccount['winLoss'] = $this->getWinLossBets($info);
+            $myAccount['bufferDay'] = get_option('distributing_days');
+        endif;
+
         return $myAccount;
     }
 
@@ -923,18 +928,27 @@ class API {
     function getUserBets($info) {
 // print_r($info);
 // exit;
+
+        if (isset($info['data']['getCount'])):
+            $calcResult = $info['data']['getCount'];
+            $limit = "limit $calcResult,10 ";
+            $i = $info['data']['getCount'] + 1; //id increment
+        else:
+            $limit = "limit 0,10";
+            $i = 1;                         //id increment
+        endif;
         $startDate = $info['data']['startDate'];
         $endDate = $info['data']['endDate'];
         if ($info['data']['reset'] != 'yes'):
-            if (isset($startDate) && isset($endDate)): //start and end date
+            if (isset($startDate) && isset($endDate) && $startDate != '' && $endDate != ''): //start and end date
                 $whereM.=" AND bet_at BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
             endif;
         endif;
         global $wpdb;
         $getAccount = [];
-        $result = $wpdb->get_results("SELECT * FROM wp_bets where uid= $this->userId  $whereM order by bet_at DESC limit 200");
+        $result = $wpdb->get_results("SELECT * FROM wp_bets where   uid= $this->userId  $whereM order by bet_at DESC $limit ");
         $this->getCsv($result);
-        $i = 1;
+
         foreach ($result as $getBetDetails):
             $tourDetails['id'] = $i++;
             $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
@@ -959,7 +973,7 @@ class API {
         endif;
         global $wpdb;
         $getAccount = [];
-        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets where uid= $this->userId   group by tid,team_id,mid  order by bet_at DESC");
+        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets  where uid= $this->userId   group by tid,team_id,mid  order by bet_at DESC ");
 //$this->getCsv($result);
         $i = 1;
         foreach ($result as $getBetDetails):

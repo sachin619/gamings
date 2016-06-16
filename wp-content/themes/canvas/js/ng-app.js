@@ -15,7 +15,7 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
     $http.get(domain + "home").then(function (response) {
         $scope.home = response.data;
         $('.awardContent').html(response.data.leaderBoard['award']);
-         $scope.homeMatchListing = response.data;
+        $scope.homeMatchListing = response.data;
     });
 //    $http.get(domain + "home-match-listing").then(function (response) {
 //        $scope.homeMatchListing = response.data;
@@ -101,16 +101,57 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
 
     formData = {'pagination': Pagination, 'type': 'myAccount'};
     ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
+    var getPageCount = 0;
+
+    if (getPageCount <= 0) {  //hide prev button
+        $('.paginatePrev').hide();
+    }                          //hide prev button
+    $(document).on('click', '.paginateNext', function () {
+        var startDate = $('.startDate').val();
+        var endDate = $('.endDate').val();
+        getPageCount++;
+        if (getPageCount > 0) {
+            $('.paginatePrev').show();
+        }
+        var getCount = getPageCount * 10;
+        formData = {'pagination': Pagination, 'type': 'myAccount', 'getCount': getCount, 'startDate': startDate, 'endDate': endDate};
+        ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
+    });
+
+    $(document).on('click', '.paginatePrev', function () {
+        getPageCount--;
+        var getCount = getPageCount * 10;
+        var startDate = $('.startDate').val();
+        var endDate = $('.endDate').val();
+        formData = {'pagination': Pagination, 'type': 'myAccount', 'getCount': getCount, 'startDate': startDate, 'endDate': endDate};
+        ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
+        if (getPageCount == 0) {
+            $('.paginatePrev').hide();
+        } else {
+            $('.paginateNext').show();
+        }
+    });
+
+    $(document).on('click', '.paginateDiffusionNext', function () {
+        var getCountDiffusion = getPageCount * 10;
+        formData = {'pagination': Pagination, 'type': 'myAccount', 'getCountDiffusion': getCountDiffusion};
+        ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
+    });
     $scope.searchByDate = function (reset) {
-        if(reset=='yes'){
-             $('.startDate').val('');
-             $('.endDate').val('');
+        getPageCount = 0;
+        $('.paginatePrev').hide();
+        $('.paginateNext').show();
+        if (reset == 'yes') {
+            $('.startDate').val('');
+            $('.endDate').val('');
         }
         var startDate = $('.startDate').val();
         var endDate = $('.endDate').val();
-        formData = {'pagination': Pagination, 'type': 'myAccount', 'startDate': startDate, 'endDate': endDate,'reset':reset};
+        formData = {'pagination': Pagination, 'type': 'myAccount', 'startDate': startDate, 'endDate': endDate, 'reset': reset};
         ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
     };
+
+
     $scope.userUpdate = function () {
         $('.userInfoForm').valid();
         if (!$('.userInfoForm').valid()) {
@@ -470,12 +511,16 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                     $('.updateUserKit').html(response['userTotalPts']);
 
                 }
-                if(typeName=='my-account'){
-                    angular.element(document).ready(function(){
-                              $('.toolMsg a').attr('data-original-title',"These points will be credited to your 'Cleared Points' after "+response['bufferDay']+" days of winning Tournament/Match result");
-               
+                if (typeName == 'my-account') {
+                    $scope.posts = response['userBets'];
+                    if (response['userBets'].length == 0) {
+                        $('.paginateNext').hide();
+                    }
+                    angular.element(document).ready(function () {
+                        $('.toolMsg a').attr('data-original-title', "These points will be credited to your 'Cleared Points' after " + response['bufferDay'] + " days of winning Tournament/Match result");
+
                     });
-              
+
                 }
 
                 $('.loader').hide();
@@ -494,14 +539,10 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                 }
 
                 //for pagination of matches
-                if (typeof response['userBets'] !== 'undefined' && formData['type'] === 'myAccount') {
+                if (typeof response['winLoss'] !== 'undefined' && formData['type'] === 'myAccount') {
                     var Pagination = formData['pagination'];
-                    $scope.posts = response['userBets'];
                     $scope.winList = response['winLoss'];
-                    $scope.pagination = Pagination.getNew(10);
                     $scope.paginationWin = Pagination.getNew(10);
-
-                    $scope.pagination.numPages = Math.ceil($scope.posts.length / $scope.pagination.perPage);
                     $scope.paginationWin.numPages = Math.ceil($scope.winList.length / $scope.paginationWin.perPage);
 
                 }
