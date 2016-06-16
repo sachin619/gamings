@@ -243,8 +243,8 @@ function twentysixteen_scripts() {
     // Add custom fonts, used in the main stylesheet.
     wp_enqueue_style('twentysixteen-fonts', twentysixteen_fonts_url(), array(), null);
     wp_enqueue_script('angular-min', get_template_directory_uri() . '/js/angular.min.js');
-    wp_enqueue_script('jstz-min', get_template_directory_uri() . '/js/jstz.min.js');
-    wp_enqueue_script('jstz', get_template_directory_uri() . '/js/jstz.js');
+    //wp_enqueue_script('jstz-min', get_template_directory_uri() . '/js/jstz.min.js'); //to get user time zone
+    //wp_enqueue_script('jstz', get_template_directory_uri() . '/js/jstz.js'); //to get user time zone
     wp_enqueue_script('jquery-min', get_template_directory_uri() . '/js/jquery.min.js');
     wp_enqueue_script('ng-app', get_template_directory_uri() . '/js/ng-app.js');
     wp_enqueue_script('sweetalert-min', get_template_directory_uri() . '/js/sweetalert.min.js');

@@ -47,7 +47,7 @@
 
 </script>
 <?php
-$getTime = "<script>getTimezoneName();</script>";
+//$getTime = "<script>getTimezoneName();</script>";
 ?>
 </body>
 </html>
