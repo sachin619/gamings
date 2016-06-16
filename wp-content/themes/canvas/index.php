@@ -191,7 +191,7 @@ get_header();
                     <div class="oc-item">
                                 <div class="ipost clearfix">
                                         <div class="entry-image">
-                                                <a href="images/portfolio/full/1.jpg" data-lightbox="image"><img class="image_fade" src="images/blog/grid/1.jpg" alt="Standard Post with Image"></a>
+                                                <a href={{popular.postLink}}><img class="image_fade" ng-src={{popular.img}} alt={{popular.title}}></a>
                                         </div>
                                         <div class="entry-title">
                                                 <h3><a href="blog-single.html">This is a Standard post with another Preview Image</a></h3>
