@@ -260,7 +260,6 @@ class API {
     }
 
     function popularTournaments() {
-        //$currentTime = time();
         $getDate = current_time('mysql');
         $dateFormat = strtotime($getDate);
         $currentTime = $dateFormat;
@@ -503,7 +502,6 @@ class API {
     }
 
     function listingPopularMatches($getCatSlug) {
-        //print_r($getCatSlug);exit;
         $userId = $this->userId;
         $categorySlug = $getCatSlug['data']['categoryName'];
         if (!empty($getCatSlug['data']['getCount'])):
@@ -523,13 +521,11 @@ class API {
                 [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
             ],
         ];
-
         $result = $this->getResult($args);
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
             $cat[] = ['catName' => $catName['name']];
         }
-
         foreach ($result as $getPost) {
             $tId = $getPost['id'];
             foreach ($getPost['select_teams'] as $resultN) {
