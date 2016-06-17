@@ -24,7 +24,7 @@ class ApiClass extends API {
         $getContent = $collectSchemeInfo[0]['award'];
         global $wpdb;
         $getAccount = [];
-        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets WHERE bet_at >= '" . $getStartDate . "' AND  bet_at <= '" . $getEndDate . "'  group by tid,team_id,mid,uid  order by pts asc ");
+        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets WHERE bet_at >= '" . $getStartDate . "' AND  bet_at <= '" . $getEndDate . "'  group by tid,team_id,mid,uid");
         $i = 1;
         foreach ($result as $getBetDetails):
             $getTourStatus = get_field('points_distributed', $getBetDetails->tid);
@@ -51,27 +51,29 @@ class ApiClass extends API {
             endif;
         endforeach;
         $limitUser = 0;
+
         foreach ($collectLosspoints as $getUserId => $getLossPts):
             if (count(array_unique($getMid[$getUserId])) >= $getMinMatch):
                 $getTotal = array_sum($collectWinpoints[$getUserId]) - array_sum($getLossPts); //substract win - loss
-                if ($getTotal > 0 && $limitUser <= 3):          //only top 3 results (0,1,2)
+                if ($getTotal > 0 ):          //only top 3 results (0,1,2)
                     $userName = get_user_by('id', $getUserId);
                     $userFirstName = get_user_meta($getUserId, 'first_name');
                     $userLastName = get_user_meta($getUserId, 'last_name');
                     $userFullName = $userFirstName[0] . " " . $userLastName[0];
                     $geImgId = get_user_meta($getUserId, 'profile_pic');
-                    $userFbUrl=get_userdata($getUserId);
-                    $userFbUrlFilter=  $userFbUrl->data->user_url;
-                    $getUsrfbImg=  explode('/', $userFbUrlFilter);
+                    $userFbUrl = get_userdata($getUserId);
+                    $userFbUrlFilter = $userFbUrl->data->user_url;
+                    $getUsrfbImg = explode('/', $userFbUrlFilter);
                     $userImg[] = $this->getProfileImg($geImgId[0]);
-                    $getInfo[] = ['userId' => $getUserId, 'userName' => $userFullName, 'pts' => $getTotal,'fbUrl'=>$getUsrfbImg[4], 'mid' => count(array_unique($getMid[$getUserId]))];
+                    $getInfo[] = ['pts' => $getTotal, 'userId' => $getUserId, 'userName' => $userFullName, 'fbUrl' => $getUsrfbImg[4], 'mid' => count(array_unique($getMid[$getUserId]))];
                     update_field('winner_' . $limitUser, $userName->data->display_name, $collectSchemeInfo[0]['id']);
                 endif;
             endif;
             $limitUser++;
         endforeach;
-       
-        return ['info' => $getInfo, 'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate, 'img' => $getImg, 'award' => $getContent, 'getUserImg' => $userImg];
+        arsort($getInfo);
+        $getTop3users = array_slice($getInfo, 0, 3);
+        return ['info' => $getTop3users, 'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate, 'img' => $getImg, 'award' => $getContent, 'getUserImg' => $userImg];
     }
 
     function formatNumberAbbreviation() {
