@@ -601,7 +601,7 @@ class API {
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTourId, 'team_id' => $teamId, 'pts' => $points];
         if ($getStartTime > $curTime):
             if ($getMatchStatus == 'No'):
-                if (!empty($tradeInfo['data']['pts'])):
+                if (!empty($tradeInfo['data']['pts']) && is_numeric($tradeInfo['data']['pts']) ):
                     if ($points >= $getMinimumBetAmount):
                         if ($points <= $uPoints):
                             $remaining = $uPoints - $points;

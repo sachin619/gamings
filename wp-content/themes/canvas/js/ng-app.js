@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var domain = "http://localhost/gamings/api?action=";
+var domain = "http://localhost/gamings/api/?action=";
 
 var base_url = "http://localhost/gamings/";
 

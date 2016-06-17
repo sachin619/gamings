@@ -8,8 +8,9 @@
 
         <div class="container center clearfix">
 
-            &copy; 2016 by<a href="#"> Event Exchange </a>. All Rights Reserved Developed by <a href="http://infinisystem.com/" target="_blank"> Infini Systems </a>.
-
+            &copy; 2016 by<a href="#"> Event Exchange </a>. All Rights Reserved Developed by <a href="http://infinisystem.com/" target="_blank"> Infini Systems </a>. 
+            <a href="<?= get_site_url()."/terms-conditions" ?>" target="_blank"> Terms & Condition </a> &nbsp;&nbsp;
+            <a href="<?= get_site_url()."/privacy-policy" ?>" target="_blank"> Privacy & Policy </a>
         </div>
 
     </div><!-- #copyrights end -->
