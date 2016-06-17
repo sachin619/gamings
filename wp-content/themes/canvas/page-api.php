@@ -155,19 +155,11 @@ class API {
     }
 
     function myAccount($info) {
-        if (isset($info['data']['getCount'])):
-           $myAccount['userInfo'] = $this->getUserDetails();
-            $myAccount['userBets'] = $this->getUserBets($info);
-            $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
-            $myAccount['bufferDay'] = get_option('distributing_days');
-        else:
-            $myAccount['userInfo'] = $this->getUserDetails();
-            $myAccount['userBets'] = $this->getUserBets($info);
-            $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
-            $myAccount['winLoss'] = $this->getWinLossBets($info);
-            $myAccount['bufferDay'] = get_option('distributing_days');
-        endif;
-
+        $myAccount['userInfo'] = $this->getUserDetails();
+        $myAccount['userBets'] = $this->getUserBets($info);
+        $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
+        $myAccount['winLoss'] = $this->getWinLossBets($info);
+        $myAccount['bufferDay'] = get_option('distributing_days');
         return $myAccount;
     }
 
