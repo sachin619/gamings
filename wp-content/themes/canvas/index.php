@@ -93,12 +93,12 @@ get_header();
                                     <td  ng-repeat-end> 
                                         <input type="text" class="form-control" ng-model="$parent.$parent.points[teams['team_name']['ID']]" style="width: 100%; margin: 0 0 5px 0;" placeholder=" Add Trade" ng-if="matches['uid'] != null" > 
                                         <span ng-if="homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null">You've traded {{homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']}} Pts.</span>
-                                        <span ng-if="matches['uid']==null">-</span>
+                                        <span ng-if="matches['uid'] == null">-</span>
                                     </td>
                                     <td>
                                         <input type="text"   class="trade form-control" style="display: {{hideTrade}}; width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.pointsTie[$index]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" placeholder=" Add Trade" >
                                         <span ng-if="homeMatchListing['upcomingMatches']['tradeTie'][$index] != null"> You've traded {{homeMatchListing['upcomingMatches']["tradeTie"][$index]}} Pts </span>
-                                        <span ng-if="matches['uid']==null">-</span>
+                                        <span ng-if="matches['uid'] == null">-</span>
                                     </td>
 
                                     <td>
@@ -165,9 +165,9 @@ get_header();
 
     <!-- Content
      ============================================= -->
-    
-    
-    
+
+
+
     <section id="content" class="hide">
 
         <div class="content-wrap">
@@ -289,7 +289,8 @@ get_header();
             <div class="col-md-3 col-sm-6 bottommargin" ng-repeat="leaderBoard in home.leaderBoard['info']">
                 <div class="team">
                     <div class="team-image">
-                        <img src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
+                        <img ng-if="home.leaderBoard['getUserImg'][$index] == null" ng-src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
+                        <img ng-if="home.leaderBoard['getUserImg'][$index] != null" ng-src="{{home.leaderBoard['getUserImg'][$index]}}" alt="img">
                     </div>                               
                     <div class="team-desc team-desc-bg" style="height:auto; background:#eee;">
                         <div class="team-title" style="padding-top: 15px;">
@@ -344,8 +345,8 @@ get_header();
 
 
 
-    <section ng-if="home.leaderBoard['info']!=null" class="foot-fix hidden-sm hidden-xs">
-        <div class="container">
+    <section  class="foot-fix hidden-sm hidden-xs popupLeaderBoard">
+        <div class="container" >
             <div class="sticy_foot row">
                 <div class="col-md-2 foot-col">
                     <h6>Leadeboard</h6>
@@ -354,7 +355,8 @@ get_header();
                 </div>
                 <div class="col-md-2 foot-col" ng-repeat="leaderBoard in home.leaderBoard['info']" >
                     <div class="testi-image">
-                        <a href="#"><img src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img"></a>
+                        <img ng-if="home.leaderBoard['getUserImg'][$index] == null" ng-src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
+                        <img ng-if="home.leaderBoard['getUserImg'][$index] != null" ng-src="{{home.leaderBoard['getUserImg'][$index]}}" alt="img">
                     </div>
                     <h6>{{leaderBoard['userName']}}</h6>
                     <p>Points : {{leaderBoard['pts']}}</p>

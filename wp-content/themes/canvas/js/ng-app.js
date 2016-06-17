@@ -16,6 +16,9 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
         $scope.home = response.data;
         $('.awardContent').html(response.data.leaderBoard['award']);
         $scope.homeMatchListing = response.data;
+        if(response.data.leaderBoard['info']==null){
+            $('.popupLeaderBoard').hide();
+        }
     });
 //    $http.get(domain + "home-match-listing").then(function (response) {
 //        $scope.homeMatchListing = response.data;

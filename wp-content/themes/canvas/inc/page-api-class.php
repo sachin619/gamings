@@ -56,18 +56,20 @@ class ApiClass extends API {
                 $getTotal = array_sum($collectWinpoints[$getUserId]) - array_sum($getLossPts); //substract win - loss
                 if ($getTotal > 0 && $limitUser <= 2):          //only top 3 results (0,1,2)
                     $userName = get_user_by('id', $getUserId);
+                    $geImgId = get_user_meta($getUserId, 'profile_pic');
+                    $userImg[] = $this->getProfileImg($geImgId[0]);
                     $getInfo[] = ['userId' => $getUserId, 'userName' => $userName->data->display_name, 'pts' => $getTotal, 'mid' => count(array_unique($getMid[$getUserId]))];
                     update_field('winner_' . $limitUser, $userName->data->display_name, $collectSchemeInfo[0]['id']);
                 endif;
             endif;
             $limitUser++;
         endforeach;
-        return ['info' => $getInfo, 'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate, 'img' => $getImg, 'award' => $getContent];
+        return ['info' => $getInfo, 'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate, 'img' => $getImg, 'award' => $getContent,'getUserImg'=>$userImg];
     }
 
     function formatNumberAbbreviation() {
         $getUserPoints = get_user_meta($this->userId, 'points');
-        $number =$getUserPoints[0];
+        $number = $getUserPoints[0];
         $abbrevs = array(12 => "T", 9 => "B", 6 => "M", 3 => "K", 0 => "");
 
         foreach ($abbrevs as $exponent => $abbrev) {
