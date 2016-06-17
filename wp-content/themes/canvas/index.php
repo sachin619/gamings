@@ -87,7 +87,7 @@ get_header();
                             <tbody> 
                                 <!--                     {{home['upcomingMatches']['catPost']}}-->
                                 <tr ng-repeat="matches in homeMatchListing['upcomingMatches']['catPost']">
-                                    <td> {{matches['onlySDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue']!=''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
+                                    <td> {{matches['matchStartDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue']!=''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
                                     <td><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a><b> ({{matches['category'][0]['name']}})</td>
                                     <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} </td>
                                     <td  ng-repeat-end> 
@@ -344,7 +344,7 @@ get_header();
 
 
 
-    <section class="foot-fix hidden-sm hidden-xs">
+    <section ng-if="home.leaderBoard['info']!=null" class="foot-fix hidden-sm hidden-xs">
         <div class="container">
             <div class="sticy_foot row">
                 <div class="col-md-2 foot-col">

@@ -622,7 +622,7 @@ class API {
                 return "Match had been over";
             endif;
         else:
-            return "Match had been started";
+            return "Sorry you cannot place this trade as the match has already been started";
         endif;
     }
 
@@ -820,6 +820,7 @@ class API {
                 endif;
                 if ($k == 'start_date'):$post['matchStartDate'] = date('M', strtotime($v));
                     $post['matchStartTime'] = date('H:i', strtotime($v));
+                    $post['matchStartDate'] = date('d M, Y', strtotime($v));
                     $post['start_date_original'] = $v;
                     if ($postType == 'matches'):
                         $post['start_date'] = "";
