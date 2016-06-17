@@ -1100,7 +1100,11 @@ class API {
 
     function getProfileImg($getImgId) {
         $getImg = $this->wpdb->get_results("SELECT meta_value FROM wp_postmeta where post_id=$getImgId");
+       if($getImg[0]->meta_value!=''):
         return get_site_url() . '/wp-content/uploads/' . $getImg[0]->meta_value;
+       else:
+           return null;
+       endif;
     }
 
     function getUnclearedPoints() {
