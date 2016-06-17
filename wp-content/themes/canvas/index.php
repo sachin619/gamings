@@ -289,8 +289,9 @@ get_header();
             <div class="col-md-3 col-sm-6 bottommargin" ng-repeat="leaderBoard in home.leaderBoard['info']">
                 <div class="team">
                     <div class="team-image">
-                        <img ng-if="home.leaderBoard['getUserImg'][$index] == null" ng-src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
-                        <img ng-if="home.leaderBoard['getUserImg'][$index] != null" ng-src="{{home.leaderBoard['getUserImg'][$index]}}" alt="img">
+                        <img ng-if="home.leaderBoard['getUserImg'][$index] == null && leaderBoard['fbUrl'] == null" ng-src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
+                        <img ng-if="home.leaderBoard['getUserImg'][$index] != null && leaderBoard['fbUrl'] == null" ng-src="{{home.leaderBoard['getUserImg'][$index]}}" alt="img">
+                        <img ng-if="leaderBoard['fbUrl'] != null" ng-src="https://graph.facebook.com/{{leaderBoard['fbUrl']}}/picture?type=large" alt="img">
                     </div>                               
                     <div class="team-desc team-desc-bg" style="height:auto; background:#eee;">
                         <div class="team-title" style="padding-top: 15px;">
@@ -355,8 +356,9 @@ get_header();
                 </div>
                 <div class="col-md-2 foot-col" ng-repeat="leaderBoard in home.leaderBoard['info']" >
                     <div class="testi-image">
-                        <img ng-if="home.leaderBoard['getUserImg'][$index] == null" ng-src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
-                        <img ng-if="home.leaderBoard['getUserImg'][$index] != null" ng-src="{{home.leaderBoard['getUserImg'][$index]}}" alt="img">
+                        <img ng-if="home.leaderBoard['getUserImg'][$index] == null && leaderBoard['fbUrl'] == null" ng-src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
+                        <img ng-if="home.leaderBoard['getUserImg'][$index] != null && leaderBoard['fbUrl'] == null" ng-src="{{home.leaderBoard['getUserImg'][$index]}}" alt="img">
+                        <img ng-if="leaderBoard['fbUrl'] != null" ng-src="https://graph.facebook.com/{{leaderBoard['fbUrl']}}/picture?type=large" alt="img">
                     </div>
                     <h6>{{leaderBoard['userName']}}</h6>
                     <p>Points : {{leaderBoard['pts']}}</p>
