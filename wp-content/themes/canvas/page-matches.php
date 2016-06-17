@@ -103,7 +103,7 @@ get_header();
                         <tbody > 
 
                             <tr ng-repeat="matches in getDetails.catPost">
-                                <td> {{matches['onlySDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue'] != ''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
+                                <td> {{matches['matchStartDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue'] != ''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
                                 <td ng-init="count = $index"><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a></td>
                                 <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} <br> 
                                     <b style="color:green" ng-if="teams['winner'] == 'Yes'">Winner</b> 
