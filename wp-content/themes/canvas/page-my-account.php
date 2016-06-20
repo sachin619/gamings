@@ -241,8 +241,8 @@ $userEmail = $userInfo->user_email;
                                         <input type="text" value={{myAccount['userInfo']['phone'][0]}} class="form-control" id="mobile" name="mobile" placeholder="Mobile">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="mobile" ng-hide="myAccount['userInfo']['userDetails']['data']['user_url'] != ''" class="col-sm-4 control-label">Upload Profile Image</label>
+                                <div class="form-group" ng-hide="myAccount['userInfo']['userDetails']['data']['user_url'] != ''">
+                                    <label for="mobile" class="col-sm-4 control-label">Upload Profile Image</label>
                                     <div class="col-sm-8">
                                         <input type="file"  id="img" name="file" value="browse" />
 
