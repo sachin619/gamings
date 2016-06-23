@@ -53,9 +53,11 @@ class ApiClass extends API {
         $limitUser = 0;
 
         foreach ($collectLosspoints as $getUserId => $getLossPts):
+             $getUserRole = get_userdata($getUserId);
+       
             if (count(array_unique($getMid[$getUserId])) >= $getMinMatch):
                 $getTotal = array_sum($collectWinpoints[$getUserId]) - array_sum($getLossPts); //substract win - loss
-                if ($getTotal > 0 ):          //only top 3 results (0,1,2)
+                if ($getTotal > 0 && $getUserRole->caps['administrator']!=1):          //only top 3 results (0,1,2)
                     $userName = get_user_by('id', $getUserId);
                     $userFirstName = get_user_meta($getUserId, 'first_name');
                     $userLastName = get_user_meta($getUserId, 'last_name');
@@ -71,6 +73,7 @@ class ApiClass extends API {
             endif;
             $limitUser++;
         endforeach;
+        
         arsort($getInfo);
         $getTop3users = array_slice($getInfo, 0, 3);
         return ['info' => $getTop3users, 'startDate' => $getFormatStartDate, 'endDate' => $getFormatEndDate, 'img' => $getImg, 'award' => $getContent, 'getUserImg' => $userImg];

@@ -112,6 +112,7 @@ endif;
                         </nav><!-- #primary-menu end -->
 
                     </div>
+
             </header><!-- #header end -->
 
             <!-- Page Sub Menu
@@ -139,11 +140,11 @@ endif;
                                         </ul>
                                     </nav>
 
-                                    <div id="page-submenu-trigger"><i class="icon-reorder"></i></div>
+                                    <div id="page-submenu-trigger"> <i class="icon-reorder"></i></div>
 
                                 </div>
 
                             </div>
 
-                        </div><!-- #page-menu end -->
+                        </div>
 

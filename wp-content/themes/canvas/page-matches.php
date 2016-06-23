@@ -97,12 +97,12 @@ get_header();
                                 <th>Trade For Tie</th>
                                 <th> Action</th>
                                 <th>Total Trade</th>
-                                
+
                             </tr>
                         </thead>
                         <tbody > 
 
-                            <tr ng-repeat="matches in getDetails.catPost">
+                            <tr ng-repeat="matches in homeMatchListing">
                                 <td> {{matches['matchStartDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue'] != ''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
                                 <td ng-init="count = $index"><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a></td>
                                 <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} <br> 
@@ -112,31 +112,37 @@ get_header();
                                 </td>
                                 <td  ng-repeat-end> 
                                     <input type="text"   class="trade form-control" style="display: {{hideTrade}};width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" style="width: 100%;" placeholder=" Add Trade" >
-                                    <span ng-if="getDetails['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null"> You've traded {{getDetails['tradeTotal'][matches['id']][$index][0]['total']}} Pts. </span>
-                                    <span ng-if=" (hideTrade != 'block' && hideTrade != null && getDetails['tradeTotal'][matches['id']][$index][0]['total'] == null) || (getDetails.catPost[0]['uid']==null)">-</span>
+                                    <span class="{{matches['id']}}-{{teams['team_name']['ID']}}">{{matches['mytradedTotal'][teams['team_name']['ID']]!==null ? "You've traded " + matches['mytradedTotal'][teams['team_name']['ID']] +" Pts." : ""}} </span>
+
+<!--                                     <span ng-if=" (hideTrade != 'block' && hideTrade != null  ) || (homeMatchListing['uid']==null && matches['mytradedTotal'][teams['team_name']['ID']]==null)  ">-</span>-->
+                                    <span ng-if="(category != 'upcomming' && category != 'popular') || (matches['uid'] == null && (category == 'upcomming' || category == 'popular'))">-</span>
+
                                 </td>
                                 <td>
                                     <input type="text"   class="trade form-control" style="display: {{hideTrade}} ;width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.pointsTie[$index]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null"  placeholder=" Add Trade" >
-                                    <span ng-if="getDetails['tradeTie'][$index] != null"> You've traded {{getDetails["tradeTie"][$index]}} Pts </span>
-                                    <span ng-if="(getDetails['tradeTie'][$index] == null && hideTrade != 'block' && hideTrade != null) || (getDetails.catPost[0]['uid']==null)"> - </span>
+                                    <span class="{{matches['id']}}-tie"> {{matches['mytradedTotal']['mytradedTie']!==null? " You've traded "+ matches['mytradedTotal']['mytradedTie']+" Pts.":"" }} </span>
+                                    <span ng-if="(matches['mytradedTotal']['mytradedTie'] == null && hideTrade != 'block' && hideTrade != null) || (matches['uid'] == null && (category == 'upcomming' || category == 'popular'))">-</span>
+
                                 </td>
                                 <td> 
-                                 <a href="#" style="display: {{hideTrade}}" onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, getDetails.catPost[0]['uid'],pointsTie[$index])" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'">Trade </a>
-                                   <span ng-if=" (hideTrade != 'block' && hideTrade != null && getDetails['tradeTotal'][matches['id']][$index][0]['total'] == null) ">-</span>
+                                    <button style="display: {{hideTrade}}"   ng-click="tradeMatch(matches['postLink'], matches['id'], points, homeMatchListing[0]['uid'], pointsTie[$index], $event)" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'" >Trade </button>
+                                    <span ng-if=" (hideTrade != 'block' && hideTrade != null)">-</span>
+
                                 </td>
-                                <td>{{matches["total_bets"]}} <span ng-if="matches['total_bets'] == ''">0</span></td>
+                                <td>{{ matches['mytradedTotal']['tourTotal']}} <span ng-if=" matches['mytradedTotal']['tourTotal'] == ''">0</span></td>
                             </tr>    
-                            <tr  ng-hide="getDetails.catPost.length"><td colspan="9" align="center">There are no open matches at the moment please check again later!</td></tr>
+                            <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no open matches at the moment please check again later!</td></tr>
 
                         </tbody>
                     </table>
                 </div>
 
-                <div class="col-lg-12 loadMoreBlock" ng-if="getDetails.catPost.length >= 50" style="text-align: center">
+                <div class="col-lg-12 loadMoreBlock" ng-if="homeMatchListing.length >= 10" style="text-align: center">
                     <br>
-                    <button type="button" class="btn btn-danger loadMoreBtn hide-loadMore" ng-click="loadMore(getCat, getDetails.catPost.length + 50)">Load More </button>
+                    <button type="button" class="btn btn-danger loadMoreBtn hide-loadMore" ng-click="loadMore(getCat)">Load More </button>
+                    <br>
                 </div>
-
+                <br>
 
                 <div class="row banner-match">
                     <div class="col-lg-12 matches_banner">

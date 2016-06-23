@@ -24,10 +24,10 @@ get_header();
 <section id="page-title">
 
     <div class="container clearfix">
-        <h1>Contact</h1>				
+        <h1><?= get_the_title() ?></h1>				
         <ol class="breadcrumb">
             <li><a href="#">Home</a></li>
-            <li class="active">Contact</li>
+            <li class="active"><?= get_the_title() ?></li>
         </ol>
     </div>
 

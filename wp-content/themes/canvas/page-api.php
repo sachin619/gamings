@@ -155,11 +155,17 @@ class API {
     }
 
     function myAccount($info) {
-        $myAccount['userInfo'] = $this->getUserDetails();
-        $myAccount['userBets'] = $this->getUserBets($info);
-        $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
-        $myAccount['winLoss'] = $this->getWinLossBets($info);
-        $myAccount['bufferDay'] = get_option('distributing_days');
+        if ($info['data']['type'] == 'myAccountFilter'):
+            $myAccount['userBets'] = $this->getUserBets($info);
+        else:
+           
+            $myAccount['userInfo'] = $this->getUserDetails();
+            $myAccount['userBets'] = $this->getUserBets($info);
+            $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
+            $myAccount['winLoss'] = $this->getWinLossBets($info);
+            $myAccount['bufferDay'] = get_option('distributing_days');
+        endif;
+
         return $myAccount;
     }
 
@@ -299,6 +305,7 @@ class API {
         $tradeInfo = ['tid' => $tId, 'user_id' => $userId];
         $getTotalBets = $this->getTotalTrade($tradeInfo, 'tid');
         $userTotalTrade = $this->getUserTotalTrade($tradeInfo, 'tid');
+
         $userTotalPts = $this->formatNumberAbbreviation();
         //$detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'matches' => $this->tournamentsMatches($postId)];
         $detailsData = ['details' => $allResult, 'pts' => $var, 'totalBets' => $getTotalBets, 'userTotalTrade' => $userTotalTrade, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $userTotalPts];
@@ -321,9 +328,9 @@ class API {
         $getDate = current_time('mysql');
         $dateFormat = strtotime($getDate);
         $currentTime = $dateFormat;
-        $postPerPage = $getPageCount;
+        $paged = $getPageCount;
         //$dateFormat = date('Ymd');
-        $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => $postPerPage, 'meta_key' => 'total_tour_bets', 'orderby' => 'meta_value_num', 'order' => 'DESC',
+        $args = [ 'post_type' => 'tournaments', 'category_name' => $categorySlug, 'posts_per_page' => 6, 'paged' => $paged, 'meta_key' => 'total_tour_bets', 'orderby' => 'meta_value_num', 'order' => 'DESC',
             'meta_query' => [
                 'relation' => 'AND',
                 [
@@ -340,28 +347,30 @@ class API {
     function listingTournaments($getCatSlug) {
         $categorySlug = $getCatSlug['data']['categoryName'];
         if (!empty($getCatSlug['data']['getCount'])):
-            $getPageCount = $getCatSlug['data']['getCount'];
+            $paged = $getCatSlug['data']['getCount'];
         else:
 
-            $getPageCount = 6;
+            $paged = 1;
         endif;
         $getCat = $this->getCategories(['parent' => 1]);
-        $result = $this->upcomingOngoingTournaments($categorySlug, $getPageCount);
+        $result = $this->upcomingOngoingTournaments($categorySlug, $paged);
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
             $cat[] = ['catName' => $catName['name']];
         }
 
-        foreach ($result as $getPost) {
+        foreach ($result as $key => $getPost) {
             $tradeInfo = ['tid' => $getPost['id']];
             $getTrade = $this->getTotalTrade($tradeInfo, 'tid');
-            $converTrade[] = (array) $getTrade[0];
+            $converTrade[] = $getTrade;
+            $result[$key]['mytradedTotal'] = $this->getTotalTrade($tradeInfo, 'tid');
         }
         $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $converTrade];
         return $output;
     }
 
     function listingMatches($getCatSlug) {
+        $postPerPage = 10;
         global $wpdb;
         if (isset($getCatSlug['data']['tourId'])):
             $getPostSlug = $getCatSlug['data']['tourId'];
@@ -376,9 +385,9 @@ class API {
         $getCatDetail = get_terms('category', array('name__like' => $categorySlug));
         $getCatId = $getCatDetail[0]->term_id;
         if (!empty($getCatSlug['data']['getCount'])):
-            $getPageCount = $getCatSlug['data']['getCount'];
+            $paged = $getCatSlug['data']['getCount'];
         else:
-            $getPageCount = 50;
+            $paged = 1;
         endif;
         $getDate = current_time('mysql');
         $dateFormat = strtotime($getDate);
@@ -398,7 +407,8 @@ class API {
                 'meta_key' => 'total_bets',
                 'orderby' => 'meta_value_num',
                 'category_name' => $categorySlug,
-                'posts_per_page' => $getPageCount,
+                'posts_per_page' => $postPerPage,
+                'paged' => $paged,
                 'order' => 'DESC',
                 'meta_query' => ['relation' => 'AND',
                     [
@@ -416,7 +426,8 @@ class API {
                 'meta_key' => 'start_date',
                 'orderby' => 'meta_value_num',
                 'category_name' => $categorySlug,
-                'posts_per_page' => $getPageCount,
+                'posts_per_page' => $postPerPage,
+                'paged' => $paged,
                 'order' => 'DESC',
                 'meta_query' => ['relation' => 'AND',
                     [
@@ -435,7 +446,8 @@ class API {
                 'meta_key' => 'start_date',
                 'orderby' => 'meta_value_num',
                 'category_name' => $categorySlug,
-                'posts_per_page' => $getPageCount,
+                'posts_per_page' => $postPerPage,
+                'paged' => $paged,
                 'order' => 'ASC',
                 'meta_query' => ['relation' => 'AND',
                     [ 'key' => 'start_date', 'value' => $dateFormat, 'compare' => '>',],
@@ -449,7 +461,8 @@ class API {
                 'meta_key' => 'start_date',
                 'orderby' => 'meta_value_num',
                 'category_name' => $categorySlug,
-                'posts_per_page' => $getPageCount,
+                'posts_per_page' => $postPerPage,
+                'paged' => $paged,
                 'order' => 'DESC',
                 'meta_query' => ['relation' => 'AND',
                     [
@@ -471,7 +484,8 @@ class API {
                 'meta_key' => 'total_bets',
                 'orderby' => 'meta_value_num',
                 'category_name' => $categorySlug,
-                'posts_per_page' => $getPageCount,
+                'posts_per_page' => $postPerPage,
+                'paged' => $paged,
                 'order' => 'DESC',
                 'meta_query' => ['relation' => 'AND',
                     [ 'key' => 'start_date', 'value' => $dateFormat, 'compare' => '>'],
@@ -485,16 +499,18 @@ class API {
             $cat[] = ['catName' => $catName['name']];
         }
 
-        foreach ($result as $getPost) {
+        foreach ($result as $key => $getPost) {
             $tId = $getPost['id'];
             foreach ($getPost['select_teams'] as $resultN) {
                 $teamInfo = (array) $resultN['team_name'];
                 $teamId = $teamInfo['ID'];
                 $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId,];
-                $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
+                //$var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
+                $result[$key]['mytradedTotal'][$teamId] = $this->getUserTrade($tradeInfo, 'mid');
             }
             $tradeInfoTie = ['tid' => $tId, 'user_id' => $userId,];
-            $userTotalTradeTie[] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
+            $result[$key]['mytradedTotal']['mytradedTie'] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
+            $result[$key]['mytradedTotal']['tourTotal'] = $this->getTotalTrade($tradeInfo, 'mid');
         }
         $userTotalPts = $this->formatNumberAbbreviation();
         $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'getOngoing' => $collectOngoing, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $userTotalPts];
@@ -504,18 +520,24 @@ class API {
     function listingPopularMatches($getCatSlug) {
         $userId = $this->userId;
         $categorySlug = $getCatSlug['data']['categoryName'];
+
         if (!empty($getCatSlug['data']['getCount'])):
-            $getPageCount = $getCatSlug['data']['getCount'];
+            $paged = $getCatSlug['data']['getCount'];
+
+        // $getPaged = $getCatSlug['data']['getCount'] / 5;
         else:
-            $getPageCount = 5;
+            $paged = 1;
+        //$getPaged = 0;
         endif;
+
         $dateFormat = strtotime($this->getDate);
         $getCat = $this->getCategories(['parent' => 1]);
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'total_bets',
             'orderby' => 'meta_value_num',
-            'posts_per_page' => $getPageCount,
+            'posts_per_page' => 5,
+            'paged' => $paged,
             'order' => 'DESC',
             'meta_query' => ['relation' => 'AND', ['key' => 'start_date', 'value' => $dateFormat, 'compare' => '>='],
                 [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
@@ -526,43 +548,70 @@ class API {
             $catName = (array) $categories;
             $cat[] = ['catName' => $catName['name']];
         }
-        foreach ($result as $getPost) {
+        foreach ($result as $key => $getPost) {
             $tId = $getPost['id'];
             foreach ($getPost['select_teams'] as $resultN) {
                 $teamInfo = (array) $resultN['team_name'];
                 $teamId = $teamInfo['ID'];
-                $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId,];
-                $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
+                $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId];
+                // $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
+
+                $result[$key]['mytradedTotal'][$teamId] = $this->getUserTrade($tradeInfo, 'mid');
             }
             $tradeInfoTie = ['tid' => $tId, 'user_id' => $userId,];
-            $userTotalTradeTie[] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
+            $result[$key]['mytradedTotal']['mytradedTie'] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
+            $tradeInfo = ['tid' => $tId, 'user_id' => $userId];
+            $result[$key]['mytradedTotal']['tourTotal'] = $this->getTotalTrade($tradeInfo, 'mid');
         }
         $getTotalPointsUser = $this->formatNumberAbbreviation();
-        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $getTotalPointsUser];
+        $getVal['totalTrade'] = $var;
+
+        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $getVal, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $getTotalPointsUser];
         return $output;
     }
 
     function multiTradeMatch($tradeInfo) {
 //echo count($tradeInfo['data']['pts']);exit;
         //array_push($tradeInfo['data']['pts'], $tradeInfo['data']['tie']);
-        $tradeInfo['data']['pts'][0] = $tradeInfo['data']['tie'];
-        // print_r($tradeInfo['data']['pts']);exit;
-        if (!empty($tradeInfo['data']['pts'])):
+        if ($tradeInfo['data']['tie'] != null):
+            $tradeInfo['data']['pts'][0] = $tradeInfo['data']['tie'];
+        endif;
+        $getMinimumBetAmount = get_option('minimum_bet_amount');
+        // 
 
-            foreach ($tradeInfo['data']['pts'] as $teamId => $points) {
 
+        $getPoints = [];
+
+        foreach ($tradeInfo['data']['pts'] as $teamId => $points) {
+            if (is_numeric($points)):
                 $tradeInfo['data']['team_id'] = $teamId;
                 $tradeInfo['data']['pts'] = $points;
                 $get_result[] = $this->tradeMatch($tradeInfo);
-            }
-            $tradeInfo["tid"] = $tradeInfo['data']['mid'];
-            $getTotalBets = $this->getTotalTrade($tradeInfo, 'mid');
-            $getTotalBetsFilter = (array) $getTotalBets[0];
-            $mid = $tradeInfo['data']['mid'];
-            update_post_meta($mid, 'total_bets', $getTotalBetsFilter['total']);
-            return $get_result[0];
+                if ($points >= $getMinimumBetAmount):
+                    $tradeInfoTotal = ['tid' => $tradeInfo['data']['mid'], 'team_id' => $teamId, 'user_id' => $this->userId];
+                    $tradeInfoTie = ['tid' => $tradeInfo['data']['mid'], 'user_id' => $this->userId];
+                    if ($teamId == 0) :
+
+                        $getPoints['tie'] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
+                    else:
+                        //print_r($this->getUserTrade($tradeInfoTotal, 'mid'));exit;
+                        $getPoints[$teamId] = $this->getUserTrade($tradeInfoTotal, 'mid');
+                    endif;
+                endif;
+//print_r($teamId);
+            endif;
+        }
+        //exit;
+        $tradeInfo["tid"] = $tradeInfo['data']['mid'];
+        $getTotalBets = $this->getTotalTrade($tradeInfo, 'mid');
+
+        $mid = $tradeInfo['data']['mid'];
+        update_post_meta($mid, 'total_bets', $getTotalBets);
+        $userTotalPts = $this->formatNumberAbbreviation();
+        if ($get_result != null):
+            return ['msg' => implode(" ", $get_result), 'mytradedPoints' => $getPoints, 'userTotalPts' => $userTotalPts];
         else:
-            return "Points should be greater than zero";
+            return ['msg' => "Minimum $getMinimumBetAmount points should be traded", 'mytradedPoints' => $getPoints];
         endif;
     }
 
@@ -573,6 +622,7 @@ class API {
         $tId = isset($tradeInfo['data']['tid']) ? $tradeInfo['data']['tid'] : 0;
         $mId = isset($tradeInfo['data']['mid']) ? $tradeInfo['data']['mid'] : 0;
         $teamId = $tradeInfo['data']['team_id'];
+        $getTeamName = get_the_title($teamId);
         $points = $tradeInfo['data']['pts'];
         $uPointsR = get_user_meta($userId, 'points');
         $getMatchStatus = get_field('points_distributed', $tradeInfo['data']['mid']);
@@ -601,28 +651,43 @@ class API {
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $getTourId, 'team_id' => $teamId, 'pts' => $points];
         if ($getStartTime > $curTime):
             if ($getMatchStatus == 'No'):
-                if (!empty($tradeInfo['data']['pts']) && is_numeric($tradeInfo['data']['pts']) ):
+                if (!empty($tradeInfo['data']['pts']) && is_numeric($tradeInfo['data']['pts'])):
                     if ($points >= $getMinimumBetAmount):
                         if ($points <= $uPoints):
                             $remaining = $uPoints - $points;
                             update_user_meta($userId, 'points', $remaining);
                             update_user_meta($userId, 'points_used', $usedCalc);
                             $wpdb->insert('wp_bets', $wpBets);
-                            return "Your trade has been placed successfully!";
+                            if ($teamId == 0):
+                                return "Your trade has been placed successfully on tie ! <br>";
+                            else:
+                                return "Your trade has been placed successfully on $getTeamName ! <br>";
+                            endif;
                         else:
-                            return "You don't have enough points to place this trade";
+                            if ($teamId == 0):
+                                return "You don't have enough points to place on  tie <br>";
+                            else:
+                                return "You don't have enough points to place on  $getTeamName <br>";
+                            endif;
                         endif;
                     else:
-                        return "Minimum $getMinimumBetAmount points should be trade";
+                        if ($teamId == 0):
+                            return "Minimum $getMinimumBetAmount points should be traded on tie <br>";
+                        else:
+                            return "Minimum $getMinimumBetAmount points should be traded on $getTeamName <br>";
+
+                        endif;
                     endif;
                 else:
-                    return "Minimum $getMinimumBetAmount points should be trade";
+
+                // return "Minimum $getMinimumBetAmount points should be traded on $getTeamName <br>";
+
                 endif;
             else:
-                return "Match had been over";
+                return "Match had been over <br>";
             endif;
         else:
-            return "Sorry you cannot place this trade as the match has already been started";
+            return "Sorry you cannot place this trade as the match has already been started <br>";
         endif;
     }
 
@@ -675,28 +740,28 @@ class API {
                             $wpdb->insert('wp_bets', $wpBets);
                             $tradeInfo["tid"] = $tId; //update total bets
                             $getTotalBets = $this->getTotalTrade($tradeInfo, 'tid');
-                            $getTotalBetsFilter = (array) $getTotalBets[0];
+                            $getTotalBetsFilter = $getTotalBets;
                             $mid = $tradeInfo['data']['tid'];
-                            update_post_meta($mid, 'total_tour_bets', $getTotalBetsFilter['total']); //update total bets
+                            update_post_meta($mid, 'total_tour_bets', $getTotalBetsFilter); //update total bets
                             if (!empty(trim($getPrem))):
-                                return "Your trade has been placed successfully!";
+                                return ['msg' => "Your trade has been placed successfully!"];
                             elseif (empty(trim($getPrem))):
-                                return "Your trade has been placed successfully!";
+                                return ['msg' => "Your trade has been placed successfully!"];
                             endif;
                         else:
-                            return "You don't have enough points to place this trade";
+                            return ['msg' => "You don't have enough points to place this trade"];
                         endif;
                     else:
-                        return "Team Eliminated!";
+                        return ['msg' => "Team Eliminated!"];
                     endif;
                 else:
-                    return "Tournament had been over";
+                    return ['msg' => "Tournament had been over"];
                 endif;
             else:
-                return "Minimimum $getMinimumBetAmount points should be trade";
+                return ['msg' => "Minimimum $getMinimumBetAmount points should be trade"];
             endif;
         else:
-            return "Minimimum $getMinimumBetAmount points should be trade";
+            return ['msg' => "Minimimum $getMinimumBetAmount points should be trade"];
         endif;
     }
 
@@ -705,8 +770,8 @@ class API {
         if (isset($Tradetype) && $Tradetype == 'tid'):
             $where = "mid=0 AND";
         endif;
-        $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' AND $where team_id='" . $tradeInfo['team_id'] . "' AND uid='" . $tradeInfo['user_id'] . "' ");
-        return $result;
+        $result = $wpdb->get_row("SELECT sum(pts) as total FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' AND $where team_id='" . $tradeInfo['team_id'] . "' AND uid='" . $tradeInfo['user_id'] . "' ");
+        return $result->total;
     }
 
     function getTotalTrade($tradeInfo, $Tradetype) {
@@ -714,8 +779,8 @@ class API {
         if (isset($Tradetype) && $Tradetype == 'tid'):
             $where = " mid=0 AND";
         endif;
-        $result = $wpdb->get_results("SELECT sum(pts) as total FROM wp_bets WHERE $where $Tradetype='" . $tradeInfo["tid"] . "'  ");
-        return $result;
+        $result = $wpdb->get_row("SELECT sum(pts) as total FROM wp_bets WHERE $where $Tradetype='" . $tradeInfo["tid"] . "'  ");
+        return $result->total;
     }
 
     function getUserTotalTrade($tradeInfo, $Tradetype) {
@@ -1034,7 +1099,7 @@ class API {
         wp_update_user(['ID' => $this->userId, 'first_name' => esc_attr($info['data']['fname'])]);
         wp_update_user(['ID' => $this->userId, 'last_name' => esc_attr($info['data']['lname'])]);
         update_user_meta($this->userId, 'phone', $info['data']['phone']);
-        return "Profile updated successfully";
+        return ['msg' => "Profile updated successfully"];
     }
 
     function passwordUpdate($info) {
@@ -1100,11 +1165,11 @@ class API {
 
     function getProfileImg($getImgId) {
         $getImg = $this->wpdb->get_results("SELECT meta_value FROM wp_postmeta where post_id=$getImgId");
-       if($getImg[0]->meta_value!=''):
-        return get_site_url() . '/wp-content/uploads/' . $getImg[0]->meta_value;
-       else:
-           return null;
-       endif;
+        if ($getImg[0]->meta_value != ''):
+            return get_site_url() . '/wp-content/uploads/' . $getImg[0]->meta_value;
+        else:
+            return null;
+        endif;
     }
 
     function getUnclearedPoints() {

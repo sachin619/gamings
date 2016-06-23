@@ -84,35 +84,35 @@ get_header();
                                     <th>Total Trade</th>
                                 </tr>
                             </thead>
-                            <tbody > 
+                            <tbody> 
                                 <!--                     {{home['upcomingMatches']['catPost']}}-->
-                                <tr ng-repeat="matches in homeMatchListing" >
-                                    <td > {{matches['matchStartDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue']!=''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
+                                <tr ng-repeat="matches in homeMatchListing['upcomingMatches']['catPost']">
+                                    <td> {{matches['onlySDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue']!=''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
                                     <td><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a><b> ({{matches['category'][0]['name']}})</td>
                                     <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} </td>
                                     <td  ng-repeat-end> 
                                         <input type="text" class="form-control" ng-model="$parent.$parent.points[teams['team_name']['ID']]" style="width: 100%; margin: 0 0 5px 0;" placeholder=" Add Trade" ng-if="matches['uid'] != null" > 
-                                        <span class="{{matches['id']}}-{{teams['team_name']['ID']}}">{{matches['mytradedTotal'][teams['team_name']['ID']]!==null ? "You've traded " + matches['mytradedTotal'][teams['team_name']['ID']] +" Pts." : ""}} </span>
-                                        <span ng-if="matches['uid'] == null">-</span>
+                                        <span ng-if="homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total'] != null && matches['uid'] != null">You've traded {{homeMatchListing['upcomingMatches']['tradeTotal'][matches['id']][$index][0]['total']}} Pts.</span>
+                                        <span ng-if="matches['uid']==null">-</span>
                                     </td>
                                     <td>
                                         <input type="text"   class="trade form-control" style="display: {{hideTrade}}; width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.pointsTie[$index]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" placeholder=" Add Trade" >
-                                        <span class="{{matches['id']}}-tie"> {{matches['mytradedTotal']['mytradedTie']!==null? " You've traded "+ matches['mytradedTotal']['mytradedTie']+" Pts.":"" }} </span>
-                                        <span ng-if="matches['uid'] == null">-</span>
+                                        <span ng-if="homeMatchListing['upcomingMatches']['tradeTie'][$index] != null"> You've traded {{homeMatchListing['upcomingMatches']["tradeTie"][$index]}} Pts </span>
+                                        <span ng-if="matches['uid']==null">-</span>
                                     </td>
 
                                     <td>
-                                        <button  ng-click="tradeMatch(matches['postLink'], matches['id'], points, homeMatchListing[0]['uid'], pointsTie[$index],$event)" class="btn btn-danger" >Trade </button>
+                                        <a href="#"  onclick="return false" ng-click="tradeMatch(matches['postLink'], matches['id'], points, homeMatchListing['upcomingMatches']['catPost'][0]['uid'], pointsTie[$index])" class="btn btn-danger" >Trade </a>
                                     </td>
-                                    <td >{{matches['mytradedTotal']['tourTotal']}}</td>
+                                    <td >{{matches["total_bets"]}}</td>
                                 </tr> 
-                                <tr  ng-hide="homeMatchListing.length"><td colspan="8" align="center">There are no open matches at the moment please check again later!</td></tr>
+                                <tr  ng-hide="homeMatchListing['upcomingMatches']['catPost'].length"><td colspan="8" align="center">There are no open matches at the moment please check again later!</td></tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <div class="col-lg-12 loadMoreBlock" ng-if="homeMatchListing.length >= 5" style="text-align: center; margin: 20px 0px;">
-                        <button type="button" class="btn btn-danger hide-loadMore" ng-click="loadMore(getCat, 1)">Load More </button>
+                    <div class="col-lg-12 loadMoreBlock" ng-if="homeMatchListing['upcomingMatches']['catPost'].length >= 5" style="text-align: center; margin: 20px 0px;">
+                        <button type="button" class="btn btn-danger hide-loadMore" ng-click="loadMore(getCat, homeMatchListing['upcomingMatches']['catPost'].length + 5)">Load More </button>
                     </div>
 
                 </div>
@@ -161,16 +161,11 @@ get_header();
 
         </div>
 
-    </section>
-	<!-- #content end -->
-
+    </section><!-- #content end -->
 
     <!-- Content
      ============================================= -->
-
-
-
-    <section id="content" class="hide">
+    <section id="content" class="hide" >
 
         <div class="content-wrap">
 
@@ -291,9 +286,7 @@ get_header();
             <div class="col-md-3 col-sm-6 bottommargin" ng-repeat="leaderBoard in home.leaderBoard['info']">
                 <div class="team">
                     <div class="team-image">
-                        <img ng-if="home.leaderBoard['getUserImg'][$index] == null && leaderBoard['fbUrl'] == null" ng-src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
-                        <img ng-if="home.leaderBoard['getUserImg'][$index] != null && leaderBoard['fbUrl'] == null" ng-src="{{home.leaderBoard['getUserImg'][$index]}}" alt="img">
-                        <img ng-if="leaderBoard['fbUrl'] != null" ng-src="https://graph.facebook.com/{{leaderBoard['fbUrl']}}/picture?type=large" alt="img">
+                        <img src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
                     </div>                               
                     <div class="team-desc team-desc-bg" style="height:auto; background:#eee;">
                         <div class="team-title" style="padding-top: 15px;">
@@ -306,7 +299,7 @@ get_header();
 
 
             <div class="col-md-6 col-md-offset-5" style="margin-bottom: 40px;">    
-                <a href="#" data-toggle="modal" data-target="#leadeBoard" class="button button-border button-dark button-rounded">View Prize & Other Details</a>
+                <button  class="button button-border button-dark button-rounded btn_leadBorad">View Prize & Other Details</button>
             </div>
         </div>
     </div>
@@ -348,8 +341,8 @@ get_header();
 
 
 
-    <section  class="foot-fix hidden-sm hidden-xs popupLeaderBoard">
-        <div class="container" >
+    <section class="foot-fix hidden-sm hidden-xs">
+        <div class="container">
             <div class="sticy_foot row">
                 <div class="col-md-2 foot-col">
                     <h6>Leadeboard</h6>
@@ -358,16 +351,14 @@ get_header();
                 </div>
                 <div class="col-md-2 foot-col" ng-repeat="leaderBoard in home.leaderBoard['info']" >
                     <div class="testi-image">
-                        <img ng-if="home.leaderBoard['getUserImg'][$index] == null && leaderBoard['fbUrl'] == null" ng-src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img">
-                        <img ng-if="home.leaderBoard['getUserImg'][$index] != null && leaderBoard['fbUrl'] == null" ng-src="{{home.leaderBoard['getUserImg'][$index]}}" alt="img">
-                        <img ng-if="leaderBoard['fbUrl'] != null" ng-src="https://graph.facebook.com/{{leaderBoard['fbUrl']}}/picture?type=large" alt="img">
+                        <a href="#"><img src="<?= get_template_directory_uri() ?>/images/icons/avatar.jpg" alt="img"></a>
                     </div>
                     <h6>{{leaderBoard['userName']}}</h6>
                     <p>Points : {{leaderBoard['pts']}}</p>
                 </div>
 
                 <div class="col-md-4 foot-col">
-                    <button class="btn_leadBorad" id="leadeBoard_btn">View Prize & Other Details</button>
+                    <button class="btn_leadBorad" id="leadeBoard_btn" >View Prize & Other Details</button>
                 </div>
             </div>
         </div>
@@ -398,9 +389,8 @@ get_header();
 
 <?php get_footer(); ?>
 
-<script>
-    $('#leadeBoard_btn').click(function () {
+<script type="text/javascript">
+    $('.btn_leadBorad').click(function () {
         $('#leadeBoard').modal("show");
     });
-
 </script>

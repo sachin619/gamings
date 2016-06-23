@@ -78,7 +78,8 @@ $userEmail = $userInfo->user_email;
                         </form>
                     </div> <!-- My points -->
                     <div class="bhoechie-tab-content">
-                        <div class="tabColumn">                         
+                        <div class="tabColumn">
+						 <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -120,6 +121,7 @@ $userEmail = $userInfo->user_email;
                                 </div>  
                                 </tbody>							
                             </table>
+							</div>
                             <div class="col-lg-12">
                                 <button  class="button button-mini button-dark button-rounded paginatePrev">Previous</button>
                                 <button ng-hide="posts.length<10" class="button paginateNext button-mini button-dark button-rounded pull-right">Next</button>
@@ -129,6 +131,7 @@ $userEmail = $userInfo->user_email;
 
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
+						<div class="table-responsive">
                             <table class = "table table-bordered">
                                 <thead>
                                     <tr>
@@ -155,6 +158,7 @@ $userEmail = $userInfo->user_email;
                                         <td align="center" colspan="6" ng-if="winList.length <= 0">No results found</td>
                                     </tr>
                             </table>
+							</div>
                             <div class="col-lg-12">
                                 <button ng-hide="paginationWin.page === 0" ng-click="paginationWin.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
                                 <button ng-hide="paginationWin.page + 1 >= paginationWin.numPages" ng-click="paginationWin.nextPage()" class="button button-mini button-dark button-rounded pull-right">Next</button>

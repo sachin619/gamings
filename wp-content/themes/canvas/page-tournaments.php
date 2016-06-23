@@ -49,12 +49,12 @@ get_header();
                 </div> -->
 
                 <div class="clear"></div>
-                <h2 ng-hide="getDetails.catPost.length">There are no open tournaments at the moment please check again later!</h2>
+                <h2 ng-hide="tourListing.length">There are no open tournaments at the moment please check again later!</h2>
                 <!-- Portfolio Items
                 ============================================= -->
                 <div  ng-init="i = 1" class="portfolio grid-container portfolio-2 clearfix main-container">
 
-                    <article ng-repeat="getPost in getDetails.catPost" class="col-md-4 pf-hide pf-media pf-{{getPost['category'][0]['name']}}" style="margin: 0 0 20px 0;">
+                    <article ng-repeat="getPost in tourListing" class="col-md-4 pf-hide pf-media pf-{{getPost['category'][0]['name']}}" style="margin: 0 0 20px 0;">
                         <a href={{getPost['postLink']}}>
                         <div class="portfolio-image" ng-init="$parent.j = $parent.i = i + 1" >
                             
@@ -67,20 +67,24 @@ get_header();
                         <div class="portfolio-desc">
                             <h3>{{getPost['title']}} ({{getPost['category'][0]['name']}})</h3>
                             <span>
-                                <strong ng-if="getDetails.tradeTotal[$index].total > 0">Total Trade: {{getDetails.tradeTotal[$index].total}} Points</strong>
+                                <strong ng-if="getPost.mytradedTotal > 0">Total Trade: {{getPost.mytradedTotal}} Points</strong>
                                 <br>
                                 {{getPost['start_date']}} - {{getPost['end_date']}},  {{ getPost['venue'] | limitTo: 20 }}{{getPost['venue'].length > 20 ? '...' : ''}}
                             </span>
                         </div>
                          </a>
                     </article>
+					<div class="clearfix"></div>
 
                 </div><!-- #portfolio end -->
                 <div class="col-lg-12" style="margin: 20px 0px;">
                 <div class="col-md-4"></div>
-                <div ng-if="getDetails.catPost.length >= 6" class="col-md-4 hide-loadMore">
-                    <button type="button" class="btn btn-danger btn-lg btn-block"  ng-click="loadMore(getCat, getDetails.catPost.length + 6)">Load More </button>
+                <div ng-if="tourListing.length >= 6" class="col-md-4 hide-loadMore">
+                    <button type="button" class="btn btn-danger btn-lg btn-block "  ng-click="loadMore(getCat)">Load More </button>
+                    <br>
                 </div>
+				
+				
                 <div class="col-md-4"></div>
                 </div>
             </div>
