@@ -155,7 +155,7 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
         }
     });
 
-/**************************** for userbets  pagination*****************************************/
+    /**************************** for userbets  pagination*****************************************/
     if (getPageCount <= 0) {  //hide prev button
         $('.paginatePrevWin').hide();
     }
@@ -714,25 +714,29 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
                     $("." + formData['mid'] + "-" + k).html("You've traded " + v + " pts.");
             });
             $scope.pointsTie = '';
-            $scope.points = '';
+           $('.trade').val('');
         }
 
         if (formData['type'] === 'tournaments') {
             var formDataReload = {'postId': formData['slug']};
             ngPost('tournaments-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         } else if (formData['type'] === 'matches') {
+            
             var formDataReload = {'postId': formData['slug']};
             ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         } else if (formData['type'] === 'matchesList') {
+            $('.trade').val('');
+            $scope.pointsTie = "";
             angular.element(event.target).removeAttr('disabled');
             $('.updateUserKit').html(response.data.userTotalPts);
-            $scope.pointsTie = "";
-            $scope.points = '';
+
+
             jQuery.each(response.data.mytradedPoints, function (k, v) {
                 if (v > 0)
                     $("." + formData['mid'] + "-" + k).html("You've traded " + v + " pts.");
             });
         } else if (formData['type'] === 'tournamentMatcheList') {
+            
             angular.element(event.target).removeAttr('disabled');
             $('.updateUserKit').html(response.data.userTotalPts);
             $scope.pointsTieM = "";
