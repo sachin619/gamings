@@ -157,8 +157,9 @@ class API {
     function myAccount($info) {
         if ($info['data']['type'] == 'myAccountFilter'):
             $myAccount['userBets'] = $this->getUserBets($info);
+        elseif ($info['data']['type'] == 'myAccountFilterWin'):
+            $myAccount['winLoss'] = $this->getWinLossBets($info);
         else:
-           
             $myAccount['userInfo'] = $this->getUserDetails();
             $myAccount['userBets'] = $this->getUserBets($info);
             $myAccount['unClearedPoints'] = $this->getUnclearedPoints();
@@ -1027,6 +1028,11 @@ class API {
     function getWinLossBets($info) {
 // print_r($info);
 // exit;
+        if (isset($info['data']['getCount'])):
+            $paged = $info['data']['getCount'];
+        else:
+            $paged = 0;
+        endif;
         $startDate = $info['data']['startDate'];
         $endDate = $info['data']['endDate'];
         if (isset($startDate) && isset($endDate)): //start and end date
@@ -1061,8 +1067,9 @@ class API {
 
             endif;
         endforeach;
+        $arrayPagination = array_chunk($getAccount, 10);
 
-        return $getAccount;
+        return $arrayPagination[$paged];
     }
 
     function getDrawMatch($getMatchDraw, $getBetDetails, $wpdb, $getAccount, $i) {

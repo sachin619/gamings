@@ -124,8 +124,8 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
 
     formData = {'pagination': Pagination, 'type': 'myAccount'};
     ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
+    /**************************for userbets pagination*******************************************************/
     var getPageCount = 0;
-
     if (getPageCount <= 0) {  //hide prev button
         $('.paginatePrev').hide();
     }                          //hide prev button
@@ -155,11 +155,38 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
         }
     });
 
-    $(document).on('click', '.paginateDiffusionNext', function () {
-        var getCountDiffusion = getPageCount * 10;
-        formData = {'pagination': Pagination, 'type': 'myAccount', 'getCountDiffusion': getCountDiffusion};
-        ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
+/**************************** for userbets  pagination*****************************************/
+    if (getPageCount <= 0) {  //hide prev button
+        $('.paginatePrevWin').hide();
+    }
+    var getPageCountWin = 0;
+    $(document).on('click', '.paginateNextWin', function () {
+
+        getPageCountWin++;
+        if (getPageCountWin > 0) {
+            $('.paginatePrevWin').show();
+        }
+        formData = {'pagination': Pagination, 'type': 'myAccountFilterWin', 'getCount': getPageCountWin};
+        ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccountFilterWIn');
     });
+
+    $(document).on('click', '.paginatePrevWin', function () {
+        getPageCountWin--;
+        console.log(getPageCountWin);
+
+        formData = {'pagination': Pagination, 'type': 'myAccountFilterWin', 'getCount': getPageCountWin};
+        ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccountFilterWin');
+        if (getPageCountWin == 0) {
+            $('.paginatePrevWin').hide();
+        } else {
+            $('.paginateNextWin').show();
+        }
+    });
+
+
+    /****************************for pagination*****************************************/
+
+
     $scope.searchByDate = function (reset) {
         getPageCount = 0;
         $('.paginatePrev').hide();
@@ -549,7 +576,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
 
                 }
                 if (typeName == 'listing-tournaments') {
-                   
+
                     if (response.catPost.length <= 0) {
                         $('.hide-loadMore').hide();
                     }
@@ -582,11 +609,12 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
 
                     });
                 }
+
                 if (typeName == 'tournaments-detail') {
                     $('.updateUserKit').html(response['userTotalPts']);
 
                 }
-                if (typeName == 'my-account' && formData['type']=='myAccountFilter' ) {
+                if (typeName == 'my-account' && formData['type'] == 'myAccountFilter') {
                     console.log('doneeeeeee');
                     $scope.posts = response['userBets'];
                     if (response['userBets'].length == 0) {
@@ -596,6 +624,12 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                         $('.toolMsg a').attr('data-original-title', "These points will be credited to your 'Cleared Points' after " + response['bufferDay'] + " days of winning Tournament/Match result");
 
                     });
+
+                }
+                //for pagination of matches
+                if (formData['type'] === 'myAccountFilterWin') {
+                    console.log('I win');
+                    $scope.winList = response['winLoss'];
 
                 }
 
@@ -614,14 +648,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                     $('.hide-loadMore').hide();
                 }
 
-                //for pagination of matches
-                if (typeof response['winLoss'] !== 'undefined' && formData['type'] === 'myAccount') {
-                    var Pagination = formData['pagination'];
-                    $scope.winList = response['winLoss'];
-                    $scope.paginationWin = Pagination.getNew(10);
-                    $scope.paginationWin.numPages = Math.ceil($scope.winList.length / $scope.paginationWin.perPage);
 
-                }
                 if (typeName == 'login') {
                     $('.loader').hide();
                     $('.alert').show();
@@ -642,6 +669,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                         return results[1] || 0;
                     }
                 };
+
                 if (response['msg'] === "success_login") {
                     if ($.urlParam('url') == null) {
                         $('.alert').hide();
@@ -651,10 +679,9 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                         ;
                     }
                 } else {
-                    if (typeName != 'home-match-listing' && (typeName != 'listing-matches' && formData['filter'] != 'yes')  && typeName != 'listing-tournaments' && formData['type']!='myAccountFilter' ) {
-                        console.log(response);
-                        console.log('yes');
+                    if (typeName != 'home-match-listing' && (typeName != 'listing-matches' && formData['filter'] != 'yes') && typeName != 'listing-tournaments' && formData['type'] != 'myAccountFilter' && formData['type'] != 'myAccountFilterWin') {
                         $scope.posts = response['userBets'];
+                        $scope.winList = response['winLoss'];
                         $scope[errorBlock] = response;
                     }
 

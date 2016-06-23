@@ -145,7 +145,7 @@ $userEmail = $userInfo->user_email;
                                     </tr>
                                 </thead>						   
                                 <tbody >
-                                    <tr ng-repeat="myInfo in winList| startFrom: paginationWin.page * paginationWin.perPage | limitTo: paginationWin.perPage">
+                                    <tr ng-repeat="myInfo in winList">
                                         <td>{{myInfo['tourDetails']['id']}}</td>
                                         <td >{{myInfo['tourDetails']['tourTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['matchTitle']}}</td>
@@ -160,9 +160,8 @@ $userEmail = $userInfo->user_email;
                             </table>
 							</div>
                             <div class="col-lg-12">
-                                <button ng-hide="paginationWin.page === 0" ng-click="paginationWin.prevPage()" class="button button-mini button-dark button-rounded">Previous</button>
-                                <button ng-hide="paginationWin.page + 1 >= paginationWin.numPages" ng-click="paginationWin.nextPage()" class="button button-mini button-dark button-rounded pull-right">Next</button>
-                            </div>
+                            <button  class="button button-mini button-dark button-rounded paginatePrevWin">Previous</button>
+                                <button ng-hide="winList.length<10" class="button paginateNextWin button-mini button-dark button-rounded pull-right">Next</button> </div>
                         </div>
                     </div>   <!--  My Win Loss points-->
                     <div class="bhoechie-tab-content">
