@@ -119,7 +119,7 @@ get_header();
                                     <span  class="stage" ng-if="getDetails['details'][0]['tournament_abandoned'] != 'No' && teamInfo.eliminated == 'No' && getDetails['details'][0]['points_distributed'] == 'Yes'"><span>Canceled</span></span> 
                                 </td>
                                 <td class="blockAction" >
-                                    <button class="btn btn-danger" ng-if=" (getDetails['details'][0].uid == null) || (teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No')" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid)" >Trade</button>
+                                    <button class="btn btn-danger" ng-if=" (getDetails['details'][0].uid == null) || (teamInfo.eliminated === 'No' && getDetails['details'][0]['points_distributed'] === 'No')" ng-click="trade(getDetails['details'][0].id, teamInfo.team['ID'], points, getDetails['details'][0].uid,$event)" >Trade</button>
                                 </td>
                             </tr>
 
@@ -129,7 +129,7 @@ get_header();
                                 <td>
                                     <input ng-if="getDetails['details'][0].uid != null && getDetails['details'][0]['points_distributed'] != 'Yes'" type="text" name="pts" ng-model="$parent.pointsTie" class="form-con"   placeholder="Trade"> 
                                     <span ng-if="(getDetails['details'][0].uid == null) || (getDetails['details'][0]['points_distributed'] == 'Yes')">-</span></td>
-                                <td><button class="btn btn-danger" ng-if="(getDetails['details'][0].uid == null) || (getDetails['details'][0]['points_distributed'] != 'Yes')"  ng-click="trade(getDetails['details'][0].id, '0', pointsTie, getDetails['details'][0].uid)" >Trade</button> </td>
+                                <td><button class="btn btn-danger" ng-if="(getDetails['details'][0].uid == null) || (getDetails['details'][0]['points_distributed'] != 'Yes')"  ng-click="trade(getDetails['details'][0].id, '0', pointsTie, getDetails['details'][0].uid,$event)" >Trade</button> </td>
                             </tr>
 
 
@@ -259,7 +259,7 @@ get_header();
                                  <button style="display: {{hideTrade}}"   ng-click="tradeMatch(matches['postLink'], matches['id'], points, homeMatchListing[0]['uid'], pointsTie[$index],$event)" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'" >Trade </button>
                                    <span ng-if=" (hideTrade != 'block' && hideTrade != null ) ">-</span>
                                 </td>
-                                <td>{{ matches['mytradedTotal']['tourTotal']}} <span ng-if=" matches['mytradedTotal']['tourTotal'] == ''">0</span></td>
+                                <td><span class="{{matches['id']}}-totalMid">{{ matches['mytradedTotal']['tourTotal']}}</span> <span ng-if=" matches['mytradedTotal']['tourTotal'] == ''">0</span></td>
                             </tr>    
                             <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no open matches at the moment please check again later!</td></tr>
 
@@ -280,6 +280,7 @@ get_header();
     <!-- Footer
     ============================================= -->
 </section>
+<script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery.js"></script>
 <?php
 get_footer();
 ?>

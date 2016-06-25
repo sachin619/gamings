@@ -161,7 +161,7 @@ $userEmail = $userInfo->user_email;
 							</div>
                             <div class="col-lg-12">
                             <button  class="button button-mini button-dark button-rounded paginatePrevWin">Previous</button>
-                                <button ng-hide="winList.length<10" class="button paginateNextWin button-mini button-dark button-rounded pull-right">Next</button> </div>
+                                <button ng-if="winList.length<10" class="button paginateNextWin button-mini button-dark button-rounded pull-right">Next</button> </div>
                         </div>
                     </div>   <!--  My Win Loss points-->
                     <div class="bhoechie-tab-content">

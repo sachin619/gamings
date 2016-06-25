@@ -610,9 +610,9 @@ class API {
         update_post_meta($mid, 'total_bets', $getTotalBets);
         $userTotalPts = $this->formatNumberAbbreviation();
         if ($get_result != null):
-            return ['msg' => implode(" ", $get_result), 'mytradedPoints' => $getPoints, 'userTotalPts' => $userTotalPts];
+            return ['msg' => implode(" ", $get_result), 'mytradedPoints' => $getPoints, 'userTotalPts' => $userTotalPts,'totalMid'=>$getTotalBets];
         else:
-            return ['msg' => "Minimum $getMinimumBetAmount points should be traded", 'mytradedPoints' => $getPoints];
+            return ['msg' => "Please trade on atleast one team!", 'mytradedPoints' => $getPoints];
         endif;
     }
 
@@ -1219,7 +1219,7 @@ class API {
             $email = $userDetails['email'];
             $phone = $userDetails['phone'];
             $message = $userDetails['message'];
-            $body = "<p>Name : $name</p><p>Email : $email</p>Phone : $phone <p>Message : $message</p>";
+            $body = "<p>Enquiry from $name</p><p>Email : $email</p>Phone : $phone <p>Message : $message</p>";
             wp_mail(get_option('smtp_user'), "Contact Us", $body, $headers);
             $bodyUser = "Dear $name,<br> Thank you for contacting us. We will get back to you shortly.";
             wp_mail($email, "Contact Us", $bodyUser, $headers);

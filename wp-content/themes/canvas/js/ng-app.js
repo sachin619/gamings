@@ -332,7 +332,8 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
     ngPost('tournaments-detail', formData, $scope, $http, $templateCache, 'getDetails');
     var formDataMatch = {'tourId': slug, 'type': 'upcomming'};
     ngPost('listing-matches', formDataMatch, $scope, $http, $templateCache, 'getMatchDetails');
-    $scope.trade = function (tid, teamId, pts, uid) {
+    $scope.trade = function (tid, teamId, pts, uid, event) {
+        angular.element(event.target).attr('disabled', 'disabled');
         if (uid != null) {
             var formData = {
                 'tid': tid,
@@ -341,7 +342,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
                 'slug': slug,
                 'type': 'tournaments',
             };
-            tourDetails('trade', formData, $scope, $http, $templateCache, 'blockName');
+            tourDetails('trade', formData, $scope, $http, $templateCache, 'blockName', event);
         } else {
             sessionStorage.setItem("url", document.URL);
             window.location = base_url + "register?url=redirect";
@@ -552,7 +553,7 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
     };
 });
 
-function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
+function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, event) {
 
     $http({
         method: 'POST',
@@ -577,7 +578,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                 }
                 if (typeName == 'listing-tournaments') {
 
-                    if (response.catPost.length <= 0) {
+                    if (response.catPost.length < 6) {
                         $('.hide-loadMore').hide();
                     }
                     jQuery.each(response.catPost, function (k, v) {
@@ -654,6 +655,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock) {
                     $('.alert').show();
                 }
                 if (typeName == 'contact-us') {
+                    angular.element(event.target).removeAttr('disabled');
                     $('.col-ch').show();
                 }
                 if (typeName == 'registration') {
@@ -707,36 +709,38 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
 
         if (formData['type'] === 'popularMatches') {
             $('.updateUserKit').html(response.data.userTotalPts);
-
+            $("." + formData['mid'] + "-" + 'totalMid').html(response.data.totalMid);
             angular.element(event.target).removeAttr('disabled');
             jQuery.each(response.data.mytradedPoints, function (k, v) {
                 if (v > 0)
                     $("." + formData['mid'] + "-" + k).html("You've traded " + v + " pts.");
             });
             $scope.pointsTie = '';
-           $('.trade').val('');
+            // $('.trade').val('');
         }
 
         if (formData['type'] === 'tournaments') {
+            angular.element(event.target).removeAttr('disabled');
             var formDataReload = {'postId': formData['slug']};
             ngPost('tournaments-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         } else if (formData['type'] === 'matches') {
-            
+
             var formDataReload = {'postId': formData['slug']};
             ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         } else if (formData['type'] === 'matchesList') {
-            $('.trade').val('');
+            //$('.trade').val('');
             $scope.pointsTie = "";
             angular.element(event.target).removeAttr('disabled');
             $('.updateUserKit').html(response.data.userTotalPts);
 
-
+            $("." + formData['mid'] + "-" + 'totalMid').html(response.data.totalMid);
             jQuery.each(response.data.mytradedPoints, function (k, v) {
+
                 if (v > 0)
                     $("." + formData['mid'] + "-" + k).html("You've traded " + v + " pts.");
             });
         } else if (formData['type'] === 'tournamentMatcheList') {
-            
+            $("." + formData['mid'] + "-" + 'totalMid').html(response.data.totalMid);
             angular.element(event.target).removeAttr('disabled');
             $('.updateUserKit').html(response.data.userTotalPts);
             $scope.pointsTieM = "";
@@ -803,15 +807,17 @@ app.controller('contactCtrl', function ($scope, $http, $templateCache) {
         }
     });
     $scope.loadImg = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
-    $scope.contacForm = function () {
+    $scope.contacForm = function (event) {
+
         $('.col-ch').hide();
         $('#template-contactform').valid();
         if (!$('#template-contactform').valid()) {
             return false;
         }
         $('.loader').show();
+        angular.element(event.target).attr('disabled', 'disabled');
         var formData = $('#template-contactform').serialize();
-        ngPost('contact-us', formData, $scope, $http, $templateCache, 'errorReg');
+        ngPost('contact-us', formData, $scope, $http, $templateCache, 'errorReg', event);
     };
 });
 

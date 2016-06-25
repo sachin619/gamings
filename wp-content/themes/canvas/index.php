@@ -91,7 +91,7 @@ get_header();
                                     <td><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a><b> ({{matches['category'][0]['name']}})</td>
                                     <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} </td>
                                     <td  ng-repeat-end> 
-                                        <input type="text" class="trade form-control" ng-model="$parent.$parent.points[teams['team_name']['ID']]" style="width: 100%; margin: 0 0 5px 0;" placeholder=" Add Trade" ng-if="matches['uid'] != null" > 
+                                        <input type="text" class="form-control" ng-model="$parent.$parent.points[teams['team_name']['ID']]" style="width: 100%; margin: 0 0 5px 0;" placeholder=" Add Trade" ng-if="matches['uid'] != null" > 
                                         <span class="{{matches['id']}}-{{teams['team_name']['ID']}}">{{matches['mytradedTotal'][teams['team_name']['ID']]!==null ? "You've traded " + matches['mytradedTotal'][teams['team_name']['ID']] +" Pts." : ""}} </span>
                                         <span ng-if="matches['uid'] == null">-</span>
                                     </td>
@@ -104,9 +104,9 @@ get_header();
                                     <td>
                                         <button  ng-click="tradeMatch(matches['postLink'], matches['id'], points, homeMatchListing[0]['uid'], pointsTie[$index],$event)" class="btn btn-danger" >Trade </button>
                                     </td>
-                                    <td >{{matches['mytradedTotal']['tourTotal']}}</td>
+                                    <td ><span class="{{matches['id']}}-totalMid">{{matches['mytradedTotal']['tourTotal']}}</span></td>
                                 </tr> 
-                                <tr  ng-hide="homeMatchListing.length"><td colspan="8" align="center">There are no open matches at the moment please check again later!</td></tr>
+                                <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no open matches at the moment please check again later!</td></tr>
                             </tbody>
                         </table>
                     </div>

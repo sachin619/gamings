@@ -11415,6 +11415,8 @@ button.toast-close-button {
 		padding: 8px;
 		width: 18em;
 	}
+	div.bhoechie-tab-content{ padding:0px;}
+	.tabColumn{ padding:20px 0px!important;}
 }
 
 @media all and (min-width: 480px) and (max-width: 767px) {
@@ -11422,6 +11424,8 @@ button.toast-close-button {
 		padding: 15px;
 		width: 25em;
 	}
+	div.bhoechie-tab-content{ padding:0px!important;}
+	.tabColumn{ padding:20px 0px!important;}
 }
 
 

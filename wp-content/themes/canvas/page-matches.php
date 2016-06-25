@@ -129,7 +129,7 @@ get_header();
                                     <span ng-if=" (hideTrade != 'block' && hideTrade != null)">-</span>
 
                                 </td>
-                                <td>{{ matches['mytradedTotal']['tourTotal']}} <span ng-if=" matches['mytradedTotal']['tourTotal'] == ''">0</span></td>
+                                <td> <span class="{{matches['id']}}-totalMid">{{ matches['mytradedTotal']['tourTotal']}}</span> <span ng-if=" matches['mytradedTotal']['tourTotal'] == ''">0</span></td>
                             </tr>    
                             <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no open matches at the moment please check again later!</td></tr>
 
@@ -162,6 +162,7 @@ get_header();
         border-color: #d9534f;
     }
 </style>
+
 <?php
 get_footer();
 ?>
