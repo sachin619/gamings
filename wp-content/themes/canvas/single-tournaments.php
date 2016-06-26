@@ -280,7 +280,7 @@ get_header();
     <!-- Footer
     ============================================= -->
 </section>
-
+<script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery.js"></script>
 <?php
 get_footer();
 ?>

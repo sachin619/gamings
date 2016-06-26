@@ -41,7 +41,7 @@ endif;
 
 
         <?php wp_head(); ?>  
-         <script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery.js"></script>
+        
     </head>
 
     <body class="stretched">
