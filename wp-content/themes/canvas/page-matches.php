@@ -115,7 +115,7 @@ get_header();
                                     <span class="{{matches['id']}}-{{teams['team_name']['ID']}}">{{matches['mytradedTotal'][teams['team_name']['ID']]!==null ? "You've traded " + matches['mytradedTotal'][teams['team_name']['ID']] +" Pts." : ""}} </span>
 
 <!--                                     <span ng-if=" (hideTrade != 'block' && hideTrade != null  ) || (homeMatchListing['uid']==null && matches['mytradedTotal'][teams['team_name']['ID']]==null)  ">-</span>-->
-                                    <span ng-if="(category != 'upcomming' && category != 'popular') || (matches['uid'] == null && (category == 'upcomming' || category == 'popular'))">-</span>
+                                    <span ng-if="(category != 'upcomming' && category != 'popular' && matches['mytradedTotal'][teams['team_name']['ID']]==null) || (matches['uid'] == null && (category == 'upcomming' || category == 'popular'))">-</span>
 
                                 </td>
                                 <td>
