@@ -25,13 +25,9 @@
 
 <!-- External JavaScripts
 ============================================= -->
-<?php
-if(strpos($_SERVER['REQUEST_URI'], 'tournaments') == false):
-?>
-<script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery.js"></script>
-<?php
-endif;
-?>
+
+
+
 <script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/plugins.js"></script>
 <script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery-ui.js"></script>
 <!-- Footer Scripts

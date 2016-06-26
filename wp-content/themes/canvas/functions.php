@@ -483,7 +483,7 @@ function updateMatchPremium($postId) {
     $tradeInfo["tid"] = $postId;
     $getTotalBets = getTotalTrade($tradeInfo, 'mid');
     $getTotalBetsFilter = (array) $getTotalBets[0];
-    update_post_meta($postId, 'total_bets', $getTotalBetsFilter['total']);
+    //update_post_meta($postId, 'total_bets', $getTotalBetsFilter['total']);
     if (get_post_type($postId) == 'matches'):
         global $wpdb;
         $Tradetype = 'mid';
@@ -543,16 +543,16 @@ $apiEndpoint = site_url() . '/api?action=';
 
 function matchDraw($resultDis, $totalWinBets, $getTeams, $wpdb, $Tradetype, $postId) {
     $resultDisTie = $wpdb->get_results("SELECT sum(pts) as pts,uid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= 0 GROUP BY uid ");
+    $getTotalTradeTie = $wpdb->get_row("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= 0 group by team_id");
 
-    $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE team_id=0 AND $Tradetype='" . $postId . "'   ");
-    $totBets = (array) $getTotalBets[0];
 
-    $totalBets = $totBets['pts']; //total no of bet divide by total no winner
+    $getTotalBets = $wpdb->get_row("SELECT sum(pts) as pts FROM wp_bets WHERE   $Tradetype='" . $postId . "'   ");
+
 
     foreach ($resultDisTie as $distribution) {
         $disFilter = (array) $distribution;
-        $betsCalc = ceil($disFilter['pts'] / $totalBets);
-        $disCalc = ((int) $disFilter['pts'] * $betsCalc);
+        $betsCalc = floor( $getTotalBets->pts / $getTotalTradeTie->pts); //total no of bets divide by total no tie(bets/tie)
+        $disCalc = ((int) $disFilter['pts'] * $betsCalc); //above result multiply by my bets
 
         $data = ['uid' => $disFilter['uid'], 'tid' => $getTeams[0]['tournament_name']->ID, 'mid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $disCalc];
         $wpdb->insert('wp_distribution', $data);
@@ -631,12 +631,14 @@ function getPremium($type, $Tradetype, $postId) {   //tournament distribution lo
     if ($getTeams[0]['tournament_draw'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes'):
         $resultDisTie = $wpdb->get_results("SELECT sum(pts) as pts,uid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id=0 AND mid=0 GROUP BY uid ");
 
-        $getTotalBetsTieQuery = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id=0 AND mid=0 ");
-        $totBetsTie = (array) $getTotalBetsTieQuery[0];
-        $getBetsTie = $totBetsTie['pts'];
+        $getTotalTradeTie = $wpdb->get_row("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= 0 AND mid=0 group by team_id");
+        $getTotalBets = $wpdb->get_row("SELECT sum(pts) as pts FROM wp_bets WHERE   $Tradetype='" . $postId . "' AND mid=0   ");
+
+
+
         foreach ($resultDisTie as $distributionTie) {
             $disFilter = (array) $distributionTie;
-            $disCalc = ((int) $disFilter['pts'] * ceil($disFilter['pts'] / $getBetsTie));
+            $disCalc = ((int) $disFilter['pts'] * floor( $getTotalBets->pts /$getTotalTradeTie->pts ));
             $data = ['uid' => $disFilter['uid'], 'tid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $disCalc];
             $wpdb->insert('wp_distribution', $data);
             $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
@@ -644,7 +646,6 @@ function getPremium($type, $Tradetype, $postId) {   //tournament distribution lo
             //not in use  update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
         }
         update_post_meta($postId, 'points_distributed', 'Yes');
-
     endif;
 }
 
@@ -772,10 +773,12 @@ add_action('init', 'slider');
 
 function scheme() {
     $args = ['labels' => ['name' => 'Scheme', 'singular_name' => 'Scheme'],
-    'public' => true,
-    'supports' => ['title','page_attributes','thumbnail']
+        'public' => true,
+        'supports' => ['title', 'page_attributes', 'thumbnail']
     ];
-    register_post_type('scheme',$args);
-};
+    register_post_type('scheme', $args);
+}
 
-add_action('init','scheme');
+;
+
+add_action('init', 'scheme');

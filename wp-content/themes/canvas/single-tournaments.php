@@ -42,8 +42,8 @@ get_header();
                                             <div class="entry-title">
                                                 <h2 class="ng-binding">{{getDetails['details'][0].title}} </h2>
                                                 <p class="ng-binding">{{getDetails['details'][0].description}}</p>
-                                                <p class="ng-binding">Time & Location: {{getDetails['details'][0].start_date}} – {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
-                                                <p>Official Website: <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a></p>
+                                                <p class="ng-binding">Time & Location: {{getDetails['details'][0].start_date}} - {{getDetails['details'][0].end_date}} {{getDetails['details'][0].venue!=''? '('+ getDetails['details'][0].venue+')' : ""}}</p>
+                                                <p ng-if="getDetails['details'][0].website_link!=''">Official Website: <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a></p>
                                                 <p ng-if="getDetails['details'][0].premium > 1">Premium Value: {{getDetails['details'][0].premium}} </p>
                                                 <h4 ng-if="getDetails['totalBets'] > 0">Total Points Traded So Far: {{getDetails['totalBets']}} Points</h4>
                                             </div>
@@ -79,7 +79,7 @@ get_header();
                     </div>
                     <div class="col-md-6">
                         <p class="mb20">{{getDetails['details'][0].description}}</p>
-                        <p class="bld mb20">{{getDetails['details'][0].start_date}}– {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
+                        <p class="bld mb20">{{getDetails['details'][0].start_date}}ï¿½ {{getDetails['details'][0].end_date}} ({{getDetails['details'][0].venue}})</p>
                         <p class="mb20"><span class="bld"> Official Website: </span><a href={{getDetails['details'][0].website_link}} target="_blank">{{getDetails['details'][0].website_link}}</a></p>
 
 
@@ -135,7 +135,7 @@ get_header();
 
                             <tr>
                                 <th>Total</th>
-                                <th>{{ getDetails['userTotalTrade']}} </th>
+                                <th>{{ getDetails['userTotalTrade']!=null?getDetails['userTotalTrade']:'0'}} </th>
                                 <th> </th>
                                 <th></th>
                             </tr>
@@ -280,7 +280,7 @@ get_header();
     <!-- Footer
     ============================================= -->
 </section>
-<script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery.js"></script>
+
 <?php
 get_footer();
 ?>

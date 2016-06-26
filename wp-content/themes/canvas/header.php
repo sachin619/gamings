@@ -21,6 +21,7 @@ endif;
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="author" content="Infini System" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+       
         <link rel="shortcut icon" type="image/x-icon" href="<?= get_template_directory_uri() ?>/images/favicon.ico">
         <!-- Stylesheets
         ============================================= -->
@@ -39,7 +40,8 @@ endif;
         <![endif]-->
 
 
-        <?php wp_head(); ?>        
+        <?php wp_head(); ?>  
+         <script type="text/javascript" src="<?= get_template_directory_uri() ?>/js/jquery.js"></script>
     </head>
 
     <body class="stretched">

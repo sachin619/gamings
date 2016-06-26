@@ -106,7 +106,7 @@ get_header();
                                     </td>
                                     <td ><span class="{{matches['id']}}-totalMid">{{matches['mytradedTotal']['tourTotal']}}</span></td>
                                 </tr> 
-                                <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no open matches at the moment please check again later!</td></tr>
+                                <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no  matches at the moment please check again later!</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -325,12 +325,12 @@ get_header();
 
                             <div class="col-md-12">
                                 <div class="center">
-                                    <h2>ABOUT EVENT EXCHANGE</h2>
+                                    <h2 class="aboutTitle">ABOUT EVENT EXCHANGE</h2>
                                     <div class="divider divider-short divider-center"><i class="icon-circle-blank"></i></div>
                                 </div>
-                                <p class="nobottommargin">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </p>
+                                <div class="aboutUs">
+                                    
+                                </div>
                             </div>
 
                         </div>

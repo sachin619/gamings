@@ -95,6 +95,9 @@ switch ($action) {
     case 'forgot-password-reset':
         $output = $api->forgotPasswordReset($_REQUEST);
         break;
+    case 'download-csv':
+        $output = $api->downloadCsv($_REQUEST);
+        break;
     default:
         $output = ['error' => 'invalid action'];
         break;
@@ -139,6 +142,7 @@ class API {
         $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
+        $home['aboutUs'] = $this->getResult(['posts_per_page' => '100', 'post_status' => 'publish', 'post_type' => 'post', 'p' => 322]);
         $home['leaderBoard'] = $this->leaderBoard();
         return $home;
     }
@@ -610,7 +614,7 @@ class API {
         update_post_meta($mid, 'total_bets', $getTotalBets);
         $userTotalPts = $this->formatNumberAbbreviation();
         if ($get_result != null):
-            return ['msg' => implode(" ", $get_result), 'mytradedPoints' => $getPoints, 'userTotalPts' => $userTotalPts,'totalMid'=>$getTotalBets];
+            return ['msg' => implode(" ", $get_result), 'mytradedPoints' => $getPoints, 'userTotalPts' => $userTotalPts, 'totalMid' => $getTotalBets];
         else:
             return ['msg' => "Please trade on atleast one team!", 'mytradedPoints' => $getPoints];
         endif;
@@ -1009,7 +1013,7 @@ class API {
         global $wpdb;
         $getAccount = [];
         $result = $wpdb->get_results("SELECT * FROM wp_bets where   uid= $this->userId  $whereM order by bet_at DESC $limit ");
-        $this->getCsv($result);
+       // $this->getCsv($result);
 
         foreach ($result as $getBetDetails):
             $tourDetails['id'] = $i++;
@@ -1188,6 +1192,7 @@ class API {
 
     public function getCsv($query) {
 //print_r($query);exit;
+        //$result = $wpdb->get_results("SELECT * FROM wp_bets where   uid= $this->userId   order by bet_at DESC  ");
         $combineRes[] = ['id', 'Users', 'Tournaments', 'Matches', 'Teams', 'Points', 'Bet At'];
         $combineRes[] = ['', '', '', '', '', '', ''];
         foreach ($query as $getResult):
@@ -1204,6 +1209,37 @@ class API {
             fputcsv($fp, $fields);
         }
         fclose($fp);
+    }
+
+    public function downloadCsv($query) {
+
+        global $wpdb;
+//print_r($query);exit;
+        $result = $wpdb->get_results("SELECT * FROM wp_bets where   uid= $this->userId   order by bet_at DESC  ");
+
+        $combineRes[] = ['id', 'Users', 'Tournaments', 'Matches', 'Teams', 'Points', 'Bet At'];
+        $combineRes[] = ['', '', '', '', '', '', ''];
+        foreach ($result as $getResult):
+            //echo $getResult->id;echo "<br>";
+            $getUsername = get_userdata($getResult->uid);
+            $userName = $getUsername->data->display_name;
+            $tourName = get_the_title($getResult->tid);
+            $matchTitle = !empty($getResult->mid) ? get_the_title($getResult->mid) : '-';
+            $teamTitle = get_the_title($getResult->team_id);
+            $combineRes[] = array($getResult->id, $userName, $tourName, $matchTitle, $teamTitle, $getResult->pts, $getResult->bet_at);
+        endforeach;
+        $fp = fopen(get_template_directory() . '/csv/' . $this->userId . 'file.csv', 'w');
+        foreach ($combineRes as $fields) {
+            fputcsv($fp, $fields);
+        }
+        fclose($fp);
+
+        $file_url = get_site_url() . "/wp-content/themes/canvas/csv/" . $this->userId . 'file.csv';
+        header('Content-Type: application/octet-stream');
+        header("Content-Transfer-Encoding: Binary");
+        header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
+        //readfile($file_url); // do the double-download-dance (dirty but worky) 
+        return ['url'=>$file_url];
     }
 
     public function contacUs($getData) {

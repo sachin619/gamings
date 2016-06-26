@@ -35,7 +35,7 @@ $userEmail = $userInfo->user_email;
                             <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>Traded Points
                         </a>    <!-- My bets--> 
                         <a href="#" class="list-group-item text-center">
-                            <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>Trade Diffusion
+                            <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>Trade Results
                         </a>    <!-- My Win Loss points -->    
                         <a href="#" class="list-group-item text-center hide">
                             <h4 class="fa fa-shopping-cart fa-lg "></h4><br/> Purchase History
@@ -68,7 +68,7 @@ $userEmail = $userInfo->user_email;
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="password" class="col-sm-3">Uncleared Points <span class='toolMsg'><a href="#"  data-toggle="tooltip" title="These points will be credited to your 'Cleared Points' after {{myAccount['bufferDay']}} days of winning Tournament/Match result. "><i class="fa fa-info-circle"></i></a></span></label>
+                                <label for="password" class="col-sm-3">Uncleared Points <span ><a href="#" class='toolMsg' data-toggle="tooltip" title="These points will be credited to your 'Cleared Points' after {{myAccount['bufferDay']}} days of winning Tournament/Match result. "><i class="fa fa-info-circle"></i></a></span></label>
                                 <div class="col-sm-9">
                                     {{myAccount['unClearedPoints']}}   <span ng-if="myAccount['unClearedPoints'] == null">0</span>
                                 </div>
@@ -86,9 +86,9 @@ $userEmail = $userInfo->user_email;
                                         <th>Sr.No</th>
                                         <th>Tournaments</th>
                                         <th>Match</th>
-                                        <th>Team</th>
+                                        <th>Trade On</th>
                                         <th>Points</th>
-                                        <th>Bet Placed On</th>
+                                        <th>Trade Placed At</th>
                                     </tr>
                                 </thead>						   
                                 <tbody >
@@ -96,7 +96,7 @@ $userEmail = $userInfo->user_email;
                                         <td>{{myInfo['tourDetails']['id']}}</td>
                                         <td >{{myInfo['tourDetails']['tourTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['matchTitle']}}</td>
-                                        <td style="background-color:#F8E0EC" ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
+                                        <td  ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
                                         <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
@@ -115,8 +115,9 @@ $userEmail = $userInfo->user_email;
                                     <div class="col-md-6">
                                         <button  ng-click="searchByDate('yes')" class="button button-mini button-dark button-rounded">Reset</button>
                                         <button  ng-click="searchByDate()" class="button button-mini button-dark button-rounded">Search</button>
-                                        <a href="<?= get_template_directory_uri() . '/csv/' ?>{{myAccount['userInfo']['userDetails']['data']['ID']}}file.csv"><button class="button button-mini button-dark button-rounded">Download</button>
-                                        </a>
+                                   <button ng-click="downloadCsv()" class="button button-mini button-dark button-rounded">Download</button>
+                                   <span style="display: none" class="loaderDownload"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
+                                        
                                     </div>  
                                 </div>  
                                 </tbody>							
@@ -138,9 +139,9 @@ $userEmail = $userInfo->user_email;
                                         <th>Sr.No</th>
                                         <th>Tournaments</th>
                                         <th>Match</th>
-                                        <th>Team</th>
+                                        <th>Trade On</th>
                                         <th>Points</th>
-                                        <th>Bet Placed On</th>
+                                        <th>Trade Placed At</th>
 
                                     </tr>
                                 </thead>						   
@@ -149,19 +150,21 @@ $userEmail = $userInfo->user_email;
                                         <td>{{myInfo['tourDetails']['id']}}</td>
                                         <td >{{myInfo['tourDetails']['tourTitle']}}</td>
                                         <td>{{myInfo['tourDetails']['matchTitle']}}</td>
-                                        <td ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" style="background-color:#F8E0EC">Tie</td>
+                                        <td ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
                                         <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
-                                        <td ng-class="myInfo['tourDetails']['win']=='Yes' || myInfo['tourDetails']['teamTitle'] == 'Api'?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
+                                        <td ng-class="myInfo['tourDetails']['win']=='Yes' ?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
                                         <td>{{myInfo['tourDetails']['bet_at']}}</td>
+                                  
                                     </tr>   
                                     <tr>   
-                                        <td align="center" colspan="6" ng-if="winList.length <= 0">No results found</td>
+                                        <td align="center" colspan="6" ng-if="winList.length ==null">No results found</td>
                                     </tr>
+                                    
                             </table>
 							</div>
                             <div class="col-lg-12">
                             <button  class="button button-mini button-dark button-rounded paginatePrevWin">Previous</button>
-                                <button ng-if="winList.length<10" class="button paginateNextWin button-mini button-dark button-rounded pull-right">Next</button> </div>
+                                <button ng-if="winList.length>=10" class="button paginateNextWin button-mini button-dark button-rounded pull-right">Next</button> </div>
                         </div>
                     </div>   <!--  My Win Loss points-->
                     <div class="bhoechie-tab-content">

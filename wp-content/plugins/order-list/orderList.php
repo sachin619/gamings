@@ -54,7 +54,7 @@ class Paulund_Wp_List_Table {
         <input type="hidden" id="basePluginUrl" value="<?= get_site_url(); ?>" />
         <div class="wrap">
             <div id="icon-users" class="icon32"></div>
-            <h2>Total Bets</h2>
+            <h2>Points Traded</h2>
             <div>
                 <form method="post" action="<?= get_site_url(); ?>/wp-admin/admin.php?page=example-list-table.php">
                     <input type="text" value="<?= $_POST['tName'] ?>" name="tName" class="tourAuto" placeholder="Select Tournament"  />
@@ -120,9 +120,9 @@ class Example_List_Table extends WP_List_Table {
             'uid' => 'User',
             'tid' => 'Tournament',
             'mid' => 'Match',
-            'team_id' => 'Team',
+            'team_id' => 'Traded On',
             'pts' => 'Points',
-            'bet_at' => 'Bet Placed On'
+            'bet_at' => 'Trade Placed At'
         );
 
         return $columns;
@@ -188,13 +188,13 @@ class Example_List_Table extends WP_List_Table {
                 return $getUsername->data->display_name;
                 break;
             case 'mid':
-                return get_the_title($item[$column_name]);
+                return $item[$column_name]!=0?get_the_title($item[$column_name]):'-';
                 break;
             case 'tid':
                 return get_the_title($item[$column_name]);
                 break;
             case 'team_id':
-                return get_the_title($item[$column_name]);
+                return $item[$column_name]!=0?get_the_title($item[$column_name]):'Tie';
                 break;
             case 'pts':
                 return $item[$column_name];

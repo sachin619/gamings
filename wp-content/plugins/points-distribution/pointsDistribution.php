@@ -24,7 +24,7 @@ class Distribution_Wp_List_Table {
      * Menu item will allow us to load the page to display the table
      */
     public function add_menu_example_dlist_table_page() {
-        add_menu_page('Distribution', 'Points Diffusion', 'manage_options', 'pointsDistribution.php', array($this, 'distribution_dlist_table_page'),'dashicons-clipboard',45);
+        add_menu_page('Distribution', 'Points Results', 'manage_options', 'pointsDistribution.php', array($this, 'distribution_dlist_table_page'),'dashicons-clipboard',45);
     }
 
     /**
@@ -38,7 +38,7 @@ class Distribution_Wp_List_Table {
         ?>
         <div class="wrap">
             <div id="icon-users" class="icon32"></div>
-            <h2>Points Distribution</h2>
+            <h2>Points Results</h2>
             <div>
                 <form method="post" action="<?= get_site_url(); ?>/wp-admin/admin.php?page=pointsDistribution.php">
                     <input type="text" value="<?= $_POST['tName'] ?>" name="tName" class="tourAuto" placeholder="Select Tournament"  />
@@ -104,9 +104,9 @@ class Distribution_Table extends WP_List_Table {
             'uid' => 'User',
             'tid' => 'Tournament',
             'mid' => 'Match',
-            'team_id' => 'Team',
+            'team_id' => 'Traded On',
             'gain_points' => 'Gain Points',
-            'date' => 'Date & Time'
+            'date' => 'Gain at'
         );
 
         return $columns;
@@ -172,13 +172,13 @@ class Distribution_Table extends WP_List_Table {
                 return $getUserData->data->display_name;
                 break;
             case 'mid':
-                return get_the_title($item[$column_name]);
+                return $item[$column_name]!=0?get_the_title($item[$column_name]):'-';
                 break;
             case 'tid':
                 return get_the_title($item[$column_name]);
                 break;
             case 'team_id':
-                return get_the_title($item[$column_name]);
+                return $item[$column_name]!=0?get_the_title($item[$column_name]):'Tie';
                 break;
             case 'gain_points':
                 return $item[$column_name];

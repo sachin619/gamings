@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -7,6 +8,7 @@
  */
 get_header();
 ?>
+
 <section ng-controller="listingTour" class="bg-img-container"> 
     <!-- Page Title
             ============================================= -->
@@ -49,7 +51,7 @@ get_header();
                 </div> -->
 
                 <div class="clear"></div>
-                <h2 ng-hide="tourListing.length">There are no open tournaments at the moment please check again later!</h2>
+                <h2 ng-hide="tourListing.length">There are no tournaments at the moment please check again later!</h2>
                 <!-- Portfolio Items
                 ============================================= -->
                 <div  ng-init="i = 1" class="portfolio grid-container portfolio-2 clearfix main-container">
@@ -65,7 +67,7 @@ get_header();
                             </div> -->
                         </div>
                         <div class="portfolio-desc">
-                            <h3>{{getPost['title']}} ({{getPost['category'][0]['name']}})</h3>
+                            <h3>{{getPost['title']}} </h3>
                             <span>
                                 <strong ng-if="getPost.mytradedTotal > 0">Total Trade: {{getPost.mytradedTotal}} Points</strong>
                                 <br>

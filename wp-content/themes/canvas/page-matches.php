@@ -131,7 +131,7 @@ get_header();
                                 </td>
                                 <td> <span class="{{matches['id']}}-totalMid">{{ matches['mytradedTotal']['tourTotal']}}</span> <span ng-if=" matches['mytradedTotal']['tourTotal'] == ''">0</span></td>
                             </tr>    
-                            <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no open matches at the moment please check again later!</td></tr>
+                            <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no matches at the moment please check again later!</td></tr>
 
                         </tbody>
                     </table>
