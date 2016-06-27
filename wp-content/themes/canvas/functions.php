@@ -435,9 +435,9 @@ add_filter('widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args');
 function updatePremium($postId) {
 
     $tradeInfo["tid"] = $postId;
-    $getTotalBets = getTotalTrade($tradeInfo, 'tid');
-    $getTotalBetsFilter = (array) $getTotalBets[0];
-    update_post_meta($postId, 'total_tour_bets', $getTotalBetsFilter['total']);
+    //$getTotalBets = getTotalTrade($tradeInfo, 'tid');
+    //$getTotalBetsFilter = (array) $getTotalBets[0];
+    //update_post_meta($postId, 'total_tour_bets', $getTotalBetsFilter['total']);
     if (get_post_type($postId) == 'tournaments'):
         global $wpdb;
         $args = ['post_type' => 'tournaments', 'p' => $postId];
