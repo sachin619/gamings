@@ -111,7 +111,15 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
             }]);
 
 app.controller('myAccount', function ($scope, Pagination, $http, $templateCache) {
-
+    $('.searchMyBets').validate({
+        rules: {
+            fname: {minlength: 3, required: true},
+            email: {required: true, email: true},
+            mobile: {required: true, minlength: 10, maxlength: 10, number: true},
+        },
+        message: {
+        }
+    });
     $('.userInfoForm').validate({
         rules: {
             fname: {minlength: 3, required: true},
@@ -196,6 +204,18 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
 
 
     $scope.searchByDate = function (reset) {
+        var startDate = $('.startDate').val();
+        var endDate = $('.endDate').val();
+        if (startDate === '' && reset != 'yes') {
+            $('.errorStartDate').show();
+        }
+        if (endDate === '' && reset != 'yes') {
+            $('.errorEndDate').show();
+        }
+        $('.searchMyBets').valid({});
+        if (!$('.searchMyBets').valid()) {
+            return false;
+        }
         getPageCount = 0;
         $('.paginatePrev').hide();
         $('.paginateNext').show();
@@ -599,7 +619,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
                 }
 
                 if (typeName == 'listing-matches' && formData['filter'] != 'yes') {
-                   
+
                     $('.updateUserKit').html(response['userTotalPts']);
                     jQuery.each(response.catPost, function (k, v) {
                         // console.log(v);
@@ -624,10 +644,10 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
                 if (typeName == 'download-csv') {
 
                     window.location = response.url;
-                    $(document).ready(function(){
-                         $('.loaderDownload').hide();
+                    $(document).ready(function () {
+                        $('.loaderDownload').hide();
                     });
-                   
+
                 }
                 if (typeName == 'my-account' && formData['type'] == 'myAccountFilter') {
 
@@ -743,9 +763,9 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
         } else if (formData['type'] === 'matchesList') {
             //$('.trade').val('');
             //console.log($scope);
-             //$scope.points="";
-         console.log(formData['pts']);
-      
+            //$scope.points="";
+            console.log(formData['pts']);
+
             $scope.pointsTie = "";
             angular.element(event.target).removeAttr('disabled');
             $('.updateUserKit').html(response.data.userTotalPts);

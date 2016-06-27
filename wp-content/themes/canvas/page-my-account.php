@@ -104,21 +104,30 @@ $userEmail = $userInfo->user_email;
                                         <tr>   
                                             <td align="center" colspan="6" ng-if="posts.length <= 0">No results found</td>
                                         </tr>
-                                    <div class="col-lg-12" style="margin: 0 0 20px 0;">                                    
-                                        <div class="col-md-6">
-                                            <span class="input-daterange input-group">
-                                                <input type="text" class="datepickerStart startDate sm-form-control tleft" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" />
-                                                <span class="input-group-addon">to</span>
-                                                <input type="text" class="datepickerEnd endDate sm-form-control tleft" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
-                                            </span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <button  ng-click="searchByDate('yes')" class="button button-mini button-dark button-rounded">Reset</button>
-                                            <button  ng-click="searchByDate()" class="button button-mini button-dark button-rounded">Search</button>
-                                            <button ng-click="downloadCsv()" class="button button-mini button-dark button-rounded">Download</button>
-                                            <span style="display: none" class="loaderDownload"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
+                                    <div class="col-lg-12" style="margin: 0 0 20px 0;">
+                                        <form action="#" class="searchMyBets">
+                                       
 
-                                        </div>  
+                                            <div class="col-md-6">
+                                             
+                                                <span class="input-daterange input-group"> 
+                                                    
+                                                    <input type="text" id="startDate" class="datepickerStart startDate sm-form-control tleft required" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" required="" />
+                                                   
+                                                    <span class="filter"></span>
+                                                    <span class="input-group-addon">to</span>
+                                                    <input type="text" class="datepickerEnd endDate sm-form-control tleft required" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" required="" />
+                                                </span>
+                                                <span class="errorStartDate" style="display:none;color:red">This field is required</span> <span class="errorEndDate" style="display:none;color:red;padding-left:59px" >This field is required</span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button onclick="return false"   ng-click="searchByDate()" class="button button-mini button-dark button-rounded">Search</button>
+                                                <button onclick="return false"   ng-click="searchByDate('yes')" class="reset button button-mini button-dark button-rounded">Reset</button>
+                                                <button onclick="return false"  ng-click="downloadCsv()" class="button button-mini button-dark button-rounded">Download</button>
+                                                <span style="display: none" class="loaderDownload"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
+
+                                            </div>  
+                                        </form>
                                     </div>  
                                     </tbody>							
                                 </table>
@@ -154,7 +163,7 @@ $userEmail = $userInfo->user_email;
                                             <td ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
                                             <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
                                             <td ng-class="myInfo['tourDetails']['win']=='Yes' ?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
-                                           <td>{{myInfo['tourDetails']['teamTotal']}}</td>
+                                            <td>{{myInfo['tourDetails']['teamTotal']}}</td>
                                             <td>{{myInfo['tourDetails']['bet_at']}}</td>
 
                                         </tr>   
@@ -345,6 +354,8 @@ get_footer();
     #fname-error{ display:block !important}
     #email-error{ display:block !important}
     #lname-error{ display:block !important}
+    #lname-error{ display:block !important}
+    #startDate-error{ display:block !important}
     .errorColor{
         color:red;
     }

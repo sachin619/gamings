@@ -94,7 +94,7 @@ get_header();
 
     </section><!-- #content end -->
 </section>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js"></script> 
+<script src="<?= get_template_directory_uri() ?>/js/jquery.1.9.js"></script> 
 
 
 <?php
