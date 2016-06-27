@@ -41,7 +41,7 @@ endif;
 
 
         <?php wp_head(); ?>  
-      
+       <script src="<?= get_template_directory_uri() ?>/js/jquery.1.9.js"></script> 
     </head>
 
     <body class="stretched">
@@ -67,7 +67,7 @@ endif;
                             <a href="<?= get_site_url() ?>" class="retina-logo" data-dark-logo="<?= get_template_directory_uri() ?>/images/logos.png"><img src="<?= get_template_directory_uri() ?>/images/logos.png" alt="Canvas Logo"></a>
                         </div><!-- #logo end -->
 
-                        <div class="ad-banner col-md-3">
+                        <div class="ad-banner col-md-3 hidden-md hidden-sm hidden-xs">
                             <div class="ad-ban-hold">
                                 <img src="<?= get_template_directory_uri() ?>/images/header-ad.gif" class="imgaddbanner" alt="Banner" style="height:60px !important; display:block;">
                             </div>
@@ -107,11 +107,11 @@ endif;
 
                                 </div><!-- #top-cart end -->
                             <?php endif; ?>
-                            <?php if (empty($userName)): ?>
+                            <!--<?php if (empty($userName)): ?>
                                 <div id="top-search">
                                     <a href="#" class=""><span class=""><i class="icon-facebook"></i></span><span class="ts-text"></span></a>
-                                </div><!-- #top-search end -->
-                            <?php endif; ?>
+                                </div>
+                            <?php endif; ?>-->
                         </nav><!-- #primary-menu end -->
 
                     </div>

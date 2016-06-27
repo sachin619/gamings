@@ -78,11 +78,11 @@ get_header();
 					<div class="clearfix"></div>
 
                 </div><!-- #portfolio end -->
-                <br>
                 <div class="col-lg-12" style="margin: 20px 0px;">
                 <div class="col-md-4"></div>
                 <div ng-if="i>=6" class="col-md-4 hide-loadMore">
                     <button type="button" class="btn btn-danger btn-lg btn-block "  ng-click="loadMore(getCat)">Load More </button>
+                    <br>
                 </div>
 				
 				

@@ -30,6 +30,19 @@ function matchTrigger(term) {
 
 $(document).ready(function () {
     $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
+    //$(".datepickerStart").datepicker({format: 'yyyy-mm-dd'});
+     
+
+    $(".datepickerStart").datepicker({
+        format: 'yyyy-mm-dd',
+        minDate: 0,
+        numberOfMonths: 2,
+        onSelect: function (selected) {
+          
+            $(".datepickerEnd").datepicker("option", "minDate", selected);
+        }
+    });
+     $(".datepickerEnd").datepicker({format: 'yyyy-mm-dd'});
 });
 
 

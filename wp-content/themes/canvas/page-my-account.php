@@ -62,7 +62,7 @@ $userEmail = $userInfo->user_email;
 
                             <div class="form-group">
                                 <label for="oPass" class="col-sm-3">Cleared Points</label>
-                                
+
                                 <div class="col-sm-9">
                                     {{myAccount['userInfo']['points'][0]}} <span ng-if="myAccount['userInfo']['points'][0] == null">0</span>
                                 </div>
@@ -79,92 +79,92 @@ $userEmail = $userInfo->user_email;
                     </div> <!-- My points -->
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
-						 <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Sr.No</th>
-                                        <th>Tournaments</th>
-                                        <th>Match</th>
-                                        <th>Trade On</th>
-                                        <th>Points</th>
-                                        <th>Trade Placed At</th>
-                                    </tr>
-                                </thead>						   
-                                <tbody >
-                                    <tr ng-repeat="myInfo in posts">
-                                        <td>{{myInfo['tourDetails']['id']}}</td>
-                                        <td >{{myInfo['tourDetails']['tourTitle']}}</td>
-                                        <td>{{myInfo['tourDetails']['matchTitle']}}</td>
-                                        <td  ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
-                                        <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
-                                        <td>{{myInfo['tourDetails']['pts']}}</td>
-                                        <td>{{myInfo['tourDetails']['bet_at']}}</td>
-                                    </tr>
-                                    <tr>   
-                                        <td align="center" colspan="6" ng-if="posts.length <= 0">No results found</td>
-                                    </tr>
-                                <div class="col-lg-12" style="margin: 0 0 20px 0;">                                    
-                                    <div class="col-md-6">
-                                        <span class="input-daterange input-group">
-                                            <input type="text" class="datePicker startDate sm-form-control tleft" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" />
-                                            <span class="input-group-addon">to</span>
-                                            <input type="text" class="datePicker endDate sm-form-control tleft" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
-                                        </span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <button  ng-click="searchByDate('yes')" class="button button-mini button-dark button-rounded">Reset</button>
-                                        <button  ng-click="searchByDate()" class="button button-mini button-dark button-rounded">Search</button>
-                                   <button ng-click="downloadCsv()" class="button button-mini button-dark button-rounded">Download</button>
-                                   <span style="display: none" class="loaderDownload"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
-                                        
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Sr.No</th>
+                                            <th>Tournaments</th>
+                                            <th>Match</th>
+                                            <th>Traded On</th>
+                                            <th>Points</th>
+                                            <th>Trade Placed At</th>
+                                        </tr>
+                                    </thead>						   
+                                    <tbody >
+                                        <tr ng-repeat="myInfo in posts">
+                                            <td>{{myInfo['tourDetails']['id']}}</td>
+                                            <td >{{myInfo['tourDetails']['tourTitle']}}</td>
+                                            <td>{{myInfo['tourDetails']['matchTitle']}}</td>
+                                            <td  ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
+                                            <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
+                                            <td>{{myInfo['tourDetails']['pts']}}</td>
+                                            <td>{{myInfo['tourDetails']['bet_at']}}</td>
+                                        </tr>
+                                        <tr>   
+                                            <td align="center" colspan="6" ng-if="posts.length <= 0">No results found</td>
+                                        </tr>
+                                    <div class="col-lg-12" style="margin: 0 0 20px 0;">                                    
+                                        <div class="col-md-6">
+                                            <span class="input-daterange input-group">
+                                                <input type="text" class="datepickerStart startDate sm-form-control tleft" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" />
+                                                <span class="input-group-addon">to</span>
+                                                <input type="text" class="datepickerEnd endDate sm-form-control tleft" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" />
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button  ng-click="searchByDate('yes')" class="button button-mini button-dark button-rounded">Reset</button>
+                                            <button  ng-click="searchByDate()" class="button button-mini button-dark button-rounded">Search</button>
+                                            <button ng-click="downloadCsv()" class="button button-mini button-dark button-rounded">Download</button>
+                                            <span style="display: none" class="loaderDownload"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
+
+                                        </div>  
                                     </div>  
-                                </div>  
-                                </tbody>							
-                            </table>
-							</div>
+                                    </tbody>							
+                                </table>
+                            </div>
                             <div class="col-lg-12">
                                 <button  class="button button-mini button-dark button-rounded paginatePrev">Previous</button>
-                                <button ng-hide="posts.length<10" class="button paginateNext button-mini button-dark button-rounded pull-right">Next</button>
+                                <button ng-hide="posts.length < 10" class="button paginateNext button-mini button-dark button-rounded pull-right">Next</button>
                             </div>
                         </div>
                     </div>   <!-- My bets-->
 
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
-						<div class="table-responsive">
-                            <table class = "table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Sr.No</th>
-                                        <th>Tournaments</th>
-                                        <th>Match</th>
-                                        <th>Trade On</th>
-                                        <th>Points</th>
-                                        <th>Trade Placed At</th>
+                            <div class="table-responsive">
+                                <table class = "table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Sr.No</th>
+                                            <th>Tournaments</th>
+                                            <th>Match</th>
+                                            <th>Traded On</th>
+                                            <th>Points</th>
+                                            <th>Trade Placed At</th>
 
-                                    </tr>
-                                </thead>						   
-                                <tbody >
-                                    <tr ng-repeat="myInfo in winList">
-                                        <td>{{myInfo['tourDetails']['id']}}</td>
-                                        <td >{{myInfo['tourDetails']['tourTitle']}}</td>
-                                        <td>{{myInfo['tourDetails']['matchTitle']}}</td>
-                                        <td ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
-                                        <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
-                                        <td ng-class="myInfo['tourDetails']['win']=='Yes' ?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
-                                        <td>{{myInfo['tourDetails']['bet_at']}}</td>
-                                  
-                                    </tr>   
-                                    <tr>   
-                                        <td align="center" colspan="6" ng-if="winList.length ==null">No results found</td>
-                                    </tr>
-                                    
-                            </table>
-							</div>
+                                        </tr>
+                                    </thead>						   
+                                    <tbody >
+                                        <tr ng-repeat="myInfo in winList">
+                                            <td>{{myInfo['tourDetails']['id']}}</td>
+                                            <td >{{myInfo['tourDetails']['tourTitle']}}</td>
+                                            <td>{{myInfo['tourDetails']['matchTitle']}}</td>
+                                            <td ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
+                                            <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
+                                            <td ng-class="myInfo['tourDetails']['win']=='Yes' ?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
+                                            <td>{{myInfo['tourDetails']['bet_at']}}</td>
+
+                                        </tr>   
+                                        <tr>   
+                                            <td align="center" colspan="6" ng-if="winList.length == null">No results found</td>
+                                        </tr>
+
+                                </table>
+                            </div>
                             <div class="col-lg-12">
-                            <button  class="button button-mini button-dark button-rounded paginatePrevWin">Previous</button>
-                                <button ng-if="winList.length>=10" class="button paginateNextWin button-mini button-dark button-rounded pull-right">Next</button> </div>
+                                <button  class="button button-mini button-dark button-rounded paginatePrevWin">Previous</button>
+                                <button ng-if="winList.length >= 10" class="button paginateNextWin button-mini button-dark button-rounded pull-right">Next</button> </div>
                         </div>
                     </div>   <!--  My Win Loss points-->
                     <div class="bhoechie-tab-content">
@@ -319,16 +319,16 @@ get_footer();
 ?>
 <script src="<?= get_template_directory_uri() ?>/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("div.bhoechie-tab-menu>div.list-group>a").click(function (e) {
-            e.preventDefault();
-            $(this).siblings('a.active').removeClass("active");
-            $(this).addClass("active");
-            var index = $(this).index();
-            $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
-            $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
-        });
-    });
+                                        $(document).ready(function () {
+                                            $("div.bhoechie-tab-menu>div.list-group>a").click(function (e) {
+                                                e.preventDefault();
+                                                $(this).siblings('a.active').removeClass("active");
+                                                $(this).addClass("active");
+                                                var index = $(this).index();
+                                                $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+                                                $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+                                            });
+                                        });
 </script>
 
 

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var domain = "http://localhost:8080/gamings/api/?action=";
+var domain = "http://localhost/gamings/api/?action=";
 
-var base_url = "http://localhost:8080/gamings/";
+var base_url = "http://localhost/gamings/";
 
 var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
 var app = angular.module('gaming', ['simplePagination']);
@@ -599,7 +599,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
                 }
 
                 if (typeName == 'listing-matches' && formData['filter'] != 'yes') {
-
+                   
                     $('.updateUserKit').html(response['userTotalPts']);
                     jQuery.each(response.catPost, function (k, v) {
                         // console.log(v);
@@ -732,6 +732,7 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
         }
 
         if (formData['type'] === 'tournaments') {
+            $scope.pointsTie = "";
             angular.element(event.target).removeAttr('disabled');
             var formDataReload = {'postId': formData['slug']};
             ngPost('tournaments-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
@@ -741,6 +742,10 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
             ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         } else if (formData['type'] === 'matchesList') {
             //$('.trade').val('');
+            //console.log($scope);
+             //$scope.points="";
+         console.log(formData['pts']);
+      
             $scope.pointsTie = "";
             angular.element(event.target).removeAttr('disabled');
             $('.updateUserKit').html(response.data.userTotalPts);

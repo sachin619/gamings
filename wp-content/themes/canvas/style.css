@@ -1138,7 +1138,7 @@ body.stretched #header.full-header .container {
 	float: left!important;
 	padding-right: 15px!important;
 	margin-right: 15px!important;
-	border-right: 1px solid #444;
+	/*border-right: 1px solid #444;*/
 }
 
 #header.transparent-header.full-header #primary-menu > ul { border-right-color: rgba(0,0,0,0.1); }
@@ -3570,7 +3570,7 @@ body.stretched .container-fullwidth .breadcrumb { right: 60px !important; }
 body:not(.device-touch) .portfolio {
 	-webkit-transition: height .4s linear;
 	-o-transition: height .4s linear;
-	transition: height .4s linear;
+	transition: height .4s linear; height:auto!important;
 }
 
 .portfolio-item {

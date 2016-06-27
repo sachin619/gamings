@@ -142,7 +142,7 @@ class API {
         $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
-        $home['aboutUs'] = $this->getResult(['posts_per_page' => '100', 'post_status' => 'publish', 'post_type' => 'post', 'p' => 322]);
+        $home['aboutUs'] = $this->getResult(['posts_per_page' => '100', 'post_status' => 'publish', 'post_type' => 'post', 'p' => 370]);
         $home['leaderBoard'] = $this->leaderBoard();
         return $home;
     }
