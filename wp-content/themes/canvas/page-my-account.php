@@ -227,7 +227,7 @@ $userEmail = $userInfo->user_email;
                                 <div class="form-group">
                                     <label for="name" class="col-sm-4 control-label">First Name</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="fname" name='fname' ng-model="fname" value={{myAccount['userInfo']['firstName'][0]}} placeholder="First Name" required="" ng-minlength="3">
+                                        <input type="text" class="form-control" id="fname" name='fname'  value={{myAccount['userInfo']['firstName'][0]}} placeholder="First Name" required="" ng-minlength="3">
                                     </div>
                                 </div>	
                                 <div class="form-group">
