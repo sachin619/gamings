@@ -139,8 +139,9 @@ $userEmail = $userInfo->user_email;
                                             <th>Sr.No</th>
                                             <th>Tournaments</th>
                                             <th>Match</th>
-                                            <th>Traded On</th>
+                                            <th>Traded On</th>                         
                                             <th>Points</th>
+                                            <th>Total Trade</th>
                                             <th>Trade Placed At</th>
 
                                         </tr>
@@ -153,6 +154,7 @@ $userEmail = $userInfo->user_email;
                                             <td ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
                                             <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
                                             <td ng-class="myInfo['tourDetails']['win']=='Yes' ?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
+                                           <td>{{myInfo['tourDetails']['teamTotal']}}</td>
                                             <td>{{myInfo['tourDetails']['bet_at']}}</td>
 
                                         </tr>   

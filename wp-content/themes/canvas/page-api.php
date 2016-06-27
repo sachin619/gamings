@@ -1059,7 +1059,7 @@ class API {
             else:
                 if (($getMatchStatus == "Yes" && $getMatchCancel == 'No' && $getBetDetails->team_id != 0 ) || ($getTourStatus == 'Yes' && $getTourCancel == 'No' )):
                     $getWin = $wpdb->get_results("SELECT id,gain_points FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
-                  
+                   $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id"); 
                 $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
                     $tourDetails['id'] = $i++;
                     $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
@@ -1067,6 +1067,7 @@ class API {
                     $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
                     $tourDetails['pts'] =!empty($getWin) ?$getWin[0]->gain_points : $getBetDetails->pts ;
                     $tourDetails['bet_at'] = $getBetDetails->bet_at;
+                    $tourDetails['teamTotal']=$getTotalBetsTeam->pts;
                     array_push($getAccount, ['tourDetails' => $tourDetails]);
                 endif;
 
