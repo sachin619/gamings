@@ -1058,19 +1058,21 @@ class API {
                 $getAccount = $this->getDrawMatch($getMatchDraw, $getBetDetails, $wpdb, $getAccount, $i);
             else:
                 if (($getMatchStatus == "Yes" && $getMatchCancel == 'No' && $getBetDetails->team_id != 0 ) || ($getTourStatus == 'Yes' && $getTourCancel == 'No' )):
-                    $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
-                    $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
+                    $getWin = $wpdb->get_results("SELECT id,gain_points FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+                  
+                $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
                     $tourDetails['id'] = $i++;
                     $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
                     $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
                     $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
-                    $tourDetails['pts'] = $getBetDetails->pts;
+                    $tourDetails['pts'] =!empty($getWin) ?$getWin[0]->gain_points : $getBetDetails->pts ;
                     $tourDetails['bet_at'] = $getBetDetails->bet_at;
                     array_push($getAccount, ['tourDetails' => $tourDetails]);
                 endif;
 
             endif;
         endforeach;
+       
         $arrayPagination = array_chunk($getAccount, 10);
 
         return $arrayPagination[$paged];
