@@ -1013,7 +1013,7 @@ class API {
         global $wpdb;
         $getAccount = [];
         $result = $wpdb->get_results("SELECT * FROM wp_bets where   uid= $this->userId  $whereM order by bet_at DESC $limit ");
-       // $this->getCsv($result);
+        // $this->getCsv($result);
 
         foreach ($result as $getBetDetails):
             $tourDetails['id'] = $i++;
@@ -1059,21 +1059,21 @@ class API {
             else:
                 if (($getMatchStatus == "Yes" && $getMatchCancel == 'No' && $getBetDetails->team_id != 0 ) || ($getTourStatus == 'Yes' && $getTourCancel == 'No' )):
                     $getWin = $wpdb->get_results("SELECT id,gain_points FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
-                   $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id"); 
-                $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
+                    $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+                    $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
                     $tourDetails['id'] = $i++;
                     $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
                     $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
                     $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
-                    $tourDetails['pts'] =!empty($getWin) ?$getWin[0]->gain_points : $getBetDetails->pts ;
+                    $tourDetails['pts'] = !empty($getWin) ? $getWin[0]->gain_points : $getBetDetails->pts;
                     $tourDetails['bet_at'] = $getBetDetails->bet_at;
-                    $tourDetails['teamTotal']=$getTotalBetsTeam->pts;
+                    $tourDetails['teamTotal'] = $getTotalBetsTeam->pts;
                     array_push($getAccount, ['tourDetails' => $tourDetails]);
                 endif;
 
             endif;
         endforeach;
-       
+
         $arrayPagination = array_chunk($getAccount, 10);
 
         return $arrayPagination[$paged];
@@ -1083,6 +1083,7 @@ class API {
         if ($getMatchDraw == 'Yes' && $getBetDetails->team_id == 0):
 
             $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+            $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
             $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
             $tourDetails['id'] = $i++;
             $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
@@ -1090,6 +1091,7 @@ class API {
             $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
             $tourDetails['pts'] = $getBetDetails->pts;
             $tourDetails['bet_at'] = $getBetDetails->bet_at;
+            $tourDetails['teamTotal'] = $getTotalBetsTeam->pts;
             array_push($getAccount, ['tourDetails' => $tourDetails]);
         endif;
         return $getAccount;
@@ -1242,7 +1244,7 @@ class API {
         header("Content-Transfer-Encoding: Binary");
         header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
         //readfile($file_url); // do the double-download-dance (dirty but worky) 
-        return ['url'=>$file_url];
+        return ['url' => $file_url];
     }
 
     public function contacUs($getData) {
