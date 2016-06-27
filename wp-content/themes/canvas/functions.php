@@ -518,6 +518,7 @@ function updateMatchPremium($postId) {
                 $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
                 // update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
             }
+            update_post_meta($postId, 'total_bets', '');
             update_post_meta($postId, 'points_distributed', 'Yes'); //if one winner left distribute points
         } else if (count($countElimntdLoss) == 2 && $getTeams[0]['match_abandoned'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes') {  //for match abondoned
             $getActualBet = $wpdb->get_results("SELECT sum(pts) as bet,uid FROM wp_bets WHERE mid='" . $postId . "' group by uid   ");
@@ -528,6 +529,7 @@ function updateMatchPremium($postId) {
                 update_user_meta($getBetInfo->uid, 'points', $getCurrentPoints[0] + $getBetInfo->bet);
                 update_user_meta($getBetInfo->uid, 'points_used', $getUsedPoints[0] - $getBetInfo->bet);
             endforeach;
+            update_post_meta($postId, 'total_bets', '');
             update_post_meta($postId, 'points_distributed', 'Yes');
         }
         else if (count($countElimntdLoss) == 2 && $getTeams[0]['match_draw'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes'):
@@ -560,6 +562,7 @@ function matchDraw($resultDis, $totalWinBets, $getTeams, $wpdb, $Tradetype, $pos
         $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
         // no use now--- update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
     }
+    update_post_meta($postId, 'total_bets', '');
     update_post_meta($postId, 'points_distributed', 'Yes'); //if one winner left distribute points
 }
 
@@ -601,7 +604,7 @@ function getPremium($type, $Tradetype, $postId) {   //tournament distribution lo
             $resultDis = $wpdb->get_results("SELECT sum(pts) as pts,uid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teams['ID'] . "' GROUP BY uid ");
         }
     }
-    if (count($countElimntd) == 1 && $getTeams[0]['points_distributed'] !== 'Yes') {
+    if (count($countElimntd) == 1 && $getTeams[0]['points_distributed'] !== 'Yes') { //if winner declare
         $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "'   ");
         $totBets = (array) $getTotalBets[0];
 
@@ -615,6 +618,7 @@ function getPremium($type, $Tradetype, $postId) {   //tournament distribution lo
             $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
             //  update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
         }
+        update_post_meta($postId, 'total_tour_bets', '');
         update_post_meta($postId, 'points_distributed', 'Yes');
     } else if (count($countElimntd) >= 2 && $getTeams[0]['tournament_abandoned'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes') :    //if match abandoned
         $getActualBet = $wpdb->get_results("SELECT uid, sum(ceil(premium*pts)) as bet  FROM wp_bets WHERE tid=$postId AND mid=0  group by uid ");
@@ -626,6 +630,7 @@ function getPremium($type, $Tradetype, $postId) {   //tournament distribution lo
             update_user_meta($getBetInfo->uid, 'points', $getCurrentPoints[0] + $getBetInfo->bet);
             update_user_meta($getBetInfo->uid, 'points_used', $getUsedPoints[0] - $getBetInfo->bet);
         endforeach;
+        update_post_meta($postId, 'total_tour_bets', '');
         update_post_meta($postId, 'points_distributed', 'Yes');
     endif;             //if match abandoned
     if ($getTeams[0]['tournament_draw'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes'):
@@ -645,6 +650,7 @@ function getPremium($type, $Tradetype, $postId) {   //tournament distribution lo
             $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
             //not in use  update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
         }
+        update_post_meta($postId, 'total_tour_bets', '');
         update_post_meta($postId, 'points_distributed', 'Yes');
     endif;
 }
