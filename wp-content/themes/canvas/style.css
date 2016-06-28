@@ -1818,13 +1818,12 @@ body:not(.device-sm):not(.device-xs):not(.device-xxs) #header.transparent-header
 
 
 #top-cart { margin-right: 20px; }
-
+.bag{ width:24px; height:24px; background: url(images/points-bag.png) no-repeat; position:absolute; top: -18px; right: 5px; z-index:9999;}
 #top-cart > a > span {
 	display: block;
-	position: absolute;
-	top: -12px;
+	position: absolute;	
 	left: auto;
-	right: -9px;
+	right: -5px;
 	font-size: 14px;
 	color: #FFF;
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
@@ -1832,7 +1831,7 @@ body:not(.device-sm):not(.device-xs):not(.device-xxs) #header.transparent-header
 	height: 16px;*/ padding:5px 10px;
 	line-height: 16px;
 	text-align: center;
-	background-color: #d52029;
+	background: #d52029;
 	border-radius: 50%;
 }
 

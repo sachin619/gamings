@@ -1007,7 +1007,7 @@ class API {
         $endDate = $info['data']['endDate'];
         if ($info['data']['reset'] != 'yes'):
             if (isset($startDate) && isset($endDate) && $startDate != '' && $endDate != ''): //start and end date
-                $whereM.=" AND bet_at BETWEEN '".$startDate." 00:00:00' AND '" . $endDate . " 23:59:00' ";
+                $whereM.=" AND bet_at BETWEEN '" . $startDate . " 00:00:00' AND '" . $endDate . " 23:59:00' ";
             endif;
         endif;
         global $wpdb;
@@ -1069,6 +1069,18 @@ class API {
                     $tourDetails['bet_at'] = $getBetDetails->bet_at;
                     $tourDetails['teamTotal'] = $getTotalBetsTeam->pts;
                     array_push($getAccount, ['tourDetails' => $tourDetails]);
+                else:
+                    $getWin = $wpdb->get_results("SELECT id,gain_points FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+                    $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+                    $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
+                    $tourDetails['id'] = $i++;
+                    $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
+                    $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
+                    $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
+                    $tourDetails['pts'] = !empty($getWin) ? $getWin[0]->gain_points : $getBetDetails->pts;
+                    $tourDetails['bet_at'] = $getBetDetails->bet_at;
+                    $tourDetails['teamTotal'] = $getTotalBetsTeam->pts;
+                    array_push($getAccount, ['tourDetails' => $tourDetails]);
                 endif;
 
             endif;
@@ -1082,14 +1094,27 @@ class API {
     function getDrawMatch($getMatchDraw, $getBetDetails, $wpdb, $getAccount, $i) {
         if ($getMatchDraw == 'Yes' && $getBetDetails->team_id == 0):
 
-            $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+            $getWin = $wpdb->get_results("SELECT id,gain_points FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+
             $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
             $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
             $tourDetails['id'] = $i++;
             $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
             $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
             $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
-            $tourDetails['pts'] = $getBetDetails->pts;
+            $tourDetails['pts'] = !empty($getWin) ? $getWin[0]->gain_points : $getBetDetails->pts;
+            $tourDetails['bet_at'] = $getBetDetails->bet_at;
+            $tourDetails['teamTotal'] = $getTotalBetsTeam->pts;
+            array_push($getAccount, ['tourDetails' => $tourDetails]);
+        else:
+
+            $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+            $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
+            $tourDetails['id'] = $i++;
+            $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
+            $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
+            $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
+            $tourDetails['pts'] = !empty($getWin) ? $getWin[0]->gain_points : $getBetDetails->pts;
             $tourDetails['bet_at'] = $getBetDetails->bet_at;
             $tourDetails['teamTotal'] = $getTotalBetsTeam->pts;
             array_push($getAccount, ['tourDetails' => $tourDetails]);

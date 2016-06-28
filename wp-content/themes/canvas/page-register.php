@@ -48,7 +48,7 @@ get_header();
 					<!--Notifications Start-->
           					<!--Notifications End-->
 					
-                      <h3>Powered By <img src="<?= get_template_directory_uri() ?>/images/login-logos.jpg" alt="Logo"></h3>
+                      <!--<h3>Powered By <img src="<?= get_template_directory_uri() ?>/images/login-logos.jpg" alt="Logo"></h3>-->
                       <!-- <p>Powered By</p> -->
                     </div>
                                     <!--<h3>Login to your Account</h3>-->

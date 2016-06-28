@@ -103,7 +103,10 @@ endif;
                                 $getFilterPoints = formatNumberAbbreviation($getUserPoints[0]);
                                 ?>
                                 <div id="top-cart">
-                                    <a href="<?= get_site_url() . '/my-account' ?>" id="top-cart-trigger"><i class="fa fa-money fa-lg" style="font-size:36px;"></i><span class="updateUserKit"><?= isset($getFilterPoints) ? $getFilterPoints : 0; ?></span></a>
+                                    <a href="<?= get_site_url() . '/my-account' ?>" id="top-cart-trigger">
+									<!--<i class="fa fa-money fa-lg" style="font-size:36px;"></i>-->
+									<div class="bag"></div>
+									<span class="updateUserKit"><?= isset($getFilterPoints) ? $getFilterPoints : 0; ?></span></a>
 
                                 </div><!-- #top-cart end -->
                             <?php endif; ?>

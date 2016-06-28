@@ -1540,15 +1540,19 @@
 }
 
 @media (max-width: 479px) {
-
+	
 	#header.full-header .container,
 	.container-fullwidth { width: 310px !important; }
 
 	.container.vertical-middle { width: 100% !important; }
 
 	.full-screen:not(.force-full-screen) .container.vertical-middle { width: 310px !important; }
-
-	#top-cart { display: none; }
+	
+	#logo{height:auto!important;}
+	
+	#logo img {height: 80px!important;}
+	
+	#top-cart {right: -15px;}
 
 	#top-search a { right: 15px; }
 

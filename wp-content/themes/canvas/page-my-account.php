@@ -58,11 +58,10 @@ $userEmail = $userInfo->user_email;
                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 bhoechie-tab">
 
                     <div class="bhoechie-tab-content active">
+					  <div class="tabColumn">	
                         <form class="form-horizontal">
-
                             <div class="form-group">
                                 <label for="oPass" class="col-sm-3">Cleared Points</label>
-
                                 <div class="col-sm-9">
                                     {{myAccount['userInfo']['points'][0]}} <span ng-if="myAccount['userInfo']['points'][0] == null">0</span>
                                 </div>
@@ -73,17 +72,37 @@ $userEmail = $userInfo->user_email;
                                     {{myAccount['unClearedPoints']}}   <span ng-if="myAccount['unClearedPoints'] == null">0</span>
                                 </div>
                             </div>
-
-
                         </form>
+					  </div>	
                     </div> <!-- My points -->
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
+									<div class="col-lg-12" style="margin: 0 0 20px 0;">
+                                        <form action="#" class="searchMyBets" style="margin:0px; padding:0px;">                                   
+                                            <div class="col-md-6">                                             
+                                                <span class="input-daterange input-group">     
+                                                    <input type="text" id="startDate" class="datepickerStart startDate sm-form-control tleft required" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" required="" />
+                                                   
+                                                    <span class="filter"></span>
+                                                    <span class="input-group-addon">to</span>
+                                                    <input type="text" class="datepickerEnd endDate sm-form-control tleft required" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" required="" />
+                                                </span>
+                                                <span class="errorStartDate" style="display:none;color:red">This field is required</span> <span class="errorEndDate" style="display:none;color:red;padding-left:59px" >This field is required</span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button onclick="return false"   ng-click="searchByDate()" class="button button-mini button-dark button-rounded">Search</button>
+                                                <button onclick="return false"   ng-click="searchByDate('yes')" class="reset button button-mini button-dark button-rounded">Reset</button>
+                                                <button onclick="return false"  ng-click="downloadCsv()" class="button button-mini button-dark button-rounded">Download</button>
+                                                <span style="display: none" class="loaderDownload"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
+
+                                            </div>  
+                                        </form>
+                                    </div> 
                                         <tr>
-                                            <th>Sr.No</th>
+                                            <th>No</th>
                                             <th>Tournaments</th>
                                             <th>Match</th>
                                             <th>Traded On</th>
@@ -104,31 +123,7 @@ $userEmail = $userInfo->user_email;
                                         <tr>   
                                             <td align="center" colspan="6" ng-if="posts.length <= 0">No results found</td>
                                         </tr>
-                                    <div class="col-lg-12" style="margin: 0 0 20px 0;">
-                                        <form action="#" class="searchMyBets">
-                                       
-
-                                            <div class="col-md-6">
-                                             
-                                                <span class="input-daterange input-group"> 
-                                                    
-                                                    <input type="text" id="startDate" class="datepickerStart startDate sm-form-control tleft required" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" required="" />
-                                                   
-                                                    <span class="filter"></span>
-                                                    <span class="input-group-addon">to</span>
-                                                    <input type="text" class="datepickerEnd endDate sm-form-control tleft required" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" required="" />
-                                                </span>
-                                                <span class="errorStartDate" style="display:none;color:red">This field is required</span> <span class="errorEndDate" style="display:none;color:red;padding-left:59px" >This field is required</span>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <button onclick="return false"   ng-click="searchByDate()" class="button button-mini button-dark button-rounded">Search</button>
-                                                <button onclick="return false"   ng-click="searchByDate('yes')" class="reset button button-mini button-dark button-rounded">Reset</button>
-                                                <button onclick="return false"  ng-click="downloadCsv()" class="button button-mini button-dark button-rounded">Download</button>
-                                                <span style="display: none" class="loaderDownload"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
-
-                                            </div>  
-                                        </form>
-                                    </div>  
+                                     
                                     </tbody>							
                                 </table>
                             </div>
@@ -145,13 +140,13 @@ $userEmail = $userInfo->user_email;
                                 <table class = "table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Sr.No</th>
+                                            <th>No</th>
                                             <th>Tournaments</th>
                                             <th>Match</th>
                                             <th>Traded On</th> 
                                             <th>Total Trade</th>
-                                            <th>Results</th>
-                                            <th>Trade Placed At</th>
+                                            <th>Result</th>
+                                            <th>Result Date</th>
 
                                         </tr>
                                     </thead>						   
@@ -168,7 +163,7 @@ $userEmail = $userInfo->user_email;
 
                                         </tr>   
                                         <tr>   
-                                            <td align="center" colspan="6" ng-if="winList.length == null">No results found</td>
+                                            <td align="center" colspan="7" ng-if="winList.length == null">No results found</td>
                                         </tr>
 
                                 </table>
@@ -196,7 +191,7 @@ $userEmail = $userInfo->user_email;
                     </div>   <!-- Purchase History -->
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
-                            <p>To get more points please mail <b>support@eventexchange.co.in</b> with the subject "<b>Request for more points</b>" . Kindly email from the registered Email Id or mentioned the same in the mail.</p>
+                            <p>To get more points please mail <b> <a href="mailto:support@eventexchange.co.in?Subject=Hello%20again" target="_top">support@eventexchange.co.in</a></b> with the subject "<b>Request for more points</b>" . Kindly email from the registered Email Id or mention the same in the mail.</p>
                             <!--                            <form class="form-horizontal">
                                                             <div class="form-group">
                                                                 <label for="name" class="col-sm-3 control-label">Buy Points</label>
@@ -214,7 +209,7 @@ $userEmail = $userInfo->user_email;
                     </div>   <!-- Buy More Points -->
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
-                            <p>To get more points please mail support@eventexchange.co.in with the Subject "Request for more points" . Kindly email from the registered Email Id or mentioned the same in the mail.</p>
+                            <p>To get more points please mail <a href="mailto:support@eventexchange.co.in?Subject=Hello%20again" target="_top">support@eventexchange.co.in</a>  with the Subject "Request for more points" . Kindly email from the registered Email Id or mentioned the same in the mail.</p>
                             <!--                            <form class="form-horizontal">
                                                             <div class="form-group">
                                                                 <label for="name" class="col-sm-3 control-label">Encash Points</label>
@@ -274,8 +269,8 @@ $userEmail = $userInfo->user_email;
                         </div>
                     </div>   <!-- edit profile-->
                     <div class="bhoechie-tab-content">
+					  <div class="tabColumn">	
                         <form id="changePassword" name="changePassword" class="form-horizontal">
-
                             <div class="form-group">
                                 <label for="oPass" class="col-sm-3 control-label">Old Password</label>
                                 <div class="col-sm-9">
@@ -313,6 +308,7 @@ $userEmail = $userInfo->user_email;
                                 </div>
                             </div>
                         </form>
+					   </div> 
                     </div>  <!-- Change Password -->
 
                 </div>
