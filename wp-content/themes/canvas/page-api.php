@@ -848,7 +848,7 @@ class API {
             update_user_meta($user_id, 'phone', $userInfo['data']['phone']);
             if (!is_wp_error($user_id)):
                 $headers = 'Content-type: text/html';
-                $body = "Hi $userName, <br>Thanks for signing up. <br> Your account has been activated and you should be able to login on <a href='http://eventexchange.co.in/register/'>http://eventexchange.co.in/register/</a>";
+                $body = "Hi $userName, <br>Thanks for signing up. <br> Your account has been activated and you should be able to <a href='http://eventexchange.co.in/register/'>Login</a> on eventexchange";
                 wp_mail($userEmail, "User Registration", $body, $headers);
                 update_user_meta($user_id, 'points', get_option("token_amt"));
                 $userInfo['data']['userName'] = $userInfo['data']['user_email'];
