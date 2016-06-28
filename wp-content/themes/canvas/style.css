@@ -3570,7 +3570,7 @@ body.stretched .container-fullwidth .breadcrumb { right: 60px !important; }
 body:not(.device-touch) .portfolio {
 	-webkit-transition: height .4s linear;
 	-o-transition: height .4s linear;
-	transition: height .4s linear; height:auto!important;
+	transition: height .4s linear;
 }
 
 .portfolio-item {
@@ -11417,6 +11417,7 @@ button.toast-close-button {
 	}
 	div.bhoechie-tab-content{ padding:0px;}
 	.tabColumn{ padding:20px 0px!important;}
+	.portfolio { height:auto!important;}
 }
 
 @media all and (min-width: 480px) and (max-width: 767px) {
@@ -11426,6 +11427,7 @@ button.toast-close-button {
 	}
 	div.bhoechie-tab-content{ padding:0px!important;}
 	.tabColumn{ padding:20px 0px!important;}
+	.portfolio { height:auto!important;}
 }
 
 

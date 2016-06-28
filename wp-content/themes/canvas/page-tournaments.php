@@ -53,7 +53,7 @@ get_header();
                 <h2 ng-hide="tourListing.length">There are no tournaments at the moment please check again later!</h2>
                 <!-- Portfolio Items
                 ============================================= -->
-                <div  ng-init="i = 1" class="portfolio grid-container portfolio-2 clearfix main-container">
+                <div  ng-init="i = 1" class="portfolio grid-container portfolio-2 main-container">
 
                     <article ng-repeat="getPost in tourListing" class="col-md-4 pf-hide pf-media pf-{{getPost['category'][0]['name']}}" style="margin: 0 0 20px 0;">
                         <a href={{getPost['postLink']}}>
@@ -78,6 +78,7 @@ get_header();
 					<div class="clearfix"></div>
 
                 </div><!-- #portfolio end -->
+				<div class="clearfix"></div>
                 <div class="col-lg-12" style="margin: 20px 0px;">
                 <div class="col-md-4"></div>
                 <div ng-if="i>=6" class="col-md-4 hide-loadMore">
@@ -94,7 +95,7 @@ get_header();
 
     </section><!-- #content end -->
 </section>
-<script src="<?= get_template_directory_uri() ?>/js/jquery.1.9.js"></script> 
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.js"></script> 
 
 
 <?php
