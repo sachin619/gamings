@@ -601,13 +601,13 @@ function getPremium($type, $Tradetype, $postId) {   //tournament distribution lo
         if ($team['eliminated'] == 'No') {
             $countElimntd[] = $team['eliminated'];
             $teams = (array) $team['team'];
-            $resultBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teams['ID'] . "' AND team_id!=0  ");
+            $resultBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teams['ID'] . "'  ");
             $totalWinBets = (array) $resultBets[0];
-            $resultDis = $wpdb->get_results("SELECT sum(pts) as pts,uid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teams['ID'] . "' AND team_id!=0 GROUP BY uid ");
+            $resultDis = $wpdb->get_results("SELECT sum(pts) as pts,uid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teams['ID'] . "' GROUP BY uid ");
         }
     }
     if (count($countElimntd) == 1 && $getTeams[0]['points_distributed'] !== 'Yes') { //if winner declare
-        $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id!=0   ");
+        $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "'    ");
         $totBets = (array) $getTotalBets[0];
 
         $betsCalc = floor($totBets['pts'] / $totalWinBets['pts']); //total no of bet divide by total no winner
