@@ -962,7 +962,7 @@ class API {
     function adminDistribution($userid) {
         global $wpdb;
         $getDistributionDays = get_option('distributing_days');
-        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where uid =' . $userid);
+        $getResults = $wpdb->get_results("SELECT * FROM wp_distribution where uid =$userid AND status=0");
         foreach ($getResults as $results):
             $getCurrTime = strtotime($this->getDate);
             $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
@@ -977,7 +977,7 @@ class API {
     function cronAdminDistribution() {
         global $wpdb;
         $getDistributionDays = get_option('distributing_days');
-        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where cleared =0');
+        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where cleared =0 AND status=0');
         foreach ($getResults as $results):
             $userid = $results->uid;
             $getCurrTime = strtotime($this->getDate);
@@ -1030,12 +1030,14 @@ class API {
     }
 
     function getWinLossBets($info) {
-// print_r($info);
-// exit;
+        $getAccount = [];
         if (isset($info['data']['getCount'])):
-            $paged = $info['data']['getCount'];
+            $calcResult = $info['data']['getCount'];
+            $limit = "limit $calcResult,10 ";
+            $i = $info['data']['getCount'] + 1; //id increment
         else:
-            $paged = 0;
+            $limit = "limit 0,10";
+            $i = 1;                         //id increment
         endif;
         $startDate = $info['data']['startDate'];
         $endDate = $info['data']['endDate'];
@@ -1043,57 +1045,26 @@ class API {
             $whereM.=" AND bet_at BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
         endif;
         global $wpdb;
-        $getAccount = [];
-        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets  where uid= $this->userId   group by tid,team_id,mid  order by bet_at DESC ");
-//$this->getCsv($result);
-        $i = 1;
-        foreach ($result as $getBetDetails):
-            $i++;
-            $getTourStatus = get_field('points_distributed', $getBetDetails->tid);
-            $getMatchStatus = get_field('points_distributed', $getBetDetails->mid);
-            $getTourCancel = get_field('tournament_abandoned', $getBetDetails->tid);
-            $getMatchCancel = get_field('match_abandoned', $getBetDetails->mid);
-            $getMatchDraw = get_field('match_draw', $getBetDetails->mid);
-            $getWinStatus = get_field('select_teams', $getBetDetails->mid);
-            if ($getWinStatus[0]['winner'] == 'No' && $getWinStatus[1]['winner'] == 'No'):
-                $getAccount = $this->getDrawMatch($getMatchDraw, $getBetDetails, $wpdb, $getAccount, $i);
-            else:
-                if (($getMatchStatus == "Yes" && $getMatchCancel == 'No' && $getBetDetails->team_id != 0 ) || ($getTourStatus == 'Yes' && $getTourCancel == 'No' )):
-                    $getWin = $wpdb->get_results("SELECT id,gain_points FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
-                    $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
-                    $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
-                    $tourDetails['id'] = $i;
-                    $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
-                    $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
-                    $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
-                    $tourDetails['pts'] = !empty($getWin) ? $getWin[0]->gain_points : $getBetDetails->pts;
-                    $tourDetails['bet_at'] = $getBetDetails->bet_at;
-                    $tourDetails['teamTotal'] = $getTotalBetsTeam->pts;
-                    array_push($getAccount, ['tourDetails' => $tourDetails]);
-                elseif($getMatchCancel == 'No'):
-                    $getWin = $wpdb->get_results("SELECT id,gain_points FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
-                    $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
-                    $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
-                    $tourDetails['id'] = $i;
-                    $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
-                    $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
-                    $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
-                    $tourDetails['pts'] = !empty($getWin) ? $getWin[0]->gain_points : $getBetDetails->pts;
-                    $tourDetails['bet_at'] = $getBetDetails->bet_at;
-                    $tourDetails['teamTotal'] = $getTotalBetsTeam->pts;
-                    array_push($getAccount, ['tourDetails' => $tourDetails]);
-                endif;
+        $result = $wpdb->get_results("SELECT * FROM wp_distribution  where uid= $this->userId $whereM     $limit ");
+        foreach ($result as $getWin):
 
-            endif;
+            $tourDetails['win'] = $getWin->status == 0 ? "Yes" : "No";
+            $tourDetails['id'] = $i;
+            $tourDetails['tourTitle'] = get_the_title($getWin->tid);
+            $tourDetails['matchTitle'] = $getWin->mid != 0 ? get_the_title($getWin->mid) : '-';
+            $tourDetails['teamTitle'] = get_the_title($getWin->team_id);
+            $tourDetails['pts'] = $getWin->status == 0 ? $getWin->gain_points : $getWin->total_trade;
+            $tourDetails['bet_at'] = $getWin->bet_at;
+            $tourDetails['teamTotal'] = $getWin->total_trade;
+            array_push($getAccount, ['tourDetails' => $tourDetails]);
+            $i++;
         endforeach;
 
-        $arrayPagination = array_chunk($getAccount, 10);
-
-        return $arrayPagination[$paged];
+        return $getAccount;
     }
 
     function getDrawMatch($getMatchDraw, $getBetDetails, $wpdb, $getAccount, $i) {
-         $getMatchCancel = get_field('match_abandoned', $getBetDetails->mid);
+        $getMatchCancel = get_field('match_abandoned', $getBetDetails->mid);
         if ($getMatchDraw == 'Yes' && $getBetDetails->team_id == 0):
 
             $getWin = $wpdb->get_results("SELECT id,gain_points FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
@@ -1108,7 +1079,7 @@ class API {
             $tourDetails['bet_at'] = $getBetDetails->bet_at;
             $tourDetails['teamTotal'] = $getTotalBetsTeam->pts;
             array_push($getAccount, ['tourDetails' => $tourDetails]);
-         elseif($getMatchCancel == 'No'):
+        elseif ($getMatchCancel == 'No'):
 
             $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
             $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
@@ -1218,7 +1189,7 @@ class API {
     function getUnclearedPoints() {
         global $wpdb;
         $userId = $this->userId;
-        $getUnClearedPoints = $wpdb->get_results("SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=$userId AND cleared=0 GROUP BY uid");
+        $getUnClearedPoints = $wpdb->get_results("SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=$userId AND cleared=0 AND status=0 GROUP BY uid");
         return $getUnClearedPoints[0]->unclearedPoints;
     }
 
