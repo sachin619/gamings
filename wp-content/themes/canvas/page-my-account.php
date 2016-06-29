@@ -58,34 +58,34 @@ $userEmail = $userInfo->user_email;
                 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 bhoechie-tab">
 
                     <div class="bhoechie-tab-content active">
-					  <div class="tabColumn">	
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="oPass" class="col-sm-3">Cleared Points</label>
-                                <div class="col-sm-9">
-                                    {{myAccount['userInfo']['points'][0]}} <span ng-if="myAccount['userInfo']['points'][0] == null">0</span>
+                        <div class="tabColumn">	
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="oPass" class="col-sm-3">Cleared Points</label>
+                                    <div class="col-sm-9">
+                                        {{myAccount['userInfo']['points'][0]}} <span ng-if="myAccount['userInfo']['points'][0] == null">0</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="password" class="col-sm-3">Uncleared Points <span ><a href="#" class='toolMsg' data-toggle="tooltip" title="These points will be credited to your 'Cleared Points' after {{myAccount['bufferDay']}} days of winning Tournament/Match result. "><i class="fa fa-info-circle"></i></a></span></label>
-                                <div class="col-sm-9">
-                                    {{myAccount['unClearedPoints']}}   <span ng-if="myAccount['unClearedPoints'] == null">0</span>
+                                <div class="form-group">
+                                    <label for="password" class="col-sm-3">Uncleared Points <span ><a href="#" class='toolMsg' data-toggle="tooltip" title="These points will be credited to your 'Cleared Points' after {{myAccount['bufferDay']}} days of winning Tournament/Match result. "><i class="fa fa-info-circle"></i></a></span></label>
+                                    <div class="col-sm-9">
+                                        {{myAccount['unClearedPoints']}}   <span ng-if="myAccount['unClearedPoints'] == null">0</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-					  </div>	
+                            </form>
+                        </div>	
                     </div> <!-- My points -->
                     <div class="bhoechie-tab-content">
                         <div class="tabColumn">
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
-									<div class="col-lg-12" style="margin: 0 0 20px 0;">
+                                    <div class="col-lg-12" style="margin: 0 0 20px 0;">
                                         <form action="#" class="searchMyBets" style="margin:0px; padding:0px;">                                   
                                             <div class="col-md-6">                                             
                                                 <span class="input-daterange input-group">     
                                                     <input type="text" id="startDate" class="datepickerStart startDate sm-form-control tleft required" value="<?= $_POST['startDate'] ?>" ng-model="startDate" name="startDate" placeholder="Start Date" required="" />
-                                                   
+
                                                     <span class="filter"></span>
                                                     <span class="input-group-addon">to</span>
                                                     <input type="text" class="datepickerEnd endDate sm-form-control tleft required" name="endDate" value="<?= $_POST['endDate'] ?>" ng-model="endDate"  placeholder="End Date" required="" />
@@ -101,14 +101,14 @@ $userEmail = $userInfo->user_email;
                                             </div>  
                                         </form>
                                     </div> 
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Tournaments</th>
-                                            <th>Match</th>
-                                            <th>Traded On</th>
-                                            <th>Points</th>
-                                            <th>Trade Placed At</th>
-                                        </tr>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Tournaments</th>
+                                        <th>Match</th>
+                                        <th>Traded On</th>
+                                        <th>Points</th>
+                                        <th>Trade Placed At</th>
+                                    </tr>
                                     </thead>						   
                                     <tbody >
                                         <tr ng-repeat="myInfo in posts">
@@ -123,7 +123,7 @@ $userEmail = $userInfo->user_email;
                                         <tr>   
                                             <td align="center" colspan="6" ng-if="posts.length <= 0">No results found</td>
                                         </tr>
-                                     
+
                                     </tbody>							
                                 </table>
                             </div>
@@ -146,7 +146,7 @@ $userEmail = $userInfo->user_email;
                                             <th>Traded On</th> 
                                             <th>Total Trade</th>
                                             <th>Result</th>
-                                            <th>Result Date</th>
+
 
                                         </tr>
                                     </thead>						   
@@ -159,11 +159,11 @@ $userEmail = $userInfo->user_email;
                                             <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
                                             <td>{{myInfo['tourDetails']['teamTotal']}}</td>
                                             <td ng-class="myInfo['tourDetails']['win']=='Yes' ?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
-                                            <td>{{myInfo['tourDetails']['bet_at']}}</td>
+
 
                                         </tr>   
                                         <tr>   
-                                            <td align="center" colspan="7" ng-if="winList.length == null">No results found</td>
+                                            <td align="center" colspan="6" ng-if="winList.length == null || winList.length == 0">No results found</td>
                                         </tr>
 
                                 </table>
@@ -229,39 +229,39 @@ $userEmail = $userInfo->user_email;
                         <div class="tabColumn">
                             <form class="form-horizontal userInfoForm">
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-4 control-label">First Name</label>
+                                    <label for="name" class="col-sm-3 control-label">First Name</label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" id="fname" name='fname'  value={{myAccount['userInfo']['firstName'][0]}} placeholder="First Name" required="" ng-minlength="3">
                                     </div>
                                 </div>	
                                 <div class="form-group">
-                                    <label for="name" class="col-sm-4 control-label">Last Name</label>
+                                    <label for="name" class="col-sm-3 control-label">Last Name</label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" id="lname" name='lname' value={{myAccount['userInfo']['lastName'][0]}} placeholder="Last Name">
                                     </div>
                                 </div>
 
                                 <div class="form-group hide">
-                                    <label for="email" class="col-sm-4 control-label">Email</label>
+                                    <label for="email" class="col-sm-3 control-label">Email</label>
                                     <div class="col-sm-8">
                                         <input type="email" class="form-control" value={{myAccount['userInfo']['userDetails']['data']['user_email']}} id="email" name="email" placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="mobile" class="col-sm-4 control-label">Mobile</label>
+                                    <label for="mobile" class="col-sm-3 control-label">Mobile</label>
                                     <div class="col-sm-8">
                                         <input type="text" value={{myAccount['userInfo']['phone'][0]}} class="form-control" id="mobile" name="mobile" placeholder="Mobile">
                                     </div>
                                 </div>
                                 <div class="form-group" ng-hide="myAccount['userInfo']['userDetails']['data']['user_url'] != ''">
-                                    <label for="mobile" class="col-sm-4 control-label">Upload Profile Image</label>
+                                    <label for="mobile" class="col-sm-3 control-label">Upload Profile Image</label>
                                     <div class="col-sm-8">
                                         <input type="file"  id="img" name="file" value="browse" />
 
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-offset-4 col-sm-10">
+                                    <div class="col-sm-offset-3 col-sm-10">
                                         <button type="submit" onclick="return false;" ng-click="userUpdate()" class="btn btn-danger">Submit</button> <span style="display: none" class="loader"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
                                     </div>
                                 </div>
@@ -269,46 +269,46 @@ $userEmail = $userInfo->user_email;
                         </div>
                     </div>   <!-- edit profile-->
                     <div class="bhoechie-tab-content">
-					  <div class="tabColumn">	
-                        <form id="changePassword" name="changePassword" class="form-horizontal">
-                            <div class="form-group">
-                                <label for="oPass" class="col-sm-3 control-label">Old Password</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" value="" ng-model="oldPassword" id="oldPassword" name="oldPassword" placeholder="Old Password" required="">
-                                    <div ng-show="changePassword.oldPassword.$dirty">
-                                        <span class="errorColor" ng-show="changePassword.oldPassword.$error.required">Required</span>
+                        <div class="tabColumn">	
+                            <form id="changePassword" name="changePassword" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="oPass" class="col-sm-3 control-label">Old Password</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" value="" ng-model="oldPassword" id="oldPassword" name="oldPassword" placeholder="Old Password" required="">
+                                        <div ng-show="changePassword.oldPassword.$dirty">
+                                            <span class="errorColor" ng-show="changePassword.oldPassword.$error.required">Required</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="password" class="col-sm-3 control-label">New Password</label>
-                                <div class="col-sm-9"><!-- ID and NAME should be same -->
-                                    <input type="password" ng-model="newPassword" value="" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" required="" ng-minlength="5">
-                                    <div ng-show="changePassword.newPassword.$dirty">
-                                        <span class="errorColor" ng-show="changePassword.newPassword.$error.required">Required</span>
-                                        <span class="errorColor" ng-show="changePassword.newPassword.$error.minlength">Minimum length should be 5</span>
+                                <div class="form-group">
+                                    <label for="password" class="col-sm-3 control-label">New Password</label>
+                                    <div class="col-sm-8"><!-- ID and NAME should be same -->
+                                        <input type="password" ng-model="newPassword" value="" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" required="" ng-minlength="5">
+                                        <div ng-show="changePassword.newPassword.$dirty">
+                                            <span class="errorColor" ng-show="changePassword.newPassword.$error.required">Required</span>
+                                            <span class="errorColor" ng-show="changePassword.newPassword.$error.minlength">Minimum length should be 5</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="confirmPassword" class="col-sm-3 control-label">Confirm Password</label>
-                                <div class="col-sm-9">
-                                    <input type="password" value="" class="form-control" ng-model="confirmPassword" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required="" ng-pattern={{newPassword}} >
-                                    <div ng-show="changePassword.confirmPassword.$dirty">
-                                        <span class="errorColor" ng-show="changePassword.confirmPassword.$error.required" >Required</span>
-                                        <span class="errorColor" ng-show="changePassword.confirmPassword.$error.pattern">Password does not match</span>
+                                <div class="form-group">
+                                    <label for="confirmPassword" class="col-sm-3 control-label">Confirm Password</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" value="" class="form-control" ng-model="confirmPassword" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required="" ng-pattern={{newPassword}} >
+                                        <div ng-show="changePassword.confirmPassword.$dirty">
+                                            <span class="errorColor" ng-show="changePassword.confirmPassword.$error.required" >Required</span>
+                                            <span class="errorColor" ng-show="changePassword.confirmPassword.$error.pattern">Password does not match</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <div class="col-sm-offset-3 col-sm-9">
-                                    <button ng-disabled="!changePassword.$dirty || changePassword.$invalid" type="submit" onclick="return false;" ng-click="updatePassword()" class="btn btn-danger">Submit</button> <span style="display: none" class="loader"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-3 col-sm-9">
+                                        <button ng-disabled="!changePassword.$dirty || changePassword.$invalid" type="submit" onclick="return false;" ng-click="updatePassword()" class="btn btn-danger">Submit</button> <span style="display: none" class="loader"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-					   </div> 
+                            </form>
+                        </div> 
                     </div>  <!-- Change Password -->
 
                 </div>
@@ -326,33 +326,28 @@ get_footer();
 ?>
 <script src="<?= get_template_directory_uri() ?>/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-                                        $(document).ready(function () {
-                                            $("div.bhoechie-tab-menu>div.list-group>a").click(function (e) {
-                                                e.preventDefault();
-                                                $(this).siblings('a.active').removeClass("active");
-                                                $(this).addClass("active");
-                                                var index = $(this).index();
-                                                $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
-                                                $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+                                            $(document).ready(function () {
+                                                $("div.bhoechie-tab-menu>div.list-group>a").click(function (e) {
+                                                    e.preventDefault();
+                                                    $(this).siblings('a.active').removeClass("active");
+                                                    $(this).addClass("active");
+                                                    var index = $(this).index();
+                                                    $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+                                                    $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+                                                });
                                             });
-                                        });
 </script>
 
 
 <style>
-    .win{
-        background-color: #adebad;
-    }   
-    .loss{
-        background-color: #ff6666;
-    }
+    .win{background-color: #adebad;}   
+    .loss{background-color: #ff6666;}
     #mobile-error{ display:block !important}
     #fname-error{ display:block !important}
     #email-error{ display:block !important}
     #lname-error{ display:block !important}
     #lname-error{ display:block !important}
     #startDate-error{ display:block !important}
-    .errorColor{
-        color:red;
-    }
+    .errorColor{color:red;}
+    .form-horizontal .control-label{ text-align:left!important;}
 </style>
