@@ -656,7 +656,6 @@ function getPremium($type, $Tradetype, $postId) {   //tournament distribution lo
             $dataTieLoss = ['uid' => $resultTieLoss->uid, 'tid' => $resultTieLoss->tid, 'team_id' => $resultTieLoss->team_id, 'total_trade' => $resultTieLoss->pts, 'gain_points' => $resultTieLoss->pts, 'status' => 1];
             $wpdb->insert('wp_distribution', $dataTieLoss); //for loss distirbution
         }
-
         update_post_meta($postId, 'points_distributed', 'Yes');
     } else if (count($countElimntd) >= 2 && $getTeams[0]['tournament_abandoned'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes') :    //if match abandoned
         $getActualBet = $wpdb->get_results("SELECT uid, sum(round(premium*pts)) as bet  FROM wp_bets WHERE tid=$postId AND mid=0   group by uid  ");
