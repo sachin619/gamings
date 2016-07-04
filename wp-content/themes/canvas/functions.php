@@ -522,7 +522,6 @@ function updateMatchPremium($postId) {
                 $wpdb->insert('wp_distribution', $data); //insert data
             }
             matchLossEntry($resultBetsLoss, $resultTieLoss, $wpdb); //enter match loss details
-            update_post_meta($postId, 'total_bets', '');
             update_post_meta($postId, 'points_distributed', 'Yes'); //if one winner left distribute points
         } else if (count($countElimntdLoss) == 2 && $getTeams[0]['match_abandoned'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes') {  //for match abondoned
             $getActualBet = $wpdb->get_results("SELECT sum(pts) as bet,uid FROM wp_bets WHERE mid='" . $postId . "' group by uid   ");
@@ -532,7 +531,6 @@ function updateMatchPremium($postId) {
                 update_user_meta($getBetInfo->uid, 'points', $getCurrentPoints[0] + $getBetInfo->bet);
                 update_user_meta($getBetInfo->uid, 'points_used', $getUsedPoints[0] - $getBetInfo->bet);
             endforeach;
-            update_post_meta($postId, 'total_bets', '');
             update_post_meta($postId, 'points_distributed', 'Yes');
         }
         else if (count($countElimntdLoss) == 2 && $getTeams[0]['match_draw'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes'):
@@ -589,7 +587,6 @@ function matchDraw($getBetLoss, $resultTieLoss, $getTeams, $wpdb, $Tradetype, $p
         $wpdb->insert('wp_distribution', $data);
     }
     matchTieEntry($getBetLoss, $resultTieLoss, $wpdb); //enter match loss details
-    update_post_meta($postId, 'total_bets', '');
     update_post_meta($postId, 'points_distributed', 'Yes'); //if one winner left distribute points
 }
 
