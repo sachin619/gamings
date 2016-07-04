@@ -17,8 +17,7 @@ app.controller('homeCtrl', function ($scope, $http, $templateCache) {
     $http.get(domain + "home").then(function (response) {
 
         $scope.home = response.data;
-        $('.aboutUs').html(response.data.aboutUs[0]['content']);
-        $('.aboutTitle').html(response.data.aboutUs[0]['title']);
+      
         $('.awardContent').html(response.data.leaderBoard['award']);
 
         jQuery.each(response.data.upcomingMatches.catPost, function (k, v) {
