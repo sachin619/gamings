@@ -209,6 +209,7 @@ get_header();
                 <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
 
                     <li ng-class="{activeFilter: selectedIndex === $index || selectedIndex == 'home' }"><a href="#" onclick="return false;"  ng-click="filter('upcomming')" data-filter=".pf-{{categories['catName']}}">Upcoming</a></li>
+                    <li ><a href="#" data-filter=".pf-{{categories['catName']}}" onclick="return false;" ng-click="filter('popular')">Popular</a></li>
                     <li class="hide"><a href="#" onclick="return false;"  ng-click="filter('today')" data-filter=".pf-{{categories['catName']}}">Today</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('daysBefore')" data-filter=".pf-{{categories['catName']}}">Completed</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('ongoing')" data-filter=".pf-{{categories['catName']}}">In Play</a></li>
