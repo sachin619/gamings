@@ -689,7 +689,7 @@ class API {
 
                 endif;
             else:
-                return "Match had been over <br>";
+                return "Match is already over <br>";
             endif;
         else:
             return "Sorry you cannot place this trade as the match has already been started <br>";
@@ -730,7 +730,8 @@ class API {
         $getPrem = $getTeams[0]['premium']; //premium calculation
         //$premCalc = round($points / $getPrem); //premium calculation
         $premCalc = $points * $getPrem; //premium calculation which will deduct from kitty
-        $usedCalc = $usedPoints + ceil($premCalc);                 //adding bet points and current remaining points
+  
+        $usedCalc = $usedPoints + floor($premCalc);                 //adding bet points and current remaining points
         $getCount = count($count); //get count of eliminated team
         $getNoCount = count($countNo); //get count of non eliminated team
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $points, 'stage' => $getCount, 'premium' => $getPrem];
@@ -738,8 +739,8 @@ class API {
             if ($points >= $getMinimumBetAmount && !empty($tradeInfo['data']['pts'])):
                 if ($getEndTime >= $getCurrentTime && $getNoCount != 1 && $getDistPoints != 'Yes'):
                     if (!in_array($teamId, $elimiatedTeamId)):
-                        if (ceil($premCalc) <= $uPoints):
-                            $remaining = $uPoints - ceil($premCalc);
+                        if (floor($premCalc) <= $uPoints):
+                            $remaining = $uPoints - floor($premCalc);
                             update_user_meta($userId, 'points', $remaining);
                             update_user_meta($userId, 'points_used', $usedCalc);
                             $wpdb->insert('wp_bets', $wpBets);
@@ -760,7 +761,7 @@ class API {
                         return ['msg' => "Team Eliminated!"];
                     endif;
                 else:
-                    return ['msg' => "Tournament had been over"];
+                    return ['msg' => "Tournament is already over"];
                 endif;
             else:
                 return ['msg' => "Minimimum $getMinimumBetAmount points should be trade"];
@@ -1032,9 +1033,11 @@ class API {
     function getWinLossBets($info) {
         $getAccount = [];
         if (isset($info['data']['getCount'])):
+
             $calcResult = $info['data']['getCount'];
-            $limit = "limit $calcResult,10 ";
-            $i = $info['data']['getCount'] + 1; //id increment
+            $nextPage = $calcResult * 10;
+            $limit = "limit $nextPage,10 ";
+            $i = $nextPage+ 1; //id increment
         else:
             $limit = "limit 0,10";
             $i = 1;                         //id increment
@@ -1045,11 +1048,11 @@ class API {
             $whereM.=" AND bet_at BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
         endif;
         global $wpdb;
-        $result = $wpdb->get_results("SELECT * FROM wp_distribution  where uid= $this->userId $whereM     $limit ");
+        $result = $wpdb->get_results("SELECT * FROM wp_distribution  where uid= $this->userId $whereM  order by id desc   $limit ");
         foreach ($result as $getWin):
 
             $tourDetails['win'] = $getWin->status == 0 ? "Yes" : "No";
-            $tourDetails['id'] = $i;
+            $tourDetails['id'] = $i++;
             $tourDetails['tourTitle'] = get_the_title($getWin->tid);
             $tourDetails['matchTitle'] = $getWin->mid != 0 ? get_the_title($getWin->mid) : '-';
             $tourDetails['teamTitle'] = get_the_title($getWin->team_id);
@@ -1057,7 +1060,7 @@ class API {
             $tourDetails['bet_at'] = $getWin->bet_at;
             $tourDetails['teamTotal'] = $getWin->total_trade;
             array_push($getAccount, ['tourDetails' => $tourDetails]);
-            $i++;
+            
         endforeach;
 
         return $getAccount;
