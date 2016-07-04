@@ -730,8 +730,7 @@ class API {
         $getPrem = $getTeams[0]['premium']; //premium calculation
         //$premCalc = round($points / $getPrem); //premium calculation
         $premCalc = $points * $getPrem; //premium calculation which will deduct from kitty
-  
-        $usedCalc = $usedPoints + floor($premCalc);                 //adding bet points and current remaining points
+        $usedCalc = $usedPoints + round($premCalc);                 //adding bet points and current remaining points
         $getCount = count($count); //get count of eliminated team
         $getNoCount = count($countNo); //get count of non eliminated team
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $points, 'stage' => $getCount, 'premium' => $getPrem];
@@ -740,7 +739,7 @@ class API {
                 if ($getEndTime >= $getCurrentTime && $getNoCount != 1 && $getDistPoints != 'Yes'):
                     if (!in_array($teamId, $elimiatedTeamId)):
                         if (floor($premCalc) <= $uPoints):
-                            $remaining = $uPoints - floor($premCalc);
+                            $remaining = $uPoints - round($premCalc);
                             update_user_meta($userId, 'points', $remaining);
                             update_user_meta($userId, 'points_used', $usedCalc);
                             $wpdb->insert('wp_bets', $wpBets);
