@@ -240,11 +240,16 @@ $userEmail = $userInfo->user_email;
                                         <input type="text" class="form-control" id="lname" name='lname' value={{myAccount['userInfo']['lastName'][0]}} placeholder="Last Name">
                                     </div>
                                 </div>
-
-                                <div class="form-group hide">
+                                <div class="form-group ">
+                                    <label for="username" class="col-sm-3 control-label">Username</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" value={{myAccount['userInfo']['userDetails']['data']['user_login']}} id="username" name="username" placeholder="Username" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
                                     <label for="email" class="col-sm-3 control-label">Email</label>
                                     <div class="col-sm-8">
-                                        <input type="email" class="form-control" value={{myAccount['userInfo']['userDetails']['data']['user_email']}} id="email" name="email" placeholder="Email">
+                                        <input type="email" class="form-control" value={{myAccount['userInfo']['userDetails']['data']['user_email']}} id="email" name="email" placeholder="Email" disabled="">
                                     </div>
                                 </div>
                                 <div class="form-group">

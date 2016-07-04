@@ -494,7 +494,8 @@ class API {
                 'order' => 'DESC',
                 'meta_query' => ['relation' => 'AND',
                     [ 'key' => 'start_date', 'value' => $dateFormat, 'compare' => '>'],
-                    [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
+                    [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '='],
+                    $queryOfTourMatch
                 ],
             ];
         endif;
