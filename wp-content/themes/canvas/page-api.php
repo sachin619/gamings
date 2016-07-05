@@ -526,16 +526,11 @@ class API {
     function listingPopularMatches($getCatSlug) {
         $userId = $this->userId;
         $categorySlug = $getCatSlug['data']['categoryName'];
-
         if (!empty($getCatSlug['data']['getCount'])):
             $paged = $getCatSlug['data']['getCount'];
-
-        // $getPaged = $getCatSlug['data']['getCount'] / 5;
         else:
             $paged = 1;
-        //$getPaged = 0;
         endif;
-
         $dateFormat = strtotime($this->getDate);
         $getCat = $this->getCategories(['parent' => 1]);
         $args = [
@@ -560,18 +555,15 @@ class API {
                 $teamInfo = (array) $resultN['team_name'];
                 $teamId = $teamInfo['ID'];
                 $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId];
-                // $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
-
                 $result[$key]['mytradedTotal'][$teamId] = $this->getUserTrade($tradeInfo, 'mid');
             }
             $tradeInfoTie = ['tid' => $tId, 'user_id' => $userId,];
             $result[$key]['mytradedTotal']['mytradedTie'] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
             $tradeInfo = ['tid' => $tId, 'user_id' => $userId];
-            $result[$key]['mytradedTotal']['tourTotal'] = $this->getTotalTrade($tradeInfo, 'mid');
+            //$result[$key]['mytradedTotal']['tourTotal'] = $this->getTotalTrade($tradeInfo, 'mid');
         }
         $getTotalPointsUser = $this->formatNumberAbbreviation();
         $getVal['totalTrade'] = $var;
-
         $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $getVal, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $getTotalPointsUser];
         return $output;
     }
@@ -1037,7 +1029,7 @@ class API {
             $calcResult = $info['data']['getCount'];
             $nextPage = $calcResult * 10;
             $limit = "limit $nextPage,10 ";
-            $i = $nextPage+ 1; //id increment
+            $i = $nextPage + 1; //id increment
         else:
             $limit = "limit 0,10";
             $i = 1;                         //id increment
@@ -1060,7 +1052,7 @@ class API {
             $tourDetails['bet_at'] = $getWin->bet_at;
             $tourDetails['teamTotal'] = $getWin->total_trade;
             array_push($getAccount, ['tourDetails' => $tourDetails]);
-            
+
         endforeach;
 
         return $getAccount;

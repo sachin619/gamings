@@ -34,19 +34,12 @@ get_header();
 
     </section>
 
-
-
-
-
-
-
     <div class="clearfix"></div>
     <section  id="slider" class="slider-parallax clearfix" style="background-color: #222;">
         <img src="<?= get_template_directory_uri() ?>/images/cricket-stadium-1920x1080-image-1.jpg" class="img-responsive" alt="Banner">
 
     </section>
     <div class="clearfix"></div>
-
 
     <!-- Content
      ============================================= -->
@@ -104,7 +97,7 @@ get_header();
                                     <td>
                                         <button  ng-click="tradeMatch(matches['postLink'], matches['id'], points, homeMatchListing[0]['uid'], pointsTie[$index],$event)" class="btn btn-danger" >Trade </button>
                                     </td>
-                                    <td ><span class="{{matches['id']}}-totalMid">{{matches['mytradedTotal']['tourTotal']}} <span ng-if="matches['mytradedTotal']['tourTotal'] <= 0">0</span></span></td>
+                                    <td ><span class="{{matches['id']}}-totalMid">{{matches['total_bets']}} <span ng-if="matches['total_bets'] <= 0">0</span></span></td>
                                 </tr> 
                                 <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no matches at the moment, please check again later!</td></tr>
                             </tbody>
@@ -177,13 +170,8 @@ get_header();
             <div class="container clearfix">
                 <div class="center">
                     <h2>UPCOMING TOURNAMENTS</h2>
-
-
-
                     <div class="divider divider-short divider-center"><i class="icon-circle-blank"></i></div>	
                 </div>
-
-
 
                 <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
                     <div owl-carousel-item="" ng-repeat="slide in  home.upcomingTournaments" class="item">
@@ -250,7 +238,6 @@ get_header();
         <div class="content-wrap">
 
             <div class="container clearfix">
-
 
                 <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
                     <div owl-carousel-item="" ng-repeat="categories in home.category" class="item">
