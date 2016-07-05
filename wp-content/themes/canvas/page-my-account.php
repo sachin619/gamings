@@ -157,7 +157,10 @@ $userEmail = $userInfo->user_email;
                                         <tr ng-repeat="myInfo in winList">
                                             <td>{{myInfo['tourDetails']['id']}}</td>
                                             <td >{{myInfo['tourDetails']['tourTitle']}}</td>
-                                            <td>{{myInfo['tourDetails']['matchTitle']}}</td>
+                                            <td>{{myInfo['tourDetails']['matchTitle']}}
+                                                <br>{{myInfo['tourDetails']['startDate']}} 
+                                                {{myInfo['tourDetails']['venue'] != '' && myInfo['tourDetails']['venue'] !=null ? '(' + myInfo['tourDetails']['venue'] + ')' : ''}}
+                                            </td>
                                             <td ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
                                             <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
                                             <td>{{myInfo['tourDetails']['teamTotal']}}</td>

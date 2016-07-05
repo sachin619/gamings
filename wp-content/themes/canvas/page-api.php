@@ -980,9 +980,6 @@ class API {
     }
 
     function getUserBets($info) {
-// print_r($info);
-// exit;
-
         if (isset($info['data']['getCount'])):
             $calcResult = $info['data']['getCount'];
             $limit = "limit $calcResult,10 ";
@@ -1041,7 +1038,10 @@ class API {
         global $wpdb;
         $result = $wpdb->get_results("SELECT * FROM wp_distribution  where uid= $this->userId $whereM  order by id desc   $limit ");
         foreach ($result as $getWin):
-
+            $venue = get_post_meta($getWin->mid, 'venue');
+            $tourDetails['venue'] = $getWin->mid != 0 ?$venue[0]:'';
+            $startDate = get_post_meta($getWin->mid, 'start_date');
+            $tourDetails['startDate'] =$getWin->mid != 0 ? date('d M, Y', $startDate[0]) :'';
             $tourDetails['win'] = $getWin->status == 0 ? "Yes" : "No";
             $tourDetails['id'] = $i++;
             $tourDetails['tourTitle'] = get_the_title($getWin->tid);
