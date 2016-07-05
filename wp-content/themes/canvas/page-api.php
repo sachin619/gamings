@@ -816,11 +816,11 @@ class API {
 
     function registration($userInfo) {
         $userData = [
-            'user_login' => $userInfo['data']['user_login'],
+            'user_login' => !empty($userInfo['data']['user_login']) ? $userInfo['data']['user_login'] : $userInfo['data']['user_email'],
             'first_name' => $userInfo['data']['first_name'],
             'last_name' => $userInfo['data']['last_name'],
             'user_email' => $userInfo['data']['user_email'],
-            'user_pass' => $userInfo['data']['user_pass'],
+            'user_pass' => $userInfo['data']['user_pass']
         ];
         $userName = $userInfo['data']['first_name'];
         $userEmail = $userInfo['data']['user_email'];
@@ -838,6 +838,7 @@ class API {
                 $body = "Hi $userName, <br>Thanks for signing up. <br> Your account has been activated and you should be able to <a href='http://eventexchange.co.in/register/'>Login</a> on eventexchange";
                 wp_mail($userEmail, "User Registration", $body, $headers);
                 update_user_meta($user_id, 'points', get_option("token_amt"));
+                update_user_meta($user_id, 'date_of_birth', $userInfo['data']['dob']);
                 $userInfo['data']['userName'] = $userInfo['data']['user_email'];
                 $userInfo['data']['password'] = $userInfo['data']['user_pass'];
                 return $this->login($userInfo);
@@ -1004,7 +1005,11 @@ class API {
 
         foreach ($result as $getBetDetails):
             $tourDetails['id'] = $i++;
-            $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
+            $venue = get_post_meta($getBetDetails->mid, 'venue');
+            $tourDetails['venue'] = $venue[0];
+            $startDate = get_post_meta($getBetDetails->mid, 'start_date');
+            $tourDetails['startDate'] = date('d M, Y', $startDate[0]);
+            $tourDetails['tourTitle'] = $getBetDetails->tid != 0 ? get_the_title($getBetDetails->tid) : '-';
             $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
             $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
             $tourDetails['pts'] = $getBetDetails->pts;
@@ -1086,13 +1091,13 @@ class API {
 
     function getUserDetails() {
         $getUserDetails = get_userdata($this->userId);
-
         $firstName = get_user_meta($this->userId, 'first_name');
         $lastName = get_user_meta($this->userId, 'last_name');
         $phone = get_user_meta($this->userId, 'phone');
         $points = get_user_meta($this->userId, 'points');
+        $dateOfBirth = get_user_meta($this->userId, 'date_of_birth');
         $loaderUrl = get_template_directory_uri() . "/images/pageload1.gif";
-        $info = ['firstName' => $firstName, 'lastName' => $lastName, 'userDetails' => $getUserDetails, 'phone' => $phone, 'loaderImg' => $loaderUrl, 'points' => $points];
+        $info = ['firstName' => $firstName, 'lastName' => $lastName, 'userDetails' => $getUserDetails, 'phone' => $phone, 'loaderImg' => $loaderUrl, 'points' => $points, 'dateOfBirth' => $dateOfBirth];
         return $info;
     }
 

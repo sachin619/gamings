@@ -114,7 +114,10 @@ $userEmail = $userInfo->user_email;
                                         <tr ng-repeat="myInfo in posts">
                                             <td>{{myInfo['tourDetails']['id']}}</td>
                                             <td >{{myInfo['tourDetails']['tourTitle']}}</td>
-                                            <td>{{myInfo['tourDetails']['matchTitle']}}</td>
+                                            <td>{{myInfo['tourDetails']['matchTitle']}}
+                                                <br>{{myInfo['tourDetails']['startDate']}} 
+                                                {{myInfo['tourDetails']['venue'] != '' ? '(' + myInfo['tourDetails']['venue'] + ')' : ''}}
+                                            </td>
                                             <td  ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
                                             <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
                                             <td>{{myInfo['tourDetails']['pts']}}</td>
@@ -256,6 +259,12 @@ $userEmail = $userInfo->user_email;
                                     <label for="mobile" class="col-sm-3 control-label">Mobile</label>
                                     <div class="col-sm-8">
                                         <input type="text" value={{myAccount['userInfo']['phone'][0]}} class="form-control" id="mobile" name="mobile" placeholder="Mobile">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dob" class="col-sm-3 control-label">Date Of Birth</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" value={{myAccount['userInfo']['dateOfBirth'][0]}} class="form-control" id="dob" name="dob" placeholder="Date Of Birth" disabled="">
                                     </div>
                                 </div>
                                 <div class="form-group" ng-hide="myAccount['userInfo']['userDetails']['data']['user_url'] != ''">

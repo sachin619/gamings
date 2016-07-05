@@ -290,6 +290,34 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
 });
 
 app.controller('signupCtrl', function ($scope, $http, $templateCache) {
+    $('#register-form').validate({
+        rules: {
+            fName: {minlength: 3, required: true},
+            email: {required: true, email: true},
+            phone: {required: true, minlength: 10, maxlength: 10, number: true},
+            message: {required: true, minlength: 10},
+            username: {minlength: 5},
+            password: {
+                required:true,
+                minlength: 5
+            },
+            confirmPassword: {
+            
+                equalTo: "#register-form-password"
+            }
+
+        },
+        messages: {fname: "Minimum length should be 3",
+            email: "Not a valid Email Id",
+            phone: "Enter a valid mobile number",
+            message: "Minimum length should be 10",
+            username: 'Minimum length should be 5',
+           confirmPassword:{equalTo:'Password does not match'},
+            
+        }
+    });
+
+
     $(".loaderForgot").hide();
     $('.forgotPassword-success').hide();
     $('.forgotPassword-error').hide();
@@ -305,6 +333,12 @@ app.controller('signupCtrl', function ($scope, $http, $templateCache) {
     formData = {};
     ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
     $scope.signUp = function () {
+        $('#register-form').valid();
+        if (!$('#register-form').valid()) {
+            return false;
+        }
+        ;
+
         $('.loaderRegister').show();
         var formData = {
             'user_login': document.registerForm.username.value,
@@ -312,7 +346,8 @@ app.controller('signupCtrl', function ($scope, $http, $templateCache) {
             'last_name': document.registerForm.lName.value,
             'user_email': document.registerForm.email.value,
             'user_pass': document.registerForm.password.value,
-            'phone': document.registerForm.phone.value
+            'phone': document.registerForm.phone.value,
+            'dob': document.registerForm.dob.value,
         };
         ngPost('registration', formData, $scope, $http, $templateCache, 'errorReg');
     };
@@ -517,11 +552,13 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
     } else {
         var formData = {};
     }
-
+ 
     $scope.tradeMatch = function (link, tid, points, uid, pointsTie, event) {
+        
+     //   $('.matchId').val('');
         angular.element(event.target).attr('disabled', 'disabled');
-        //  $scope.pointsTie="";
-
+    
+    
         if (uid != null) {
             var slug = link.split("/");
             slug = slug[slug.length - 2];
@@ -534,7 +571,9 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
                 'type': 'matchesList',
                 'catType': sessionStorage.getItem('type')
             };
-            tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName', event);
+           
+            tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName', event,points);
+      
         } else {
             sessionStorage.setItem('url', document.URL);
             window.location = base_url + "register?url=redirect";
@@ -599,8 +638,6 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
 
                     });
 
-
-
                 }
                 if (typeName == 'listing-tournaments') {
 
@@ -608,14 +645,8 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
                         $('.hide-loadMore').hide();
                     }
                     jQuery.each(response.catPost, function (k, v) {
-
-
                         $scope.tourListing.push(v);
-
-
                     });
-
-
                 }
 
                 if (typeName == 'listing-matches' && formData['filter'] != 'yes') {
@@ -650,13 +681,10 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
 
                 }
                 if (typeName == 'my-account' && formData['type'] == 'myAccountFilter') {
-
                     $scope.posts = response['userBets'];
                     if (response['userBets'].length == 0) {
                         $('.paginateNext').hide();
                     }
-
-
                 }
                 //for pagination of matches
                 if (formData['type'] === 'myAccountFilterWin') {
@@ -727,7 +755,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
             });
 }
 
-function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock, event) {
+function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock, event,points) {
 
     $http({
         url: domain + typeName,
@@ -761,10 +789,8 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
             var formDataReload = {'postId': formData['slug']};
             ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         } else if (formData['type'] === 'matchesList') {
-            //$('.trade').val('');
-            //console.log($scope);
-            //$scope.points="";
-            console.log(formData['pts']);
+            
+       
 
             $scope.pointsTie = "";
             angular.element(event.target).removeAttr('disabled');
@@ -777,6 +803,7 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
                     $("." + formData['mid'] + "-" + k).html("You've traded " + v + " pts.");
             });
         } else if (formData['type'] === 'tournamentMatcheList') {
+            points=[];
             $("." + formData['mid'] + "-" + 'totalMid').html(response.data.totalMid);
             angular.element(event.target).removeAttr('disabled');
             $('.updateUserKit').html(response.data.userTotalPts);
