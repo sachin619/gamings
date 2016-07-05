@@ -425,7 +425,8 @@ class API {
                 ],
             ];
         elseif ($getCatSlug['data']['type'] == 'daysBefore'):
-            $sevenDaysBefore = strtotime(date('Y-m-d', $dateFormat) . "-7 days");
+            $sevenDaysBefore = strtotime(date('Y-m-d H:i:s', $dateFormat) . "-7 days");
+            $startTimeTodays = strtotime(date('Y-m-d H:i:s', $dateFormat));
             $args = [
                 'post_type' => 'matches',
                 'meta_key' => 'start_date',
@@ -436,7 +437,7 @@ class API {
                 'order' => 'DESC',
                 'meta_query' => ['relation' => 'AND',
                     [
-                        'key' => 'start_date', 'value' => $startTime, 'compare' => '<'
+                        'key' => 'start_date', 'value' => $startTimeTodays, 'compare' => '<'
                     ],
                     [
                         'key' => 'start_date', 'value' => $sevenDaysBefore, 'compare' => '>'
