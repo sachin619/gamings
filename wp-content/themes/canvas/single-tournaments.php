@@ -149,7 +149,7 @@ get_header();
                 <p>
                     
                     Note: Trading on any team/tie at Tournament level has a Premium value of {{getDetails['details'][0].premium}}. 
-                    Ex: To trade for 5 Points on any team/tie, you will need to contribute {{ getDetails['details'][0].premium*5  |number:0 * 5}} Points (5*{{getDetails['details'][0].premium}}= {{getDetails['details'][0].premium*5}}; rounded to {{ getDetails['details'][0].premium*5  |number:0 * 5}}). 
+                    Ex: To trade for 100 Points on any team/tie, you will need to contribute {{ getDetails['details'][0].premium*100  |number:0 * 100}} Points (100*{{getDetails['details'][0].premium}}= {{getDetails['details'][0].premium*100}}; rounded to {{ getDetails['details'][0].premium*100  |number:0 * 100}}). 
                     This Premium value keeps increasing as the Tournament progresses. 
                 </p>
                 </div>
