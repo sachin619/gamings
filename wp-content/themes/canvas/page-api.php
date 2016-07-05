@@ -532,7 +532,6 @@ class API {
             $paged = 1;
         endif;
         $dateFormat = strtotime($this->getDate);
-        $getCat = $this->getCategories(['parent' => 1]);
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'total_bets',
@@ -545,10 +544,6 @@ class API {
             ],
         ];
         $result = $this->getResult($args);
-        foreach ($getCat as $categories) {
-            $catName = (array) $categories;
-            $cat[] = ['catName' => $catName['name']];
-        }
         foreach ($result as $key => $getPost) {
             $tId = $getPost['id'];
             foreach ($getPost['select_teams'] as $resultN) {
@@ -560,11 +555,9 @@ class API {
             $tradeInfoTie = ['tid' => $tId, 'user_id' => $userId,];
             $result[$key]['mytradedTotal']['mytradedTie'] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
             $tradeInfo = ['tid' => $tId, 'user_id' => $userId];
-            //$result[$key]['mytradedTotal']['tourTotal'] = $this->getTotalTrade($tradeInfo, 'mid');
         }
         $getTotalPointsUser = $this->formatNumberAbbreviation();
-        $getVal['totalTrade'] = $var;
-        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $getVal, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $getTotalPointsUser];
+        $output = [ 'catPost' => $result, 'userTotalPts' => $getTotalPointsUser];
         return $output;
     }
 
