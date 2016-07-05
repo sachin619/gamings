@@ -32,7 +32,7 @@ $userEmail = $userInfo->user_email;
                             <h4 class="fa fa-money fa-lg"></h4><br/> My Points
                         </a>   <!--My points -->
                         <a href="#" class="list-group-item text-center">
-                            <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>Traded Points
+                            <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>My Trades
                         </a>    <!-- My bets--> 
                         <a href="#" class="list-group-item text-center">
                             <h4 class="fa fa-thumbs-up fa-lg"></h4><br/>Trade Results
