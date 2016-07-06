@@ -965,13 +965,13 @@ class API {
     function cronAdminDistribution() {
         global $wpdb;
         $getDistributionDays = get_option('distributing_days');
-        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where cleared =0 AND status=0');
+        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where cleared =0 AND status in (0,2)'); //get clear points of win and cancled match 0->win 2->cancel
         foreach ($getResults as $results):
             $userid = $results->uid;
             $getCurrTime = strtotime($this->getDate);
             $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
             if ($disDateAdd < $getCurrTime && $results->cleared != 1):
-                sleep(5);
+            //if ( $results->cleared != 1):
                 $getCurrentPoints = get_user_meta($userid, 'points');
                 $wpdb->update('wp_distribution', ['cleared' => '1'], ['uid' => $userid]);
                 update_user_meta($userid, 'points', $getCurrentPoints[0] + $results->gain_points);
@@ -1042,7 +1042,6 @@ class API {
             $tourDetails['venue'] = $getWin->mid != 0 ?$venue[0]:'';
             $startDate = get_post_meta($getWin->mid, 'start_date');
             $tourDetails['startDate'] =$getWin->mid != 0 ? date('d M, Y', $startDate[0]) :'';
-            $tourDetails['win'] = $getWin->status == 0 ? "Yes" : "No";
             $tourDetails['id'] = $i++;
             $tourDetails['tourTitle'] = get_the_title($getWin->tid);
             $tourDetails['matchTitle'] = $getWin->mid != 0 ? get_the_title($getWin->mid) : '-';
@@ -1050,6 +1049,7 @@ class API {
             $tourDetails['pts'] = $getWin->status == 0 ? $getWin->gain_points : $getWin->total_trade;
             $tourDetails['bet_at'] = $getWin->bet_at;
             $tourDetails['teamTotal'] = $getWin->total_trade;
+            $tourDetails['status']= $getWin->status;
             array_push($getAccount, ['tourDetails' => $tourDetails]);
 
         endforeach;
@@ -1183,7 +1183,7 @@ class API {
     function getUnclearedPoints() {
         global $wpdb;
         $userId = $this->userId;
-        $getUnClearedPoints = $wpdb->get_results("SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=$userId AND cleared=0 AND status=0 GROUP BY uid");
+        $getUnClearedPoints = $wpdb->get_results("SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=$userId AND cleared=0 AND status in (0,2)  group by uid");
         return $getUnClearedPoints[0]->unclearedPoints;
     }
 

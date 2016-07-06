@@ -164,7 +164,8 @@ $userEmail = $userInfo->user_email;
                                             <td ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
                                             <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
                                             <td>{{myInfo['tourDetails']['teamTotal']}}</td>
-                                            <td ng-class="myInfo['tourDetails']['win']=='Yes' ?'win':'loss'">{{myInfo['tourDetails']['pts']}}</td>
+                                            {{getstatus=myInfo['tourDetails']['win']}}
+                                            <td ng-class="myInfo['tourDetails']['status']==0 ?'win':myInfo['tourDetails']['status']==1 ?'loss':myInfo['tourDetails']['status']==2 ?'cancelColor':''">{{myInfo['tourDetails']['pts']}} </td>
 
 
                                         </tr>   
@@ -359,6 +360,7 @@ get_footer();
 <style>
     .win{background-color: #adebad;}   
     .loss{background-color: #ff6666;}
+    .cancelColor{background-color: #f2f900;}
     #mobile-error{ display:block !important}
     #fname-error{ display:block !important}
     #email-error{ display:block !important}
