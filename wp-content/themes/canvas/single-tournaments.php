@@ -44,7 +44,7 @@ get_header();
                                                 <p class="ng-binding">{{getDetails['details'][0].description}}</p>
                                                 <p class="ng-binding">Time & Location: {{getDetails['details'][0].start_date}} - {{getDetails['details'][0].end_date}} {{getDetails['details'][0].venue!=''? '('+ getDetails['details'][0].venue+')' : ""}}</p>
                                                 <p ng-if="getDetails['details'][0].website_link!=''">Official Website: <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a></p>
-                                                <p ng-if="getDetails['details'][0].premium > 1">Premium Value: {{getDetails['details'][0].premium}} </p>
+                                                <p ng-if="getDetails['details'][0].premium > 1">Premium Value:<span class="premiumPoints">{{getDetails['details'][0].premium}}</span> </p>
                                                 <h4 ng-if="getDetails['totalBets'] > 0">Total Points Traded So Far: {{getDetails['totalBets']}} Points</h4>
                                             </div>
                                         </div>

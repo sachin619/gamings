@@ -21,12 +21,12 @@ get_header();
     <section  id="slider" class="slider-parallax clearfix" style="background-color: #222;">
         <div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-pagi="false" data-loop="true" data-speed="450" data-autoplay="5000">
 
-            <?php
+            <?php /*
             $slider = api(get_site_url(). '/api?action=get-slider');
             foreach ($slider as $sliderImg):
                 ?>
                 <a href="#"><img ng-src="<?= $sliderImg['img'] ?>" alt="Slider"></a>
-            <?php endforeach ?>
+            <?php endforeach */?>
 
         </div>
 

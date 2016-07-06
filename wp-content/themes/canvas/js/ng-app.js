@@ -358,7 +358,15 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
     var formDataMatch = {'tourId': slug, 'type': 'upcomming'};
     ngPost('listing-matches', formDataMatch, $scope, $http, $templateCache, 'getMatchDetails');
     $scope.trade = function (tid, teamId, pts, uid, event) {
+        var getPremium = parseFloat($('.premiumPoints').html());
+        if (getPremium > 1 && pts>0) {
+            var r = confirm("Current Trade Premium value is" +getPremium+ "To Trade for "+pts+" Points, you will need to contribute "+Math.round(pts*getPremium)+" Points ("+pts+"*"+getPremium+"="+pts*getPremium+"; rounded to "+Math.round(pts*getPremium)+"). Please confirm. ");
+            if (r == false) {
+                return false;
+            }
+        }
         angular.element(event.target).attr('disabled', 'disabled');
+
         if (uid != null) {
             var formData = {
                 'tid': tid,
@@ -643,7 +651,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
                         $('.paginateNext').hide();
                     }                                                        // # user bets loadmore
                 }
-                if (typeName == 'my-account'  && formData['type'] != 'myAccountFilter' && formData['type'] !== 'myAccountFilterWin') {
+                if (typeName == 'my-account' && formData['type'] != 'myAccountFilter' && formData['type'] !== 'myAccountFilterWin') {
                     $scope.posts = [];                                 // # user bets loadmore
                     jQuery.each(response['userBets'], function (k, v) {
                         $scope.posts.push(v);
