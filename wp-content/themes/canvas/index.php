@@ -15,16 +15,14 @@
  */
 get_header();
 ?>
-<style>
 
-</style>
 <section ng-controller="homeCtrl" class="bg-img-container">
 
     <section  id="slider" class="slider-parallax clearfix" style="background-color: #222;">
         <div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-pagi="false" data-loop="true" data-speed="450" data-autoplay="5000">
 
             <?php
-            $slider = api($apiEndpoint . "get-slider");
+            $slider = api(get_site_url(). '/api?action=get-slider');
             foreach ($slider as $sliderImg):
                 ?>
                 <a href="#"><img ng-src="<?= $sliderImg['img'] ?>" alt="Slider"></a>
@@ -34,19 +32,12 @@ get_header();
 
     </section>
 
-
-
-
-
-
-
     <div class="clearfix"></div>
     <section  id="slider" class="slider-parallax clearfix" style="background-color: #222;">
         <img src="<?= get_template_directory_uri() ?>/images/cricket-stadium-1920x1080-image-1.jpg" class="img-responsive" alt="Banner">
 
     </section>
     <div class="clearfix"></div>
-
 
     <!-- Content
      ============================================= -->
@@ -69,46 +60,50 @@ get_header();
                     <div class="clear"></div>
 
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped nobottommargin">
+                        <form>
+                            <table class="table table-bordered table-striped nobottommargin">
 
-                            <thead>
-                                <tr>
-                                    <th width="18%">Time &amp; Location</th>
-                                    <th>Tournament</th>
-                                    <th>Team 1</th>
-                                    <th>Trade</th>
-                                    <th>Team 2</th>
-                                    <th>Trade</th>
-                                    <th>Trade For Tie</th>
-                                    <th>Action</th>
-                                    <th>Total Trade</th>
-                                </tr>
-                            </thead>
-                            <tbody > 
-                                <!--                     {{home['upcomingMatches']['catPost']}}-->
-                                <tr ng-repeat="matches in homeMatchListing" >
-                                    <td > {{matches['matchStartDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue']!=''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
-                                    <td><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a><b> ({{matches['category'][0]['name']}})</td>
-                                    <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} </td>
-                                    <td  ng-repeat-end> 
-                                        <input type="text" class="form-control" ng-model="$parent.$parent.points[teams['team_name']['ID']]" style="width: 100%; margin: 0 0 5px 0;" placeholder=" Add Trade" ng-if="matches['uid'] != null" > 
-                                        <span class="{{matches['id']}}-{{teams['team_name']['ID']}}">{{matches['mytradedTotal'][teams['team_name']['ID']]!==null ? "You've traded " + matches['mytradedTotal'][teams['team_name']['ID']] +" Pts." : ""}} </span>
-                                        <span ng-if="matches['uid'] == null">-</span>
-                                    </td>
-                                    <td>
-                                        <input type="text"   class="trade form-control" style="display: {{hideTrade}}; width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.pointsTie[$index]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" placeholder=" Add Trade" >
-                                        <span class="{{matches['id']}}-tie"> {{matches['mytradedTotal']['mytradedTie']!==null? " You've traded "+ matches['mytradedTotal']['mytradedTie']+" Pts.":"" }} </span>
-                                        <span ng-if="matches['uid'] == null">-</span>
-                                    </td>
+                                <thead>
+                                    <tr>
+                                        <th width="18%">Time &amp; Location</th>
+                                        <th>Tournament</th>
+                                        <th>Team 1</th>
+                                        <th>Trade</th>
+                                        <th>Team 2</th>
+                                        <th>Trade</th>
+                                        <th>Trade For Tie</th>
+                                        <th>Action</th>
+                                        <th>Total Trade</th>
+                                    </tr>
+                                </thead>
+                                <tbody > 
 
-                                    <td>
-                                        <button  ng-click="tradeMatch(matches['postLink'], matches['id'], points, homeMatchListing[0]['uid'], pointsTie[$index],$event)" class="btn btn-danger" >Trade </button>
-                                    </td>
-                                    <td ><span class="{{matches['id']}}-totalMid">{{matches['mytradedTotal']['tourTotal']}}</span></td>
-                                </tr> 
-                                <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no  matches at the moment please check again later!</td></tr>
-                            </tbody>
-                        </table>
+                                    <!--                     {{home['upcomingMatches']['catPost']}}-->
+                                    <tr ng-repeat="matches in homeMatchListing" >
+                                        <td > {{matches['matchStartDate']}}&nbsp;{{matches['matchStartTime']}} - {{matches['matchEndTime']}} <br> <!--<i ng-if="matches['venue']!=''" class="icon-map-marker2"></i>--> {{matches['venue']}}</a></td>
+                                        <td><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a><br><b> ({{matches['category'][0]['name']}})</td>
+                                        <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} </td>
+                                        <td  ng-repeat-end> 
+                                            <input type="text" class="form-control" ng-model="$parent.$parent.points[teams['team_name']['ID']]" style="width: 100%; margin: 0 0 5px 0;" placeholder=" Add Trade" ng-if="matches['uid'] != null" > 
+                                            <span class="{{matches['id']}}-{{teams['team_name']['ID']}}">{{matches['mytradedTotal'][teams['team_name']['ID']]!==null ? "You've traded " + matches['mytradedTotal'][teams['team_name']['ID']] +" Pts." : ""}} </span>
+                                            <span ng-if="matches['uid'] == null">-</span>
+                                        </td>
+                                        <td>
+                                            <input type="text"   class="trade form-control" style="display: {{hideTrade}}; width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.pointsTie[$index]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" placeholder=" Add Trade" >
+                                            <span class="{{matches['id']}}-tie"> {{matches['mytradedTotal']['mytradedTie']!==null? " You've traded "+ matches['mytradedTotal']['mytradedTie']+" Pts.":"" }} </span>
+                                            <span ng-if="matches['uid'] == null">-</span>
+                                        </td>
+
+                                        <td>
+                                            <button  ng-click="tradeMatch(matches['postLink'], matches['id'], points, homeMatchListing[0]['uid'], pointsTie[$index], $event)" class="btn btn-danger" >Trade </button>
+                                        </td>
+                                        <td ><span class="{{matches['id']}}-totalMid">{{matches['total_bets']}} <span ng-if="matches['total_bets'] <= 0">0</span></span></td>
+                                    </tr> 
+                                    <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no matches at the moment, please check again later!</td></tr>
+
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
 
                     <div class="col-lg-12 loadMoreBlock" ng-if="homeMatchListing.length >= 5" style="text-align: center; margin: 20px 0px;">
@@ -145,8 +140,8 @@ get_header();
                                 <div class="fbox-media">
                                     <a href={{popular.postLink}}><img class="image_fade" ng-src={{popular.img}} alt={{popular.title}}></a>
                                 </div>
-                                <div class="fbox-desc">
-                                    <h3 class="imagetex">{{popular.title}} <b>({{popular['category'][0]['name']}})<span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{ popular.end_date}}</span>
+                                <div class="fbox-desc" style="height: 115px">
+                                    <h3 class="imagetex">{{popular.title}}<br><b>({{popular['category'][0]['name']}}) <span class="subtitle">{{popular.start_date}} &nbsp;To &nbsp;{{ popular.end_date}}</span>
                                             <span> {{ popular['venue'] | limitTo: 30 }}{{popular['venue'].length > 30 ? '...' : ''}}</span></h3>
                                     <h3><span class="subtitle" ng-if="popular.total_tour_bets > 0">Total Points Traded : {{popular.total_tour_bets}} Points</span></h3>
                                 </div>
@@ -162,7 +157,7 @@ get_header();
         </div>
 
     </section>
-	<!-- #content end -->
+    <!-- #content end -->
 
 
     <!-- Content
@@ -177,13 +172,8 @@ get_header();
             <div class="container clearfix">
                 <div class="center">
                     <h2>UPCOMING TOURNAMENTS</h2>
-
-
-
                     <div class="divider divider-short divider-center"><i class="icon-circle-blank"></i></div>	
                 </div>
-
-
 
                 <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
                     <div owl-carousel-item="" ng-repeat="slide in  home.upcomingTournaments" class="item">
@@ -250,7 +240,6 @@ get_header();
         <div class="content-wrap">
 
             <div class="container clearfix">
-
 
                 <data-owl-carousel class="owl-carousel" data-options="{navigation: true, pagination: false, rewindNav : false}">
                     <div owl-carousel-item="" ng-repeat="categories in home.category" class="item">
@@ -329,7 +318,7 @@ get_header();
                                     <div class="divider divider-short divider-center"><i class="icon-circle-blank"></i></div>
                                 </div>
                                 <div class="aboutUs">
-                                    
+
                                 </div>
                             </div>
 

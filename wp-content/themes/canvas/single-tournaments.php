@@ -44,7 +44,7 @@ get_header();
                                                 <p class="ng-binding">{{getDetails['details'][0].description}}</p>
                                                 <p class="ng-binding">Time & Location: {{getDetails['details'][0].start_date}} - {{getDetails['details'][0].end_date}} {{getDetails['details'][0].venue!=''? '('+ getDetails['details'][0].venue+')' : ""}}</p>
                                                 <p ng-if="getDetails['details'][0].website_link!=''">Official Website: <a href={{getDetails['details'][0].website_link}} target="_blank" class="celeb-web ng-binding">{{getDetails['details'][0].website_link}}</a></p>
-                                                <p ng-if="getDetails['details'][0].premium > 1">Premium Value: {{getDetails['details'][0].premium}} </p>
+                                                <p ng-if="getDetails['details'][0].premium > 1">Premium Value:<span class="premiumPoints">{{getDetails['details'][0].premium}}</span> </p>
                                                 <h4 ng-if="getDetails['totalBets'] > 0">Total Points Traded So Far: {{getDetails['totalBets']}} Points</h4>
                                             </div>
                                         </div>
@@ -145,6 +145,13 @@ get_header();
 
                         </tbody>
                     </table>
+                                    
+                <p>
+                    
+                    Note: Trading on any team/tie at Tournament level has a Premium value of {{getDetails['details'][0].premium}}. 
+                    Ex: To trade for 100 Points on any team/tie, you will need to contribute {{ getDetails['details'][0].premium*100  |number:0 * 100}} Points (100*{{getDetails['details'][0].premium}}= {{getDetails['details'][0].premium*100}}; rounded to {{ getDetails['details'][0].premium*100  |number:0 * 100}}). 
+                    This Premium value keeps increasing as the Tournament progresses. 
+                </p>
                 </div>
 
 
@@ -202,6 +209,7 @@ get_header();
                 <ul id="portfolio-filter" class="portfolio-filter clearfix" data-container="#portfolio">
 
                     <li ng-class="{activeFilter: selectedIndex === $index || selectedIndex == 'home' }"><a href="#" onclick="return false;"  ng-click="filter('upcomming')" data-filter=".pf-{{categories['catName']}}">Upcoming</a></li>
+                    <li ><a href="#" data-filter=".pf-{{categories['catName']}}" onclick="return false;" ng-click="filter('popular')">Popular</a></li>
                     <li class="hide"><a href="#" onclick="return false;"  ng-click="filter('today')" data-filter=".pf-{{categories['catName']}}">Today</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('daysBefore')" data-filter=".pf-{{categories['catName']}}">Completed</a></li>
                     <li><a href="#" onclick="return false;"  ng-click="filter('ongoing')" data-filter=".pf-{{categories['catName']}}">In Play</a></li>
@@ -259,9 +267,9 @@ get_header();
                                  <button style="display: {{hideTrade}}"   ng-click="tradeMatch(matches['postLink'], matches['id'], points, homeMatchListing[0]['uid'], pointsTie[$index],$event)" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'" >Trade </button>
                                    <span ng-if=" (hideTrade != 'block' && hideTrade != null ) ">-</span>
                                 </td>
-                                <td><span class="{{matches['id']}}-totalMid">{{ matches['mytradedTotal']['tourTotal']}}</span> <span ng-if=" matches['mytradedTotal']['tourTotal'] == ''">0</span></td>
+                                <td><span class="{{matches['id']}}-totalMid">{{ matches['mytradedTotal']['tourTotal']}}  <span  ng-if=" matches['mytradedTotal']['tourTotal'] <= 0">0</span></span></td>
                             </tr>    
-                            <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no open matches at the moment please check again later!</td></tr>
+                            <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no matches at the moment, please check again later!</td></tr>
 
                         </tbody>
                     </table>

@@ -435,9 +435,6 @@ add_filter('widget_tag_cloud_args', 'twentysixteen_widget_tag_cloud_args');
 function updatePremium($postId) {
 
     $tradeInfo["tid"] = $postId;
-    $getTotalBets = getTotalTrade($tradeInfo, 'tid');
-    $getTotalBetsFilter = (array) $getTotalBets[0];
-    update_post_meta($postId, 'total_tour_bets', $getTotalBetsFilter['total']);
     if (get_post_type($postId) == 'tournaments'):
         global $wpdb;
         $args = ['post_type' => 'tournaments', 'p' => $postId];
@@ -449,26 +446,33 @@ function updatePremium($postId) {
         foreach ($getTeams[0]['participating_team'] as $team) {
             if ($team['eliminated'] == 'Yes') {
                 $teams = (array) $team['team'];
-                $result[] = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' AND team_id= '" . $teams['ID'] . "'   ");
+                $result[] = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' AND team_id= '" . $teams['ID'] . "' AND team_id!=0 AND mid=0  ");
                 $getVal[] = (array) $result[$i++][0];
                 $getLoss+=$getVal[$j++]['pts'];
                 $getCount[] = $team['eliminated'];
             }
         }
+
         $countStage = count($getCount);
-        $checkStage = (array) $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' AND stage='" . $countStage . "' GROUP BY stage   ");
+        $checkStage = (array) $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "'  AND team_id!=0 AND mid=0 AND stage='" . $countStage . "' GROUP BY stage   ");
         $checkStageFilter = (array) $checkStage[0];
         if ($checkStageFilter['pts'] > 0) {       //array_pop only when one more than one value exist in wp_bets table  
-            $getTotal = (array) $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' GROUP BY stage   ");
+            $getTotal = (array) $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' AND team_id!=0 AND mid=0 GROUP BY stage   ");
             array_pop($getTotal);
         } else {
-            $getTotal = (array) $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' GROUP BY stage   ");
+            $getTotal = (array) $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "' AND team_id!=0 AND mid=0 GROUP BY stage   ");
         }
+
         foreach ($getTotal as $getPts) {
             $points = (array) $getPts;
             $addPts+=$points['pts'];
         }
-        $calcTotal = round($getLoss / ($addPts - $getLoss), 2) + 1;
+
+        if ($countStage > 1) {
+            $calcTotal = round($getLoss / ($addPts - $getLoss), 2) + 1;
+        } else {
+            $calcTotal = round($getLoss / ($addPts), 2) + 1;
+        }
         update_post_meta($postId, 'premium', $calcTotal);
         /*         * ********points distribution******** */
         getPremium('tournaments', 'tid', $postId);
@@ -482,10 +486,9 @@ add_action('save_post', 'updateMatchPremium'); //for matches
 function updateMatchPremium($postId) {
     $tradeInfo["tid"] = $postId;
     $getTotalBets = getTotalTrade($tradeInfo, 'mid');
-    $getTotalBetsFilter = (array) $getTotalBets[0];
-    //update_post_meta($postId, 'total_bets', $getTotalBetsFilter['total']);
     if (get_post_type($postId) == 'matches'):
         global $wpdb;
+        $getBetLoss = [];
         $Tradetype = 'mid';
         $type = "matches";
         $args = ['post_type' => $type, 'p' => $postId];
@@ -500,71 +503,101 @@ function updateMatchPremium($postId) {
             } else {
                 $countElimntdLoss[] = $team['winner']; //for match abondoned
                 $teamsLoss = (array) $team['team_name'];
-                $resultBetsLoss = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teamsLoss['ID'] . "'  ");
-                $totalWinBetsLoss += $resultBetsLoss[0]->pts;
-                $resultDisLoss = $wpdb->get_results("SELECT sum(pts) as pts,uid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teamsLoss['ID'] . "' GROUP BY uid "); //for match abondoned
+                $teamId = $team['team_name']->ID;
+                $resultBetsLoss = $wpdb->get_results("SELECT sum(pts) as pts,uid,tid,mid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id=$teamId  group by uid ");
+                array_push($getBetLoss, $resultBetsLoss);
+                $resultTieLoss = $wpdb->get_results("SELECT sum(pts) as pts,uid,tid,mid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= 0 group by uid ");
             }
         }
+
         if (count($countElimntd) == 1 && $getTeams[0]['points_distributed'] !== 'Yes') { //if one winner left distribute points
             $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "'   ");
             $totBets = (array) $getTotalBets[0];
-            $betsCalc = floor($totBets['pts'] / $totalWinBets['pts']); //total no of bet divide by total no winner
+            $betsCalc = $totBets['pts'] / $totalWinBets['pts']; //total no of bet divide by total no winner
             foreach ($resultDis as $distribution) {
                 $disFilter = (array) $distribution;
-                $disCalc = ((int) $disFilter['pts'] * (int) $betsCalc);
-                $data = ['uid' => $disFilter['uid'], 'tid' => $getTeams[0]['tournament_name']->ID, 'mid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $disCalc];
-                $wpdb->insert('wp_distribution', $data);
-                $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
-                $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
-                // update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
+                $disCalc = ((int) $disFilter['pts'] * $betsCalc);
+                $totalFloor = floor($disCalc);
+                $getTotalTrade = teamTotalTrade($disFilter['uid'], $getTeams[0]['tournament_name']->ID, $postId, $disFilter['team_id']);
+                $data = ['uid' => $disFilter['uid'], 'tid' => $getTeams[0]['tournament_name']->ID, 'mid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $totalFloor, 'total_trade' => $getTotalTrade->pts];
+                $wpdb->insert('wp_distribution', $data); //insert data
             }
+            matchLossEntry($resultBetsLoss, $resultTieLoss, $wpdb); //enter match loss details
             update_post_meta($postId, 'points_distributed', 'Yes'); //if one winner left distribute points
         } else if (count($countElimntdLoss) == 2 && $getTeams[0]['match_abandoned'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes') {  //for match abondoned
-            $getActualBet = $wpdb->get_results("SELECT sum(pts) as bet,uid FROM wp_bets WHERE mid='" . $postId . "' group by uid   ");
-            foreach ($getActualBet as $getBetInfo):
-                //  print_r($getBetInfo->bet);
-                $getCurrentPoints = get_user_meta($getBetInfo->uid, 'points');
-                $getUsedPoints = get_user_meta($getBetInfo->uid, 'points_used');
-                update_user_meta($getBetInfo->uid, 'points', $getCurrentPoints[0] + $getBetInfo->bet);
-                update_user_meta($getBetInfo->uid, 'points_used', $getUsedPoints[0] - $getBetInfo->bet);
-            endforeach;
+            matchCancelledEntry($getBetLoss, $resultTieLoss, $wpdb); //enter match cancelled details //some error
             update_post_meta($postId, 'points_distributed', 'Yes');
-        }
-        else if (count($countElimntdLoss) == 2 && $getTeams[0]['match_draw'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes'):
-            matchDraw($resultDis, $totalWinBets, $getTeams, $wpdb, $Tradetype, $postId);
-
+        } else if (count($countElimntdLoss) == 2 && $getTeams[0]['match_draw'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes'):
+            matchDraw($getBetLoss, $resultTieLoss, $getTeams, $wpdb, $Tradetype, $postId);
         endif;
     endif;  //for match abondoned
 }
 
 show_admin_bar(false);
 
-$apiEndpoint = site_url() . '/api?action=';
+$apiEndpoint = get_site_url() . '/api?action=';
 
-function matchDraw($resultDis, $totalWinBets, $getTeams, $wpdb, $Tradetype, $postId) {
+function matchLossEntry($resultBetsLoss, $resultTieLoss, $wpdb) {
+    foreach ($resultBetsLoss as $getResult):
+        $dataLoss = ['uid' => $getResult->uid, 'tid' => $getResult->tid, 'mid' => $getResult->mid, 'team_id' => $getResult->team_id, 'total_trade' => $getResult->pts, 'gain_points' => $getResult->pts, 'status' => 1];
+        $wpdb->insert('wp_distribution', $dataLoss);
+    endforeach;
+    foreach ($resultTieLoss as $getTieResult):
+        if ($getTieResult->pts != ''):
+            $dataTie = ['uid' => $getTieResult->uid, 'tid' => $getTieResult->tid, 'mid' => $getTieResult->mid, 'team_id' => $getTieResult->team_id, 'total_trade' => $getTieResult->pts, 'gain_points' => $getTieResult->pts, 'status' => 1];
+            $wpdb->insert('wp_distribution', $dataTie);
+        endif;
+    endforeach;
+}
+
+function matchCancelledEntry($getBetLoss, $resultTieLoss, $wpdb) {
+    foreach ($getBetLoss as $getResult):
+        foreach ($getResult as $getTeamResult):
+            $dataLoss = ['uid' => $getTeamResult->uid, 'tid' => $getTeamResult->tid, 'mid' => $getTeamResult->mid, 'team_id' => $getTeamResult->team_id, 'total_trade' => $getTeamResult->pts, 'gain_points' => $getTeamResult->pts, 'status' => 2];
+            $wpdb->insert('wp_distribution', $dataLoss);
+        endforeach;
+    endforeach;
+    foreach ($resultTieLoss as $getTieResult):
+        if ($getTieResult->pts != ''):
+            $dataTie = ['uid' => $getTieResult->uid, 'tid' => $getTieResult->tid, 'mid' => $getTieResult->mid, 'team_id' => $getTieResult->team_id, 'total_trade' => $getTieResult->pts, 'gain_points' => $getTieResult->pts, 'status' => 2];
+            $wpdb->insert('wp_distribution', $dataTie);
+        endif;
+    endforeach;
+}
+
+function matchTieEntry($resultBetsLoss, $resultTieLoss, $wpdb) {
+    foreach ($resultBetsLoss as $getLossTeam):
+        foreach ($getLossTeam as $getLossTeamInd):
+            $dataLoss = ['uid' => $getLossTeamInd->uid, 'tid' => $getLossTeamInd->tid, 'mid' => $getLossTeamInd->mid, 'team_id' => $getLossTeamInd->team_id, 'total_trade' => $getLossTeamInd->pts, 'gain_points' => $getLossTeamInd->pts, 'status' => 1];
+            $wpdb->insert('wp_distribution', $dataLoss);
+        endforeach;
+    endforeach;
+}
+
+function teamTotalTrade($uid, $tid, $mid, $teamId) {
+    global $wpdb;
+    $getTotalBetsTeam = $wpdb->get_row("SELECT sum(pts) as pts FROM wp_bets WHERE uid= $uid AND tid=$tid AND mid=$mid AND team_id=$teamId");
+    return $getTotalBetsTeam;
+}
+
+function matchDraw($getBetLoss, $resultTieLoss, $getTeams, $wpdb, $Tradetype, $postId) {
     $resultDisTie = $wpdb->get_results("SELECT sum(pts) as pts,uid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= 0 GROUP BY uid ");
     $getTotalTradeTie = $wpdb->get_row("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= 0 group by team_id");
-
-
     $getTotalBets = $wpdb->get_row("SELECT sum(pts) as pts FROM wp_bets WHERE   $Tradetype='" . $postId . "'   ");
-
-
     foreach ($resultDisTie as $distribution) {
         $disFilter = (array) $distribution;
-        $betsCalc = floor( $getTotalBets->pts / $getTotalTradeTie->pts); //total no of bets divide by total no tie(bets/tie)
+        $betsCalc = $getTotalBets->pts / $getTotalTradeTie->pts; //total no of bets divide by total no tie(bets/tie)
         $disCalc = ((int) $disFilter['pts'] * $betsCalc); //above result multiply by my bets
-
-        $data = ['uid' => $disFilter['uid'], 'tid' => $getTeams[0]['tournament_name']->ID, 'mid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $disCalc];
+        $totalFloor = floor($disCalc);
+        $data = ['uid' => $disFilter['uid'], 'tid' => $getTeams[0]['tournament_name']->ID, 'mid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $totalFloor, 'total_trade' => $disFilter['pts']];
         $wpdb->insert('wp_distribution', $data);
-        $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
-        $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
-        // no use now--- update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
     }
+    matchTieEntry($getBetLoss, $resultTieLoss, $wpdb); //enter match loss details
     update_post_meta($postId, 'points_distributed', 'Yes'); //if one winner left distribute points
 }
 
 function api($url) {
-    $response = wp_remote_get(esc_url_raw($url));
+    $response = wp_remote_get($url);
     return $api_response = json_decode(wp_remote_retrieve_body($response), true);
 }
 
@@ -596,57 +629,76 @@ function getPremium($type, $Tradetype, $postId) {   //tournament distribution lo
         if ($team['eliminated'] == 'No') {
             $countElimntd[] = $team['eliminated'];
             $teams = (array) $team['team'];
-            $resultBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teams['ID'] . "'  ");
+            $resultBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teams['ID'] . "' AND mid=0  ");
             $totalWinBets = (array) $resultBets[0];
-            $resultDis = $wpdb->get_results("SELECT sum(pts) as pts,uid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teams['ID'] . "' GROUP BY uid ");
+            $resultDis = $wpdb->get_results("SELECT sum(pts) as pts,uid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= '" . $teams['ID'] . "' AND mid=0 GROUP BY uid ");
+            $teamTieId[] = $team['team']->ID;
+            $teamCancel[] = $team['team']->ID;
+        } else {
+            $teamTieId[] = $team['team']->ID;
+            $teamId[] = $team['team']->ID;
+            $teamCancel[] = $team['team']->ID;
         }
     }
-    if (count($countElimntd) == 1 && $getTeams[0]['points_distributed'] !== 'Yes') {
-        $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "'   ");
+    if (count($countElimntd) == 1 && $getTeams[0]['points_distributed'] !== 'Yes') { //if winner declare
+        $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND mid=0  ");
         $totBets = (array) $getTotalBets[0];
-
-        $betsCalc = floor($totBets['pts'] / $totalWinBets['pts']); //total no of bet divide by total no winner
+        $betsCalc = $totBets['pts'] / $totalWinBets['pts']; //total no of bet divide by total no winner
         foreach ($resultDis as $distribution) {
             $disFilter = (array) $distribution;
-            $disCalc = ((int) $disFilter['pts'] * (int) $betsCalc);
-            $data = ['uid' => $disFilter['uid'], 'tid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $disCalc];
+            $disCalc = ((int) $disFilter['pts'] * $betsCalc);
+            $floorTotal = floor($disCalc);
+            $data = ['uid' => $disFilter['uid'], 'tid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $floorTotal, 'total_trade' => $disFilter['pts']];
             $wpdb->insert('wp_distribution', $data);
             $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
-            $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
-            //  update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
+            foreach ($teamId as $getTeamId): //for loss distirbution
+                $uid = $disFilter['uid'];
+                $resultBetsLoss = $wpdb->get_row("SELECT sum(pts) as pts,uid,tid,mid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND uid=$uid AND team_id=$getTeamId AND mid=0  group by uid");
+                $dataLoss = ['uid' => $resultBetsLoss->uid, 'tid' => $resultBetsLoss->tid, 'team_id' => $resultBetsLoss->team_id, 'total_trade' => $resultBetsLoss->pts, 'gain_points' => $resultBetsLoss->pts, 'status' => 1];
+                $wpdb->insert('wp_distribution', $dataLoss);
+            endforeach;
+            $resultTieLoss = $wpdb->get_row("SELECT sum(pts) as pts,uid,tid,mid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND uid=$uid AND team_id=0 AND mid=0  group by uid");
+            $dataTieLoss = ['uid' => $resultTieLoss->uid, 'tid' => $resultTieLoss->tid, 'team_id' => $resultTieLoss->team_id, 'total_trade' => $resultTieLoss->pts, 'gain_points' => $resultTieLoss->pts, 'status' => 1];
+            $wpdb->insert('wp_distribution', $dataTieLoss); //for loss distirbution
         }
         update_post_meta($postId, 'points_distributed', 'Yes');
     } else if (count($countElimntd) >= 2 && $getTeams[0]['tournament_abandoned'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes') :    //if match abandoned
-        $getActualBet = $wpdb->get_results("SELECT uid, sum(ceil(premium*pts)) as bet  FROM wp_bets WHERE tid=$postId AND mid=0  group by uid ");
-
-        foreach ($getActualBet as $getBetInfo):
-            //  print_r($getBetInfo->bet);
-            $getCurrentPoints = get_user_meta($getBetInfo->uid, 'points');
-            $getUsedPoints = get_user_meta($getBetInfo->uid, 'points_used');
-            update_user_meta($getBetInfo->uid, 'points', $getCurrentPoints[0] + $getBetInfo->bet);
-            update_user_meta($getBetInfo->uid, 'points_used', $getUsedPoints[0] - $getBetInfo->bet);
-        endforeach;
+        tournamentCancel($teamCancel, $wpdb, $Tradetype, $postId);
         update_post_meta($postId, 'points_distributed', 'Yes');
     endif;             //if match abandoned
-    if ($getTeams[0]['tournament_draw'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes'):
+    if ($getTeams[0]['tournament_draw'] == 'Yes' && $getTeams[0]['points_distributed'] != 'Yes'):    //tournament tie
         $resultDisTie = $wpdb->get_results("SELECT sum(pts) as pts,uid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id=0 AND mid=0 GROUP BY uid ");
-
         $getTotalTradeTie = $wpdb->get_row("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= 0 AND mid=0 group by team_id");
         $getTotalBets = $wpdb->get_row("SELECT sum(pts) as pts FROM wp_bets WHERE   $Tradetype='" . $postId . "' AND mid=0   ");
-
-
-
         foreach ($resultDisTie as $distributionTie) {
             $disFilter = (array) $distributionTie;
-            $disCalc = ((int) $disFilter['pts'] * floor( $getTotalBets->pts /$getTotalTradeTie->pts ));
-            $data = ['uid' => $disFilter['uid'], 'tid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $disCalc];
+            $disCalc = floor((int) $disFilter['pts'] * ($getTotalBets->pts / $getTotalTradeTie->pts));
+            $data = ['uid' => $disFilter['uid'], 'tid' => $postId, 'team_id' => $disFilter['team_id'], 'gain_points' => $disCalc, 'total_trade' => $disFilter['pts']];
             $wpdb->insert('wp_distribution', $data);
-            $getCurrentPoints = get_user_meta($disFilter['uid'], 'points'); //** update users points
-            $calOverallPoints = (int) $getCurrentPoints[0] + $disCalc;
-            //not in use  update_user_meta($disFilter['uid'], 'points', $calOverallPoints); //update users points **
+            foreach ($teamTieId as $getTeamId): //for loss distirbution
+                $uid = $disFilter['uid'];
+                $resultBetsLoss = $wpdb->get_row("SELECT sum(pts) as pts,uid,tid,mid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND uid=$uid AND team_id=$getTeamId AND mid=0  group by uid");
+                $dataLoss = ['uid' => $resultBetsLoss->uid, 'tid' => $resultBetsLoss->tid, 'team_id' => $resultBetsLoss->team_id, 'total_trade' => $resultBetsLoss->pts, 'gain_points' => $resultBetsLoss->pts, 'status' => 1];
+                $wpdb->insert('wp_distribution', $dataLoss);
+            endforeach;
         }
         update_post_meta($postId, 'points_distributed', 'Yes');
     endif;
+}
+
+function tournamentCancel($teamCancel, $wpdb, $Tradetype, $postId) {
+    foreach ($teamCancel as $getTeamId): //for loss distirbution
+        $resultBetsLoss = $wpdb->get_results("SELECT sum(pts) as pts,uid,tid,mid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "'  AND team_id=$getTeamId AND mid=0  group by uid");
+        foreach ($resultBetsLoss as $userBetsLoss):
+            $dataLoss = ['uid' => $userBetsLoss->uid, 'tid' => $userBetsLoss->tid, 'team_id' => $userBetsLoss->team_id, 'total_trade' => $userBetsLoss->pts, 'gain_points' => $userBetsLoss->pts, 'status' => 2];
+            $wpdb->insert('wp_distribution', $dataLoss);
+        endforeach;
+    endforeach;
+    $resultTieLoss = $wpdb->get_results("SELECT sum(pts) as pts,uid,tid,mid,team_id FROM wp_bets WHERE tid='" . $postId . "'  AND team_id=0 AND mid=0  group by uid");
+    foreach ($resultTieLoss as $getTeamTieId): //for loss distirbution
+        $dataTieCancel = ['uid' => $getTeamTieId->uid, 'tid' => $getTeamTieId->tid, 'team_id' => $getTeamTieId->team_id, 'total_trade' => $getTeamTieId->pts, 'gain_points' => $getTeamTieId->pts, 'status' => 2];
+        $wpdb->insert('wp_distribution', $dataTieCancel);
+    endforeach;
 }
 
 function getTotalTrade($tradeInfo, $Tradetype) {
@@ -694,7 +746,7 @@ function formatNumberAbbreviation($number) {
 function adminDistribution($userid) {
     global $wpdb;
     $getDistributionDays = get_option('distributing_days');
-    $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where uid =' . $userid);
+    $getResults = $wpdb->get_results("SELECT * FROM wp_distribution where uid =$userid AND status=0");
     foreach ($getResults as $results):
         $getCurrTime = time();
         $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
@@ -782,3 +834,5 @@ function scheme() {
 ;
 
 add_action('init', 'scheme');
+
+

@@ -43,14 +43,14 @@ get_header();
                             <div class="panel-body" style="padding: 40px;">
                                 <form id="login-form" name="loginForm" class="nobottommargin" action="#" method="post">
 
-                    <div class="col-md-12 col-lg-12" style="text-align:center;">
-					
-					<!--Notifications Start-->
-          					<!--Notifications End-->
-					
-                      <h3>Powered By <img src="<?= get_template_directory_uri() ?>/images/login-logos.jpg" alt="Logo"></h3>
-                      <!-- <p>Powered By</p> -->
-                    </div>
+                                    <div class="col-md-12 col-lg-12" style="text-align:center;">
+
+                                        <!--Notifications Start-->
+                                        <!--Notifications End-->
+
+<!--<h3>Powered By <img src="<?= get_template_directory_uri() ?>/images/login-logos.jpg" alt="Logo"></h3>-->
+<!-- <p>Powered By</p> -->
+                                    </div>
                                     <!--<h3>Login to your Account</h3>-->
 
                                     <div class="col_full">
@@ -74,11 +74,11 @@ get_header();
                                             {{errorLog['msg']}}
                                         </div>
                                     </div>
-				<div class="clearfix"></div>
-									<div class="col_full" style="margin-bottom: 0px !important; padding: 0px !important;">
-<div class="line line-sm" style="margin: 30px 0px 0px 0px;"></div>
-  <h4 style="margin-bottom: 15px;text-align: center;position: relative;top: -16px;"><div class="or-bg">or</div></h4>
-</div>
+                                    <div class="clearfix"></div>
+                                    <div class="col_full" style="margin-bottom: 0px !important; padding: 0px !important;">
+                                        <div class="line line-sm" style="margin: 30px 0px 0px 0px;"></div>
+                                        <h4 style="margin-bottom: 15px;text-align: center;position: relative;top: -16px;"><div class="or-bg">or</div></h4>
+                                    </div>
                                     <div class="col_full">
                                         <?php do_action('facebook_login_button'); ?>
                                     </div>
@@ -96,77 +96,65 @@ get_header();
 
                                     <div class="col_full">
                                         <label for="register-form-name">First Name:</label><span class="apostrophy">*</span>
-                                        <input type="text" ng-pattern="/^[a-zA-Z]+$/" id="register-form-name" ng-model="user.fName" name="fName" value="" class="form-control" ng-minlength="3" required="" />
+                                        <input type="text"  id="register-form-name" ng-model="user.fName" name="fName" value="" class="form-control" ng-minlength="3" required="" />
 
-                                        <div ng-show="registerForm.fName.$dirty">
-                                            <span class="errortype" ng-show="registerForm.fName.$error.required">Required</span>
-                                            <span class="errortype" ng-show="registerForm.fName.$error.pattern">Only Alphabets are allowed</span>
-                                            <span class="errortype" ng-show="registerForm.fName.$error.minlength">Minimum 3 Characters</span>
-                                        </div>
-</div>
-                                        <div class="col_full">
-                                            <label for="register-form-name">Last Name:</label>
-                                            <input type="text" ng-pattern="/^[a-zA-Z]+$/" id="register-form-name" ng-model="user.lName" name="lName" value=""  ng-minlength="3" class="form-control"  />
-                                            <div ng-show="registerForm.lName.$dirty">
-                                                <span class="errortype" ng-show="registerForm.lName.$error.pattern">Only Alphabets are allowed</span>
-                                                <span class="errortype" ng-show="registerForm.lName.$error.minlength">Minimum 3 Characters</span>
 
-                                            </div>
-                                        </div>
+                                    </div>
+                                    <div class="col_full">
+                                        <label for="register-form-name">Last Name:</label>
+                                        <input type="text" id="register-form-name" ng-model="user.lName" name="lName" value=""  ng-minlength="3" class="form-control"  />
 
-                                        <div class="col_full">
-                                            <label for="register-form-email">Email Address:</label>
-                                            <span class="apostrophy">*</span>
-                                            <input  type="email"  id="register-form-email" ng-model="user.email" name="email" value="" class="form-control" required="" />
+                                    </div>
 
-                                            <div ng-show="registerForm.email.$dirty">
-                                                <span class="errortype" ng-show="registerForm.email.$error.required">Required</span>
-                                                <span class="errortype" ng-show="registerForm.email.$error.email">This is not a valid email.</span>
-                                            </div>
-                                        </div>
+                                    <div class="col_full">
+                                        <label for="register-form-email">Email Address:</label>
+                                        <span class="apostrophy">*</span>
+                                        <input  type="email"  id="register-form-email" ng-model="user.email" name="email" value="" class="form-control" required="" />
 
-                                        <div class="col_full">
-                                            <label for="register-form-username">Choose a Username:</label>
-                                            <input type="text" id="register-form-username" name="username" ng-model="user.username" value="" class="form-control" ng-minlength="5"  />
-                                            <span class="errortype" ng-show="registerForm.username.$error.minlength">Minimum 5 Characters</span>
-                                        </div>
 
-                                        <div class="col_full">
-                                            <label for="register-form-phone">Phone:</label>
-                                            <span class="apostrophy">*</span>
-                                            <input ng-pattern="/^[0-9]{10}$/"  type="text" id="register-form-phone" ng-model="user.phone" name="phone" value="" class="form-control" required="" />
-                                            <div ng-show="registerForm.phone.$dirty" >
-                                                <span class="errortype" ng-show="registerForm.phone.$error.required">Required</span>
-                                                <span class="errortype" ng-show="registerForm.phone.$error.pattern">Mobile Number should be of 10 digit</span>
-                                            </div>
-                                        </div>
+                                    </div>
 
-                                        <div class="col_full">
-                                            <label for="register-form-password">Choose Password:</label><span class="apostrophy">*</span>
-                                            <input type="password" id="register-form-password" ng-model="user.password" name="password" value="" class="form-control" ng-minlength="5" required="" />
-                                            <div ng-show="registerForm.password.$dirty" >
-                                                <span class="errortype" ng-show="registerForm.password.$error.required">Required</span>
-                                                <span class="errortype" ng-show="registerForm.password.$error.minlength">Minimum 5 Characters </span>
-                                            </div>
-                                        </div>
+                                    <div class="col_full">
+                                        <label for="register-form-username">Choose a Username:</label>
+                                        <input type="text" id="register-form-username" name="username" ng-model="user.username" value="" class="form-control"   />
 
-                                        <div class="col_full">
-                                            <label for="register-form-confirmPassword">Confirm Password:</label><span class="apostrophy">*</span>
-                                            <input type="password" id="register-form-confirmPassword" ng-model="user.confirmPassword" name="confirmPassword" value="" class="form-control" ng-minlength="5" ng-pattern={{user.password}} required="" />
-                                            <div ng-show="registerForm.confirmPassword.$dirty" >
-                                                <span class="errortype" ng-show="registerForm.confirmPassword.$error.required">Required</span>
-                                                <span class="errortype" ng-show="registerForm.confirmPassword.$error.pattern">Password doesn't match</span>
-                                            </div>
-                                        </div>
+                                    </div>
 
-                                        <div class="col_full ">
-                                            <button  ng-disabled="registerForm.$invalid || !registerForm.$dirty"  ng-click="signUp()" class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" value="register">Register Now </button>   <span class="loaderRegister"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
+                                    <div class="col_full">
+                                        <label for="register-form-phone">Phone:</label>
+                                        <span class="apostrophy">*</span>
+                                        <input   type="text" id="register-form-phone" ng-model="user.phone" name="phone" value="" class="form-control" required="" />
 
-                                        </div>                                             
-         
-                                        <div ng-if="errorReg != null" class="alert  alert-{{errorReg['errorType']}} col_full nobottommargin">
-                                            {{errorReg['msg']}}
-                                        </div>
+                                    </div>
+
+                                    <div class="col_full">
+                                        <label for="register-form-password">Choose Password:</label><span class="apostrophy">*</span>
+                                        <input type="password" id="register-form-password" ng-model="user.password" name="password" value="" class="form-control"  required="" />
+
+                                    </div>
+
+                                    <div class="col_full">
+                                        <label for="register-form-confirmPassword">Confirm Password:</label><span class="apostrophy">*</span>
+                                        <input type="password" id="register-form-confirmPassword" ng-model="user.confirmPassword" name="confirmPassword" value="" class="form-control"  required="" />           
+                                    </div>
+
+                                    <div class="col_full">
+                                        <label for="register-form-dob">Date Of Birth:</label>
+                                        <span class="apostrophy">*</span>
+                                        <input type="text" id="register-form-dob" class="datePickerDob form-control"  name="dob" value=""  class="form-control" required=""  />
+
+                                    </div>
+                                    <div class="col_full">
+                                        <span>By clicking Register Now, you agree to our <a href="<?= get_site_url() ?>/terms-conditions/" target="_blank">Terms & Condition</a> and that you have read our <a href="<?= get_site_url() ?>/terms-conditions/" target="_blank">Privacy & Policy</a>.</span>
+                                    </div>
+                                    <div class="col_full ">
+                                        <button  ng-click="signUp()" class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" value="register">Register Now </button>   <span class="loaderRegister"><img ng-src={{myAccount['userInfo']['loaderImg']}} /></span>
+
+                                    </div>                                             
+
+                                    <div ng-if="errorReg != null" class="alert  alert-{{errorReg['errorType']}} col_full nobottommargin">
+                                        {{errorReg['msg']}}
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -217,6 +205,11 @@ get_header();
     </div>   
 </section><!-- #content end -->
 <style>
+    #register-form-name-error,#register-form-email-error,
+    #register-form-phone-error,#register-form-password-error,#register-form-confirmPassword-error,#register-form-dob-error,#register-form-username-error{
+        display: block!important;
+    }
+
     .loaderAlign{
         display: none;float:left
     }
@@ -241,6 +234,14 @@ get_header();
         padding-top: 46px;
     }
 </style>
+<script>
+    $(document).ready(function () {
+        $('.datePickerDob').datepicker({
+            format: 'yyyy-mm-dd',
+            endDate: '-18y' // there's no convenient "right now" notation yet
+        });
+    });
+</script>
 <?php
 get_footer();
 ?>

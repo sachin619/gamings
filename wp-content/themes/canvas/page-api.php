@@ -142,7 +142,7 @@ class API {
         $home['upcomingMatches'] = $this->listingPopularMatches();
         //$home['category'] = $this->getCategories(['parent' => 1]);
         $home['siteUrl'] = get_site_url();
-        $home['aboutUs'] = $this->getResult(['posts_per_page' => '100', 'post_status' => 'publish', 'post_type' => 'post', 'p' => 322]);
+        $home['aboutUs'] = $this->getResult(['posts_per_page' => '100', 'post_status' => 'publish', 'post_type' => 'post', 'p' => 370]);
         $home['leaderBoard'] = $this->leaderBoard();
         return $home;
     }
@@ -175,7 +175,7 @@ class API {
     }
 
     function getSlider() {
-        $args = [ 'post_type' => 'slider', 'meta_key' => 'active', 'meta_value' => 'Yes'];
+        $args = [ 'post_type' => 'slider', 'meta_key' => 'active', 'meta_value' => 'Yes','posts_per_page'=>100];
         return $this->getResult($args);
     }
 
@@ -425,7 +425,8 @@ class API {
                 ],
             ];
         elseif ($getCatSlug['data']['type'] == 'daysBefore'):
-            $sevenDaysBefore = strtotime(date('Y-m-d', $dateFormat) . "-7 days");
+            $sevenDaysBefore = strtotime(date('Y-m-d H:i:s', $dateFormat) . "-7 days");
+            $startTimeTodays = strtotime(date('Y-m-d H:i:s', $dateFormat));
             $args = [
                 'post_type' => 'matches',
                 'meta_key' => 'start_date',
@@ -435,9 +436,6 @@ class API {
                 'paged' => $paged,
                 'order' => 'DESC',
                 'meta_query' => ['relation' => 'AND',
-                    [
-                        'key' => 'start_date', 'value' => $startTime, 'compare' => '<'
-                    ],
                     [
                         'key' => 'start_date', 'value' => $sevenDaysBefore, 'compare' => '>'
                     ],
@@ -494,7 +492,8 @@ class API {
                 'order' => 'DESC',
                 'meta_query' => ['relation' => 'AND',
                     [ 'key' => 'start_date', 'value' => $dateFormat, 'compare' => '>'],
-                    [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '=']
+                    [ 'key' => 'points_distributed', 'value' => 'No', 'compare' => '='],
+                    $queryOfTourMatch
                 ],
             ];
         endif;
@@ -525,18 +524,12 @@ class API {
     function listingPopularMatches($getCatSlug) {
         $userId = $this->userId;
         $categorySlug = $getCatSlug['data']['categoryName'];
-
         if (!empty($getCatSlug['data']['getCount'])):
             $paged = $getCatSlug['data']['getCount'];
-
-        // $getPaged = $getCatSlug['data']['getCount'] / 5;
         else:
             $paged = 1;
-        //$getPaged = 0;
         endif;
-
         $dateFormat = strtotime($this->getDate);
-        $getCat = $this->getCategories(['parent' => 1]);
         $args = [
             'post_type' => 'matches',
             'meta_key' => 'total_bets',
@@ -549,29 +542,20 @@ class API {
             ],
         ];
         $result = $this->getResult($args);
-        foreach ($getCat as $categories) {
-            $catName = (array) $categories;
-            $cat[] = ['catName' => $catName['name']];
-        }
         foreach ($result as $key => $getPost) {
             $tId = $getPost['id'];
             foreach ($getPost['select_teams'] as $resultN) {
                 $teamInfo = (array) $resultN['team_name'];
                 $teamId = $teamInfo['ID'];
                 $tradeInfo = ['tid' => $tId, 'team_id' => $teamId, 'user_id' => $userId];
-                // $var[$tId][] = $this->getUserTrade($tradeInfo, 'mid');
-
                 $result[$key]['mytradedTotal'][$teamId] = $this->getUserTrade($tradeInfo, 'mid');
             }
             $tradeInfoTie = ['tid' => $tId, 'user_id' => $userId,];
             $result[$key]['mytradedTotal']['mytradedTie'] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
             $tradeInfo = ['tid' => $tId, 'user_id' => $userId];
-            $result[$key]['mytradedTotal']['tourTotal'] = $this->getTotalTrade($tradeInfo, 'mid');
         }
         $getTotalPointsUser = $this->formatNumberAbbreviation();
-        $getVal['totalTrade'] = $var;
-
-        $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $getVal, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $getTotalPointsUser];
+        $output = [ 'catPost' => $result, 'userTotalPts' => $getTotalPointsUser];
         return $output;
     }
 
@@ -689,7 +673,7 @@ class API {
 
                 endif;
             else:
-                return "Match had been over <br>";
+                return "Match is already over <br>";
             endif;
         else:
             return "Sorry you cannot place this trade as the match has already been started <br>";
@@ -730,7 +714,7 @@ class API {
         $getPrem = $getTeams[0]['premium']; //premium calculation
         //$premCalc = round($points / $getPrem); //premium calculation
         $premCalc = $points * $getPrem; //premium calculation which will deduct from kitty
-        $usedCalc = $usedPoints + ceil($premCalc);                 //adding bet points and current remaining points
+        $usedCalc = $usedPoints + round($premCalc);                 //adding bet points and current remaining points
         $getCount = count($count); //get count of eliminated team
         $getNoCount = count($countNo); //get count of non eliminated team
         $wpBets = ['uid' => $userId, 'mid' => $mId, 'tid' => $tId, 'team_id' => $teamId, 'pts' => $points, 'stage' => $getCount, 'premium' => $getPrem];
@@ -738,8 +722,8 @@ class API {
             if ($points >= $getMinimumBetAmount && !empty($tradeInfo['data']['pts'])):
                 if ($getEndTime >= $getCurrentTime && $getNoCount != 1 && $getDistPoints != 'Yes'):
                     if (!in_array($teamId, $elimiatedTeamId)):
-                        if (ceil($premCalc) <= $uPoints):
-                            $remaining = $uPoints - ceil($premCalc);
+                        if (floor($premCalc) <= $uPoints):
+                            $remaining = $uPoints - round($premCalc);
                             update_user_meta($userId, 'points', $remaining);
                             update_user_meta($userId, 'points_used', $usedCalc);
                             $wpdb->insert('wp_bets', $wpBets);
@@ -760,7 +744,7 @@ class API {
                         return ['msg' => "Team Eliminated!"];
                     endif;
                 else:
-                    return ['msg' => "Tournament had been over"];
+                    return ['msg' => "Tournament is already over"];
                 endif;
             else:
                 return ['msg' => "Minimimum $getMinimumBetAmount points should be trade"];
@@ -829,11 +813,11 @@ class API {
 
     function registration($userInfo) {
         $userData = [
-            'user_login' => $userInfo['data']['user_login'],
+            'user_login' => !empty($userInfo['data']['user_login']) ? $userInfo['data']['user_login'] : $userInfo['data']['user_email'],
             'first_name' => $userInfo['data']['first_name'],
             'last_name' => $userInfo['data']['last_name'],
             'user_email' => $userInfo['data']['user_email'],
-            'user_pass' => $userInfo['data']['user_pass'],
+            'user_pass' => $userInfo['data']['user_pass']
         ];
         $userName = $userInfo['data']['first_name'];
         $userEmail = $userInfo['data']['user_email'];
@@ -848,9 +832,10 @@ class API {
             update_user_meta($user_id, 'phone', $userInfo['data']['phone']);
             if (!is_wp_error($user_id)):
                 $headers = 'Content-type: text/html';
-                $body = "Hi $userName, <br>Thanks for signing up. <br> Your account has been activated and you should be able to login on <a href='http://gaming-inf.cruxservers.in/register/'>http://gaming-inf.cruxservers.in/register/</a>";
+                $body = "Hi $userName, <br>Thanks for signing up. <br> Your account has been activated and you should be able to <a href='http://eventexchange.co.in/register/'>Login</a> on eventexchange";
                 wp_mail($userEmail, "User Registration", $body, $headers);
                 update_user_meta($user_id, 'points', get_option("token_amt"));
+                update_user_meta($user_id, 'date_of_birth', $userInfo['data']['dob']);
                 $userInfo['data']['userName'] = $userInfo['data']['user_email'];
                 $userInfo['data']['password'] = $userInfo['data']['user_pass'];
                 return $this->login($userInfo);
@@ -962,7 +947,7 @@ class API {
     function adminDistribution($userid) {
         global $wpdb;
         $getDistributionDays = get_option('distributing_days');
-        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where uid =' . $userid);
+        $getResults = $wpdb->get_results("SELECT * FROM wp_distribution where uid =$userid AND status=0");
         foreach ($getResults as $results):
             $getCurrTime = strtotime($this->getDate);
             $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
@@ -977,13 +962,13 @@ class API {
     function cronAdminDistribution() {
         global $wpdb;
         $getDistributionDays = get_option('distributing_days');
-        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where cleared =0');
+        $getResults = $wpdb->get_results('SELECT * FROM wp_distribution where cleared =0 AND status in (0,2)'); //get clear points of win and cancled match 0->win 2->cancel
         foreach ($getResults as $results):
             $userid = $results->uid;
             $getCurrTime = strtotime($this->getDate);
             $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
             if ($disDateAdd < $getCurrTime && $results->cleared != 1):
-                sleep(5);
+            //if ( $results->cleared != 1):
                 $getCurrentPoints = get_user_meta($userid, 'points');
                 $wpdb->update('wp_distribution', ['cleared' => '1'], ['uid' => $userid]);
                 update_user_meta($userid, 'points', $getCurrentPoints[0] + $results->gain_points);
@@ -992,9 +977,6 @@ class API {
     }
 
     function getUserBets($info) {
-// print_r($info);
-// exit;
-
         if (isset($info['data']['getCount'])):
             $calcResult = $info['data']['getCount'];
             $limit = "limit $calcResult,10 ";
@@ -1007,17 +989,21 @@ class API {
         $endDate = $info['data']['endDate'];
         if ($info['data']['reset'] != 'yes'):
             if (isset($startDate) && isset($endDate) && $startDate != '' && $endDate != ''): //start and end date
-                $whereM.=" AND bet_at BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
+                $whereM.=" AND bet_at BETWEEN '" . $startDate . " 00:00:00' AND '" . $endDate . " 23:59:00' ";
             endif;
         endif;
         global $wpdb;
         $getAccount = [];
         $result = $wpdb->get_results("SELECT * FROM wp_bets where   uid= $this->userId  $whereM order by bet_at DESC $limit ");
-       // $this->getCsv($result);
+        // $this->getCsv($result);
 
         foreach ($result as $getBetDetails):
             $tourDetails['id'] = $i++;
-            $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
+            $venue = get_post_meta($getBetDetails->mid, 'venue');
+            $tourDetails['venue'] = $venue[0];
+            $startDate = get_post_meta($getBetDetails->mid, 'start_date');
+            $tourDetails['startDate'] = date('d M, Y', $startDate[0]);
+            $tourDetails['tourTitle'] = $getBetDetails->tid != 0 ? get_the_title($getBetDetails->tid) : '-';
             $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
             $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
             $tourDetails['pts'] = $getBetDetails->pts;
@@ -1030,12 +1016,16 @@ class API {
     }
 
     function getWinLossBets($info) {
-// print_r($info);
-// exit;
+        $getAccount = [];
         if (isset($info['data']['getCount'])):
-            $paged = $info['data']['getCount'];
+
+            $calcResult = $info['data']['getCount'];
+            $nextPage = $calcResult * 10;
+            $limit = "limit $nextPage,10 ";
+            $i = $nextPage + 1; //id increment
         else:
-            $paged = 0;
+            $limit = "limit 0,10";
+            $i = 1;                         //id increment
         endif;
         $startDate = $info['data']['startDate'];
         $endDate = $info['data']['endDate'];
@@ -1043,50 +1033,54 @@ class API {
             $whereM.=" AND bet_at BETWEEN '" . $startDate . "' AND '" . $endDate . "' ";
         endif;
         global $wpdb;
-        $getAccount = [];
-        $result = $wpdb->get_results("SELECT id,uid,tid,mid,team_id,sum(pts)as pts,bet_at FROM wp_bets  where uid= $this->userId   group by tid,team_id,mid  order by bet_at DESC ");
-//$this->getCsv($result);
-        $i = 1;
-        foreach ($result as $getBetDetails):
-            $getTourStatus = get_field('points_distributed', $getBetDetails->tid);
-            $getMatchStatus = get_field('points_distributed', $getBetDetails->mid);
-            $getTourCancel = get_field('tournament_abandoned', $getBetDetails->tid);
-            $getMatchCancel = get_field('match_abandoned', $getBetDetails->mid);
-            $getMatchDraw = get_field('match_draw', $getBetDetails->mid);
-            $getWinStatus = get_field('select_teams', $getBetDetails->mid);
-            if ($getWinStatus[0]['winner'] == 'No' && $getWinStatus[1]['winner'] == 'No'):
-                $getAccount = $this->getDrawMatch($getMatchDraw, $getBetDetails, $wpdb, $getAccount, $i);
-            else:
-                if (($getMatchStatus == "Yes" && $getMatchCancel == 'No' && $getBetDetails->team_id != 0 ) || ($getTourStatus == 'Yes' && $getTourCancel == 'No' )):
-                    $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
-                    $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
-                    $tourDetails['id'] = $i++;
-                    $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
-                    $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
-                    $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
-                    $tourDetails['pts'] = $getBetDetails->pts;
-                    $tourDetails['bet_at'] = $getBetDetails->bet_at;
-                    array_push($getAccount, ['tourDetails' => $tourDetails]);
-                endif;
+        $result = $wpdb->get_results("SELECT * FROM wp_distribution  where uid= $this->userId $whereM  order by id desc   $limit ");
+        foreach ($result as $getWin):
+            $venue = get_post_meta($getWin->mid, 'venue');
+            $tourDetails['venue'] = $getWin->mid != 0 ?$venue[0]:'';
+            $startDate = get_post_meta($getWin->mid, 'start_date');
+            $tourDetails['startDate'] =$getWin->mid != 0 ? date('d M, Y', $startDate[0]) :'';
+            $tourDetails['id'] = $i++;
+            $tourDetails['tourTitle'] = get_the_title($getWin->tid);
+            $tourDetails['matchTitle'] = $getWin->mid != 0 ? get_the_title($getWin->mid) : '-';
+            $tourDetails['teamTitle'] = get_the_title($getWin->team_id);
+            $tourDetails['pts'] = $getWin->status == 0 ? $getWin->gain_points : $getWin->total_trade;
+            $tourDetails['bet_at'] = $getWin->bet_at;
+            $tourDetails['teamTotal'] = $getWin->total_trade;
+            $tourDetails['status']= $getWin->status;
+            array_push($getAccount, ['tourDetails' => $tourDetails]);
 
-            endif;
         endforeach;
-        $arrayPagination = array_chunk($getAccount, 10);
 
-        return $arrayPagination[$paged];
+        return $getAccount;
     }
 
     function getDrawMatch($getMatchDraw, $getBetDetails, $wpdb, $getAccount, $i) {
+        $getMatchCancel = get_field('match_abandoned', $getBetDetails->mid);
         if ($getMatchDraw == 'Yes' && $getBetDetails->team_id == 0):
 
-            $getWin = $wpdb->get_results("SELECT id FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+            $getWin = $wpdb->get_results("SELECT id,gain_points FROM wp_distribution WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+
+            $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
             $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
-            $tourDetails['id'] = $i++;
+            $tourDetails['id'] = $i;
             $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
             $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
             $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
-            $tourDetails['pts'] = $getBetDetails->pts;
+            $tourDetails['pts'] = !empty($getWin) ? $getWin[0]->gain_points : $getBetDetails->pts;
             $tourDetails['bet_at'] = $getBetDetails->bet_at;
+            $tourDetails['teamTotal'] = $getTotalBetsTeam->pts;
+            array_push($getAccount, ['tourDetails' => $tourDetails]);
+        elseif ($getMatchCancel == 'No'):
+
+            $getTotalBetsTeam = $wpdb->get_row("SELECT id,sum(pts) as pts FROM wp_bets WHERE uid= $this->userId AND tid=$getBetDetails->tid AND mid=$getBetDetails->mid AND team_id=$getBetDetails->team_id");
+            $tourDetails['win'] = !empty($getWin) ? "Yes" : "No";
+            $tourDetails['id'] = $i;
+            $tourDetails['tourTitle'] = get_the_title($getBetDetails->tid);
+            $tourDetails['matchTitle'] = $getBetDetails->mid != 0 ? get_the_title($getBetDetails->mid) : '-';
+            $tourDetails['teamTitle'] = get_the_title($getBetDetails->team_id);
+            $tourDetails['pts'] = !empty($getWin) ? $getWin[0]->gain_points : $getBetDetails->pts;
+            $tourDetails['bet_at'] = $getBetDetails->bet_at;
+            $tourDetails['teamTotal'] = $getTotalBetsTeam->pts;
             array_push($getAccount, ['tourDetails' => $tourDetails]);
         endif;
         return $getAccount;
@@ -1094,13 +1088,13 @@ class API {
 
     function getUserDetails() {
         $getUserDetails = get_userdata($this->userId);
-
         $firstName = get_user_meta($this->userId, 'first_name');
         $lastName = get_user_meta($this->userId, 'last_name');
         $phone = get_user_meta($this->userId, 'phone');
         $points = get_user_meta($this->userId, 'points');
+        $dateOfBirth = get_user_meta($this->userId, 'date_of_birth');
         $loaderUrl = get_template_directory_uri() . "/images/pageload1.gif";
-        $info = ['firstName' => $firstName, 'lastName' => $lastName, 'userDetails' => $getUserDetails, 'phone' => $phone, 'loaderImg' => $loaderUrl, 'points' => $points];
+        $info = ['firstName' => $firstName, 'lastName' => $lastName, 'userDetails' => $getUserDetails, 'phone' => $phone, 'loaderImg' => $loaderUrl, 'points' => $points, 'dateOfBirth' => $dateOfBirth];
         return $info;
     }
 
@@ -1186,7 +1180,7 @@ class API {
     function getUnclearedPoints() {
         global $wpdb;
         $userId = $this->userId;
-        $getUnClearedPoints = $wpdb->get_results("SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=$userId AND cleared=0 GROUP BY uid");
+        $getUnClearedPoints = $wpdb->get_results("SELECT sum(gain_points) as unclearedPoints FROM wp_distribution  WHERE uid=$userId AND cleared=0 AND status in (0,2)  group by uid");
         return $getUnClearedPoints[0]->unclearedPoints;
     }
 
@@ -1239,7 +1233,7 @@ class API {
         header("Content-Transfer-Encoding: Binary");
         header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
         //readfile($file_url); // do the double-download-dance (dirty but worky) 
-        return ['url'=>$file_url];
+        return ['url' => $file_url];
     }
 
     public function contacUs($getData) {

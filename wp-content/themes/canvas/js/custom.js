@@ -28,8 +28,44 @@ function matchTrigger(term) {
     });
 }
 
+
 $(document).ready(function () {
-    $(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
+    
+    $(".datepickerEnd").datepicker({format: 'yyyy-mm-dd'});  //default format of end date
+    $('.datepickerStart').datepicker({//onchange start date
+        format: 'yyyy-mm-dd'
+    }).on('changeDate', function () {
+      hideSeachError();
+        var date = new Date($(this).val());
+        date.setDate(date.getDate() + 1);
+        $('.datepickerEnd').datepicker('setStartDate', date);
+        ;
+    });
+
+
+    $('.datepickerEnd').datepicker({//onchange enddate
+        format: 'yyyy-mm-dd'
+    }).on('changeDate', function () {
+      hideSeachError();
+        var date = new Date($(this).val());
+        date.setDate(date.getDate() - 1);
+        $('.datepickerStart').datepicker('setStartDate', date);
+        ;
+    });
+
+
+    $('.reset').click(function () {                     //reset date
+        hideSeachError();
+        $('.datepickerStart').data('datepicker').setDate(null);
+        $('.datepickerEnd').data('datepicker').setDate(null);
+    });
 });
+
+function hideSeachError(){
+       $('.errorEndDate').hide();
+        $('.errorStartDate').hide();
+}
+
+
 
 

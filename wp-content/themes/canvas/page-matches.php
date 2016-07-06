@@ -89,11 +89,11 @@ get_header();
                         <thead>
                             <tr>
                                 <th width="18%">Time &amp; Location</th>
-                                <th>Tournament</th>
-                                <th>Team 1</th>
-                                <th>Trade</th>
+                                <th>Tournament </th>
+                                <th>Team 1 </th>
+                                <th>Trade for Team 1 </th>
                                 <th>Team 2</th>
-                                <th>Trade</th>
+                                <th>Trade for Team 2</th>
                                 <th>Trade For Tie</th>
                                 <th> Action</th>
                                 <th>Total Trade</th>
@@ -111,7 +111,7 @@ get_header();
                                     <b style="color:green" ng-if="matches['match_abandoned'] == 'Yes'">Canceled</b> 
                                 </td>
                                 <td  ng-repeat-end> 
-                                    <input type="text"   class="trade form-control" style="display: {{hideTrade}};width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" style="width: 100%;" placeholder=" Add Trade" >
+                                    <input type="text"  class="matchId trade form-control" style="display: {{hideTrade}};width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" style="width: 100%;" placeholder=" Add Trade" >
                                     <span class="{{matches['id']}}-{{teams['team_name']['ID']}}">{{matches['mytradedTotal'][teams['team_name']['ID']]!==null ? "You've traded " + matches['mytradedTotal'][teams['team_name']['ID']] +" Pts." : ""}} </span>
 
 <!--                                     <span ng-if=" (hideTrade != 'block' && hideTrade != null  ) || (homeMatchListing['uid']==null && matches['mytradedTotal'][teams['team_name']['ID']]==null)  ">-</span>-->
@@ -129,9 +129,9 @@ get_header();
                                     <span ng-if=" (hideTrade != 'block' && hideTrade != null)">-</span>
 
                                 </td>
-                                <td> <span class="{{matches['id']}}-totalMid">{{ matches['mytradedTotal']['tourTotal']}}</span> <span ng-if=" matches['mytradedTotal']['tourTotal'] == ''">0</span></td>
+                                <td> <span class="{{matches['id']}}-totalMid">{{ matches['mytradedTotal']['tourTotal']}} <span ng-if=" matches['mytradedTotal']['tourTotal'] <= 0">0</span></span> </td>
                             </tr>    
-                            <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no matches at the moment please check again later!</td></tr>
+                            <tr  ng-hide="homeMatchListing.length"><td colspan="9" align="center">There are no matches at the moment, please check again later!</td></tr>
 
                         </tbody>
                     </table>
