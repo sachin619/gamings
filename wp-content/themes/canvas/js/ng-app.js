@@ -360,7 +360,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
     $scope.trade = function (tid, teamId, pts, uid, event) {
         var getPremium = parseFloat($('.premiumPoints').html());
         if (getPremium > 1 && pts>0) {
-            var r = confirm("Current Trade Premium value is" +getPremium+ "To Trade for "+pts+" Points, you will need to contribute "+Math.round(pts*getPremium)+" Points ("+pts+"*"+getPremium+"="+pts*getPremium+"; rounded to "+Math.round(pts*getPremium)+"). Please confirm. ");
+            var r = confirm("Current Trade Premium value is" +getPremium+ ". To Trade for "+pts+" Points, you will need to contribute "+Math.round(pts*getPremium)+" Points ("+pts+"*"+getPremium+"="+pts*getPremium+"; rounded to "+Math.round(pts*getPremium)+"). Please confirm. ");
             if (r == false) {
                 return false;
             }
