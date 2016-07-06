@@ -687,7 +687,6 @@ function getPremium($type, $Tradetype, $postId) {   //tournament distribution lo
 }
 
 function tournamentCancel($teamCancel, $wpdb, $Tradetype, $postId) {
-
     foreach ($teamCancel as $getTeamId): //for loss distirbution
         $resultBetsLoss = $wpdb->get_results("SELECT sum(pts) as pts,uid,tid,mid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "'  AND team_id=$getTeamId AND mid=0  group by uid");
         foreach ($resultBetsLoss as $userBetsLoss):
