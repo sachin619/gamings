@@ -15,8 +15,7 @@
  */
 get_header();
 ?>
-<?php
-echo get_site_url();?>
+
 <section ng-controller="homeCtrl" class="bg-img-container">
 
     <section  id="slider" class="slider-parallax clearfix" style="background-color: #222;">

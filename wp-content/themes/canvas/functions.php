@@ -597,7 +597,7 @@ function matchDraw($getBetLoss, $resultTieLoss, $getTeams, $wpdb, $Tradetype, $p
 }
 
 function api($url) {
-    $response = wp_remote_get(esc_url_raw($url));
+    $response = wp_remote_get($url);
     return $api_response = json_decode(wp_remote_retrieve_body($response), true);
 }
 
