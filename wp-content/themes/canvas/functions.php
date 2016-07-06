@@ -687,12 +687,18 @@ function getPremium($type, $Tradetype, $postId) {   //tournament distribution lo
 }
 
 function tournamentCancel($teamCancel, $wpdb, $Tradetype, $postId) {
+
     foreach ($teamCancel as $getTeamId): //for loss distirbution
         $resultBetsLoss = $wpdb->get_results("SELECT sum(pts) as pts,uid,tid,mid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "'  AND team_id=$getTeamId AND mid=0  group by uid");
         foreach ($resultBetsLoss as $userBetsLoss):
             $dataLoss = ['uid' => $userBetsLoss->uid, 'tid' => $userBetsLoss->tid, 'team_id' => $userBetsLoss->team_id, 'total_trade' => $userBetsLoss->pts, 'gain_points' => $userBetsLoss->pts, 'status' => 2];
             $wpdb->insert('wp_distribution', $dataLoss);
         endforeach;
+    endforeach;
+    $resultTieLoss = $wpdb->get_results("SELECT sum(pts) as pts,uid,tid,mid,team_id FROM wp_bets WHERE tid='" . $postId . "'  AND team_id=0 AND mid=0  group by uid");
+    foreach ($resultTieLoss as $getTeamTieId): //for loss distirbution
+        $dataTieCancel = ['uid' => $getTeamTieId->uid, 'tid' => $getTeamTieId->tid, 'team_id' => $getTeamTieId->team_id, 'total_trade' => $getTeamTieId->pts, 'gain_points' => $getTeamTieId->pts, 'status' => 2];
+        $wpdb->insert('wp_distribution', $dataTieCancel);
     endforeach;
 }
 
