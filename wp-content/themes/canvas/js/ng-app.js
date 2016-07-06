@@ -142,9 +142,6 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
     ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
     /**************************for userbets pagination*******************************************************/
     var getPageCount = 0;
-    if (getPageCount <= 0) {  //hide prev button
-        $('.paginatePrev').hide();
-    }                          //hide prev button
     $(document).on('click', '.paginateNext', function () {
         var startDate = $('.startDate').val();
         var endDate = $('.endDate').val();
@@ -157,27 +154,9 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
         ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
     });
 
-    $(document).on('click', '.paginatePrev', function () {
-        getPageCount--;
-        var getCount = getPageCount * 10;
-        var startDate = $('.startDate').val();
-        var endDate = $('.endDate').val();
-        formData = {'pagination': Pagination, 'type': 'myAccountFilter', 'getCount': getCount, 'startDate': startDate, 'endDate': endDate};
-        ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccount');
-        if (getPageCount == 0) {
-            $('.paginatePrev').hide();
-        } else {
-            $('.paginateNext').show();
-        }
-    });
-
     /**************************** for userbets  pagination*****************************************/
-    if (getPageCount <= 0) {  //hide prev button
-        $('.paginatePrevWin').hide();
-    }
     var getPageCountWin = 0;
     $(document).on('click', '.paginateNextWin', function () {
-
         getPageCountWin++;
         if (getPageCountWin > 0) {
             $('.paginatePrevWin').show();
@@ -185,21 +164,6 @@ app.controller('myAccount', function ($scope, Pagination, $http, $templateCache)
         formData = {'pagination': Pagination, 'type': 'myAccountFilterWin', 'getCount': getPageCountWin};
         ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccountFilterWIn');
     });
-
-    $(document).on('click', '.paginatePrevWin', function () {
-        getPageCountWin--;
-
-
-        formData = {'pagination': Pagination, 'type': 'myAccountFilterWin', 'getCount': getPageCountWin};
-        ngPost('my-account', formData, $scope, $http, $templateCache, 'myAccountFilterWin');
-        if (getPageCountWin == 0) {
-            $('.paginatePrevWin').hide();
-        } else {
-            $('.paginateNextWin').show();
-        }
-    });
-
-
     /****************************for pagination*****************************************/
 
 
@@ -298,11 +262,10 @@ app.controller('signupCtrl', function ($scope, $http, $templateCache) {
             message: {required: true, minlength: 10},
             username: {minlength: 5},
             password: {
-                required:true,
+                required: true,
                 minlength: 5
             },
             confirmPassword: {
-            
                 equalTo: "#register-form-password"
             }
 
@@ -312,8 +275,7 @@ app.controller('signupCtrl', function ($scope, $http, $templateCache) {
             phone: "Enter a valid mobile number",
             message: "Minimum length should be 10",
             username: 'Minimum length should be 5',
-           confirmPassword:{equalTo:'Password does not match'},
-            
+            confirmPassword: {equalTo: 'Password does not match'},
         }
     });
 
@@ -552,13 +514,13 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
     } else {
         var formData = {};
     }
- 
+
     $scope.tradeMatch = function (link, tid, points, uid, pointsTie, event) {
-        
-     //   $('.matchId').val('');
+
+        //   $('.matchId').val('');
         angular.element(event.target).attr('disabled', 'disabled');
-    
-    
+
+
         if (uid != null) {
             var slug = link.split("/");
             slug = slug[slug.length - 2];
@@ -571,9 +533,9 @@ app.controller('listingMatch', function ($http, $scope, $templateCache) {
                 'type': 'matchesList',
                 'catType': sessionStorage.getItem('type')
             };
-           
-            tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName', event,points);
-      
+
+            tourDetails('multi-trade-match', formDataNew, $scope, $http, $templateCache, 'blockName', event, points);
+
         } else {
             sessionStorage.setItem('url', document.URL);
             window.location = base_url + "register?url=redirect";
@@ -629,15 +591,10 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
     }).
             success(function (response) {
                 if (typeName == 'home-match-listing') {
-                    //console.log(response.upcomingMatches.catPost);
-
-
                     jQuery.each(response.upcomingMatches.catPost, function (k, v) {
                         // console.log(v);
                         $scope.homeMatchListing.push(v);
-
-                    });
-
+                    })
                 }
                 if (typeName == 'listing-tournaments') {
 
@@ -670,27 +627,30 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
 
                 if (typeName == 'tournaments-detail') {
                     $('.updateUserKit').html(response['userTotalPts']);
-
                 }
                 if (typeName == 'download-csv') {
-
                     window.location = response.url;
                     $(document).ready(function () {
                         $('.loaderDownload').hide();
                     });
-
                 }
                 if (typeName == 'my-account' && formData['type'] == 'myAccountFilter') {
-                    $scope.posts = response['userBets'];
+                    jQuery.each(response['userBets'], function (k, v) {    // # user bets loadmore
+                        $scope.posts.push(v);
+                    });
+
                     if (response['userBets'].length == 0) {
                         $('.paginateNext').hide();
-                    }
+                    }                                                        // # user bets loadmore
                 }
                 //for pagination of matches
                 if (formData['type'] === 'myAccountFilterWin') {
-
-                    $scope.winList = response['winLoss'];
-
+                    jQuery.each(response['winLoss'], function (k, v) {
+                        $scope.winList.push(v);
+                    });
+                    if (response['winLoss'].length == 0) {
+                        $('.paginateNextWin').hide();
+                    }                                                  // # user win loadmore
                 }
 
                 $('.loader').hide();
@@ -742,8 +702,16 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
                 } else {
                     if (typeName != 'home-match-listing' && (typeName != 'listing-matches' && formData['filter'] != 'yes') && typeName != 'listing-tournaments' && formData['type'] != 'myAccountFilter' && formData['type'] != 'myAccountFilterWin' && typeName != 'download-csv') {
                         $('.toolMsg').attr('data-original-title', "These points will be credited to your 'Cleared Points' after " + response['bufferDay'] + " days of winning Tournament/Match result");
-                        $scope.posts = response['userBets'];
-                        $scope.winList = response['winLoss'];
+                        $scope.posts = [];                                 // # user bets loadmore
+                        jQuery.each(response['userBets'], function (k, v) {
+                            $scope.posts.push(v);
+                        });                                                 // # user bets loadmore
+                        //$scope.posts = response['userBets'];
+                        $scope.winList = [];                                 // # user win loadmore
+                        jQuery.each(response['winLoss'], function (k, v) {
+                            $scope.winList.push(v);
+                        });                                                 // # user win loadmore
+
                         $scope[errorBlock] = response;
                     }
 
@@ -755,7 +723,7 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
             });
 }
 
-function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock, event,points) {
+function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock, event, points) {
 
     $http({
         url: domain + typeName,
@@ -789,8 +757,8 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
             var formDataReload = {'postId': formData['slug']};
             ngPost('matches-detail', formDataReload, $scope, $http, $templateCache, 'getDetails');
         } else if (formData['type'] === 'matchesList') {
-            
-       
+
+
 
             $scope.pointsTie = "";
             angular.element(event.target).removeAttr('disabled');
@@ -803,7 +771,7 @@ function tourDetails(typeName, formData, $scope, $http, $templateCache, msgBlock
                     $("." + formData['mid'] + "-" + k).html("You've traded " + v + " pts.");
             });
         } else if (formData['type'] === 'tournamentMatcheList') {
-            points=[];
+            points = [];
             $("." + formData['mid'] + "-" + 'totalMid').html(response.data.totalMid);
             angular.element(event.target).removeAttr('disabled');
             $('.updateUserKit').html(response.data.userTotalPts);

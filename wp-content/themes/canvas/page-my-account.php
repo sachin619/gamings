@@ -131,7 +131,6 @@ $userEmail = $userInfo->user_email;
                                 </table>
                             </div>
                             <div class="col-lg-12">
-                                <button  class="button button-mini button-dark button-rounded paginatePrev">Previous</button>
                                 <button ng-hide="posts.length < 10" class="button paginateNext button-mini button-dark button-rounded pull-right">Next</button>
                             </div>
                         </div>
@@ -175,8 +174,7 @@ $userEmail = $userInfo->user_email;
 
                                 </table>
                             </div>
-                            <div class="col-lg-12">
-                                <button  class="button button-mini button-dark button-rounded paginatePrevWin">Previous</button>
+                            <div class="col-lg-12">  
                                 <button ng-if="winList.length >= 10" class="button paginateNextWin button-mini button-dark button-rounded pull-right">Next</button> </div>
                         </div>
                     </div>   <!--  My Win Loss points-->

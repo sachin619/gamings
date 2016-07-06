@@ -175,7 +175,7 @@ class API {
     }
 
     function getSlider() {
-        $args = [ 'post_type' => 'slider', 'meta_key' => 'active', 'meta_value' => 'Yes'];
+        $args = [ 'post_type' => 'slider', 'meta_key' => 'active', 'meta_value' => 'Yes','posts_per_page'=>100];
         return $this->getResult($args);
     }
 
