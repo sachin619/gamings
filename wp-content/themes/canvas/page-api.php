@@ -437,9 +437,6 @@ class API {
                 'order' => 'DESC',
                 'meta_query' => ['relation' => 'AND',
                     [
-                        'key' => 'start_date', 'value' => $startTimeTodays, 'compare' => '<'
-                    ],
-                    [
                         'key' => 'start_date', 'value' => $sevenDaysBefore, 'compare' => '>'
                     ],
                     [ 'key' => 'points_distributed', 'value' => 'Yes', 'compare' => '='],
