@@ -643,6 +643,18 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
                         $('.paginateNext').hide();
                     }                                                        // # user bets loadmore
                 }
+                if (typeName == 'my-account'  && formData['type'] != 'myAccountFilter' && formData['type'] !== 'myAccountFilterWin') {
+                    $scope.posts = [];                                 // # user bets loadmore
+                    jQuery.each(response['userBets'], function (k, v) {
+                        $scope.posts.push(v);
+                    });                                                 // # user bets loadmore
+                    //$scope.posts = response['userBets'];
+                    $scope.winList = [];                                 // # user win loadmore
+                    jQuery.each(response['winLoss'], function (k, v) {
+                        $scope.winList.push(v);
+                    });                                                 // # user win loadmore
+
+                }
                 //for pagination of matches
                 if (formData['type'] === 'myAccountFilterWin') {
                     jQuery.each(response['winLoss'], function (k, v) {
@@ -702,15 +714,6 @@ function ngPost(typeName, formData, $scope, $http, $templateCache, errorBlock, e
                 } else {
                     if (typeName != 'home-match-listing' && (typeName != 'listing-matches' && formData['filter'] != 'yes') && typeName != 'listing-tournaments' && formData['type'] != 'myAccountFilter' && formData['type'] != 'myAccountFilterWin' && typeName != 'download-csv') {
                         $('.toolMsg').attr('data-original-title', "These points will be credited to your 'Cleared Points' after " + response['bufferDay'] + " days of winning Tournament/Match result");
-                        $scope.posts = [];                                 // # user bets loadmore
-                        jQuery.each(response['userBets'], function (k, v) {
-                            $scope.posts.push(v);
-                        });                                                 // # user bets loadmore
-                        //$scope.posts = response['userBets'];
-                        $scope.winList = [];                                 // # user win loadmore
-                        jQuery.each(response['winLoss'], function (k, v) {
-                            $scope.winList.push(v);
-                        });                                                 // # user win loadmore
 
                         $scope[errorBlock] = response;
                     }
