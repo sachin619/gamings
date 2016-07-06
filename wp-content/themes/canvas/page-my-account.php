@@ -116,7 +116,7 @@ $userEmail = $userInfo->user_email;
                                             <td >{{myInfo['tourDetails']['tourTitle']}}</td>
                                             <td>{{myInfo['tourDetails']['matchTitle']}}
                                                 <br>{{myInfo['tourDetails']['startDate']}} 
-                                                {{myInfo['tourDetails']['venue'] != '' ? '(' + myInfo['tourDetails']['venue'] + ')' : ''}}
+                                                {{myInfo['tourDetails']['venue'] != '' && myInfo['tourDetails']['venue'] != null ? '(' + myInfo['tourDetails']['venue'] + ')' : ''}}
                                             </td>
                                             <td  ng-if="myInfo['tourDetails']['teamTitle'] == 'Api'" >Tie</td>
                                             <td ng-if="myInfo['tourDetails']['teamTitle'] != 'Api'">{{myInfo['tourDetails']['teamTitle']}}</td>
