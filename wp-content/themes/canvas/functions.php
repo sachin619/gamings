@@ -535,7 +535,7 @@ function updateMatchPremium($postId) {
 
 show_admin_bar(false);
 
-$apiEndpoint = site_url() . '/api?action=';
+$apiEndpoint = get_site_url() . '/api?action=';
 
 function matchLossEntry($resultBetsLoss, $resultTieLoss, $wpdb) {
     foreach ($resultBetsLoss as $getResult):
@@ -834,3 +834,5 @@ function scheme() {
 ;
 
 add_action('init', 'scheme');
+
+

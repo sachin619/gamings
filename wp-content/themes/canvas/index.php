@@ -24,7 +24,7 @@ get_header();
         <div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-pagi="false" data-loop="true" data-speed="450" data-autoplay="5000">
 
             <?php
-            $slider = api($apiEndpoint . "get-slider");
+            $slider = api(get_site_url(). '/api?action=get-slider');
             foreach ($slider as $sliderImg):
                 ?>
                 <a href="#"><img ng-src="<?= $sliderImg['img'] ?>" alt="Slider"></a>
