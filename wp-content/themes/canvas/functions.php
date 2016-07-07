@@ -609,6 +609,7 @@ function getResult($args) {
         $post = [
             'id' => $id,
             'title' => get_the_title(),
+            'img' => getFeaturedImg($id),
             'content' => get_the_content(),
             'postLink' => get_permalink($post->ID),
             'category' => get_the_category($post->ID)
@@ -619,6 +620,27 @@ function getResult($args) {
         array_push($output, $post);
     endwhile;
     return $output;
+}
+
+function getFeaturedImg($id) {
+    $image = wp_get_attachment_image_src(get_post_thumbnail_id($id), 'full'); //post image
+    $getCategoryByID = get_the_category($id); //category image starts
+    $getCatByIdFilter = (array) $getCategoryByID[0];
+    $getTaxanomy = get_option('category_' . $getCatByIdFilter['term_id'] . '_image');
+    $getFeatImg = wp_get_attachment_url($getTaxanomy); //category image ends
+    $fallBackImg = get_template_directory_uri() . "/images/default.jpg";
+    if (!empty($image)):
+        return $image['0'];
+    elseif (!empty($getFeatImg)):
+        return $getFeatImg;
+    else:
+        return $fallBackImg;
+    endif;
+}
+
+function getSlider() {
+    $args = [ 'post_type' => 'slider', 'meta_key' => 'active', 'meta_value' => 'Yes', 'posts_per_page' => 100];
+    return getResult($args);
 }
 
 function getPremium($type, $Tradetype, $postId) {   //tournament distribution logic

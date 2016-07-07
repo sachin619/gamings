@@ -14,6 +14,7 @@
  * @since Twenty Sixteen 1.0
  */
 get_header();
+
 ?>
 
 <section ng-controller="homeCtrl" class="bg-img-container">
@@ -22,7 +23,8 @@ get_header();
         <div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-pagi="false" data-loop="true" data-speed="450" data-autoplay="5000">
 
             <?php
-            $slider = api(get_site_url(). '/api?action=get-slider');
+            $slider = getSlider();
+            
             foreach ($slider as $sliderImg):
                 ?>
                 <a href="#"><img ng-src="<?= $sliderImg['img'] ?>" alt="Slider"></a>
@@ -33,11 +35,7 @@ get_header();
     </section>
 
     <div class="clearfix"></div>
-    <section  id="slider" class="slider-parallax clearfix" style="background-color: #222;">
-        <img src="<?= get_template_directory_uri() ?>/images/cricket-stadium-1920x1080-image-1.jpg" class="img-responsive" alt="Banner">
 
-    </section>
-    <div class="clearfix"></div>
 
     <!-- Content
      ============================================= -->
