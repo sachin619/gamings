@@ -14,7 +14,6 @@
  * @since Twenty Sixteen 1.0
  */
 get_header();
-
 ?>
 
 <section ng-controller="homeCtrl" class="bg-img-container">
@@ -24,7 +23,7 @@ get_header();
 
             <?php
             $slider = getSlider();
-            
+
             foreach ($slider as $sliderImg):
                 ?>
                 <a href="#"><img ng-src="<?= $sliderImg['img'] ?>" alt="Slider"></a>
@@ -82,7 +81,7 @@ get_header();
                                         <td><a href="{{matches['siteUrl'] + '/tournaments/' + matches['tournament_name']['post_name']}}">{{matches['tournament_name']['post_title']}}</a><br><b> ({{matches['category'][0]['name']}})</td>
                                         <td  ng-repeat-start="teams in matches['select_teams']"> {{teams['team_name']['post_title']}} </td>
                                         <td  ng-repeat-end> 
-                                            <input type="text" class="form-control" ng-model="$parent.$parent.points[teams['team_name']['ID']]" style="width: 100%; margin: 0 0 5px 0;" placeholder=" Add Trade" ng-if="matches['uid'] != null" > 
+                                            <input type="text" class="form-control" ng-model="$parent.$parent.$parent.points[matches['id']][teams['team_name']['ID']]" style="width: 100%; margin: 0 0 5px 0;" placeholder=" Add Trade" ng-if="matches['uid'] != null" > 
                                             <span class="{{matches['id']}}-{{teams['team_name']['ID']}}">{{matches['mytradedTotal'][teams['team_name']['ID']]!==null ? "You've traded " + matches['mytradedTotal'][teams['team_name']['ID']] +" Pts." : ""}} </span>
                                             <span ng-if="matches['uid'] == null">-</span>
                                         </td>
@@ -93,7 +92,7 @@ get_header();
                                         </td>
 
                                         <td>
-                                            <button  ng-click="tradeMatch(matches['postLink'], matches['id'], points, homeMatchListing[0]['uid'], pointsTie[$index], $event)" class="btn btn-danger" >Trade </button>
+                                            <button  ng-click="tradeMatch(matches['postLink'], matches['id'], points[matches['id']], homeMatchListing[0]['uid'], pointsTie[$index], $event)" class="btn btn-danger" >Trade </button>
                                         </td>
                                         <td ><span class="{{matches['id']}}-totalMid">{{matches['total_bets']}} <span ng-if="matches['total_bets'] <= 0">0</span></span></td>
                                     </tr> 

@@ -111,7 +111,7 @@ get_header();
                                     <b style="color:green" ng-if="matches['match_abandoned'] == 'Yes'">Canceled</b> 
                                 </td>
                                 <td  ng-repeat-end> 
-                                    <input type="text"  class="matchId trade form-control" style="display: {{hideTrade}};width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.points[teams['team_name']['ID']]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" style="width: 100%;" placeholder=" Add Trade" >
+                                    <input type="text"  class="matchId trade form-control" style="display: {{hideTrade}};width: 100%; margin: 0 0 5px 0;" ng-model="$parent.$parent.$parent.points[matches['id']][teams['team_name']['ID']]" ng-if="matches['points_distributed'] === 'No' && matches['ong'] == 'No' && matches['uid'] != null" style="width: 100%;" placeholder=" Add Trade" >
                                     <span class="{{matches['id']}}-{{teams['team_name']['ID']}}">{{matches['mytradedTotal'][teams['team_name']['ID']]!==null ? "You've traded " + matches['mytradedTotal'][teams['team_name']['ID']] +" Pts." : ""}} </span>
 
 <!--                                     <span ng-if=" (hideTrade != 'block' && hideTrade != null  ) || (homeMatchListing['uid']==null && matches['mytradedTotal'][teams['team_name']['ID']]==null)  ">-</span>-->
@@ -125,7 +125,7 @@ get_header();
 
                                 </td>
                                 <td> 
-                                    <button style="display: {{hideTrade}}"   ng-click="tradeMatch(matches['postLink'], matches['id'], points, homeMatchListing[0]['uid'], pointsTie[$index], $event)" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'" >Trade </button>
+                                    <button style="display: {{hideTrade}}"   ng-click="tradeMatch(matches['postLink'], matches['id'], points[matches['id']], homeMatchListing[0]['uid'], pointsTie[$index], $event)" class="btn btn-danger" ng-if="matches['points_distributed'] == 'No' && matches['ong'] == 'No'" >Trade </button>
                                     <span ng-if=" (hideTrade != 'block' && hideTrade != null)">-</span>
 
                                 </td>
