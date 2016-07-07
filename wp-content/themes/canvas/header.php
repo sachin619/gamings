@@ -8,12 +8,6 @@
  * @subpackage Twenty_Sixteen
  * @since Twenty Sixteen 1.0
  */
-/******* speed increase code files located in php_speedy **/
-require(get_template_directory().'/php_speedy/php_speedy.php');
-$compressor->options['document_root'] = get_template_directory();
-$compressor->options['javascript']['cachedir'] = get_template_directory()."/php_speedy/";
-$compressor->options['css']['cachedir'] = get_template_directory()."/php_speedy/";
-/******* speed increase code files located in php_speedy **/
 $userInfo = wp_get_current_user();
 $userName = $userInfo->user_login;
 if ((is_page('register') && is_user_logged_in()) || (is_page('my-account') && !is_user_logged_in())):
