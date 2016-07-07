@@ -134,8 +134,7 @@ class API {
     }
 
     function home() {
-
-        $home['slider'] = $this->getSlider();
+        //$home['slider'] = $this->getSlider();
         $home['popularTournaments'] = $this->popularTournaments();
         //$home['popularMatches'] = $this->popularMatches();
         // $home['upcomingTournaments'] = $this->upcomingTournaments();
