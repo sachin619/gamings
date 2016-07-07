@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var domain = "http://localhost:8080/gamings/api/?action=";
+var domain = "http://localhost/gamings/api/?action=";
 
-var base_url = "http://localhost:8080/gamings/";
+var base_url = "http://localhost/gamings/";
 
 var loaderLocation = base_url + "/wp-content/themes/canvas/images/pageload1.gif";
 var app = angular.module('gaming', ['simplePagination']);
