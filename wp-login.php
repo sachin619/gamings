@@ -375,7 +375,7 @@ function retrieve_password() {
     //$message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
     $message .= __('Regarding your request for password retrieval, please follow the link: ') . "\r\n\r\n";
     //$message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
-    $message .= network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') . "\r\n\r\n";
+    $message .= network_site_url("forgot-password?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') . "\r\n\r\n";
     $message .= __('Regards,') . "\r\n\r\n";
     $message .= __('Team Event Exchange .');
     if (is_multisite())
