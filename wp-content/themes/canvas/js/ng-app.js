@@ -360,7 +360,7 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
     $scope.trade = function (tid, teamId, pts, uid, event) {
         var getPremium = parseFloat($('.premiumPoints').html());
 
-        if (getPremium > 1 && pts > 0) {
+        if (getPremium > 1 && pts > 0 && uid != null) {
 
             swal({
                 title: 'Confirm',
@@ -373,22 +373,31 @@ app.controller('tourDetails', function ($scope, $http, $templateCache) {
             }, function () {
                 angular.element(event.target).attr('disabled', 'disabled');
 
-                if (uid != null) {
-                    var formData = {
-                        'tid': tid,
-                        'team_id': teamId,
-                        'pts': pts,
-                        'slug': slug,
-                        'type': 'tournaments',
-                    };
-                    tourDetails('trade', formData, $scope, $http, $templateCache, 'blockName', event);
-                } else {
-                    sessionStorage.setItem("url", document.URL);
-                    window.location = base_url + "register?url=redirect";
-                }
-                
+
+                var formData = {
+                    'tid': tid,
+                    'team_id': teamId,
+                    'pts': pts,
+                    'slug': slug,
+                    'type': 'tournaments',
+                };
+                tourDetails('trade', formData, $scope, $http, $templateCache, 'blockName', event);
+
+
             });
-  
+
+        } else if (uid != null) {
+            var formData = {
+                'tid': tid,
+                'team_id': teamId,
+                'pts': pts,
+                'slug': slug,
+                'type': 'tournaments',
+            };
+            tourDetails('trade', formData, $scope, $http, $templateCache, 'blockName', event);
+        } else {
+            sessionStorage.setItem("url", document.URL);
+            window.location = base_url + "register?url=redirect";
         }
 
 
