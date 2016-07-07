@@ -174,7 +174,7 @@ class API {
     }
 
     function getSlider() {
-        $args = [ 'post_type' => 'slider', 'meta_key' => 'active', 'meta_value' => 'Yes','posts_per_page'=>100];
+        $args = [ 'post_type' => 'slider', 'meta_key' => 'active', 'meta_value' => 'Yes', 'posts_per_page' => 100];
         return $this->getResult($args);
     }
 
@@ -831,7 +831,9 @@ class API {
             update_user_meta($user_id, 'phone', $userInfo['data']['phone']);
             if (!is_wp_error($user_id)):
                 $headers = 'Content-type: text/html';
-                $body = "Hi $userName, <br>Thanks for signing up. <br> Your account has been activated and you should be able to <a href='http://eventexchange.co.in/register/'>Login</a> on eventexchange";
+                $tokenAmt = get_option("token_amt");
+                $creditedMessage= $tokenAmt>0? "<br><br>We have credited your account with $tokenAmt Complimentary Points." :'';
+                $body = "Hi $userName,<br><br> Thanks for signing up with Event Exchange . $creditedMessage<br><br>Have fun Trading .<br><br>Regards,<br><br>Team Event Exchange .";
                 wp_mail($userEmail, "User Registration", $body, $headers);
                 update_user_meta($user_id, 'points', get_option("token_amt"));
                 update_user_meta($user_id, 'date_of_birth', $userInfo['data']['dob']);
@@ -967,7 +969,7 @@ class API {
             $getCurrTime = strtotime($this->getDate);
             $disDateAdd = strtotime($results->date . "+$getDistributionDays hour");
             if ($disDateAdd < $getCurrTime && $results->cleared != 1):
-            //if ( $results->cleared != 1):
+                //if ( $results->cleared != 1):
                 $getCurrentPoints = get_user_meta($userid, 'points');
                 $wpdb->update('wp_distribution', ['cleared' => '1'], ['uid' => $userid]);
                 update_user_meta($userid, 'points', $getCurrentPoints[0] + $results->gain_points);
@@ -1035,9 +1037,9 @@ class API {
         $result = $wpdb->get_results("SELECT * FROM wp_distribution  where uid= $this->userId $whereM  order by id desc   $limit ");
         foreach ($result as $getWin):
             $venue = get_post_meta($getWin->mid, 'venue');
-            $tourDetails['venue'] = $getWin->mid != 0 ?$venue[0]:'';
+            $tourDetails['venue'] = $getWin->mid != 0 ? $venue[0] : '';
             $startDate = get_post_meta($getWin->mid, 'start_date');
-            $tourDetails['startDate'] =$getWin->mid != 0 ? date('d M, Y', $startDate[0]) :'';
+            $tourDetails['startDate'] = $getWin->mid != 0 ? date('d M, Y', $startDate[0]) : '';
             $tourDetails['id'] = $i++;
             $tourDetails['tourTitle'] = get_the_title($getWin->tid);
             $tourDetails['matchTitle'] = $getWin->mid != 0 ? get_the_title($getWin->mid) : '-';
@@ -1045,7 +1047,7 @@ class API {
             $tourDetails['pts'] = $getWin->status == 0 ? $getWin->gain_points : $getWin->total_trade;
             $tourDetails['bet_at'] = $getWin->bet_at;
             $tourDetails['teamTotal'] = $getWin->total_trade;
-            $tourDetails['status']= $getWin->status;
+            $tourDetails['status'] = $getWin->status;
             array_push($getAccount, ['tourDetails' => $tourDetails]);
 
         endforeach;
@@ -1248,9 +1250,9 @@ class API {
             $email = $userDetails['email'];
             $phone = $userDetails['phone'];
             $message = $userDetails['message'];
-            $body = "<p>Enquiry from $name</p><p>Email : $email</p>Phone : $phone <p>Message : $message</p>";
+            $body = "<p>Enquiry from $name</p><br><br>New Enquiry<br><br><p>Email : $email</p>Phone : $phone <p>Message : $message</p><br><br>Regards,<br><br>Team Event Exchange";
             wp_mail(get_option('smtp_user'), "Contact Us", $body, $headers);
-            $bodyUser = "Dear $name,<br> Thank you for contacting us. We will get back to you shortly.";
+            $bodyUser = "Hi $name,<br><br> Thank you for contacting us. We will get back to you shortly.<br><br>Regards,<br><br>Team Event Exchange";
             wp_mail($email, "Contact Us", $bodyUser, $headers);
             return ['msg' => "Thank you for getting in touch. We will respond to you shortly.", 'errorType' => 'success'];
         endif;
