@@ -452,7 +452,7 @@ function updatePremium($postId) {
                 $getCount[] = $team['eliminated'];
             }
         }
-
+        tourRevoke($getTeams, $postId, $wpdb);
         $countStage = count($getCount);
         $checkStage = (array) $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $tradeInfo['tid'] . "'  AND team_id!=0 AND mid=0 AND stage='" . $countStage . "' GROUP BY stage   ");
         $checkStageFilter = (array) $checkStage[0];
@@ -484,9 +484,12 @@ add_action('save_post', 'updatePremium'); //for tournaments
 add_action('save_post', 'updateMatchPremium'); //for matches
 
 function updateMatchPremium($postId) {
+
+
     $tradeInfo["tid"] = $postId;
     $getTotalBets = getTotalTrade($tradeInfo, 'mid');
     if (get_post_type($postId) == 'matches'):
+
         global $wpdb;
         $getBetLoss = [];
         $Tradetype = 'mid';
@@ -509,7 +512,7 @@ function updateMatchPremium($postId) {
                 $resultTieLoss = $wpdb->get_results("SELECT sum(pts) as pts,uid,tid,mid,team_id FROM wp_bets WHERE $Tradetype='" . $postId . "' AND team_id= 0 group by uid ");
             }
         }
-
+        matchRevoke($getTeams, $postId, $wpdb);           //for match revoke
         if (count($countElimntd) == 1 && $getTeams[0]['points_distributed'] !== 'Yes') { //if one winner left distribute points
             $getTotalBets = $wpdb->get_results("SELECT sum(pts) as pts FROM wp_bets WHERE $Tradetype='" . $postId . "'   ");
             $totBets = (array) $getTotalBets[0];
@@ -531,6 +534,40 @@ function updateMatchPremium($postId) {
             matchDraw($getBetLoss, $resultTieLoss, $getTeams, $wpdb, $Tradetype, $postId);
         endif;
     endif;  //for match abondoned
+}
+
+function matchRevoke($getTeams, $postId, $wpdb) {
+    if (have_rows('select_teams') && $getTeams[0]['match_revoke'] == 'Yes') {
+        $i = 0;
+        while (have_rows('select_teams')) {
+            the_row();
+            $i++;
+            update_sub_field('winner', "No");
+        }
+        $wpdb->delete('wp_distribution', ['mid' => $postId]);
+        update_post_meta($postId, 'match_revoke', 'No');
+        update_post_meta($postId, 'match_draw', 'No');
+        update_post_meta($postId, 'match_abandoned', 'No');
+        update_post_meta($postId, 'points_distributed', 'No');
+        return false;
+    }
+}
+
+function tourRevoke($getTeams, $postId, $wpdb) {
+    if (have_rows('participating_team') && $getTeams[0]['tour_revoke'] == 'Yes') {
+        $i = 0;
+        while (have_rows('participating_team')) {
+            the_row();
+            $i++;
+            update_sub_field('eliminated', "No");
+        }
+        $wpdb->delete('wp_distribution', ['tid' => $postId, 'mid' => '0']);
+        update_post_meta($postId, 'tour_revoke', 'No');
+        update_post_meta($postId, 'tournament_abandoned', 'No');
+        update_post_meta($postId, 'tournament_draw', 'No');
+        update_post_meta($postId, 'points_distributed', 'No');
+        return false;
+    }
 }
 
 show_admin_bar(false);
