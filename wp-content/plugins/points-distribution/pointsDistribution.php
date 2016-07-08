@@ -138,7 +138,7 @@ class Distribution_Table extends WP_List_Table {
         global $wpdb;
         $orderby = isset($_GET['orderby']) ? $_GET['orderby'] : 'id';
         $order = isset($_GET['order']) ? $_GET['order'] : 'desc';
-        $data = $wpdb->get_results("SELECT * FROM  wp_distribution WHERE id IS NOT NULL  $where $whereM ORDER BY  $orderby $order ", ARRAY_A);
+        $data = $wpdb->get_results("SELECT * FROM  wp_distribution WHERE status=0 AND id IS NOT NULL  $where $whereM ORDER BY  $orderby $order ", ARRAY_A);
         $this->getCsv($data);
         return $data;
     }
