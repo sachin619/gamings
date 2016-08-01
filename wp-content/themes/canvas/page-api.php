@@ -358,6 +358,7 @@ class API {
         endif;
         $getCat = $this->getCategories(['parent' => 1]);
         $result = $this->upcomingOngoingTournaments($categorySlug, $paged);
+       
         foreach ($getCat as $categories) {
             $catName = (array) $categories;
             $cat[] = ['catName' => $catName['name']];
@@ -515,6 +516,8 @@ class API {
             $result[$key]['mytradedTotal']['mytradedTie'] = $this->getUserTotalTradeTie($tradeInfoTie, 'mid');
             $result[$key]['mytradedTotal']['tourTotal'] = $this->getTotalTrade($tradeInfo, 'mid');
         }
+        
+       
         $userTotalPts = $this->formatNumberAbbreviation();
         $output = ['catName' => $cat, 'catPost' => $result, 'tradeTotal' => $var, 'getOngoing' => $collectOngoing, 'tradeTie' => $userTotalTradeTie, 'userTotalPts' => $userTotalPts];
         return $output;
@@ -1292,9 +1295,26 @@ class API {
     }
 
     public function header() {
-        $args = ['parent' => 1];
-        $getCategoires = get_categories($args);
-        return ['categories' => $getCategoires];
+           $args = [
+                'post_type' => 'matches',
+                'meta_key' => 'total_bets',
+                'orderby' => 'meta_value_num',
+           
+                'order' => 'DESC',
+                'meta_query' => ['relation' => 'AND',
+                    [
+                        'key' => 'start_date', 'value' => '2', 'compare' => '>'
+                    ],
+                    [
+                        'key' => 'end_date', 'value' => '3', 'compare' => '<'
+                    ]
+                ],
+            ];
+     
+         
+         $customPosts = new WP_Query($args);
+echo "Last SQL-Query: {$customPosts->request}";
+          
     }
 
 }

@@ -53,7 +53,7 @@ get_header();
                 <h2 ng-hide="tourListing.length">There are no tournaments at the moment please check again later!</h2>
                 <!-- Portfolio Items
                 ============================================= -->
-                <div  ng-init="i = 1" class="portfolio grid-container portfolio-2 main-container">
+                <div  ng-init="i = 0" class="portfolio grid-container portfolio-2 main-container">
 
                     <article ng-repeat="getPost in tourListing" class="col-md-4 pf-hide pf-media pf-{{getPost['category'][0]['name']}}" style="margin: 0 0 20px 0;">
                         <a href={{getPost['postLink']}}>
